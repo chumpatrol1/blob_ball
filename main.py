@@ -3,6 +3,8 @@ import resources.display_graphics as dg
 import sys
 done = False
 pg.init()
+clock = pg.time.clock()
+clock.tick(60)
 
 def display_graphics():
     dg.handle_graphics()
