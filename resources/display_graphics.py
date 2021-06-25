@@ -4,20 +4,19 @@ import ctypes
 import engine.main_menu
 pg.font.init()
 cwd = os.getcwd()
-
+print("GRAPHICS CWD: "+cwd)
 user32 = ctypes.windll.user32
 screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 game_display = pg.display.set_mode((0, 0)) # The canvas
 
-print(screen_size)
-
 pg.init()
 clock = pg.time.Clock()
-clock.tick(5)
+clock.tick(60)
 
 def draw_background(screen_size, game_display, game_screen):
+    global cwd
     if(game_screen == "main_menu"):
-        background = pg.image.load("C:\\Users\\Elijah McLaughlin\\Desktop\\Python Projects\\Blob Ball\\blob_ball\\resources\\images\\triforce.jpg")
+        background = pg.image.load(cwd + "\\resources\\images\\triforce.jpg")
     background = pg.transform.scale(background, screen_size)
     game_display.blit(background, (0, 0))
 
@@ -35,7 +34,7 @@ def draw_main_menu(screen_size, game_display, selector_position):
     ]
 
 
-    ball = pg.image.load("C:\\Users\\Elijah McLaughlin\\Desktop\\Python Projects\\Blob Ball\\blob_ball\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
     game_display.blit(ball, (screen_size[0]*(2/3), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 

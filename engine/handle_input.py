@@ -4,7 +4,7 @@ import os
 
 pg.init()
 clock = pg.time.Clock()
-clock.tick(5)
+clock.tick(60)
 
 input_map = {
     'p1_up': pg.K_UP,
@@ -43,7 +43,7 @@ def get_keypress():
     if(pressed[input_map['p2_down']]):
         pressed_array.append('p2_down')
     if(pressed[input_map['p2_ability']]):
-        pressed_array.append('p1_ability')
+        pressed_array.append('p2_ability')
     return pressed_array
 
 button_timer = 0

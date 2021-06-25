@@ -5,7 +5,7 @@ import engine.handle_input
 
 pg.init()
 clock = pg.time.Clock()
-clock.tick(5)
+clock.tick(60)
 
 selector_position = 0
 def menu_navigation():

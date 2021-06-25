@@ -6,13 +6,13 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 cwd = os.getcwd()
-print(cwd)
+
 game_state = "main_menu"
 
 done = False
 pg.init()
 clock = pg.time.Clock()
-clock.tick(5)
+clock.tick(60)
 
 def handle_input():
     controls = open(cwd+"\\engine\\controls.txt", "r+")
