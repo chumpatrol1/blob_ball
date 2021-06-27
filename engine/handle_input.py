@@ -4,7 +4,7 @@ import os
 
 pg.init()
 clock = pg.time.Clock()
-clock.tick(60)
+clock.tick(120)
 
 input_map = {
     'p1_up': pg.K_UP,
@@ -36,17 +36,26 @@ def get_keypress():
         pressed_array.append('p1_up')
     if(pressed[input_map['p1_down']]):
         pressed_array.append('p1_down')
+    if(pressed[input_map['p1_left']]):
+        pressed_array.append('p1_left')
+    if(pressed[input_map['p1_right']]):
+        pressed_array.append('p1_right')
     if(pressed[input_map['p1_ability']]):
         pressed_array.append('p1_ability')
     if(pressed[input_map['p2_up']]):
         pressed_array.append('p2_up')
     if(pressed[input_map['p2_down']]):
         pressed_array.append('p2_down')
+    if(pressed[input_map['p2_left']]):
+        pressed_array.append('p2_left')
+    if(pressed[input_map['p2_right']]):
+        pressed_array.append('p2_right')
     if(pressed[input_map['p2_ability']]):
         pressed_array.append('p2_ability')
     return pressed_array
 
 button_timer = 0
+button_timer_2 = 0
 
 def menu_input():
     global button_timer
@@ -59,6 +68,19 @@ def menu_input():
         return pressed
     else:
         button_timer = 1
+        return []
+
+def css_input():
+    global button_timer
+    pressed = get_keypress()
+    if(button_timer == 0):
+        button_timer = 1
+        return pressed
+    elif(button_timer == 1 and pressed == []):
+        button_timer = 0
+        return pressed
+    else:
+        button_timer = 0
         return []
         
 
