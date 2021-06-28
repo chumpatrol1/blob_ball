@@ -2,10 +2,9 @@ import pygame as pg
 import sys
 import engine.handle_input
 
-
 pg.init()
 clock = pg.time.Clock()
-clock.tick(60)
+#clock.tick(60)
 
 selector_position = 0
 p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
@@ -54,6 +53,8 @@ def casual_css_navigation():
     pressed = engine.handle_input.css_input()
     global p1_selector_position
     global p2_selector_position
+    p1_blob = None
+    p2_blob = None
     game_state = "casual_css"
     if(p1_selector_position[2] == 0):
         if('p1_up' in pressed):
@@ -123,6 +124,8 @@ def casual_css_navigation():
                 p2_selector_position = [4, 2, 0]
                 print("?")
         else:
+            #TODO: Fix this spaghetti
+            p1_blob = "quirkless"
             p1_selector_position[2] = 1
     elif('p1_kick' in pressed):
         p1_selector_position[2] = 0
@@ -151,6 +154,8 @@ def casual_css_navigation():
                 p2_selector_position = [4, 2, 0]
                 print("?")
         else:
+            #TODO: Fix this spaghetti
+            p2_blob = "quirkless"
             p2_selector_position[2] = 1
     elif('p2_kick' in pressed):
         p2_selector_position[2] = 0
@@ -165,6 +170,5 @@ def casual_css_navigation():
         print("Casual Match Started!")
         game_state = "casual_match"
 
-    return p1_selector_position, p2_selector_position, game_state
 
-    
+    return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob

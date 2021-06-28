@@ -2,6 +2,7 @@ import pygame as pg
 import os
 import ctypes
 import engine.main_menu
+import engine.gameplay
 pg.font.init()
 cwd = os.getcwd()
 print("GRAPHICS CWD: "+cwd)
@@ -11,14 +12,16 @@ game_display = pg.display.set_mode((0, 0)) # The canvas
 
 pg.init()
 clock = pg.time.Clock()
-clock.tick(60)
+#clock.tick(60)
 
 def draw_background(screen_size, game_display, game_screen):
     global cwd
     if(game_screen == "main_menu"):
         background = pg.image.load(cwd + "\\resources\\images\\triforce.jpg")
-    if(game_screen == "casual_css"):
-        background = pg.image.load(cwd + "\\resources\\images\\triforce.jpg")
+    elif(game_screen == "casual_css"):
+        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+    elif(game_screen == "casual_match"):
+        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     background = pg.transform.scale(background, screen_size)
     game_display.blit(background, (0, 0))
 
@@ -108,9 +111,46 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
             game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
 
 
+def draw_gameplay(screen_size, game_display, p1_blob, p2_blob):
+    draw_background(screen_size, game_display, "casual_match")
+    p1_blob_image = pg.image.load(p1_blob.image)
+    p1_blob_image = pg.transform.scale(p1_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+    if(p1_blob.facing == "right"):
+        p1_blob_image = pg.transform.flip(p1_blob_image, True, False)
+    game_display.blit(p1_blob_image, (p1_blob.x_pos*(1000/screen_size[0]), (p1_blob.y_pos*(400/screen_size[1]))))
+    menu_font = pg.font.SysFont('Arial', round(80*(screen_size[1]/768)))
+    menu_text = menu_font.render("SPEED: "+str(round(p1_blob.x_speed)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (500, 200)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("POS: "+str(round(p1_blob.x_pos)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (500, 300)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("VSP: "+str(round(p1_blob.y_speed)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("Y PS: "+str(round(p1_blob.y_pos)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (500, 500)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("FF: "+str(p1_blob.fastfalling), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (0, 200)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("GStar: "+str(p1_blob.gravity_stars), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (0, 300)
+    game_display.blit(menu_text, text_rect)
+
+
+p1_blob = []
+p2_blob = []
 def handle_graphics(game_state):
     global screen_size
     global game_display
+    global p1_blob
+    global p2_blob
     if(game_state == "main_menu"):
         info_getter = engine.main_menu.menu_navigation()
         selector_position = info_getter[0]
@@ -122,6 +162,14 @@ def handle_graphics(game_state):
         p2_selector_position = info_getter[1]
         draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position)
         game_state = info_getter[2]
+        if(game_state == "casual_match"):
+            p1_blob = info_getter[3]
+            p2_blob = info_getter[4]
+    elif(game_state == "casual_match"):
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob)
+        p1_blob = info_getter[0]
+        p2_blob = info_getter[1]
+        draw_gameplay(screen_size, game_display, p1_blob, p2_blob)
     #print(selector_position)
     pg.display.flip()
     return game_state
