@@ -95,6 +95,7 @@ class blob:
         else:
             self.x_pos = 1600
             self.facing = 'left'
+        self.y_pos = 1200
         
     def move(self, pressed):
         if(self.player == 1):

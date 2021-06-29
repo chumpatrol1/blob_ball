@@ -153,7 +153,6 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 p1_blob = []
 p2_blob = []
 def handle_graphics(game_state):
-    print(game_state)
     global screen_size
     global game_display
     global p1_blob
@@ -174,7 +173,6 @@ def handle_graphics(game_state):
             p2_selector_position = [4, 2, 0]
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
-            print(p1_blob, p2_blob)
     elif(game_state == "casual_match"):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob)
         p1_blob = info_getter[0]
