@@ -3,6 +3,7 @@ import os
 import ctypes
 import engine.main_menu
 import engine.gameplay
+import math
 pg.font.init()
 cwd = os.getcwd()
 print("GRAPHICS CWD: "+cwd)
@@ -111,42 +112,48 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
             game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
 
 
-def draw_gameplay(screen_size, game_display, p1_blob, p2_blob):
+def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer):
     draw_background(screen_size, game_display, "casual_match")
+
+    pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*13/20, (screen_size[0] * 110/1366), 500))
+    pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1256/1366, screen_size[1]*(13/20), screen_size[0] * 110/1366, 500))
+
     p1_blob_image = pg.image.load(p1_blob.image)
     p1_blob_image = pg.transform.scale(p1_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
     if(p1_blob.facing == "right"):
         p1_blob_image = pg.transform.flip(p1_blob_image, True, False)
     game_display.blit(p1_blob_image, (p1_blob.x_pos*(1000/screen_size[0]), (p1_blob.y_pos*(400/screen_size[1]))))
-    menu_font = pg.font.SysFont('Arial', round(80*(screen_size[1]/768)))
-    menu_text = menu_font.render("SPEED: "+str(round(p1_blob.x_speed)), False, (255, 124, 0))
+
+    p2_blob_image = pg.image.load(p2_blob.image)
+    if(p2_blob.image == p1_blob.image):
+        p2_blob_image = p2_blob_image.convert_alpha()
+        p2_blob_image.fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+    p2_blob_image = pg.transform.scale(p2_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+    if(p2_blob.facing == "right"):
+        p2_blob_image = pg.transform.flip(p2_blob_image, True, False)
+    game_display.blit(p2_blob_image, (p2_blob.x_pos*(1000/screen_size[0]), (p2_blob.y_pos*(400/screen_size[1]))))
+
+    ball_image = pg.image.load(ball.image)
+    ball_image = pg.transform.scale(ball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+    game_display.blit(ball_image, (ball.x_pos * (1000/screen_size[0]), ball.y_pos * (400/screen_size[1])))
+
+    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
+    menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
-    text_rect.center = (500, 200)
+    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("POS: "+str(round(p1_blob.x_pos)), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (500, 300)
-    game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("VSP: "+str(round(p1_blob.y_speed)), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("Y PS: "+str(round(p1_blob.y_pos)), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (500, 500)
-    game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("FF: "+str(p1_blob.fastfalling), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (0, 200)
-    game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("GStar: "+str(p1_blob.gravity_stars), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (0, 300)
-    game_display.blit(menu_text, text_rect)
+    if(timer > 0):
+        menu_text = menu_font.render(str(timer//5), False, (255, 124, 0))
+        text_rect = menu_text.get_rect()
+        text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
+        game_display.blit(menu_text, text_rect)
+        
 
 
 p1_blob = []
 p2_blob = []
 def handle_graphics(game_state):
+    print(game_state)
     global screen_size
     global game_display
     global p1_blob
@@ -163,13 +170,22 @@ def handle_graphics(game_state):
         draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
+            p1_selector_position =  [4, 2, 0]
+            p2_selector_position = [4, 2, 0]
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
+            print(p1_blob, p2_blob)
     elif(game_state == "casual_match"):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob)
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
-        draw_gameplay(screen_size, game_display, p1_blob, p2_blob)
+        ball = info_getter[2]
+        game_score = info_getter[3]
+        timer = info_getter[4]
+        game_state = info_getter[5]
+        if(game_state == "casual_css"):
+            return game_state
+        draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer)
     #print(selector_position)
     pg.display.flip()
     return game_state

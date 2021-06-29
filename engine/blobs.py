@@ -55,13 +55,15 @@ class blob:
         self.player = player #Player 1 or 2
         self.image = type_to_image(type)
         stars = type_to_stars(type) #Gets many values for each blob
-        self.max_hp = stars['max_hp'] + 1 #Each star adds an additional HP.
+        self.max_hp = stars['max_hp'] + 2 #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*stars['top_speed']) #Each star adds some speed
         self.x_speed = 0
         self.y_speed = 0
         self.x_pos = x_pos #Where the blob is on the X axis
         self.y_pos = y_pos #Where the blob is on the Y axis, 1200 is grounded
+        self.x_center = x_pos + 80
+        self.y_center = y_pos + 110
         self.facing = facing #Where the blob is currently facing
         self.traction = 0.2 + (stars['traction'] * 0.15) #Each star increases traction
         self.friction = 0.2 + (stars['friction'] * 0.15) #Each star increases
@@ -83,8 +85,20 @@ class blob:
         self.special_ability_cost = stars['special_ability_cost'] #Price to use SA
         self.special_ability_charge = 1 #Each frame increases the SA meter by 1 point, or more if focusing
     
+    def reset(self, player):
+        self.hp = self.max_hp
+        self.x_speed = 0
+        self.y_speed = 0
+        if(player == 1):
+            self.x_pos = 100
+            self.facing = 'right'
+        else:
+            self.x_pos = 1600
+            self.facing = 'left'
+        
     def move(self, pressed):
         if(self.player == 1):
+
             #HORIZONTAL MOVEMENT
             if(self.y_pos == 1200): #Applies traction if grounded
                 if('p1_left' in pressed and not 'p1_right' in pressed): #If holding left but not right
@@ -177,6 +191,103 @@ class blob:
             if(self.y_pos > 1200): #Don't go under the floor!
                 self.y_speed = 0
                 self.y_pos = 1200
+        
+        if(self.player == 2):
+            
+            #HORIZONTAL MOVEMENT
+            if(self.y_pos == 1200): #Applies traction if grounded
+                if('p2_left' in pressed and not 'p2_right' in pressed): #If holding left but not right
+                    self.facing = "left"
+                    if(self.x_pos <= 0): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 0
+                    else:
+                        if(abs(self.x_speed) < self.top_speed):
+                            self.x_speed -= self.traction #Accelerate based off of traction
+                        else:
+                            self.x_speed = -1*self.top_speed #If at max speed, maintain it
+                elif(not 'p2_left' in pressed and 'p2_right' in pressed): #If holding right but not left
+                    self.facing = 'right'
+                    if(self.x_pos >= 1700): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 1700
+                    else:
+                        if(abs(self.x_speed) < self.top_speed):
+                            self.x_speed += self.traction #Accelerate based off of traction
+                        else:
+                            self.x_speed = self.top_speed #If at max speed, maintain it
+                else: #We're either not holding anything, or pressing both at once
+                    if(self.x_speed < 0): #If we're going left, decelerate
+                        if(self.x_speed + self.traction) > 0:
+                            self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                        else:
+                            self.x_speed += self.traction #Normal deceleration
+                    elif(self.x_speed > 0):
+                        if(self.x_speed - self.traction) < 0:
+                            self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                        else:
+                            self.x_speed -= self.traction #Normal deceleration
+            else: #Applies friction if airborne
+                if('p2_left' in pressed and not 'p2_right' in pressed): #If holding left but not right
+                    self.facing = "left"
+                    if(self.x_pos <= 0): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 0
+                    else:
+                        if(abs(self.x_speed) < self.top_speed):
+                            self.x_speed -= self.friction #Accelerate based off of traction
+                        else:
+                            self.x_speed = -1*self.top_speed #If at max speed, maintain it
+                elif(not 'p2_left' in pressed and 'p2_right' in pressed): #If holding right but not left
+                    self.facing = 'right'
+                    if(self.x_pos >= 1700): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 1700
+                    else:
+                        if(abs(self.x_speed) < self.top_speed):
+                            self.x_speed += self.friction #Accelerate based off of friction
+                        else:
+                            self.x_speed = self.top_speed #If at max speed, maintain it
+                else: #We're either not holding anything, or pressing both at once
+                    if(self.x_speed < 0): #If we're going left, decelerate
+                        if(self.x_speed + self.friction) > 0:
+                            self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                        else:
+                            self.x_speed += self.friction #Normal deceleration
+                    elif(self.x_speed > 0):
+                        if(self.x_speed - self.friction) < 0:
+                            self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                        else:
+                            self.x_speed -= self.friction #Normal deceleration
+            self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+            if(self.x_pos <= 0): #Don't move off screen!
+                self.x_speed = 0
+                self.x_pos = 0
+            elif(self.x_pos >= 1700): #Don't move off screen!
+                self.x_speed = 0
+                self.x_pos = 1700
+            
+            #VERTICAL MOVEMENT
+            if('p2_up' in pressed and self.y_pos == 1200): #If you press jump while grounded, jump!
+                self.y_speed = -1 * self.jump_force
+            if('p2_down' in pressed and self.y_pos < 1200): #If you are above ground and press down
+                self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
+            if(self.y_pos < 1200): #Applies gravity while airborne, respecting fast fall status.
+                if(self.fastfalling):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
+            if(self.fastfalling and self.y_pos == 1200): #If you land, cancel the fastfall.
+                self.fastfalling = False
+            self.y_pos += self.y_speed #This ensures that we are always adjusting our position
+            if(self.y_pos < 0): #How did we get here?
+                self.y_pos = 0
+                self.y_speed = 0
+            if(self.y_pos > 1200): #Don't go under the floor!
+                self.y_speed = 0
+                self.y_pos = 1200
+        self.x_center = self.x_pos + 83 #Rough estimate :)
+        self.y_center = self.y_pos + 110 #Rough estimate :)
 
 
 if __name__ == "__main__":

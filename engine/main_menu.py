@@ -9,6 +9,9 @@ clock = pg.time.Clock()
 selector_position = 0
 p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
 p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+p1_blob = "quirkless"
+p2_blob = "quirkless"
+
 def menu_navigation():
     game_state = "main_menu"
     pressed = engine.handle_input.menu_input()
@@ -53,8 +56,8 @@ def casual_css_navigation():
     pressed = engine.handle_input.css_input()
     global p1_selector_position
     global p2_selector_position
-    p1_blob = None
-    p2_blob = None
+    global p1_blob
+    global p2_blob
     game_state = "casual_css"
     if(p1_selector_position[2] == 0):
         if('p1_up' in pressed):
@@ -160,7 +163,7 @@ def casual_css_navigation():
     elif('p2_kick' in pressed):
         p2_selector_position[2] = 0
 
-    if(p1_selector_position[2] == 1 and p2_selector_position[2] == 1):
+    if(p1_selector_position[2] >= 1 and p2_selector_position[2] >= 1):
         if('p1_ability' in pressed):
             p1_selector_position[2] = 2
         if('p2_ability' in pressed):
@@ -169,6 +172,11 @@ def casual_css_navigation():
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         print("Casual Match Started!")
         game_state = "casual_match"
-
+    
+    if(game_state == "casual_match"):
+        p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+        p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+        p1_blob = "quirkless"
+        p2_blob = "quirkless"
 
     return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
