@@ -49,26 +49,21 @@ def handle_gameplay(p1_selected, p2_selected):
             p1_blob.cooldown()
             p2_blob.cooldown()
             ball.move()
-            ball.check_collisions(p1_blob, p2_blob)
+            ball.check_blob_collisions(p1_blob)
+            ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 120 and ball.y_pos > 925): #Left Goal
-                pass
-                '''
                 game_score[1] += 1
                 timer = 180
                 if(game_score[1] >= goal_limit):
                     game_state = "casual_css"
                 reset_round()
-                '''
                 
             elif(ball.x_pos > 1685 and ball.y_pos > 925): #Right Goal
-                pass
-                '''
                 game_score[0] += 1
                 timer = 180
                 if(game_score[0] >= goal_limit):
                     game_state = "casual_css"
                 reset_round()
-                '''
 
         else:
             timer -= 1

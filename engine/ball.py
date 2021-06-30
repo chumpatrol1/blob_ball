@@ -32,6 +32,8 @@ class ball:
         self.friction = 0.1 #Air Friction
         self.gravity = 0.9 #Each star increases gravity
         self.grounded = False #True if the ball is on the ground
+    
+    ground = 1240
 
     def reset(self):
         self.x_speed = 0
@@ -39,109 +41,63 @@ class ball:
         self.x_pos = 902
         self.y_pos  = 900
 
-    def check_collisions(self, p1_blob, p2_blob, *objs):
+    def check_blob_collisions(self, blob):
         #The distance to p1's blob
-        p1_center_distance = round(math.sqrt((p1_blob.x_center - self.x_center)**2 + (p1_blob.y_center - self.y_center)**2),1)
-        p2_center_distance = round(math.sqrt((p2_blob.x_center - self.x_center)**2 + (p2_blob.y_center - self.y_center)**2),1)
+        p1_center_distance = round(math.sqrt((blob.x_center - self.x_center)**2 + (blob.y_center - self.y_center)**2),1)
+        blob_collision_distance = blob.collision_distance
         #X distance used for calculations. If the distance between centers is less than this, a collision can happen
-        p1_blob_collision_distance = 104
-        p2_blob_collision_distance = 104
+
         ball_angle = math.atan2(self.x_speed, self.y_speed)
         #print(ball_angle)
-        p1_angle = math.atan2(self.x_center - p1_blob.x_pos, self.y_center - p1_blob.y_pos)
-        p2_angle = math.atan2(self.x_center - p2_blob.x_pos, self.y_center - p2_blob.y_pos)
-        p1_speed = round(math.sqrt(p1_blob.x_speed**2 + p1_blob.y_speed**2))
-        p2_speed = round(math.sqrt(p2_blob.x_speed**2 + p2_blob.y_speed**2))
+        p1_angle = math.atan2(self.x_center - blob.x_pos, self.y_center - blob.y_pos)
+        p1_speed = round(math.sqrt(blob.x_speed**2 + blob.y_speed**2))
         ball_speed = round(math.sqrt(self.x_speed**2 + self.y_speed**2))
 
         ball_vector = pg.math.Vector2(self.x_center, self.y_center)
-        p1_vector = pg.math.Vector2(p1_blob.x_center, p1_blob.y_center)
-        p2_vector = pg.math.Vector2(p2_blob.x_center, p2_blob.y_center)
+        p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
         
-        if(p1_blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
-            if(abs(p1_blob.x_center - self.x_center) < p1_blob_collision_distance):
-                self.image = type_to_image("soccer_ball")
-        elif(p1_blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
-            if(abs(p1_blob.x_center - self.x_center) < p1_blob_collision_distance) and self.grounded and p1_center_distance < 50 and p1_blob.y_speed >= 0:
-                #True if x is close enough, ball is grounded, hit the bottom center, and moving downwards
-                self.y_speed = -10
-                self.y_pos = 1100 #Pop the ball upwards
-            elif(abs(p1_blob.x_center - self.x_center) < p1_blob_collision_distance) and self.grounded and p1_center_distance >= 50 and p1_blob.y_speed >= 0:
-                #True if x is close enough, ball is grounded, hit an edge, and moving downwards
-                if(p1_blob.x_center > self.x_center):
-                    #True if p1_blob is to the right of the ball
+        if(blob.collision_timer == 0):
+            if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
+                if(abs(blob.x_center - self.x_center) < blob_collision_distance):
+                    self.image = type_to_image("soccer_ball")
+            elif(blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
+                if(abs(blob.x_center - self.x_center) < blob_collision_distance) and self.grounded and blob.y_speed >= 0:
+                    #True if x is close enough, ball is grounded, hit the bottom center, and moving downwards
+                    self.image = type_to_image("p1_token")
+                    self.y_pos = self.y_pos + (p1_center_distance - 160) #Pop the ball upwards
                     self.y_speed = -5
-                    self.x_speed = -10 - math.sqrt(abs(p1_blob.x_speed))
-                    self.y_pos = 1200 #Pop the ball up and away
-                    self.x_pos -= 25 + p1_blob_collision_distance - abs(p1_blob.x_center - self.x_center)
-                else:
-                    #True if p1_blob is to the left of the ball
-                    self.y_speed = -5
-                    self.x_speed = 10 + math.sqrt(abs(p1_blob.x_speed))
-                    self.y_pos = 1200 #Pop the ball up and away
-                    self.x_pos += 25 + p1_blob_collision_distance - abs(p1_blob.x_center - self.x_center)
-            elif(abs(p1_blob.x_center - self.x_center) < p1_blob_collision_distance) and not self.grounded:
-                #True if x is close enough, and ball is airborne.
-                if(self.y_speed < 0): #Are we moving upwards?
-                    self.y_speed = (-1 * self.y_speed) + p1_blob.y_speed # Reflect!
-        elif(p1_blob.y_center >= self.y_center): #Is the ball above the blob?
-            if p1_vector.distance_to(ball_vector) < p1_blob_collision_distance: #Standard collision
-                p1_ball_nv = p1_vector - ball_vector
-                p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                self.x_speed, self.y_speed = p1_ball_collision[0] + (p1_blob.x_speed * 1.25), (1 * p1_ball_collision[1] + ((p1_blob.y_speed - 5) * 1.5))
-                if p1_vector.distance_to(ball_vector) < p1_blob_collision_distance:
-                    self.x_pos += self.x_speed
-                    self.y_pos += self.y_speed
-        else:
-            #Debug
-            if(abs(p1_blob.x_center - self.x_center) < p1_blob_collision_distance):
-                pass
-            else:
-                self.image = type_to_image("soccer_ball")
+                    self.x_speed = 0
+                    blob.collision_timer = 2
+                elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
+                    #True if x is close enough, and ball is airborne.
+                    if(self.y_speed < 0): #Are we moving upwards?
+                        self.y_speed = (-1 * self.y_speed) + blob.y_speed # Reflect!
+                        if(blob.y_speed >= 0 and blob.y_pos >= 1100):
+                            self.y_pos = ball.ground + (p1_center_distance - 160)
+                            self.y_speed = -5
+                            self.x_speed = 0
 
-        if(p2_blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
-            if(abs(p2_blob.x_center - self.x_center) < p2_blob_collision_distance):
-                self.image = type_to_image("soccer_ball")
-        elif(p2_blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
-            if(abs(p2_blob.x_center - self.x_center) < p2_blob_collision_distance) and self.grounded and p2_center_distance < 50 and p2_blob.y_speed >= 0:
-                #True if x is close enough, ball is grounded, hit the bottom center, and moving downwards
-                self.y_speed = -10
-                self.y_pos = 1100 #Pop the ball upwards
-            elif(abs(p2_blob.x_center - self.x_center) < p2_blob_collision_distance) and self.grounded and p2_center_distance >= 50 and p2_blob.y_speed >= 0:
-                #True if x is close enough, ball is grounded, hit an edge, and moving downwards
-                if(p2_blob.x_center > self.x_center):
-                    #True if p2_blob is to the right of the ball
-                    self.y_speed = -5
-                    self.x_speed = -10 - math.sqrt(abs(p2_blob.x_speed))
-                    self.y_pos = 1200 #Pop the ball up and away
-                    self.x_pos -= 25 + p2_blob_collision_distance - abs(p2_blob.x_center - self.x_center)
-                else:
-                    #True if p2_blob is to the left of the ball
-                    self.y_speed = -5
-                    self.x_speed = 10 + math.sqrt(abs(p2_blob.x_speed))
-                    self.y_pos = 1200 #Pop the ball up and away
-                    self.x_pos += 25 + p2_blob_collision_distance - abs(p2_blob.x_center - self.x_center)
-            elif(abs(p2_blob.x_center - self.x_center) < p2_blob_collision_distance) and not self.grounded:
-                #True if x is close enough, and ball is airborne.
-                if(self.y_speed < 0): #Are we moving upwards?
-                    self.y_speed = (-1 * self.y_speed) + p2_blob.y_speed # Reflect!
-        elif(p2_blob.y_center >= self.y_center): #Is the ball above the blob?
-            if p2_vector.distance_to(ball_vector) < p2_blob_collision_distance:
-                p2_ball_nv = p2_vector - ball_vector
-                p2_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p2_ball_nv)
-                self.x_speed, self.y_speed = p2_ball_collision[0] + (p2_blob.x_speed * 1.25), (1 * p2_ball_collision[1] + ((p2_blob.y_speed - 5) * 1.5))
-                if p2_vector.distance_to(ball_vector) < p2_blob_collision_distance:
-                    self.x_pos += self.x_speed
-                    self.y_pos += self.y_speed
-        else:
-            #Debug
-            if(abs(p2_blob.x_center - self.x_center) < p2_blob_collision_distance):
-                pass
+
+            elif(blob.y_center >= self.y_center): #Is the ball above the blob?
+                if(p1_vector.distance_to(ball_vector) < blob_collision_distance * 0.8):
+                    blob.collision_timer = 3
+                if p1_vector.distance_to(ball_vector) < blob_collision_distance: #Standard collision
+                    p1_ball_nv = p1_vector - ball_vector
+                    p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                    self.x_speed, self.y_speed = p1_ball_collision[0] + (blob.x_speed * 1.25), (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5))
+                    if p1_vector.distance_to(ball_vector) < blob_collision_distance:
+                        self.x_pos += self.x_speed
+                        self.y_pos += self.y_speed
             else:
-                self.image = type_to_image("soccer_ball")
+                #Debug
+                if(abs(blob.x_center - self.x_center) < blob_collision_distance):
+                    pass
+                else:
+                    self.image = type_to_image("soccer_ball")
+
 
     def move(self):
-        ground = 1240
+        ground = ball.ground
         left_wall = 0
         right_wall = 1805
         ceiling = 0
