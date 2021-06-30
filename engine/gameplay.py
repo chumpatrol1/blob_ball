@@ -17,14 +17,21 @@ ball = None
 game_score = [0, 0]
 timer = 180
 countdown = 0
+p1_ko = False
+p2_ko = False
+score_goal = False
 
 def reset_round():
     global p1_blob
     global p2_blob
     global ball
+    global p1_ko
+    global p2_ko
     p1_blob.reset(1)
     p2_blob.reset(2)
     ball.reset()
+    p1_ko = False
+    p2_ko = False
 
 def score_goal(winner, goal_limit):
     global timer
@@ -34,7 +41,7 @@ def score_goal(winner, goal_limit):
         return "casual_css"
     reset_round()
     return "casual_match"
-
+    
 
 def handle_gameplay(p1_selected, p2_selected):
     pressed = engine.handle_input.gameplay_input()
@@ -44,8 +51,14 @@ def handle_gameplay(p1_selected, p2_selected):
     global ball
     global game_score
     global timer
+    global p1_ko
+    global p2_ko
     goal_limit = 5
     game_state = "casual_match"
+
+    def blob_ko(blob):
+        blob.blob_ko()
+
     if not initialized:
         blobs = initialize_players(p1_selected, p2_selected)
         p1_blob = blobs[0]
@@ -58,15 +71,23 @@ def handle_gameplay(p1_selected, p2_selected):
             p2_blob.move(pressed)
             ball.check_block_collisions(p1_blob)
             ball.check_block_collisions(p2_blob)
-            if(p1_blob.kick_timer == 1):
-                print(p1_blob.collision_distance)
+            if(p1_blob.kick_timer == 1 and not p2_blob.kick_timer == 1):
                 p1_blob.check_blob_collision(p2_blob)
                 if(p2_blob.hp <= 0):
-                    game_state = score_goal(0, goal_limit)
-            if(p2_blob.kick_timer == 1):
+                    timer = 120
+                    p2_ko = True
+                    p1_blob.cooldown()
+                    p2_blob.damage_flash_timer = 0
+                    
+            if(p2_blob.kick_timer == 1 and not p1_blob.kick_timer == 1):
                 p2_blob.check_blob_collision(p1_blob)
+                print(p1_blob.hp)
                 if(p1_blob.hp <= 0):
-                    game_state = score_goal(1, goal_limit)
+                    timer = 120
+                    p1_ko = True
+                    p2_blob.cooldown()
+                    p1_blob.damage_flash_timer = 0
+                    #p2_blob.kick_timer = 0
             p1_blob.cooldown()
             p2_blob.cooldown()
             ball.move()
@@ -79,6 +100,20 @@ def handle_gameplay(p1_selected, p2_selected):
                 game_state = score_goal(0, goal_limit)
 
         else:
+            if(p1_ko):
+                print(timer)
+                blob_ko(p1_blob)
+                print(p1_blob.y_pos)
+                if(p1_blob.y_pos >= 2000):
+                    score_goal(1, goal_limit)
+                    p1_ko = False
+                    reset_round()
+            if(p2_ko):
+                blob_ko(p2_blob)
+                if(p2_blob.y_pos >= 2000):
+                    score_goal(0, goal_limit)
+                    p2_ko = False
+                    reset_round()
             timer -= 1
         if(game_state == "casual_css"):
             initialized = False

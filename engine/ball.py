@@ -91,13 +91,8 @@ class ball:
                 if p1_vector.distance_to(ball_vector) < blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    if(blob.x_center <= self.x_center):
-                        #Ball is right of blob
-                        blob_kick_x_modifier = (13*blob_collision_distance/104) - 13
-                    else:
-                        #Ball is left of blob
-                        blob_kick_x_modifier = -1 * ((13*blob_collision_distance/104) - 13)
-                    blob_kick_y_modifier = (1*blob_collision_distance/104) - 1 #TODO: Fix for Sponge/Sci Slime
+                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((13*blob_collision_distance/104) - 13)
+                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((13*blob_collision_distance/104) - 13) #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
                     if p1_vector.distance_to(ball_vector) < blob_collision_distance:
                         #If the ball is stuck inside of the blob for some reason, move it out

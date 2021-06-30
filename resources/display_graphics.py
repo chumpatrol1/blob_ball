@@ -125,7 +125,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     game_display.blit(p1_blob_image, (p1_blob.x_pos*(1000/screen_size[0]), (p1_blob.y_pos*(400/screen_size[1]))))
 
     p2_blob_image = pg.image.load(p2_blob.image)
-    if(p2_blob.image == p1_blob.image):
+    if(p2_blob.type == p1_blob.type):
         p2_blob_image = p2_blob_image.convert_alpha()
         p2_blob_image.fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
     p2_blob_image = pg.transform.scale(p2_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))

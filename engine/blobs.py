@@ -29,8 +29,8 @@ def type_to_stars(type):
             'traction': 4,
             'friction': 4,
             'gravity': 4,
-            'kick_cooldown_rate': 4,
-            'block_cooldown_rate': 4,
+            'kick_cooldown_rate': 5,
+            'block_cooldown_rate': 5,
 
             'boost_cost': 600,
             'boost_cooldown_rate': 5,
@@ -138,6 +138,7 @@ class blob:
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
+        self.movement_lock = 0 #Caused if the blob has its movement blocked
     
     def cooldown(self): #Reduces timers
         if(self.focusing):
@@ -181,6 +182,9 @@ class blob:
                 self.image = type_to_image('invisible')
             else:
                 self.image = type_to_image(self.type)
+        
+        if(self.movement_lock > 0):
+            self.movement_lock -= 1
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
@@ -190,13 +194,15 @@ class blob:
             self.block_cooldown += 10
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
-            self.collision_distance = 150
+            self.collision_distance = 175
 
     def block(self):
         if(self.block_cooldown <= 0):
             self.kick_cooldown += 10
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
+            self.movement_lock = 15
+            self.x_speed = 0
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
@@ -211,13 +217,20 @@ class blob:
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
-            print("ME", self.y_center)
-            print("THEY", blob.y_center)
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
                 if(blob.block_timer == 0):
-                    blob.hp -= 1
+                    if(self.boost_timer > 0):
+                        blob.hp -= 2
+                    else:
+                        blob.hp -= 1
                     blob.damage_flash_timer = 60
-                    print(blob.hp)
+
+    def blob_ko(self):
+        self.y_speed = 10
+        print(self.y_pos)
+        if(self.y_pos < 2000):
+            self.y_pos += self.y_speed
+
     def reset(self, player):
         self.hp = self.max_hp
         self.x_speed = 0
@@ -246,6 +259,9 @@ class blob:
                     continue
                 else:
                     pressed.remove(button)
+        
+        if(self.movement_lock > 0):
+            pressed = []
 
             #HORIZONTAL MOVEMENT
         if(self.y_pos == 1200): #Applies traction if grounded
@@ -368,51 +384,3 @@ class blob:
 
 if __name__ == "__main__":
     new_blob = blob("quirkless", 0, 0)
-    def jumpHeight(jumpForce, gravity): #Pilfered from some custom SSF2 code lol
-        atApex = False
-        yv = jumpForce
-        y = 0
-        while not atApex:
-            if((yv - gravity) <= 0):
-                atApex = True
-            else:
-                yv -= gravity
-                y += yv
-        return (round(y * 1000) / 1000) 
-
-    def jumpAirtime(jumpForce, gravity):
-        frame = 0
-        yv = round(jumpForce*1000)
-        y = 0
-        gravity = round(gravity * 1000)
-        hasLanded = False
-        while not hasLanded:
-            if((frame > 0) and (y <= 0)):
-                hasLanded = True
-            else:
-                yv -= gravity
-                y += yv
-                frame += 1
-        return frame - 1
-    
-    def projectile_motion(jump_force, gravity):
-        print("Jump Force: {}".format(jump_force))
-        print("Gravity: {}".format(gravity))
-        jump_height = jumpHeight(jump_force, gravity)
-        print("Jump Height: {}".format(jump_height))
-        print("Final Height: {}".format(1200-jump_height))
-        jump_airtime = jumpAirtime(jump_force, gravity)
-        print("Airtime: {}".format(jump_airtime))
-        print("LIMIT BREAK!")
-    
-    #5 Star Gravity (1.0) + *23.73915 Jump Force (23.73915) results in JH of 270 (46 Frames)
-    #4 Star Gravity (0.9) + *25 Jump Force (22.5) results in JH of 270 (48 Frames)
-    #3 Star Gravity (0.8) + *26.48075 Jump Force (21.1846) results in JH of 270 (51 Frames)
-    #2 Star Gravity (0.7) + *28.2755 Jump Force (19.79285) results in JH of 270 (55 Frames)
-    #1 Star Gravity (0.6) + *30.5 Jump Force (18.3) results in JH of 270 (59 Frames)
-    projectile_motion(24.5, 1.05)
-    projectile_motion(22.5, 0.9)
-    projectile_motion(20.5, 0.75)
-    projectile_motion(18.5, 0.6)
-    projectile_motion(16.5, 0.45)
-    #Formula: 14.5 + gravity_stars * 2
