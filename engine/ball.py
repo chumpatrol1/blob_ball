@@ -14,6 +14,10 @@ def type_to_image(type):
         image = cwd+"\\resources\\images\\p1_token.png"
     elif(type == "p2_token"):
         image = cwd+"\\resources\\images\\p2_token.png"
+    elif(type == "kicked_ball"):
+        image = cwd+"\\resources\\images\\kicked_ball.png"
+    elif(type == "blocked_ball"):
+        image = cwd+"\\resources\\images\\blocked_ball.png"
 
     return image
 
@@ -24,6 +28,8 @@ class ball:
         #self.top_speed = 100 #The fastest that the ball can move?
         self.x_speed = 0
         self.y_speed = 0
+        self.x_speed_max = 50
+        self.y_speed_max = 50
         self.x_pos = x_pos #Ball's position
         self.x_center = x_pos + 27
         self.y_center = y_pos + 38
@@ -32,6 +38,7 @@ class ball:
         self.friction = 0.1 #Air Friction
         self.gravity = 0.9 #Each star increases gravity
         self.grounded = False #True if the ball is on the ground
+        self.special_timer = 0 #Used when the ball is hit with a kick or block
     
     ground = 1240
 
@@ -40,6 +47,7 @@ class ball:
         self.y_speed = 0
         self.x_pos = 902
         self.y_pos  = 900
+        self.image = type_to_image("soccer_ball")
 
     def check_blob_collisions(self, blob):
         #The distance to p1's blob
@@ -62,8 +70,7 @@ class ball:
                     self.image = type_to_image("soccer_ball")
             elif(blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance) and self.grounded and blob.y_speed >= 0:
-                    #True if x is close enough, ball is grounded, hit the bottom center, and moving downwards
-                    self.image = type_to_image("p1_token")
+                    #True if x is close enough, ball is grounded, hit the bottom, and blob moving downwards
                     self.y_pos = self.y_pos + (p1_center_distance - 160) #Pop the ball upwards
                     self.y_speed = -5
                     self.x_speed = 0
@@ -84,10 +91,21 @@ class ball:
                 if p1_vector.distance_to(ball_vector) < blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    self.x_speed, self.y_speed = p1_ball_collision[0] + (blob.x_speed * 1.25), (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5))
+                    if(blob.x_center <= self.x_center):
+                        #Ball is right of blob
+                        blob_kick_x_modifier = (13*blob_collision_distance/104) - 13
+                    else:
+                        #Ball is left of blob
+                        blob_kick_x_modifier = -1 * ((13*blob_collision_distance/104) - 13)
+                    blob_kick_y_modifier = (1*blob_collision_distance/104) - 1 #TODO: Fix for Sponge/Sci Slime
+                    self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
                     if p1_vector.distance_to(ball_vector) < blob_collision_distance:
+                        #If the ball is stuck inside of the blob for some reason, move it out
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
+                    if(blob.kick_timer > 0):
+                        self.image = type_to_image('kicked_ball')
+                        self.special_timer = 30
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
@@ -95,7 +113,33 @@ class ball:
                 else:
                     self.image = type_to_image("soccer_ball")
 
-
+    def check_block_collisions(self, blob):
+        #Checks for block collisions
+        if(blob.block_timer == blob.block_timer_max):
+            #Check for an active block (lasts one frame)
+            if(blob.facing == "left"):
+                #If the blob is facing left
+                if((blob.x_center - blob.collision_distance) - 150 <= self.x_center <= blob.x_center - blob.collision_distance + 25):
+                    #If the ball is within the x values of the bounding box
+                    if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
+                        #If the ball is within the y values of the bounding box
+                        self.x_speed = 0
+                        self.y_speed = 0
+                        self.image = type_to_image("blocked_ball")
+                        self.special_timer = 30
+                        #Stops the ball completely
+            else:
+                #If the ball is facing right
+                if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
+                    #If the ball is within the x values of the bounding box
+                    if((blob.y_center - blob.collision_distance) - 75 <= self.y_center <= blob.y_center + 75):
+                        #If the ball is within the y values of the bounding box
+                        self.x_speed = 0
+                        self.y_speed = 0
+                        self.image = type_to_image("blocked_ball")
+                        self.special_timer = 15
+                        #Stops the ball completely
+    
     def move(self):
         ground = ball.ground
         left_wall = 0
@@ -134,6 +178,10 @@ class ball:
         if(self.x_pos > right_wall):
             self.x_pos = right_wall
             self.x_speed = self.x_speed * -0.9
+        if(self.x_speed > self.x_speed_max):
+            self.x_speed = self.x_speed_max
+        elif(self.x_speed < -1 * self.x_speed_max):
+            self.x_speed = -1 * self.x_speed_max
         self.x_pos += self.x_speed
 
         #Interacting with the ground
@@ -153,8 +201,17 @@ class ball:
             else:
                 self.y_speed = math.floor(self.y_speed * -0.5) #Reduces bounciness over time
             self.y_pos = ceiling
+        if(self.y_speed > self.y_speed_max):
+            self.y_speed = self.y_speed_max
+        elif(self.y_speed < -1 * self.y_speed_max):
+            self.y_speed = -1 * self.y_speed_max
         self.y_pos += self.y_speed
 
         self.x_center = self.x_pos+27 #Rough Estimate :)
         self.y_center = self.y_pos+38 #Rough Estimate :| (it's a ball... why is it different??)
+
+        if(self.special_timer > 0):
+            self.special_timer -= 1
+            if(self.special_timer == 0):
+                self.image = type_to_image('soccer_ball')
         

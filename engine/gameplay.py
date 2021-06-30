@@ -26,6 +26,16 @@ def reset_round():
     p2_blob.reset(2)
     ball.reset()
 
+def score_goal(winner, goal_limit):
+    global timer
+    game_score[winner] += 1
+    timer = 180
+    if(game_score[winner] >= goal_limit):
+        return "casual_css"
+    reset_round()
+    return "casual_match"
+
+
 def handle_gameplay(p1_selected, p2_selected):
     pressed = engine.handle_input.gameplay_input()
     global initialized
@@ -46,24 +56,27 @@ def handle_gameplay(p1_selected, p2_selected):
         if(timer == 0):
             p1_blob.move(pressed)
             p2_blob.move(pressed)
+            ball.check_block_collisions(p1_blob)
+            ball.check_block_collisions(p2_blob)
+            if(p1_blob.kick_timer == 1):
+                print(p1_blob.collision_distance)
+                p1_blob.check_blob_collision(p2_blob)
+                if(p2_blob.hp <= 0):
+                    game_state = score_goal(0, goal_limit)
+            if(p2_blob.kick_timer == 1):
+                p2_blob.check_blob_collision(p1_blob)
+                if(p1_blob.hp <= 0):
+                    game_state = score_goal(1, goal_limit)
             p1_blob.cooldown()
             p2_blob.cooldown()
             ball.move()
             ball.check_blob_collisions(p1_blob)
             ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 120 and ball.y_pos > 925): #Left Goal
-                game_score[1] += 1
-                timer = 180
-                if(game_score[1] >= goal_limit):
-                    game_state = "casual_css"
-                reset_round()
+                game_state = score_goal(1, goal_limit)
                 
             elif(ball.x_pos > 1685 and ball.y_pos > 925): #Right Goal
-                game_score[0] += 1
-                timer = 180
-                if(game_score[0] >= goal_limit):
-                    game_state = "casual_css"
-                reset_round()
+                game_state = score_goal(0, goal_limit)
 
         else:
             timer -= 1

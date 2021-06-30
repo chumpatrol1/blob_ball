@@ -45,10 +45,10 @@ def type_to_stars(type):
 
 def type_to_image(type):
     global cwd
-    print("The type is...")
-    print(type)
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png"
+        "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
+        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
+        "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
 
     return image_dict[type]
@@ -104,10 +104,16 @@ class blob:
         self.fastfalling = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
-        self.kick_cooldown_rate = self.stars['kick_cooldown_rate'] #Each star reduces kick cooldown
-        self.kick_cooldown = 0
-        self.block_cooldown_rate = self.stars['block_cooldown_rate'] #Each star reduces block cooldown
-        self.block_cooldown = 0
+        self.kick_cooldown_rate = 5 + self.stars['kick_cooldown_rate'] #Each star reduces kick cooldown
+        self.kick_cooldown = 0 #Cooldown timer between kicks
+        self.kick_timer = 0 #Active frames of kick
+        self.kick_cooldown_max = 2400
+
+        self.block_cooldown_rate = 5 + self.stars['block_cooldown_rate'] #Each star reduces block cooldown
+        self.block_cooldown = 0 #Block cooldown timer
+        self.block_timer = 0 #How much time is left in the current block
+        self.block_timer_max = 15 #How many frames a block lasts.
+        self.block_cooldown_max = 3000 #How long the block cooldown lasts
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
         self.boost_cooldown_rate = 1 + self.stars['boost_cooldown_rate'] #Each star reduces boost cooldown
@@ -129,7 +135,9 @@ class blob:
         self.special_ability_meter = 0 #Amount of SA charge stored up
 
         self.collision_distance = 104 #Used for calculating ball collisions
-        self.collision_timer = 0
+        self.collision_timer = 0 #Prevents double hitting in certain circumstances
+
+        self.damage_flash_timer = 0 #Flashes when damage is taken
     
     def cooldown(self): #Reduces timers
         if(self.focusing):
@@ -143,9 +151,18 @@ class blob:
             self.special_ability_meter += self.special_ability_charge
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
-        #if(self.kick_timer > 0):
-        #    self.kick_timer -= self.kick_cooldown_rate
+        if(self.kick_cooldown > 0):
+            self.kick_cooldown -= self.kick_cooldown_rate
+        if(self.kick_timer > 0):
+            self.kick_timer -= 1
+            if(self.kick_timer == 0):
+                self.collision_distance = 104
 
+        if(self.block_timer > 0):
+            self.block_timer -= 1
+        if(self.block_cooldown > 0):
+            self.block_cooldown -= self.block_cooldown_rate
+        
         if(self.boost_timer > 0): #Reduces duration of active boost by 1
             self.boost_timer -= 1 
             if(self.boost_timer <= 0): #Once the boost ends, revert to normal
@@ -157,10 +174,29 @@ class blob:
 
         if(self.collision_timer > 0):
             self.collision_timer -=1 
-
+        
+        if(self.damage_flash_timer > 0):
+            self.damage_flash_timer -= 1
+            if((self.damage_flash_timer // 10) % 2 == 1):
+                self.image = type_to_image('invisible')
+            else:
+                self.image = type_to_image(self.type)
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
+
+    def kick(self):
+        if(self.kick_cooldown <= 0):
+            self.block_cooldown += 10
+            self.kick_timer = 2
+            self.kick_cooldown = self.kick_cooldown_max
+            self.collision_distance = 150
+
+    def block(self):
+        if(self.block_cooldown <= 0):
+            self.kick_cooldown += 10
+            self.block_cooldown = self.block_cooldown_max #Set block cooldown
+            self.block_timer = self.block_timer_max #Set active block timer
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
@@ -172,6 +208,16 @@ class blob:
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
             print(self.boost_timer)
 
+    def check_blob_collision(self, blob):
+        #Used to see if a blob is getting kicked!
+        if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
+            print("ME", self.y_center)
+            print("THEY", blob.y_center)
+            if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
+                if(blob.block_timer == 0):
+                    blob.hp -= 1
+                    blob.damage_flash_timer = 60
+                    print(blob.hp)
     def reset(self, player):
         self.hp = self.max_hp
         self.x_speed = 0
@@ -184,6 +230,7 @@ class blob:
             self.facing = 'right'
         self.y_pos = 1200
         self.boost_timer = 0
+        self.focus_lock = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
@@ -311,9 +358,9 @@ class blob:
         
         #Kick
         if('kick' in pressed):
-            pass
+            self.kick()
         elif('block' in pressed):
-            pass
+            self.block()
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
