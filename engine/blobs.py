@@ -1,7 +1,7 @@
 import math
 import os
+print("BLOB",os.getcwd())
 cwd = os.getcwd()
-
 def type_to_stars(type):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
@@ -45,6 +45,7 @@ def type_to_stars(type):
 
 def type_to_image(type):
     global cwd
+    print(cwd)
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",

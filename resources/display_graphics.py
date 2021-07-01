@@ -6,7 +6,7 @@ import engine.gameplay
 import math
 pg.font.init()
 cwd = os.getcwd()
-print("GRAPHICS CWD: "+cwd)
+print("GRAPHICS CWD: "+ cwd)
 user32 = ctypes.windll.user32
 screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 game_display = pg.display.set_mode((0, 0)) # The canvas
@@ -207,11 +207,13 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 
 p1_blob = []
 p2_blob = []
-def handle_graphics(game_state):
+def handle_graphics(game_state, main_cwd):
     global screen_size
     global game_display
     global p1_blob
     global p2_blob
+    global cwd
+    cwd = main_cwd
     if(game_state == "main_menu"):
         info_getter = engine.main_menu.menu_navigation()
         selector_position = info_getter[0]
