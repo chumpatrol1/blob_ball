@@ -114,9 +114,9 @@ class ball:
             #Check for an active block (lasts one frame)
             if(blob.facing == "left"):
                 #If the blob is facing left
-                if((blob.x_center - blob.collision_distance) - 150 <= self.x_center <= blob.x_center - blob.collision_distance + 25):
+                if((blob.x_center - blob.collision_distance) - blob.block_outer <= self.x_center <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
-                    if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
+                    if((blob.y_center - blob.collision_distance) + blob.block_upper <= self.y_center <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
                         self.y_speed = 0

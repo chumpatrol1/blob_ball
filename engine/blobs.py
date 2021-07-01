@@ -109,12 +109,19 @@ class blob:
         self.kick_cooldown = 0 #Cooldown timer between kicks
         self.kick_timer = 0 #Active frames of kick
         self.kick_cooldown_max = 2400
+        self.kick_visualization = 0
+        self.kick_visualization_max = 15
 
         self.block_cooldown_rate = 5 + self.stars['block_cooldown_rate'] #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
         self.block_cooldown_max = 3000 #How long the block cooldown lasts
+
+        self.block_outer = 150
+        self.block_inner = -25
+        self.block_upper = -200
+        self.block_lower = 200
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
         self.boost_cooldown_rate = 1 + self.stars['boost_cooldown_rate'] #Each star reduces boost cooldown
@@ -155,12 +162,16 @@ class blob:
             self.special_ability_meter += self.special_ability_charge
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
+                
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
         if(self.kick_timer > 0):
             self.kick_timer -= 1
             if(self.kick_timer == 0):
                 self.collision_distance = 104
+
+        if(self.kick_visualization > 0):
+            self.kick_visualization -= 1
 
         if(self.block_timer > 0):
             self.block_timer -= 1
@@ -198,6 +209,7 @@ class blob:
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
             self.collision_distance = 175
+            self.kick_visualization = self.kick_visualization_max
 
     def block(self):
         if(self.block_cooldown <= 0):
