@@ -10,6 +10,7 @@ Slime Soccer type game
 * High Octane Matches!
 
 **Controls:**
+
 *P1:*
 * Movement: Arrow Keys
 * Use Ability/Select on Menu: N
