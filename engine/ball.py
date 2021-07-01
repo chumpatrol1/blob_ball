@@ -22,7 +22,7 @@ def type_to_image(type):
     return image
 
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 2, y_pos = 600):
+    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
         self.type = type
         self.image = type_to_image(type)
         #self.top_speed = 100 #The fastest that the ball can move?
