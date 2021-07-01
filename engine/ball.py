@@ -22,7 +22,7 @@ def type_to_image(type):
     return image
 
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
+    def __init__(self, type = "soccer_ball", x_pos = 2, y_pos = 600):
         self.type = type
         self.image = type_to_image(type)
         #self.top_speed = 100 #The fastest that the ball can move?
@@ -87,9 +87,9 @@ class ball:
 
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
-                if(p1_vector.distance_to(ball_vector) < blob_collision_distance * 0.8):
+                if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
-                if p1_vector.distance_to(ball_vector) < blob_collision_distance: #Standard collision
+                if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                     blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
