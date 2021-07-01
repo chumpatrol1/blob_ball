@@ -122,8 +122,8 @@ class ball:
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
                         self.special_timer = 30
-                        blob.collision_timer = 3
-                        other_blob.collision_timer = 3
+                        blob.collision_timer = 10
+                        other_blob.collision_timer = 10
                         #Stops the ball completely
             else:
                 #If the blob is facing right

@@ -45,7 +45,6 @@ def type_to_stars(type):
 
 def type_to_image(type):
     global cwd
-    print(cwd)
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
@@ -162,7 +161,7 @@ class blob:
             self.special_ability_meter += self.special_ability_charge
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
-                
+
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
         if(self.kick_timer > 0):
@@ -216,7 +215,7 @@ class blob:
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
-            self.movement_lock = 15
+            self.movement_lock = 30
             self.x_speed = 0
 
     def boost(self):
@@ -258,6 +257,8 @@ class blob:
         self.y_pos = blob.ground
         self.boost_timer = 0
         self.focus_lock = 0
+        self.kick_visualization = 0
+        self.block_timer = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
