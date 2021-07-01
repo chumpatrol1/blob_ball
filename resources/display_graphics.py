@@ -114,9 +114,10 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer):
     draw_background(screen_size, game_display, "casual_match")
-
-    pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*13/20, (screen_size[0] * 110/1366), 500))
-    pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1256/1366, screen_size[1]*(13/20), screen_size[0] * 110/1366, 500))
+    pg.draw.rect(game_display, (0, 0, 255), (0, screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
+    pg.draw.rect(game_display, (0, 0, 255), (screen_size[0] * (1256/1366), screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
+    pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*(500/768), (screen_size[0] * 55/1366), screen_size[1]*(500/768)))
+    pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1311/1366, screen_size[1]*(500/768), screen_size[0] * 55/1366, 500))
 
     p1_blob_image = pg.image.load(p1_blob.image)
     p1_blob_image = pg.transform.scale(p1_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
@@ -163,6 +164,11 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 5*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render(("HP: " + str(p1_blob.hp)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (4*screen_size[0]//5, 6*screen_size[1]//9)
+    game_display.blit(menu_text, text_rect)
+
 
     menu_text = menu_font.render(("SAM: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
@@ -184,6 +190,11 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 5*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render(("HP: " + str(p2_blob.hp)), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//5, 6*screen_size[1]//9)
+    game_display.blit(menu_text, text_rect)
+
 
     if(timer > 0):
         menu_text = menu_font.render(str(timer//5), False, (255, 124, 0))

@@ -167,7 +167,6 @@ def casual_css_navigation():
         if('p1_ability' in pressed):
             p1_selector_position[2] = 2
         if('p2_ability' in pressed):
-            print("THINKING")
             p2_selector_position[2] = 2
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         print("Casual Match Started!")

@@ -232,7 +232,6 @@ class blob:
             self.y_pos += self.y_speed
 
     def reset(self, player):
-        self.hp = self.max_hp
         self.x_speed = 0
         self.y_speed = 0
         if(player == 1):

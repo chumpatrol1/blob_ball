@@ -36,7 +36,7 @@ class ball:
         self.y_pos = y_pos #Ball's position
         self.traction = 0.15 #Ground Traction
         self.friction = 0.1 #Air Friction
-        self.gravity = 0.9 #Each star increases gravity
+        self.gravity = 0.9
         self.grounded = False #True if the ball is on the ground
         self.special_timer = 0 #Used when the ball is hit with a kick or block
     
@@ -74,11 +74,12 @@ class ball:
                     self.y_pos = self.y_pos + (p1_center_distance - 160) #Pop the ball upwards
                     self.y_speed = -5
                     self.x_speed = 0
-                    blob.collision_timer = 2
+                    blob.collision_timer = 5
                 elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
                         self.y_speed = (-1 * self.y_speed) + blob.y_speed # Reflect!
+                        blob.collision_timer = 10
                         if(blob.y_speed >= 0 and blob.y_pos >= 1100):
                             self.y_pos = ball.ground + (p1_center_distance - 160)
                             self.y_speed = -5
@@ -87,12 +88,12 @@ class ball:
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < blob_collision_distance * 0.8):
-                    blob.collision_timer = 3
+                    blob.collision_timer = 10
                 if p1_vector.distance_to(ball_vector) < blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((13*blob_collision_distance/104) - 13)
-                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((13*blob_collision_distance/104) - 13) #TODO: Fix for Sponge/Sci Slime
+                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
+                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((8*blob_collision_distance/104) - 8) #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
                     if p1_vector.distance_to(ball_vector) < blob_collision_distance:
                         #If the ball is stuck inside of the blob for some reason, move it out
@@ -108,7 +109,7 @@ class ball:
                 else:
                     self.image = type_to_image("soccer_ball")
 
-    def check_block_collisions(self, blob):
+    def check_block_collisions(self, blob, other_blob):
         #Checks for block collisions
         if(blob.block_timer == blob.block_timer_max):
             #Check for an active block (lasts one frame)
@@ -122,6 +123,8 @@ class ball:
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
                         self.special_timer = 30
+                        blob.collision_timer = 3
+                        other_blob.collision_timer = 3
                         #Stops the ball completely
             else:
                 #If the ball is facing right
@@ -133,13 +136,19 @@ class ball:
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
                         self.special_timer = 15
+                        blob.collision_timer = 3
+                        other_blob.collision_timer = 3
                         #Stops the ball completely
     
     def move(self):
         ground = ball.ground
         left_wall = 0
         right_wall = 1805
-        ceiling = 0
+        left_goal = 140
+        right_goal = 1665
+        ceiling = 200
+        goal_top = 825
+        goal_bottom = 950
 
         #Traction/Friction
         if(self.y_pos == ground):
@@ -166,13 +175,46 @@ class ball:
                     self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                 else:
                     self.x_speed -= self.friction #Normal deceleration
-        #Interacting with the main walls
-        if(self.x_pos < left_wall):
+        #Interacting with the goalposts
+        if(self.x_pos < left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom): #Hit side of goalpoast
+            self.x_pos = left_goal + 1
+            if(self.x_speed < 0):
+                self.x_speed = self.x_speed * -0.5
+        elif(self.x_pos < left_goal and self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+            self.y_pos = goal_bottom
+            if(self.y_speed < 0):
+                self.y_speed = self.y_speed * -0.5
+        elif(self.x_pos < left_goal and self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
+            self.y_pos = goal_top - 1
+            self.x_speed += 0.5
+            if(self.y_speed >= 0):
+                self.y_speed = self.y_speed * -0.5
+        
+        if(self.x_pos > right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom): #Hit side of goalpoast
+            self.x_pos = right_goal - 1
+            if(self.x_speed > 0):
+                self.x_speed = self.x_speed * -0.5
+        elif(self.x_pos > right_goal and self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+            self.y_pos = goal_bottom
+            if(self.y_speed < 0):
+                self.y_speed = self.y_speed * -0.5
+        elif(self.x_pos > right_goal and self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
+            self.y_pos = goal_top - 1
+            self.x_speed -= 0.5
+            if(self.y_speed >= 0):
+                self.y_speed = self.y_speed * -0.5
+
+        #Interacting with the walls
+        if(self.x_pos < left_wall): #Hit side of goalpoast
             self.x_pos = left_wall
-            self.x_speed = self.x_speed * -0.9
+            if(self.x_speed < 0):
+                self.x_speed = self.x_speed * -0.5
+
         if(self.x_pos > right_wall):
             self.x_pos = right_wall
-            self.x_speed = self.x_speed * -0.9
+            if(self.x_speed > 0):
+                self.x_speed = self.x_speed * -0.5
+        #Speed Limits (X)
         if(self.x_speed > self.x_speed_max):
             self.x_speed = self.x_speed_max
         elif(self.x_speed < -1 * self.x_speed_max):
@@ -194,7 +236,7 @@ class ball:
             if(self.y_speed > -4):
                 self.y_speed = 0
             else:
-                self.y_speed = math.floor(self.y_speed * -0.5) #Reduces bounciness over time
+                self.y_speed = math.floor(self.y_speed * -0.3) #Reduces bounciness over time
             self.y_pos = ceiling
         if(self.y_speed > self.y_speed_max):
             self.y_speed = self.y_speed_max

@@ -12,7 +12,7 @@ game_state = "main_menu"
 done = False
 pg.init()
 clock = pg.time.Clock()
-clock.tick(60)
+clock.tick(20)
 
 def handle_input():
     controls = open(cwd+"\\engine\\controls.txt", "r+")

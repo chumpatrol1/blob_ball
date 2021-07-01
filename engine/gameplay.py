@@ -69,8 +69,8 @@ def handle_gameplay(p1_selected, p2_selected):
         if(timer == 0):
             p1_blob.move(pressed)
             p2_blob.move(pressed)
-            ball.check_block_collisions(p1_blob)
-            ball.check_block_collisions(p2_blob)
+            ball.check_block_collisions(p1_blob, p2_blob)
+            ball.check_block_collisions(p2_blob, p1_blob)
             if(p1_blob.kick_timer == 1 and not p2_blob.kick_timer == 1):
                 p1_blob.check_blob_collision(p2_blob)
                 if(p2_blob.hp <= 0):
@@ -81,7 +81,6 @@ def handle_gameplay(p1_selected, p2_selected):
                     
             if(p2_blob.kick_timer == 1 and not p1_blob.kick_timer == 1):
                 p2_blob.check_blob_collision(p1_blob)
-                print(p1_blob.hp)
                 if(p1_blob.hp <= 0):
                     timer = 120
                     p1_ko = True
@@ -93,25 +92,25 @@ def handle_gameplay(p1_selected, p2_selected):
             ball.move()
             ball.check_blob_collisions(p1_blob)
             ball.check_blob_collisions(p2_blob)
-            if(ball.x_pos < 120 and ball.y_pos > 925): #Left Goal
+            if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
                 game_state = score_goal(1, goal_limit)
                 
-            elif(ball.x_pos > 1685 and ball.y_pos > 925): #Right Goal
+            elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                 game_state = score_goal(0, goal_limit)
 
         else:
             if(p1_ko):
-                print(timer)
                 blob_ko(p1_blob)
-                print(p1_blob.y_pos)
-                if(p1_blob.y_pos >= 2000):
-                    score_goal(1, goal_limit)
+                if(p1_blob.y_pos >= 1800):
+                    game_state = score_goal(0, goal_limit)
                     p1_ko = False
+                    p1_blob.hp = p1_blob.max_hp
                     reset_round()
             if(p2_ko):
                 blob_ko(p2_blob)
-                if(p2_blob.y_pos >= 2000):
-                    score_goal(0, goal_limit)
+                if(p2_blob.y_pos >= 1800):
+                    game_state = score_goal(1, goal_limit)
+                    p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
                     reset_round()
             timer -= 1
