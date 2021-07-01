@@ -9,7 +9,6 @@ cwd = os.getcwd()
 print("GRAPHICS CWD: "+cwd)
 user32 = ctypes.windll.user32
 screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-screen_size = (1280, 720)
 game_display = pg.display.set_mode((0, 0)) # The canvas
 
 pg.init()
