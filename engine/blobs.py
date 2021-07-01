@@ -141,6 +141,8 @@ class blob:
         self.damage_flash_timer = 0 #Flashes when damage is taken
         self.movement_lock = 0 #Caused if the blob has its movement blocked
     
+    ground = 1200
+
     def cooldown(self): #Reduces timers
         if(self.focusing):
             self.special_ability_charge = 5
@@ -192,14 +194,14 @@ class blob:
 
     def kick(self):
         if(self.kick_cooldown <= 0):
-            self.block_cooldown += 10
+            self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
             self.collision_distance = 175
 
     def block(self):
         if(self.block_cooldown <= 0):
-            self.kick_cooldown += 10
+            self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
             self.movement_lock = 15
@@ -241,7 +243,7 @@ class blob:
         else:
             self.x_pos = 100
             self.facing = 'right'
-        self.y_pos = 1200
+        self.y_pos = blob.ground
         self.boost_timer = 0
         self.focus_lock = 0
         
@@ -264,7 +266,7 @@ class blob:
             pressed = []
 
             #HORIZONTAL MOVEMENT
-        if(self.y_pos == 1200): #Applies traction if grounded
+        if(self.y_pos == blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
                 if(self.x_pos <= 0): #Are we in danger of going off screen?
@@ -337,10 +339,10 @@ class blob:
             self.x_pos = 1700
         
         #VERTICAL MOVEMENT
-        if('up' in pressed and self.y_pos == 1200): #If you press jump while grounded, jump!
+        if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
         if('down' in pressed):
-            if(self.y_pos < 1200): #If you are above ground and press down
+            if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
                 if(not self.focusing):
@@ -349,20 +351,20 @@ class blob:
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
-        if(self.y_pos < 1200): #Applies gravity while airborne, respecting fast fall status.
+        if(self.y_pos < blob.ground): #Applies gravity while airborne, respecting fast fall status.
             if(self.fastfalling):
                 self.y_speed += self.gravity_mod
             else:
                 self.y_speed += self.gravity_stars
-        if(self.fastfalling and self.y_pos == 1200): #If you land, cancel the fastfall.
+        if(self.fastfalling and self.y_pos == blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
         if(self.y_pos < 0): #How did we get here?
             self.y_pos = 0
             self.y_speed = 0
-        if(self.y_pos > 1200): #Don't go under the floor!
+        if(self.y_pos > blob.ground): #Don't go under the floor!
             self.y_speed = 0
-            self.y_pos = 1200
+            self.y_pos = blob.ground
         
         #ABILITY
         if('ability' in pressed):

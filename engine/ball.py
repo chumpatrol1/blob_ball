@@ -25,7 +25,6 @@ class ball:
     def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
         self.type = type
         self.image = type_to_image(type)
-        #self.top_speed = 100 #The fastest that the ball can move?
         self.x_speed = 0
         self.y_speed = 0
         self.x_speed_max = 50
@@ -67,7 +66,7 @@ class ball:
         if(blob.collision_timer == 0):
             if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
-                    self.image = type_to_image("soccer_ball")
+                    pass
             elif(blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance) and self.grounded and blob.y_speed >= 0:
                     #True if x is close enough, ball is grounded, hit the bottom, and blob moving downwards
@@ -127,15 +126,15 @@ class ball:
                         other_blob.collision_timer = 3
                         #Stops the ball completely
             else:
-                #If the ball is facing right
+                #If the blob is facing right
                 if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
-                    if((blob.y_center - blob.collision_distance) - 75 <= self.y_center <= blob.y_center + 75):
+                    if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
-                        self.special_timer = 15
+                        self.special_timer = 30
                         blob.collision_timer = 3
                         other_blob.collision_timer = 3
                         #Stops the ball completely

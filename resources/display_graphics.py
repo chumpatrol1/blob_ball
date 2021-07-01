@@ -119,16 +119,39 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     pg.draw.rect(game_display, (0, 0, 255), (screen_size[0] * (1256/1366), screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
     pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*(500/768), (screen_size[0] * 55/1366), screen_size[1]*(268/768)))
     pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1311/1366, screen_size[1]*(500/768), screen_size[0] * 55/1366, screen_size[1]*(268/768)))
+    global cwd
+    blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
+    blob_special = blob_special.convert_alpha()
 
     p1_blob_image = pg.image.load(p1_blob.image)
+    p1_blob_image = p1_blob_image.convert_alpha()
     p1_blob_image = pg.transform.scale(p1_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
     if(p1_blob.facing == "right"):
         p1_blob_image = pg.transform.flip(p1_blob_image, True, False)
+    
     game_display.blit(p1_blob_image, ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
 
+    if(p1_blob.focusing):
+        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
+        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
+    if(p1_blob.block_timer):
+        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
+        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
+        s = pg.Surface((screen_size[0] * 96/1366, screen_size[1]*(220/768)), pg.SRCALPHA)
+        s.fill((0,0,255,128))
+        if(p1_blob.facing == 'left'):
+            #Grab Box Visualization
+            game_display.blit(s, ((screen_size[0]/1366)*(p1_blob.x_pos - 150)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
+        else:
+            game_display.blit(s, ((screen_size[0]/1366)*(p1_blob.x_pos + 186)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
+        
+
+
     p2_blob_image = pg.image.load(p2_blob.image)
+    p2_blob_image = p2_blob_image.convert_alpha()
     if(p2_blob.type == p1_blob.type):
-        p2_blob_image = p2_blob_image.convert_alpha()
         p2_blob_image.fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
     p2_blob_image = pg.transform.scale(p2_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
     if(p2_blob.facing == "right"):
