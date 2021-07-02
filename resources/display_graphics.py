@@ -23,6 +23,8 @@ def draw_background(screen_size, game_display, game_screen):
         background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
         background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+    elif(game_screen == "win_screen"):
+        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     background = pg.transform.scale(background, screen_size)
     game_display.blit(background, (0, 0))
 
@@ -119,6 +121,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     pg.draw.rect(game_display, (0, 0, 255), (screen_size[0] * (1256/1366), screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
     pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*(500/768), (screen_size[0] * 55/1366), screen_size[1]*(268/768)))
     pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1311/1366, screen_size[1]*(500/768), screen_size[0] * 55/1366, screen_size[1]*(268/768)))
+    pg.draw.rect(game_display, (255, 0, 0), (0, 1200 * (439/768) * (screen_size[1]/768), (screen_size[0]/1366) * ((1366/4) - 35), (screen_size[1]/768)*200))
+    pg.draw.rect(game_display, (255, 0, 0), ((screen_size[0]/1366)*3*((1366/4) + 6.95), 1200 * (439/768) * (screen_size[1]/768), (screen_size[0]/1366) * ((1366/4)), (screen_size[1]/768)*200))
     global cwd
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
@@ -273,7 +277,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
         game_display.blit(menu_text, text_rect)
         
-
+def draw_win_screen(screen_size, game_display):
+    draw_background(screen_size, game_display, "win_screen")
 
 p1_blob = []
 p2_blob = []

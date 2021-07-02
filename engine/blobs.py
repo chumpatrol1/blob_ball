@@ -82,9 +82,13 @@ class blob:
     def __init__(self, type = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
         self.type = type
         self.player = player #Player 1 or 2
+        if(player == 1):
+            self.danger_zone = 1275
+        else:
+            self.danger_zone = 425
         self.image = type_to_image(type)
         self.stars = type_to_stars(type) #Gets many values for each blob
-        self.max_hp = self.stars['max_hp'] + 2 #Each star adds an additional HP.
+        self.max_hp = self.stars['max_hp'] + 3 #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted
@@ -235,16 +239,19 @@ class blob:
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
-                if(blob.block_timer == 0):
+                if(blob.block_timer == 0 and not blob.kick_timer == 1):
                     if(self.boost_timer > 0):
                         blob.hp -= 2
                     else:
                         blob.hp -= 1
+                    if((blob.player == 1 and blob.x_pos >= blob.danger_zone) or (blob.player == 2 and blob.x_pos <= blob.danger_zone)):
+                        #Take additional damage from kicks if you are hiding by your goal
+                        blob.hp -= 1
+
                     blob.damage_flash_timer = 60
 
     def blob_ko(self):
         self.y_speed = 10
-        print(self.y_pos)
         if(self.y_pos < 2000):
             self.y_pos += self.y_speed
 
@@ -264,6 +271,7 @@ class blob:
         self.block_timer = 0
         self.focusing = False
         self.damage_flash_timer = 0
+        self.image = type_to_image(self.type)
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
