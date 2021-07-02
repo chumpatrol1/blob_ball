@@ -38,6 +38,7 @@ class ball:
         self.image = type_to_image(type)
         self.x_speed = 0
         self.y_speed = 0
+        self.speed = 0
         self.x_speed_max = 50
         self.y_speed_max = 50
         self.x_pos = x_pos #Ball's position
@@ -49,7 +50,8 @@ class ball:
         self.gravity = 0.9
         self.grounded = False #True if the ball is on the ground
         self.special_timer = 0 #Used when the ball is hit with a kick or block
-        self.previous_locations = [(902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900)]
+        #Stores 10 afterimages
+        self.previous_locations = [(902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball")]
     
     ground = 1240
 
@@ -112,6 +114,7 @@ class ball:
                         self.y_pos += self.y_speed
                     if(blob.kick_timer > 0):
                         self.image = type_to_image('kicked_ball')
+                        self.type = "kicked_ball"
                         self.special_timer = 30
             else:
                 #Debug
@@ -135,6 +138,7 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
+                        self.type = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = 10
                         other_blob.collision_timer = 10
@@ -164,7 +168,7 @@ class ball:
         goal_top = 825
         goal_bottom = 950
 
-        self.previous_locations.append((self.x_pos, self.y_pos))
+        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.type))
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
@@ -266,10 +270,13 @@ class ball:
             self.y_speed = -1 * self.y_speed_max
         self.y_pos += self.y_speed
 
+        self.speed = math.sqrt(self.x_speed ** 2 + self.y_speed **2)
+
         self.x_center = self.x_pos+27 #Rough Estimate :)
         self.y_center = self.y_pos+38 #Rough Estimate :| (it's a ball... why is it different??)
         if(self.special_timer > 0):
             self.special_timer -= 1
             if(self.special_timer == 0):
                 self.image = type_to_image('soccer_ball')
+                self.type = "soccer_ball"
         

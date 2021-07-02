@@ -134,6 +134,7 @@ class blob:
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
         self.focus_lock_max = 60
         self.focusing = False
+        self.impact_land_frames = 0 #Locks the player from focusing after landing (fastfall leniency)
 
         self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
         self.special_ability_max = self.stars['special_ability_max'] #Highest that the SA gauge can go
@@ -154,6 +155,9 @@ class blob:
             self.special_ability_charge = 5
         else:
             self.special_ability_charge = 1
+
+        if(self.impact_land_frames):
+            self.impact_land_frames -= 1
 
         if(self.focus_lock > 0):
             self.focus_lock -= 1
@@ -258,6 +262,8 @@ class blob:
         self.focus_lock = 0
         self.kick_visualization = 0
         self.block_timer = 0
+        self.focusing = False
+        self.damage_flash_timer = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
@@ -357,7 +363,7 @@ class blob:
             if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
-                if(not self.focusing):
+                if(not self.focusing and not self.impact_land_frames):
                     self.focusing = True
                     self.focus_lock = self.focus_lock_max
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
@@ -377,6 +383,7 @@ class blob:
         if(self.y_pos > blob.ground): #Don't go under the floor!
             self.y_speed = 0
             self.y_pos = blob.ground
+            self.impact_land_frames = 10
         
         #ABILITY
         if('ability' in pressed):
