@@ -17,6 +17,8 @@ def type_to_image(type):
         image = cwd+"\\resources\\images\\kicked_ball.png"
     elif(type == "blocked_ball"):
         image = cwd+"\\resources\\images\\blocked_ball.png"
+    elif(type == "goal_ball"):
+        image = cwd+"\\resources\\images\\goal_ball.png"
 
     return image
 
@@ -31,7 +33,7 @@ def lineFromPoints(P, Q, D, E):
             return 0
 
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 102, y_pos = 600):
+    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
         self.type = type
         self.image = type_to_image(type)
         self.x_speed = 0

@@ -19,7 +19,9 @@ timer = 180
 countdown = 0
 p1_ko = False
 p2_ko = False
-score_goal = False
+goal_scored = False
+goal_scorer = None
+
 
 def reset_round():
     global p1_blob
@@ -53,11 +55,16 @@ def handle_gameplay(p1_selected, p2_selected):
     global timer
     global p1_ko
     global p2_ko
+    global countdown
+    global goal_scorer
+    global goal_scored
+    global score_goal
     goal_limit = 5
     game_state = "casual_match"
 
     def blob_ko(blob):
         blob.blob_ko()
+
 
     if not initialized:
         blobs = initialize_players(p1_selected, p2_selected)
@@ -93,10 +100,16 @@ def handle_gameplay(p1_selected, p2_selected):
             ball.check_blob_collisions(p1_blob)
             ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
-                game_state = score_goal(1, goal_limit)
+                goal_scorer = 1
+                goal_scored = True
+                countdown = 60
+                timer = 60
                 
             elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
-                game_state = score_goal(0, goal_limit)
+                goal_scorer = 0
+                goal_scored = True
+                countdown = 60
+                timer = 60
 
         else:
             if(p1_ko):
@@ -112,6 +125,18 @@ def handle_gameplay(p1_selected, p2_selected):
                     game_state = score_goal(1, goal_limit)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
+                    reset_round()
+            if(goal_scored):
+                ball.image = engine.ball.type_to_image("goal_ball")
+                ball.special_timer = 2
+                ball.move()
+                p1_blob.move([])
+                p2_blob.move([])
+                countdown -= 1
+                if(countdown == 0):
+                    game_state = score_goal(goal_scorer, goal_limit)
+                    goal_scored = False
+                    goal_scorer = None
                     reset_round()
             timer -= 1
         if(game_state == "casual_css"):
