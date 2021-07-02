@@ -226,7 +226,6 @@ class blob:
             self.traction = self.boost_traction
             self.friction = self.boost_friction
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
-            print(self.boost_timer)
 
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!

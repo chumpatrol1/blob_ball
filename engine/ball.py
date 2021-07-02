@@ -1,4 +1,3 @@
-from engine.blobs import blob
 import math
 import os
 import pygame as pg
@@ -21,8 +20,18 @@ def type_to_image(type):
 
     return image
 
+def lineFromPoints(P, Q, D, E):
+        #P is point A, Q is point B, D is an X coordinate, E is a y coordinate
+        a = Q[1] - P[1]
+        b = P[0] - Q[0]
+        c = a*(P[0]) + b*(P[1])
+        try:
+            return -1 * (a*D - c)/b
+        except:
+            return 0
+
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
+    def __init__(self, type = "soccer_ball", x_pos = 102, y_pos = 600):
         self.type = type
         self.image = type_to_image(type)
         self.x_speed = 0
@@ -38,6 +47,7 @@ class ball:
         self.gravity = 0.9
         self.grounded = False #True if the ball is on the ground
         self.special_timer = 0 #Used when the ball is hit with a kick or block
+        self.previous_locations = [(902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900), (902, 900)]
     
     ground = 1240
 
@@ -112,6 +122,8 @@ class ball:
         #Checks for block collisions
         if(blob.block_timer == blob.block_timer_max):
             #Check for an active block (lasts one frame)
+            outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
+            inner_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_inner, 0)
             if(blob.facing == "left"):
                 #If the blob is facing left
                 if((blob.x_center - blob.collision_distance) - blob.block_outer <= self.x_center <= blob.x_center - blob.collision_distance + blob.block_inner):
@@ -138,6 +150,7 @@ class ball:
                         blob.collision_timer = 3
                         other_blob.collision_timer = 3
                         #Stops the ball completely
+
     
     def move(self):
         ground = ball.ground
@@ -148,6 +161,9 @@ class ball:
         ceiling = 200
         goal_top = 825
         goal_bottom = 950
+
+        self.previous_locations.append((self.x_pos, self.y_pos))
+        self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
         if(self.y_pos == ground):
@@ -174,34 +190,39 @@ class ball:
                     self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                 else:
                     self.x_speed -= self.friction #Normal deceleration
-        #Interacting with the goalposts
-        if(self.x_pos < left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom): #Hit side of goalpoast
-            self.x_pos = left_goal + 1
-            if(self.x_speed < 0):
-                self.x_speed = self.x_speed * -0.5
-        elif(self.x_pos < left_goal and self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
-            self.y_pos = goal_bottom
-            if(self.y_speed < 0):
-                self.y_speed = self.y_speed * -0.5
-        elif(self.x_pos < left_goal and self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
-            self.y_pos = goal_top - 1
-            self.x_speed += 0.5
-            if(self.y_speed >= 0):
-                self.y_speed = self.y_speed * -0.5
         
-        if(self.x_pos > right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom): #Hit side of goalpoast
-            self.x_pos = right_goal - 1
-            if(self.x_speed > 0):
-                self.x_speed = self.x_speed * -0.5
-        elif(self.x_pos > right_goal and self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
-            self.y_pos = goal_bottom
-            if(self.y_speed < 0):
-                self.y_speed = self.y_speed * -0.5
-        elif(self.x_pos > right_goal and self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
-            self.y_pos = goal_top - 1
-            self.x_speed -= 0.5
-            if(self.y_speed >= 0):
-                self.y_speed = self.y_speed * -0.5
+        #Interacting with the goalposts
+        if(self.x_pos < left_goal):
+            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
+            if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                self.x_pos = left_goal + 1
+                if(self.x_speed < 0):
+                    self.x_speed = self.x_speed * -0.5
+            elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                self.y_pos = goal_bottom
+                if(self.y_speed < 0):
+                    self.y_speed = self.y_speed * -0.5
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit top of goalpost
+                self.y_pos = goal_top - 1
+                self.x_speed += 0.5
+                if(self.y_speed >= 0):
+                    self.y_speed = self.y_speed * -0.5
+
+        if(self.x_pos > right_goal):
+            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)            
+            if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                self.x_pos = right_goal - 1
+                if(self.x_speed > 0):
+                    self.x_speed = self.x_speed * -0.5
+            elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                self.y_pos = goal_bottom
+                if(self.y_speed < 0):
+                    self.y_speed = self.y_speed * -0.5
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
+                self.y_pos = goal_top - 1
+                self.x_speed -= 0.5
+                if(self.y_speed >= 0):
+                    self.y_speed = self.y_speed * -0.5
 
         #Interacting with the walls
         if(self.x_pos < left_wall): #Hit side of goalpoast
@@ -245,7 +266,6 @@ class ball:
 
         self.x_center = self.x_pos+27 #Rough Estimate :)
         self.y_center = self.y_pos+38 #Rough Estimate :| (it's a ball... why is it different??)
-
         if(self.special_timer > 0):
             self.special_timer -= 1
             if(self.special_timer == 0):
