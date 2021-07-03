@@ -40,9 +40,9 @@ def score_goal(winner, goal_limit):
     game_score[winner] += 1
     timer = 180
     if(game_score[winner] >= goal_limit):
-        return "casual_css"
+        return "casual_win", (winner + 1)
     reset_round()
-    return "casual_match"
+    return "casual_match", 0
     
 
 def handle_gameplay(p1_selected, p2_selected):
@@ -59,7 +59,7 @@ def handle_gameplay(p1_selected, p2_selected):
     global goal_scorer
     global goal_scored
     global score_goal
-    goal_limit = 5
+    goal_limit = 1
     game_state = "casual_match"
 
     def blob_ko(blob):
@@ -115,14 +115,14 @@ def handle_gameplay(p1_selected, p2_selected):
             if(p1_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
-                    game_state = score_goal(0, goal_limit)
+                    game_state, winner_info = score_goal(0, goal_limit)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
                     reset_round()
             if(p2_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
-                    game_state = score_goal(1, goal_limit)
+                    game_state, winner_info = score_goal(1, goal_limit)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
                     reset_round()
@@ -134,12 +134,12 @@ def handle_gameplay(p1_selected, p2_selected):
                 p2_blob.move([])
                 countdown -= 1
                 if(countdown == 0):
-                    game_state = score_goal(goal_scorer, goal_limit)
+                    game_state, winner_info = score_goal(goal_scorer, goal_limit)
                     goal_scored = False
                     goal_scorer = None
                     reset_round()
             timer -= 1
-        if(game_state == "casual_css"):
+        if(game_state == "casual_win"):
             initialized = False
             p1_blob = None
             p2_blob = None
@@ -147,5 +147,5 @@ def handle_gameplay(p1_selected, p2_selected):
             game_score = [0, 0]
             timer = 180
             countdown = 0
-            return p1_blob, p2_blob, ball, game_score, timer, game_state
+            return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info)
     return p1_blob, p2_blob, ball, game_score, timer, game_state

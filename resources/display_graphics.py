@@ -277,17 +277,26 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
         game_display.blit(menu_text, text_rect)
         
-def draw_win_screen(screen_size, game_display):
+def draw_win_screen(screen_size, game_display, game_stats):
     draw_background(screen_size, game_display, "win_screen")
+    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
+    menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
+    game_display.blit(menu_text, text_rect)
 
 p1_blob = []
 p2_blob = []
+timer = 0
+game_stats = ()
 def handle_graphics(game_state, main_cwd):
     global screen_size
     global game_display
     global p1_blob
     global p2_blob
     global cwd
+    global timer
+    global game_stats
     cwd = main_cwd
     if(game_state == "main_menu"):
         info_getter = engine.main_menu.menu_navigation()
@@ -313,9 +322,16 @@ def handle_graphics(game_state, main_cwd):
         game_score = info_getter[3]
         timer = info_getter[4]
         game_state = info_getter[5]
-        if(game_state == "casual_css"):
+        if(game_state == "casual_win"):
+            game_stats = info_getter[6]
+            timer = 300
             return game_state
         draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer)
+    elif(game_state == "casual_win"):
+        draw_win_screen(screen_size, game_display, game_stats)
+        timer -= 1
+        if(timer == 0):
+            return "casual_css"
     #print(selector_position)
     pg.display.flip()
     return game_state
