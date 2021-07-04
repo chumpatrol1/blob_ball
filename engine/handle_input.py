@@ -3,7 +3,7 @@ import sys
 import os
 
 pg.init()
-clock = pg.time.Clock()
+#clock = pg.time.Clock()
 #clock.tick(120)
 
 input_map = {
@@ -67,34 +67,65 @@ def get_keypress():
     return pressed_array
 
 button_timer = 0
-button_timer_2 = 0
 
 def menu_input():
     global button_timer
     pressed = get_keypress()
-    if(button_timer == 0):
-        button_timer = 10
+    selected = False
+    if("p1_ability" in pressed or "p2_ability" in pressed):
+        selected = True
+    print(button_timer)
+    if(button_timer == 0 and selected):
+        print("PRESSED!")
+        button_timer = 30
         return pressed
-    elif(button_timer == 1 and pressed == []):
-        button_timer = 0
+    elif(button_timer == 0 and not pressed == []):
+        button_timer = 5
         return pressed
     else:
-        button_timer = 1
+        if(button_timer > 0):
+            button_timer -= 1
         return []
 
+p1_timer = 0
+p2_timer = 1
 def css_input():
     global button_timer
-    pressed = get_keypress()
     if(button_timer == 0):
-        button_timer = 1
-        return pressed
-    elif(button_timer == 1 and pressed == []):
-        button_timer = 0
-        return pressed
+        return get_keypress()
     else:
-        button_timer = 0
+        button_timer -= 1
         return []
-        
+
+if(button_timer > 0):
+    button_timer -= 1
+
+def player_to_controls(player):
+    if(player == 1):
+        button_list = {
+            'p1_up': 'up',
+            'p1_down': 'down',
+            'p1_left': 'left',
+            'p1_right': 'right',
+            'p1_ability': 'ability',
+            'p1_kick': 'kick',
+            'p1_block': 'block',
+            'p1_boost': 'boost'
+        }
+    else:
+        button_list = {
+            'p2_up': 'up',
+            'p2_down': 'down',
+            'p2_left': 'left',
+            'p2_right': 'right',
+            'p2_ability': 'ability',
+            'p2_kick': 'kick',
+            'p2_block': 'block',
+            'p2_boost': 'boost'
+        }
+    return button_list
+
+
 def gameplay_input():
     pressed = get_keypress()
     return pressed

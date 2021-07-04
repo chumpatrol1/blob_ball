@@ -54,7 +54,7 @@ def draw_main_menu(screen_size, game_display, selector_position):
         text_y += screen_size[1]//10
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"]]
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"]]
 ] #TODO: Incorporate this at a later time.
 
 
@@ -63,11 +63,19 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
     global cwd
+    
+    x = 0
+    y = 0
+    directory = cwd + "\\resources\\images"
+    for row in blob_array: #Temporary, until we make more blobs
+        y += 1
+        for icon in row:
+            x += 1
+            blob = pg.image.load(directory + icon[0])
+            blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[1]//15))
+            game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
+        y = 1
     quirkless_blob = pg.image.load(cwd + "\\resources\\images\\blobs\\quirkless_blob.png")
-    quirkless_blob = pg.transform.scale(quirkless_blob, (screen_size[0]//15, screen_size[1]//15))
-    for x in range(2, 9): #Temporary, until we make more blobs
-        for y in range (1, 6):
-            game_display.blit(quirkless_blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
     quirkless_blob = pg.transform.scale(quirkless_blob, (screen_size[0]//7, screen_size[1]//7))
     if(p2_selector_position[0] > 0):
         game_display.blit(quirkless_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
@@ -84,9 +92,9 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
         for y in range (0, 5):
             pg.draw.rect(game_display, (255, 255, 255), ((x*screen_size[0]*0.1) + (screen_size[0]/10), (y*screen_size[1]*(100/768))+(screen_size[1]*50/768), screen_size[0]*0.1, screen_size[1]*(100/768)), width = 3)
     css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position)
-    back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
-    back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
-    game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
+    #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
+    #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
+    #game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
     if(p1_selector_position[2] == 0):
         p1_ball = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
     else:
@@ -301,7 +309,9 @@ def handle_graphics(game_state, main_cwd):
     global game_stats
     cwd = main_cwd
     if(game_state == "main_menu"):
-        info_getter = engine.main_menu.menu_navigation()
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.menu_navigation(timer)
         selector_position = info_getter[0]
         draw_main_menu(screen_size, game_display, selector_position)
         game_state = info_getter[1]
@@ -316,6 +326,8 @@ def handle_graphics(game_state, main_cwd):
             p2_selector_position = [4, 2, 0]
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
+        elif(game_state == "main_menu"):
+            timer = 10
     elif(game_state == "casual_match"):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob)
         p1_blob = info_getter[0]
