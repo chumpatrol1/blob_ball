@@ -83,9 +83,9 @@ class blob:
         self.type = type
         self.player = player #Player 1 or 2
         if(player == 1):
-            self.danger_zone = 1275
+            self.danger_zone = 1475
         else:
-            self.danger_zone = 425
+            self.danger_zone = 225
         self.image = type_to_image(type)
         self.stars = type_to_stars(type) #Gets many values for each blob
         self.max_hp = self.stars['max_hp'] + 3 #Each star adds an additional HP.
