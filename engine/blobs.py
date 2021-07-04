@@ -104,7 +104,7 @@ class blob:
         self.base_traction = self.traction #Non-boosted
         self.base_friction = self.friction #No boost
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = round(.3 + (self.stars['gravity'] + 3) * .15, 3) #Fastfalling increases gravity
+        self.gravity_mod = round(.3 + (self.stars['gravity'] + 4) * .15, 3) #Fastfalling increases gravity
         self.fastfalling = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
@@ -367,7 +367,7 @@ class blob:
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
-        if('down' in pressed):
+        elif('down' in pressed):
             if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:

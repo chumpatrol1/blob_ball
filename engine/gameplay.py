@@ -59,7 +59,7 @@ def handle_gameplay(p1_selected, p2_selected):
     global goal_scorer
     global goal_scored
     global score_goal
-    goal_limit = 1
+    goal_limit = 5
     game_state = "casual_match"
 
     def blob_ko(blob):

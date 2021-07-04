@@ -202,16 +202,18 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     ball_image = pg.image.load(ball.image)
     ball_image = pg.transform.scale(ball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
     game_display.blit(ball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    fade_out = 100
-    for frame in ball.previous_locations:
+    fade_out = 200
+
+    #DISABLED DUE TO LAG
+    '''for frame in ball.previous_locations:
         if(frame[2] >= 35):
             afterimage = pg.image.load(engine.ball.type_to_image(frame[3]))
             afterimage = pg.transform.scale(afterimage, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
             afterimage = afterimage.convert_alpha()
-            real_fade = 10 + (fade_out/100) * 180 * (frame[2]/70)
+            real_fade = fade_out
             afterimage.set_alpha(real_fade)
             game_display.blit(afterimage, ((screen_size[0]/1366)*frame[0] * (1000/1366), (screen_size[1]/768) * frame[1] * (400/768)))
-            fade_out -= 10
+        fade_out -= 20'''
 
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
