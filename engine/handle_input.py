@@ -4,7 +4,7 @@ import os
 
 pg.init()
 clock = pg.time.Clock()
-clock.tick(120)
+#clock.tick(120)
 
 input_map = {
     'p1_up': pg.K_UP,
@@ -95,7 +95,9 @@ def css_input():
         button_timer = 0
         return []
         
-
+def gameplay_input():
+    pressed = get_keypress()
+    return pressed
 
 if "__name__" == "__main__":
     while True:
