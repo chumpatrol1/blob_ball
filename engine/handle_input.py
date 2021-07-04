@@ -74,7 +74,6 @@ def menu_input():
     selected = False
     if("p1_ability" in pressed or "p2_ability" in pressed):
         selected = True
-    print(button_timer)
     if(button_timer == 0 and selected):
         print("PRESSED!")
         button_timer = 30

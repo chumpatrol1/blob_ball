@@ -157,7 +157,11 @@ class ball:
                         other_blob.collision_timer = 3
                         #Stops the ball completely
 
-    
+    def check_blob_ability(self, blob):
+        if(blob.used_ability == "fireball"):
+            self.x_speed *= 1.03
+            self.y_speed *= 1.03
+
     def move(self):
         ground = ball.ground
         left_wall = 0

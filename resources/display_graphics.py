@@ -222,6 +222,13 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
             afterimage.set_alpha(real_fade)
             game_display.blit(afterimage, ((screen_size[0]/1366)*frame[0] * (1000/1366), (screen_size[1]/768) * frame[1] * (400/768)))
         fade_out -= 20'''
+        
+    if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
+        fireball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
+        fireball_image = fireball_image.convert_alpha()
+        fireball_image = pg.transform.scale(fireball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        fireball_image.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(fireball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
 
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))

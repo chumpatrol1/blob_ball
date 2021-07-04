@@ -57,11 +57,11 @@ def menu_navigation(timer):
     return selector_position, game_state
 
 blob_list = [
-    ["quirkless", "fire", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["back", "quirkless", "fire", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
 ]
 
 
@@ -77,7 +77,7 @@ def css_navigation(player, selector, timer, other_selector):
         if('ability' in pressed):
             timer = 15
         else:
-            timer = 7
+            timer = 10
     
     
     if(selector[2] == 0):
@@ -153,7 +153,7 @@ def casual_css_navigation():
                 p2_selector_position = [4, 2, 0]
         else:
             #TODO: Fix this spaghetti
-            p1_blob = "quirkless"
+            p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
             p1_selector_position[2] = 1
     
     if(p2_selector_position[2] == 1):
@@ -178,10 +178,9 @@ def casual_css_navigation():
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
                 p2_selector_position = [4, 2, 0]
-                print("?")
         else:
             #TODO: Fix this spaghetti
-            p2_blob = "quirkless"
+            p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
             p2_selector_position[2] = 1
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
@@ -191,8 +190,6 @@ def casual_css_navigation():
     if(game_state == "casual_match"):
         p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
         p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
-        p1_blob = "quirkless"
-        p2_blob = "quirkless"
 
     if(p1_timer > 0):
         p1_timer -= 1

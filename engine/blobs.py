@@ -38,8 +38,29 @@ def type_to_stars(type):
 
             'special_ability': 'boost',
             'special_ability_cost': 300,
+            'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 300
+            'special_ability_cooldown': 300,
+        }
+    elif(type == "fire"):
+        blob_dict = {
+            'max_hp': 2,
+            'top_speed': 4,
+            'traction': 4,
+            'friction': 3,
+            'gravity': 1,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 3,
+
+            'boost_cost': 600,
+            'boost_cooldown_rate': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'fireball',
+            'special_ability_cost': 100,
+            'special_ability_maintenance': 10,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 2,
         }
     return blob_dict
 
@@ -47,6 +68,7 @@ def type_to_image(type):
     global cwd
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
+        "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -142,9 +164,14 @@ class blob:
 
         self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
         self.special_ability_max = self.stars['special_ability_max'] #Highest that the SA gauge can go
-        self.special_ability_cost = self.stars['special_ability_cost'] #Price to use SA
+        self.special_ability_cost = self.stars['special_ability_cost'] #Price to activate SA
+        self.special_ability_maintenance = self.stars['special_ability_maintenance'] #Price to maintain SA
         self.special_ability_charge = 1 #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
         self.special_ability_meter = 0 #Amount of SA charge stored up
+        self.special_ability_timer = 0 #Timer that counts down between uses of an SA
+        self.special_ability_duration = 0 #Time that a SA is active
+        self.special_ability_cooldown = self.stars['special_ability_cooldown'] #Cooldown between uses
+        self.used_ability = None
 
         self.collision_distance = 104 #Used for calculating ball collisions
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
@@ -170,6 +197,11 @@ class blob:
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
 
+        if(self.special_ability_timer > 0):
+            self.special_ability_timer -= 1
+            if(self.special_ability_timer == 0):
+                self.used_ability = None
+        
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
         if(self.kick_timer > 0):
@@ -209,7 +241,18 @@ class blob:
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
-
+        elif(self.special_ability == 'fireball'):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "fireball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "fireball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     def kick(self):
         if(self.kick_cooldown <= 0):
             self.block_cooldown += 5 * (self.block_cooldown_rate)
@@ -227,8 +270,8 @@ class blob:
             self.x_speed = 0
 
     def boost(self):
-        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
-            self.boost_cooldown_timer = 600 #About 5 seconds
+        if(self.special_ability_meter >= self.boost_cost and self.special_ability_timer <= 0):
+            self.special_ability_timer =  self.special_ability_cooldown #About 5 seconds
             self.special_ability_meter -= self.boost_cost #Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction

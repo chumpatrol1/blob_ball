@@ -78,6 +78,8 @@ def handle_gameplay(p1_selected, p2_selected):
             p2_blob.move(pressed)
             ball.check_block_collisions(p1_blob, p2_blob)
             ball.check_block_collisions(p2_blob, p1_blob)
+            ball.check_blob_ability(p1_blob)
+            ball.check_blob_ability(p2_blob)
             if(p1_blob.kick_timer == 1):
                 p1_blob.check_blob_collision(p2_blob)
                 if(p2_blob.hp <= 0):
