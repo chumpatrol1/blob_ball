@@ -33,7 +33,7 @@ def type_to_stars(type):
             'block_cooldown_rate': 5,
 
             'boost_cost': 600,
-            'boost_cooldown_rate': 5,
+            'boost_cooldown_max': 5,
             'boost_duration': 5,
 
             'special_ability': 'boost',
@@ -53,11 +53,11 @@ def type_to_stars(type):
             'block_cooldown_rate': 3,
 
             'boost_cost': 600,
-            'boost_cooldown_rate': 3,
+            'boost_cooldown_max': 3,
             'boost_duration': 3,
 
             'special_ability': 'fireball',
-            'special_ability_cost': 100,
+            'special_ability_cost': 90,
             'special_ability_maintenance': 10,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
@@ -137,7 +137,7 @@ class blob:
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
-        self.block_cooldown_rate = 5 + self.stars['block_cooldown_rate'] #Each star reduces block cooldown
+        self.block_cooldown_rate = 300 + 30 * (5 - self.stars['block_cooldown_rate']) #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
@@ -149,7 +149,7 @@ class blob:
         self.block_lower = 200
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
-        self.boost_cooldown_rate = 1 + self.stars['boost_cooldown_rate'] #Each star reduces boost cooldown
+        self.boost_cooldown_max = 300 + 30 *  (5 - self.stars['boost_cooldown_max']) #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
@@ -224,7 +224,7 @@ class blob:
                 self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
                 self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
         elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
-            self.boost_cooldown_timer -= self.boost_cooldown_rate
+            self.boost_cooldown_timer -= 1
 
         if(self.collision_timer > 0):
             self.collision_timer -=1 
@@ -277,7 +277,7 @@ class blob:
             self.traction = self.boost_traction
             self.friction = self.boost_friction
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
-
+            self.boost_cooldown_timer = self.boost_cooldown_max
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):

@@ -159,8 +159,8 @@ class ball:
 
     def check_blob_ability(self, blob):
         if(blob.used_ability == "fireball"):
-            self.x_speed *= 1.03
-            self.y_speed *= 1.03
+            self.x_speed *= (1.1 - (self.x_speed/500))
+            self.y_speed *= (1.1 - (self.y_speed/500))
 
     def move(self):
         ground = ball.ground
