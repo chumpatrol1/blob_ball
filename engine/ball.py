@@ -132,14 +132,30 @@ class ball:
         #Checks for block collisions
         if(blob.block_timer == blob.block_timer_max):
             #Check for an active block (lasts one frame)
-            outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
-            inner_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_inner, 0)
+            #outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
+            #inner_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_inner, 0)
+            ball_midpoint = ((self.x_pos + self.previous_locations[-2][0])/2, (self.y_pos + self.previous_locations[-2][1])/2)
             if(blob.facing == "left"):
                 #If the blob is facing left
                 if((blob.x_center - blob.collision_distance) - blob.block_outer <= self.x_center <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= self.y_center <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
+                        self.x_speed = 0
+                        self.y_speed = 0
+                        self.image = type_to_image("blocked_ball")
+                        self.type = "blocked_ball"
+                        self.special_timer = 30
+                        blob.collision_timer = 10
+                        other_blob.collision_timer = 10
+                        #Stops the ball completely
+                elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
+                    #If the ball is within the x values of the bounding box
+                    if((blob.y_center - blob.collision_distance) + blob.block_upper <= ball_midpoint[1] <= blob.y_center + blob.block_lower):
+                        #If the ball is within the y values of the bounding box
+                        self.x_pos = ball_midpoint[0]
+                        self.y_pos = ball_midpoint[1]
+                        #Teleport the ball to the midpoint
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
@@ -161,11 +177,22 @@ class ball:
                         blob.collision_timer = 3
                         other_blob.collision_timer = 3
                         #Stops the ball completely
+                elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
+                    #If the ball is within the x values of the bounding box
+                    if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
+                        #If the ball is within the y values of the bounding box
+                        self.x_speed = 0
+                        self.y_speed = 0
+                        self.image = type_to_image("blocked_ball")
+                        self.special_timer = 30
+                        blob.collision_timer = 3
+                        other_blob.collision_timer = 3
+                        #Stops the ball completely
 
     def check_blob_ability(self, blob):
         if(blob.used_ability == "fireball"):
-            self.x_speed *= (1.1 - (self.x_speed/500))
-            self.y_speed *= (1.1 - (self.y_speed/500))
+            self.x_speed *= (1.05 - (self.x_speed/1000))
+            self.y_speed *= (1.05 - (self.y_speed/1000))
 
     def move(self):
         ground = ball.ground

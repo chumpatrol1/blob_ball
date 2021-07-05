@@ -272,13 +272,12 @@ class blob:
             self.x_speed = 0
 
     def boost(self):
-        if(self.special_ability_meter >= self.boost_cost and self.special_ability_timer <= 0):
-            self.special_ability_timer =  self.special_ability_cooldown #About 5 seconds
+        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
             self.special_ability_meter -= self.boost_cost #Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction
             self.friction = self.boost_friction
-            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
+            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
             self.boost_cooldown_timer = self.boost_cooldown_max
     
     def check_blob_collision(self, blob):
