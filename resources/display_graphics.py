@@ -54,7 +54,11 @@ def draw_main_menu(screen_size, game_display, selector_position):
         text_y += screen_size[1]//10
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"]]
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 ] #TODO: Incorporate this at a later time.
 
 
@@ -74,16 +78,43 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
             blob = pg.image.load(directory + icon[0])
             blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[1]//15))
             game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
-        y = 1
-    quirkless_blob = pg.image.load(cwd + "\\resources\\images\\blobs\\quirkless_blob.png")
-    quirkless_blob = pg.transform.scale(quirkless_blob, (screen_size[0]//7, screen_size[1]//7))
-    if(p2_selector_position[0] > 0):
-        game_display.blit(quirkless_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
-    quirkless_blob = pg.transform.flip(quirkless_blob, True, False)
-    if(p1_selector_position[0] > 0):
-        game_display.blit(quirkless_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
-    
-    
+        x = 0
+    p1_selected_blob = pg.image.load(directory + blob_array[p1_selector_position[1]][p1_selector_position[0]][0])
+    p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[1]//7))
+    p1_selected_blob = p1_selected_blob.convert_alpha()
+    if(p1_selector_position[2] == 0):
+        p1_selected_blob.set_alpha(200)
+    else:
+        p1_selected_blob.set_alpha(255)
+    game_display.blit(p1_selected_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
+    p2_selected_blob = pg.image.load(directory + blob_array[p2_selector_position[1]][p2_selector_position[0]][0])
+    p2_selected_blob = pg.transform.flip(p2_selected_blob, True, False)
+    p2_selected_blob = p2_selected_blob.convert_alpha()
+    if(p2_selector_position[2] == 0):
+        p2_selected_blob.set_alpha(200)
+    else:
+        p2_selected_blob.set_alpha(255)
+    game_display.blit(p2_selected_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
+
+    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
+    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][1]), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (5*screen_size[0]//6, 11*screen_size[1]//12)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//6, 11*screen_size[1]//12)
+    game_display.blit(menu_text, text_rect)
+
+    menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
+    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (5*screen_size[0]//6, 24*screen_size[1]//25)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][2]), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//6, 24*screen_size[1]//25)
+    game_display.blit(menu_text, text_rect)
 
 def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position):
     global cwd

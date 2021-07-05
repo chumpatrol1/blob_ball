@@ -137,7 +137,7 @@ class blob:
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
-        self.block_cooldown_rate = 300 + 30 * (5 - self.stars['block_cooldown_rate']) #Each star reduces block cooldown
+        self.block_cooldown_rate = (5 + self.stars['block_cooldown_rate']) #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
@@ -238,6 +238,7 @@ class blob:
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
+    
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
@@ -253,6 +254,7 @@ class blob:
                     self.used_ability = "fireball"
                     self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+    
     def kick(self):
         if(self.kick_cooldown <= 0):
             self.block_cooldown += 5 * (self.block_cooldown_rate)
@@ -278,6 +280,7 @@ class blob:
             self.friction = self.boost_friction
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
             self.boost_cooldown_timer = self.boost_cooldown_max
+    
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
@@ -452,7 +455,4 @@ class blob:
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
-
-
-if __name__ == "__main__":
-    new_blob = blob("quirkless", 0, 0)
+        

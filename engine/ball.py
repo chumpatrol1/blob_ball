@@ -102,7 +102,16 @@ class ball:
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
-                if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:
+                    self.image = type_to_image('kicked_ball')
+                    self.type = "kicked_ball"
+                    self.special_timer = 30
+                    p1_ball_nv = p1_vector - ball_vector
+                    p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * ((13*blob_collision_distance/104) - 13)
+                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/50) * ((13*blob_collision_distance/104) - 13) #TODO: Fix for Sponge/Sci Slime
+                    self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (1 * p1_ball_collision[1] - blob_kick_y_modifier)
+                elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                     blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
@@ -112,10 +121,6 @@ class ball:
                         #If the ball is stuck inside of the blob for some reason, move it out
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
-                    if(blob.kick_timer > 0):
-                        self.image = type_to_image('kicked_ball')
-                        self.type = "kicked_ball"
-                        self.special_timer = 30
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
