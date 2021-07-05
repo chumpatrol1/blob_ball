@@ -68,12 +68,6 @@ class ball:
         blob_collision_distance = blob.collision_distance
         #X distance used for calculations. If the distance between centers is less than this, a collision can happen
 
-        ball_angle = math.atan2(self.x_speed, self.y_speed)
-        #print(ball_angle)
-        p1_angle = math.atan2(self.x_center - blob.x_pos, self.y_center - blob.y_pos)
-        p1_speed = round(math.sqrt(blob.x_speed**2 + blob.y_speed**2))
-        ball_speed = round(math.sqrt(self.x_speed**2 + self.y_speed**2))
-
         ball_vector = pg.math.Vector2(self.x_center, self.y_center)
         p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
         
@@ -98,7 +92,6 @@ class ball:
                             self.y_speed = -5
                             self.x_speed = 0
 
-
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
@@ -108,8 +101,8 @@ class ball:
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * ((13*blob_collision_distance/104) - 13)
-                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/50) * ((13*blob_collision_distance/104) - 13) #TODO: Fix for Sponge/Sci Slime
+                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
+                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (1 * p1_ball_collision[1] - blob_kick_y_modifier)
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
