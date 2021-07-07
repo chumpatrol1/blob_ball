@@ -57,8 +57,8 @@ def type_to_stars(type):
             'boost_duration': 3,
 
             'special_ability': 'fireball',
-            'special_ability_cost': 90,
-            'special_ability_maintenance': 10,
+            'special_ability_cost': 200,
+            'special_ability_maintenance': 20,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
@@ -324,14 +324,10 @@ class blob:
         pressed = []
         for button in pressed_buttons:
             if(button in pressed_conversions):
-                pressed.append(pressed_conversions[button])
-
-        if(self.focusing):
-            for button in pressed:
-                if(button == "down"):
-                    continue
+                if(self.focusing and not button == "down"):
+                    pass
                 else:
-                    pressed.remove(button)
+                    pressed.append(pressed_conversions[button])
         
         if(self.movement_lock > 0):
             pressed = []

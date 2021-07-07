@@ -124,6 +124,7 @@ class ball:
     def check_block_collisions(self, blob, other_blob):
         #Checks for block collisions
         if(blob.block_timer == blob.block_timer_max):
+            collision_timer_duration = 30
             #Check for an active block (lasts one frame)
             #outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
             #inner_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_inner, 0)
@@ -139,8 +140,8 @@ class ball:
                         self.image = type_to_image("blocked_ball")
                         self.type = "blocked_ball"
                         self.special_timer = 30
-                        blob.collision_timer = 10
-                        other_blob.collision_timer = 10
+                        blob.collision_timer = collision_timer_duration
+                        other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
                 elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
@@ -154,8 +155,8 @@ class ball:
                         self.image = type_to_image("blocked_ball")
                         self.type = "blocked_ball"
                         self.special_timer = 30
-                        blob.collision_timer = 10
-                        other_blob.collision_timer = 10
+                        blob.collision_timer = collision_timer_duration
+                        other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
             else:
                 #If the blob is facing right
@@ -167,8 +168,8 @@ class ball:
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
                         self.special_timer = 30
-                        blob.collision_timer = 3
-                        other_blob.collision_timer = 3
+                        blob.collision_timer = collision_timer_duration
+                        other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
@@ -178,9 +179,10 @@ class ball:
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
                         self.special_timer = 30
-                        blob.collision_timer = 3
-                        other_blob.collision_timer = 3
+                        blob.collision_timer = collision_timer_duration
+                        other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+        return blob, other_blob
 
     def check_blob_ability(self, blob):
         if(blob.used_ability == "fireball"):

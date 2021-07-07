@@ -91,9 +91,9 @@ def css_navigation(player, selector, timer, other_selector):
             if selector[1] == 4:
                 selector[1] = 0
             else:
-                p1_selector_position[1] += 1
+                selector[1] += 1
         if('left' in pressed):
-            if p1_selector_position[0] == 0:
+            if selector[0] == 0:
                 selector[0] = 7
             else:
                 selector[0] -= 1
@@ -108,11 +108,14 @@ def css_navigation(player, selector, timer, other_selector):
             selector[2] = 1
     elif('kick' in pressed):
         selector[2] = 0
+        if(other_selector[2] == 2):
+            #Deconfirms the other player's selection if the other player has confirmed
+            other_selector[2] = 1
     elif(selector[2] >= 1 and other_selector[2] >= 1):
         if('ability' in pressed):
             selector[2] = 2
 
-    return selector, timer
+    return selector, timer, other_selector
     
 
 p1_timer = 0
@@ -126,8 +129,8 @@ def casual_css_navigation():
     global p1_timer
     global p2_timer
     game_state = "casual_css"
-    p1_selector_position, p1_timer = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position)
-    p2_selector_position, p2_timer = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position)
+    p1_selector_position, p1_timer, p2_selector_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position)
+    p2_selector_position, p2_timer, p1_selector_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position)
     
     if(p1_selector_position[2] == 1):
         if(p1_selector_position[0] == 0):
@@ -154,7 +157,6 @@ def casual_css_navigation():
         else:
             #TODO: Fix this spaghetti
             p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
-            p1_selector_position[2] = 1
     
     if(p2_selector_position[2] == 1):
         if(p2_selector_position[0] == 0):
@@ -181,7 +183,6 @@ def casual_css_navigation():
         else:
             #TODO: Fix this spaghetti
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
-            p2_selector_position[2] = 1
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         print("Casual Match Started!")
