@@ -177,6 +177,9 @@ class blob:
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
+        self.kick_cooldown_visualization = 0
+        self.block_cooldown_visualization = 0
+        self.boost_cooldown_visualization = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
     
     ground = 1200
@@ -238,6 +241,10 @@ class blob:
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
+
+        self.kick_cooldown_visualization = math.ceil(self.kick_cooldown/self.kick_cooldown_rate/6)/10
+        self.block_cooldown_visualization = math.ceil(self.block_cooldown/self.block_cooldown_rate/6)/10
+        self.boost_cooldown_visualization = math.ceil(self.boost_cooldown_timer/6)/10
     
     def ability(self):
         if(self.special_ability == 'boost'):
@@ -324,8 +331,11 @@ class blob:
         pressed = []
         for button in pressed_buttons:
             if(button in pressed_conversions):
-                if(self.focusing and not button == "down"):
-                    pass
+                if(self.focusing):
+                    if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    else:
+                        continue
                 else:
                     pressed.append(pressed_conversions[button])
         
@@ -415,6 +425,8 @@ class blob:
                 if(not self.focusing and not self.impact_land_frames):
                     self.focusing = True
                     self.focus_lock = self.focus_lock_max
+                elif(self.focusing):
+                    self.focusing = True
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False

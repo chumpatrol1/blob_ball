@@ -189,8 +189,8 @@ def casual_css_navigation():
         game_state = "casual_match"
     
     if(game_state == "casual_match"):
-        p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
-        p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+        p1_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
+        p2_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
 
     if(p1_timer > 0):
         p1_timer -= 1

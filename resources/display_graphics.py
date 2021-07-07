@@ -267,7 +267,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
     
-    menu_text = menu_font.render(("SAM: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
+    menu_text = menu_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -275,15 +275,15 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 2*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("KICK CD: " + str(p1_blob.kick_cooldown)), False, (255, 124, 0))
+    menu_text = menu_font.render(("KICK CD: " + str(p1_blob.kick_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 3*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("BLOCK CD: " + str(p1_blob.block_cooldown)), False, (255, 124, 0))
+    menu_text = menu_font.render(("BLOCK CD: " + str(p1_blob.block_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 4*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("BOOST CD: " + str(p1_blob.boost_cooldown_timer)), False, (255, 124, 0))
+    menu_text = menu_font.render(("BOOST CD: " + str(p1_blob.boost_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 5*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -293,7 +293,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     game_display.blit(menu_text, text_rect)
 
 
-    menu_text = menu_font.render(("SAM: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
+    menu_text = menu_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -301,15 +301,15 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 2*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("KICK CD: " + str(p2_blob.kick_cooldown)), False, (255, 124, 0))
+    menu_text = menu_font.render(("KICK CD: " + str(p2_blob.kick_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 3*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("BLOCK CD: " + str(p2_blob.block_cooldown)), False, (255, 124, 0))
+    menu_text = menu_font.render(("BLOCK CD: " + str(p2_blob.block_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 4*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("BOOST CD: " + str(p2_blob.boost_cooldown_timer)), False, (255, 124, 0))
+    menu_text = menu_font.render(("BOOST CD: " + str(p2_blob.boost_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 5*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -360,8 +360,8 @@ def handle_graphics(game_state, main_cwd):
         draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
-            p1_selector_position =  [4, 2, 0]
-            p2_selector_position = [4, 2, 0]
+            p1_selector_position[2] = 0
+            p2_selector_position[2] = 0
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
         elif(game_state == "main_menu"):
