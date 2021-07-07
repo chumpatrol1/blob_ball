@@ -33,13 +33,34 @@ def type_to_stars(type):
             'block_cooldown_rate': 5,
 
             'boost_cost': 600,
-            'boost_cooldown_rate': 5,
+            'boost_cooldown_max': 5,
             'boost_duration': 5,
 
             'special_ability': 'boost',
             'special_ability_cost': 300,
+            'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 300
+            'special_ability_cooldown': 300,
+        }
+    elif(type == "fire"):
+        blob_dict = {
+            'max_hp': 2,
+            'top_speed': 4,
+            'traction': 4,
+            'friction': 3,
+            'gravity': 1,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 3,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'fireball',
+            'special_ability_cost': 200,
+            'special_ability_maintenance': 20,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 2,
         }
     return blob_dict
 
@@ -47,6 +68,7 @@ def type_to_image(type):
     global cwd
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
+        "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -115,7 +137,7 @@ class blob:
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
-        self.block_cooldown_rate = 5 + self.stars['block_cooldown_rate'] #Each star reduces block cooldown
+        self.block_cooldown_rate = (5 + self.stars['block_cooldown_rate']) #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
@@ -127,7 +149,7 @@ class blob:
         self.block_lower = 200
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
-        self.boost_cooldown_rate = 1 + self.stars['boost_cooldown_rate'] #Each star reduces boost cooldown
+        self.boost_cooldown_max = 300 + 30 *  (5 - self.stars['boost_cooldown_max']) #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
@@ -142,14 +164,22 @@ class blob:
 
         self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
         self.special_ability_max = self.stars['special_ability_max'] #Highest that the SA gauge can go
-        self.special_ability_cost = self.stars['special_ability_cost'] #Price to use SA
+        self.special_ability_cost = self.stars['special_ability_cost'] #Price to activate SA
+        self.special_ability_maintenance = self.stars['special_ability_maintenance'] #Price to maintain SA
         self.special_ability_charge = 1 #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
         self.special_ability_meter = 0 #Amount of SA charge stored up
+        self.special_ability_timer = 0 #Timer that counts down between uses of an SA
+        self.special_ability_duration = 0 #Time that a SA is active
+        self.special_ability_cooldown = self.stars['special_ability_cooldown'] #Cooldown between uses
+        self.used_ability = None
 
         self.collision_distance = 104 #Used for calculating ball collisions
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
+        self.kick_cooldown_visualization = 0
+        self.block_cooldown_visualization = 0
+        self.boost_cooldown_visualization = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
     
     ground = 1200
@@ -170,6 +200,11 @@ class blob:
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
 
+        if(self.special_ability_timer > 0):
+            self.special_ability_timer -= 1
+            if(self.special_ability_timer == 0):
+                self.used_ability = None
+        
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
         if(self.kick_timer > 0):
@@ -192,7 +227,7 @@ class blob:
                 self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
                 self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
         elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
-            self.boost_cooldown_timer -= self.boost_cooldown_rate
+            self.boost_cooldown_timer -= 1
 
         if(self.collision_timer > 0):
             self.collision_timer -=1 
@@ -206,10 +241,27 @@ class blob:
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
+
+        self.kick_cooldown_visualization = math.ceil(self.kick_cooldown/self.kick_cooldown_rate/6)/10
+        self.block_cooldown_visualization = math.ceil(self.block_cooldown/self.block_cooldown_rate/6)/10
+        self.boost_cooldown_visualization = math.ceil(self.boost_cooldown_timer/6)/10
+    
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
-
+        elif(self.special_ability == 'fireball'):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "fireball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "fireball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+    
     def kick(self):
         if(self.kick_cooldown <= 0):
             self.block_cooldown += 5 * (self.block_cooldown_rate)
@@ -228,13 +280,13 @@ class blob:
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
-            self.boost_cooldown_timer = 600 #About 5 seconds
             self.special_ability_meter -= self.boost_cost #Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction
             self.friction = self.boost_friction
-            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration
-
+            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
+            self.boost_cooldown_timer = self.boost_cooldown_max
+    
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
@@ -279,14 +331,13 @@ class blob:
         pressed = []
         for button in pressed_buttons:
             if(button in pressed_conversions):
-                pressed.append(pressed_conversions[button])
-
-        if(self.focusing):
-            for button in pressed:
-                if(button == "down"):
-                    continue
+                if(self.focusing):
+                    if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    else:
+                        continue
                 else:
-                    pressed.remove(button)
+                    pressed.append(pressed_conversions[button])
         
         if(self.movement_lock > 0):
             pressed = []
@@ -374,6 +425,8 @@ class blob:
                 if(not self.focusing and not self.impact_land_frames):
                     self.focusing = True
                     self.focus_lock = self.focus_lock_max
+                elif(self.focusing):
+                    self.focusing = True
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
@@ -409,7 +462,4 @@ class blob:
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
-
-
-if __name__ == "__main__":
-    new_blob = blob("quirkless", 0, 0)
+        
