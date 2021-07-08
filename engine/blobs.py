@@ -62,6 +62,27 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
+    elif(type == "ice"):
+        blob_dict = {
+            'max_hp': 3,
+            'top_speed': 5,
+            'traction': 1,
+            'friction': 3,
+            'gravity': 4,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 5,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'snowball',
+            'special_ability_cost': 150,
+            'special_ability_maintenance': 15,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 2,
+        }
+
     return blob_dict
 
 def type_to_image(type):
@@ -69,6 +90,7 @@ def type_to_image(type):
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
         "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
+        "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -259,6 +281,18 @@ class blob:
                 else:
                     #If we ignite the ball
                     self.used_ability = "fireball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+        elif(self.special_ability == 'snowball'):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "snowball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "snowball"
                     self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     
