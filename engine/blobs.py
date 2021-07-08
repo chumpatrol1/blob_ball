@@ -57,8 +57,8 @@ def type_to_stars(type):
             'boost_duration': 3,
 
             'special_ability': 'fireball',
-            'special_ability_cost': 200,
-            'special_ability_maintenance': 20,
+            'special_ability_cost': 150,
+            'special_ability_maintenance': 15,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
