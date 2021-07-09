@@ -88,6 +88,7 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(255)
     game_display.blit(p1_selected_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
     p2_selected_blob = pg.image.load(directory + blob_array[p2_selector_position[1]][p2_selector_position[0]][0])
+    p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
     p2_selected_blob = pg.transform.flip(p2_selected_blob, True, False)
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
@@ -153,7 +154,7 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
             game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
 
 
-def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer):
+def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
     draw_background(screen_size, game_display, "casual_match")
     pg.draw.rect(game_display, (0, 0, 255), (0, 0, screen_size[0], screen_size[1] * (110/768)))
     pg.draw.rect(game_display, (0, 0, 255), (0, screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
@@ -271,6 +272,10 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("TIME: "+ str(game_time), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
+    game_display.blit(menu_text, text_rect)
     
     menu_text = menu_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
@@ -333,7 +338,10 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 def draw_win_screen(screen_size, game_display, game_stats):
     draw_background(screen_size, game_display, "win_screen")
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
-    menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
+    if(game_stats == 3):
+        menu_text = menu_font.render("TIE", False, (255, 124, 0))
+    else:
+        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
@@ -379,11 +387,12 @@ def handle_graphics(game_state, main_cwd):
         game_score = info_getter[3]
         timer = info_getter[4]
         game_state = info_getter[5]
+        game_time = info_getter[6]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
             timer = 300
             return game_state
-        draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer)
+        draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time)
     elif(game_state == "casual_win"):
         draw_win_screen(screen_size, game_display, game_stats)
         timer -= 1
