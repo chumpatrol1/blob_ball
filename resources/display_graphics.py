@@ -346,9 +346,32 @@ def draw_win_screen(screen_size, game_display, game_stats):
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
 
+def draw_rules_screen(screen_size, game_display, ruleset):
+    draw_background(screen_size, game_display, "win_screen")
+    menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
+    text_array = [
+        menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, (255, 124, 0)),
+        menu_font.render("Time Limit: " + str(ruleset['time_limit']), False, (255, 124, 0)),
+        menu_font.render("Time Bonus: " + str(ruleset['time_bonus']), False, (255, 124, 0)),
+        menu_font.render("Back: " + str(ruleset['time_bonus']), False, (255, 124, 0)),
+    ]
+    text_y = screen_size[1]//10
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (screen_size[0]//20, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += screen_size[1]//10
+
+
+
 p1_blob = []
 p2_blob = []
 timer = 0
+ruleset = {
+    'goal_limit': 5,
+    'time_limit': 3600,
+    'time_bonus': 600
+}
 game_stats = ()
 def handle_graphics(game_state, main_cwd):
     global screen_size
@@ -357,6 +380,7 @@ def handle_graphics(game_state, main_cwd):
     global p2_blob
     global cwd
     global timer
+    global ruleset
     global game_stats
     cwd = main_cwd
     if(game_state == "main_menu"):
@@ -398,6 +422,10 @@ def handle_graphics(game_state, main_cwd):
         timer -= 1
         if(timer == 0):
             return "casual_css"
+    elif(game_state == "rules"):
+        #info_getter = engine.main_menu.rules_navigation(timer)
+        #selector_position = info_getter[0]
+        draw_rules_screen(screen_size, game_display, ruleset)
     #print(selector_position)
     pg.display.flip()
     return game_state

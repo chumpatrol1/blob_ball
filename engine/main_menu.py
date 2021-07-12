@@ -43,8 +43,7 @@ def menu_navigation(timer):
             #game_state = "almanac"
             game_state = "casual_css"
         elif(selector_position == 4):
-            #game_state = "rules"
-            game_state = "casual_css"
+            game_state = "rules"
         elif(selector_position == 5):
             #game_state = "settings"
             game_state = "casual_css"
@@ -63,7 +62,6 @@ blob_list = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
 ]
-
 
 def css_navigation(player, selector, timer, other_selector):
     pressed_conversions = engine.handle_input.player_to_controls(player)
@@ -117,7 +115,6 @@ def css_navigation(player, selector, timer, other_selector):
 
     return selector, timer, other_selector
     
-
 p1_timer = 0
 p2_timer = 0
 def casual_css_navigation():
@@ -197,3 +194,4 @@ def casual_css_navigation():
     if(p2_timer > 0):
         p2_timer -= 1
     return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
+
