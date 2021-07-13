@@ -50,7 +50,7 @@ def score_goal(winner, goal_limit):
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected):
+def handle_gameplay(p1_selected, p2_selected, ruleset):
     pressed = engine.handle_input.gameplay_input()
     global initialized
     global p1_blob
@@ -66,7 +66,7 @@ def handle_gameplay(p1_selected, p2_selected):
     global score_goal
     global goal_limit
     global time_limit
-    goal_limit = 5
+    goal_limit = ruleset['goal_limit']
     game_state = "casual_match"
 
     def blob_ko(blob):
