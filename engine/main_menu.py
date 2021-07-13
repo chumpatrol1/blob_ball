@@ -54,7 +54,7 @@ def menu_navigation(timer):
 
 blob_list = [
     ["back", "quirkless", "fire", "ice", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -138,9 +138,9 @@ def casual_css_navigation():
                 p1_selector_position = [4, 2, 0]
                 p2_selector_position = [4, 2, 0]
             elif(p1_selector_position[1] == 1):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "rules"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 2):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
@@ -164,9 +164,9 @@ def casual_css_navigation():
                 p1_selector_position = [4, 2, 0]
                 p2_selector_position = [4, 2, 0]
             elif(p2_selector_position[1] == 1):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "rules"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 2):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
@@ -197,7 +197,7 @@ def casual_css_navigation():
         p2_timer -= 1
     return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
 
-def rules_navigation(timer, ruleset):
+def rules_navigation(timer, ruleset, previous_screen):
     game_state = "rules"
     pressed = engine.handle_input.menu_input()
     global selector_position
@@ -243,11 +243,14 @@ def rules_navigation(timer, ruleset):
                 ruleset['time_bonus'] += 300
             else:
                 ruleset['time_bonus'] = 0
-
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
         if(selector_position == 3): #Casual
-            selector_position = 4
-            game_state = "main_menu"
+            if(previous_screen == "main_menu"):
+                selector_position = 4
+            else:
+                selector_position = 0
+            print(previous_screen)
+            game_state = previous_screen
             
         print("Selected position {}!".format(selector_position))
     return selector_position, game_state

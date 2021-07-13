@@ -55,7 +55,7 @@ def draw_main_menu(screen_size, game_display, selector_position):
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\rules_icon.png", "Rules", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
@@ -268,7 +268,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     game_display.blit(menu_text, text_rect)
     menu_text = menu_font.render("TIME: "+ str(game_time), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
+    text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
     
     menu_text = menu_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
@@ -371,6 +371,7 @@ ruleset = {
     'time_bonus': 600
 }
 game_stats = ()
+previous_screen = ""
 def handle_graphics(game_state, main_cwd):
     global screen_size
     global game_display
@@ -380,6 +381,7 @@ def handle_graphics(game_state, main_cwd):
     global timer
     global ruleset
     global game_stats
+    global previous_screen
     cwd = main_cwd
     if(game_state == "main_menu"):
         if(timer > 0):
@@ -388,6 +390,8 @@ def handle_graphics(game_state, main_cwd):
         selector_position = info_getter[0]
         draw_main_menu(screen_size, game_display, selector_position)
         game_state = info_getter[1]
+        if(game_state == "rules"):
+            previous_screen = "main_menu"
     elif(game_state == "casual_css"):
         info_getter = engine.main_menu.casual_css_navigation()
         p1_selector_position = info_getter[0]
@@ -399,6 +403,8 @@ def handle_graphics(game_state, main_cwd):
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
+        elif(game_state == "rules"):
+            previous_screen = "casual_css"
         elif(game_state == "main_menu"):
             timer = 10
     elif(game_state == "casual_match"):
@@ -421,7 +427,7 @@ def handle_graphics(game_state, main_cwd):
         if(timer == 0):
             return "casual_css"
     elif(game_state == "rules"):
-        info_getter = engine.main_menu.rules_navigation(timer, ruleset)
+        info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen)
         selector_position = info_getter[0]
         game_state = info_getter[1]
         draw_rules_screen(screen_size, game_display, ruleset, selector_position)
