@@ -217,12 +217,33 @@ def rules_navigation(timer, ruleset):
                 ruleset['goal_limit'] -= 1
             else:
                 ruleset['goal_limit'] = 25
+        elif(selector_position == 1):
+            if(ruleset['time_limit'] > 0):
+                ruleset['time_limit'] -= 600
+            else:
+                ruleset['time_limit'] = 36000
+        elif(selector_position == 2):
+            if(ruleset['time_bonus'] > 0):
+                ruleset['time_bonus'] -= 300
+            else:
+                ruleset['time_bonus'] = 3600
     elif('p1_right' in pressed or 'p2_right' in pressed):
         if(selector_position == 0):
             if(ruleset['goal_limit'] < 25):
                 ruleset['goal_limit'] += 1
             else:
                 ruleset['goal_limit'] = 1
+        elif(selector_position == 1):
+            if(ruleset['time_limit'] < 36000):
+                ruleset['time_limit'] += 600
+            else:
+                ruleset['time_limit'] = 0
+        elif(selector_position == 2):
+            if(ruleset['time_bonus'] < 3600):
+                ruleset['time_bonus'] += 300
+            else:
+                ruleset['time_bonus'] = 0
+
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
         if(selector_position == 3): #Casual
             selector_position = 4

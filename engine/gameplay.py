@@ -4,10 +4,19 @@ import engine.handle_input
 import engine.blobs
 import engine.ball
 
-def initialize_players(p1_selected, p2_selected):
+def initialize_players(p1_selected, p2_selected, ruleset):
+    global goal_limit
+    global time_limit
+    global time_bonus
     p1_blob = engine.blobs.blob(type = p1_selected, player = 1, x_pos = 1600, facing = 'left')
     p2_blob = engine.blobs.blob(type = p2_selected, player = 2, x_pos = 100, facing = 'right')
     ball = engine.ball.ball()
+    goal_limit = ruleset['goal_limit']
+    if(ruleset['time_limit'] == 0):
+        time_limit = "NO LIMIT"
+    else:
+        time_limit = ruleset['time_limit']
+    time_bonus = ruleset['time_bonus']
     return p1_blob, p2_blob, ball
 
 initialized = False
@@ -21,7 +30,7 @@ p1_ko = False
 p2_ko = False
 goal_scored = False
 goal_scorer = None
-goal_limit = 5
+goal_limit = 5 #Defaults to 5 goals
 time_limit = 3600 #Defaults to 3600, or 1 minute
 time_bonus = 600 #Defaults to 600, or 10 seconds
 
@@ -41,7 +50,8 @@ def score_goal(winner, goal_limit):
     global timer
     global time_limit
     global time_bonus
-    time_limit += time_bonus
+    if not time_limit == "NO LIMIT":
+        time_limit += time_bonus
     game_score[winner] += 1
     timer = 180
     if(game_score[winner] >= goal_limit):
@@ -66,7 +76,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
     global score_goal
     global goal_limit
     global time_limit
-    goal_limit = ruleset['goal_limit']
+    
     game_state = "casual_match"
 
     def blob_ko(blob):
@@ -74,7 +84,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
 
 
     if not initialized:
-        blobs = initialize_players(p1_selected, p2_selected)
+        blobs = initialize_players(p1_selected, p2_selected, ruleset)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
@@ -119,16 +129,17 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                 goal_scored = True
                 countdown = 60
                 timer = 60
-            time_limit -= 1
-            if(time_limit <= 0):
-                print("TIME UP?!")
-                if(game_score[0] > game_score[1]):
-                    winner_info = 1
-                elif(game_score[0] < game_score[1]):
-                    winner_info = 2
-                else:
-                    winner_info = 3
-                game_state = "casual_win"
+            if not (ruleset['time_limit'] == 0):
+                time_limit -= 1
+                if(time_limit <= 0):
+                    print("TIME UP?!")
+                    if(game_score[0] > game_score[1]):
+                        winner_info = 1
+                    elif(game_score[0] < game_score[1]):
+                        winner_info = 2
+                    else:
+                        winner_info = 3
+                    game_state = "casual_win"
 
         else:
             if(p1_ko):
