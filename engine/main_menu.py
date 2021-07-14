@@ -203,11 +203,11 @@ def rules_navigation(timer, ruleset, previous_screen):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = 3
+            selector_position = 4
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == 3:
+        if selector_position == 4:
             selector_position = 0
         else:
             selector_position += 1
@@ -244,13 +244,17 @@ def rules_navigation(timer, ruleset, previous_screen):
             else:
                 ruleset['time_bonus'] = 0
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
-        if(selector_position == 3): #Casual
+        if(selector_position == 4): #Casual
             if(previous_screen == "main_menu"):
                 selector_position = 4
             else:
                 selector_position = 0
             print(previous_screen)
             game_state = previous_screen
+        elif(selector_position == 3):
+            ruleset['goal_limit'] = 5
+            ruleset['time_limit'] = 3600
+            ruleset['time_bonus'] = 600
             
         print("Selected position {}!".format(selector_position))
     return selector_position, game_state

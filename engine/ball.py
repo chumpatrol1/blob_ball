@@ -101,7 +101,11 @@ class ball:
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
+                    if(blob.x_speed < 0 and self.x_speed < 0) or (blob.x_speed > 0 and blob.x_speed > 0):
+                        #Are blob and blob moving in the same direction?
+                        blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10 + (blob.x_speed * 0.75)
+                    else:
+                        blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
                     blob_kick_y_modifier = ((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (1 * p1_ball_collision[1] - blob_kick_y_modifier)
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
@@ -174,6 +178,9 @@ class ball:
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
+                        #If the ball is within the y values of the bounding box
+                        self.x_pos = ball_midpoint[0]
+                        self.y_pos = ball_midpoint[1]
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
                         self.y_speed = 0

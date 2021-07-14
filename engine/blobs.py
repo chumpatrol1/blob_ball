@@ -1,6 +1,6 @@
 import math
 import os
-print("BLOB",os.getcwd())
+
 cwd = os.getcwd()
 def type_to_stars(type):
     '''
@@ -67,7 +67,7 @@ def type_to_stars(type):
             'max_hp': 3,
             'top_speed': 5,
             'traction': 1,
-            'friction': 3,
+            'friction': 2,
             'gravity': 4,
             'kick_cooldown_rate': 3,
             'block_cooldown_rate': 5,
@@ -311,6 +311,8 @@ class blob:
             self.block_timer = self.block_timer_max #Set active block timer
             self.movement_lock = 30
             self.x_speed = 0
+            if(self.y_speed < 0): #If we are moving upwards, halt your momentum!
+                self.y_speed = 0
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
@@ -367,6 +369,8 @@ class blob:
             if(button in pressed_conversions):
                 if(self.focusing):
                     if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 10):
                         pressed.append(pressed_conversions[button])
                     else:
                         continue
@@ -452,6 +456,8 @@ class blob:
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
+            self.focus_lock = 0
+            self.focusing = False
         elif('down' in pressed):
             if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars

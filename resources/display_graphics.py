@@ -347,6 +347,7 @@ def draw_rules_screen(screen_size, game_display, ruleset, selector_position):
         menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, (255, 124, 0)),
         menu_font.render("Time Limit: " + str(ruleset['time_limit']), False, (255, 124, 0)),
         menu_font.render("Time Bonus: " + str(ruleset['time_bonus']), False, (255, 124, 0)),
+        menu_font.render("Reset to Default", False, (255, 124, 0)),
         menu_font.render("<-- Back", False, (255, 124, 0)),
     ]
     text_y = screen_size[1]//10
