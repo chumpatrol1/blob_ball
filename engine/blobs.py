@@ -1,6 +1,6 @@
 import math
 import os
-print("BLOB",os.getcwd())
+
 cwd = os.getcwd()
 def type_to_stars(type):
     '''
@@ -57,11 +57,32 @@ def type_to_stars(type):
             'boost_duration': 3,
 
             'special_ability': 'fireball',
-            'special_ability_cost': 200,
-            'special_ability_maintenance': 20,
+            'special_ability_cost': 150,
+            'special_ability_maintenance': 15,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
+    elif(type == "ice"):
+        blob_dict = {
+            'max_hp': 3,
+            'top_speed': 5,
+            'traction': 1,
+            'friction': 2,
+            'gravity': 4,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 5,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'snowball',
+            'special_ability_cost': 150,
+            'special_ability_maintenance': 15,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 2,
+        }
+
     return blob_dict
 
 def type_to_image(type):
@@ -69,6 +90,7 @@ def type_to_image(type):
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
         "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
+        "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -261,6 +283,18 @@ class blob:
                     self.used_ability = "fireball"
                     self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+        elif(self.special_ability == 'snowball'):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "snowball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "snowball"
+                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -277,6 +311,8 @@ class blob:
             self.block_timer = self.block_timer_max #Set active block timer
             self.movement_lock = 30
             self.x_speed = 0
+            if(self.y_speed < 0): #If we are moving upwards, halt your momentum!
+                self.y_speed = 0
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
@@ -333,6 +369,8 @@ class blob:
             if(button in pressed_conversions):
                 if(self.focusing):
                     if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 10):
                         pressed.append(pressed_conversions[button])
                     else:
                         continue
@@ -418,6 +456,8 @@ class blob:
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
+            self.focus_lock = 0
+            self.focusing = False
         elif('down' in pressed):
             if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars

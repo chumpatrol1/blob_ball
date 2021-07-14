@@ -74,12 +74,13 @@ def menu_input():
     selected = False
     if("p1_ability" in pressed or "p2_ability" in pressed):
         selected = True
+    if(pressed == []):
+        button_timer = 0
     if(button_timer == 0 and selected):
-        print("PRESSED!")
         button_timer = 30
         return pressed
     elif(button_timer == 0 and not pressed == []):
-        button_timer = 5
+        button_timer = 15
         return pressed
     else:
         if(button_timer > 0):
@@ -95,9 +96,6 @@ def css_input():
     else:
         button_timer -= 1
         return []
-
-if(button_timer > 0):
-    button_timer -= 1
 
 def player_to_controls(player):
     if(player == 1):

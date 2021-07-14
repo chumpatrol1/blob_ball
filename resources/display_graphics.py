@@ -18,11 +18,11 @@ clock = pg.time.Clock()
 def draw_background(screen_size, game_display, game_screen):
     global cwd
     if(game_screen == "main_menu"):
-        background = pg.image.load(cwd + "\\resources\\images\\triforce.jpg")
+        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_css"):
         background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        background = pg.image.load(cwd + "\\resources\\images\\field_alpha.png")
     elif(game_screen == "win_screen"):
         background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     background = pg.transform.scale(background, screen_size)
@@ -54,8 +54,8 @@ def draw_main_menu(screen_size, game_display, selector_position):
         text_y += screen_size[1]//10
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\rules_icon.png", "Rules", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
@@ -88,6 +88,7 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(255)
     game_display.blit(p1_selected_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
     p2_selected_blob = pg.image.load(directory + blob_array[p2_selector_position[1]][p2_selector_position[0]][0])
+    p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
     p2_selected_blob = pg.transform.flip(p2_selected_blob, True, False)
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
@@ -153,15 +154,9 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
             game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
 
 
-def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer):
+def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
     draw_background(screen_size, game_display, "casual_match")
-    pg.draw.rect(game_display, (0, 0, 255), (0, 0, screen_size[0], screen_size[1] * (110/768)))
-    pg.draw.rect(game_display, (0, 0, 255), (0, screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
-    pg.draw.rect(game_display, (0, 0, 255), (screen_size[0] * (1256/1366), screen_size[1] * (465/768), (screen_size[0] * 110/1366), screen_size[1]*(35/768)))
-    pg.draw.rect(game_display, (0, 124, 0), (0, screen_size[1]*(500/768), (screen_size[0] * 55/1366), screen_size[1]*(268/768)))
-    pg.draw.rect(game_display, (255, 255, 0), (screen_size[0]* 1311/1366, screen_size[1]*(500/768), screen_size[0] * 55/1366, screen_size[1]*(268/768)))
-    pg.draw.rect(game_display, (255, 0, 0), (0, 1200 * (439/768) * (screen_size[1]/768), (screen_size[0]/1366) * ((1366/4) - 170), (screen_size[1]/768)*200))
-    pg.draw.rect(game_display, (255, 0, 0), ((screen_size[0]/1366)*3*((1366/4) + 55.95), 1200 * (439/768) * (screen_size[1]/768), (screen_size[0]/1366) * ((1366/4)), (screen_size[1]/768)*200))
+    global clock
     global cwd
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
@@ -260,11 +255,20 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         fireball_image = pg.transform.scale(fireball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         fireball_image.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(fireball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-
+    if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
+        snowball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
+        snowball_image = snowball_image.convert_alpha()
+        snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(snowball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
+    game_display.blit(menu_text, text_rect)
+    menu_text = menu_font.render("TIME: "+ str(game_time), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
     
     menu_text = menu_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
@@ -328,15 +332,47 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 def draw_win_screen(screen_size, game_display, game_stats):
     draw_background(screen_size, game_display, "win_screen")
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
-    menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
+    if(game_stats == 3):
+        menu_text = menu_font.render("TIE", False, (255, 124, 0))
+    else:
+        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)
 
+def draw_rules_screen(screen_size, game_display, ruleset, selector_position):
+    draw_background(screen_size, game_display, "win_screen")
+    menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
+    text_array = [
+        menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, (255, 124, 0)),
+        menu_font.render("Time Limit: " + str(ruleset['time_limit']), False, (255, 124, 0)),
+        menu_font.render("Time Bonus: " + str(ruleset['time_bonus']), False, (255, 124, 0)),
+        menu_font.render("Reset to Default", False, (255, 124, 0)),
+        menu_font.render("<-- Back", False, (255, 124, 0)),
+    ]
+    text_y = screen_size[1]//10
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (screen_size[0]//20, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += screen_size[1]//10
+
+    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
+    game_display.blit(ball, (screen_size[0]*(1/20), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
+
+
+
 p1_blob = []
 p2_blob = []
 timer = 0
+ruleset = {
+    'goal_limit': 5,
+    'time_limit': 3600,
+    'time_bonus': 600
+}
 game_stats = ()
+previous_screen = ""
 def handle_graphics(game_state, main_cwd):
     global screen_size
     global game_display
@@ -344,7 +380,9 @@ def handle_graphics(game_state, main_cwd):
     global p2_blob
     global cwd
     global timer
+    global ruleset
     global game_stats
+    global previous_screen
     cwd = main_cwd
     if(game_state == "main_menu"):
         if(timer > 0):
@@ -353,6 +391,8 @@ def handle_graphics(game_state, main_cwd):
         selector_position = info_getter[0]
         draw_main_menu(screen_size, game_display, selector_position)
         game_state = info_getter[1]
+        if(game_state == "rules"):
+            previous_screen = "main_menu"
     elif(game_state == "casual_css"):
         info_getter = engine.main_menu.casual_css_navigation()
         p1_selector_position = info_getter[0]
@@ -364,26 +404,34 @@ def handle_graphics(game_state, main_cwd):
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
+        elif(game_state == "rules"):
+            previous_screen = "casual_css"
         elif(game_state == "main_menu"):
             timer = 10
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset)
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
         ball = info_getter[2]
         game_score = info_getter[3]
         timer = info_getter[4]
         game_state = info_getter[5]
+        game_time = info_getter[6]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
             timer = 300
             return game_state
-        draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer)
+        draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time)
     elif(game_state == "casual_win"):
         draw_win_screen(screen_size, game_display, game_stats)
         timer -= 1
         if(timer == 0):
             return "casual_css"
+    elif(game_state == "rules"):
+        info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen)
+        selector_position = info_getter[0]
+        game_state = info_getter[1]
+        draw_rules_screen(screen_size, game_display, ruleset, selector_position)
     #print(selector_position)
     pg.display.flip()
     return game_state
