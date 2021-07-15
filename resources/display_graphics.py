@@ -172,19 +172,25 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         image_cache['ball_clone'] = ball.image
         image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p1_blob_clone'] = p1_blob.image
+        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p2_blob_clone'] = p2_blob.image
+        image_cache['p2_darkened'] = False
         image_cache['kick_icon'] = pg.image.load(cwd + "\\resources\\images\\kick_icon.png")
         image_cache['block_icon'] = pg.image.load(cwd + "\\resources\\images\\block_icon.png")
         image_cache['boost_icon'] = pg.image.load(cwd + "\\resources\\images\\boost_icon.png")
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
-    p1_blob_image = pg.image.load(p1_blob.image)
-    p1_blob_image = p1_blob_image.convert_alpha()
-    p1_blob_image = pg.transform.scale(p1_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+    if not (p1_blob.image == image_cache['p1_blob_clone']):
+        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p1_blob_clone'] = p1_blob.image
+
     if(p1_blob.facing == "right"):
-        p1_blob_image = pg.transform.flip(p1_blob_image, True, False)
+        game_display.blit(pg.transform.flip(image_cache['p1_blob'], True, False), ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
+    else:
+        game_display.blit(image_cache['p1_blob'], ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
     
-    game_display.blit(p1_blob_image, ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
     if(p1_blob.boost_timer):
         blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
         blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
@@ -211,15 +217,27 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
 
-    p2_blob_image = pg.image.load(p2_blob.image)
-    p2_blob_image = p2_blob_image.convert_alpha()
-    if(p2_blob.type == p1_blob.type):
-        p2_blob_image.fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-    p2_blob_image = pg.transform.scale(p2_blob_image, (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
-    if(p2_blob.facing == "right"):
-        p2_blob_image = pg.transform.flip(p2_blob_image, True, False)
-    game_display.blit(p2_blob_image, ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
     
+    
+    if not (p2_blob.image == image_cache['p2_blob_clone']):
+        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p2_blob_clone'] = p2_blob.image
+        image_cache['p2_darkened'] = False
+
+    if(p2_blob.type == p1_blob.type):
+        if(not image_cache['p2_darkened']):
+            image_cache['p2_blob'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+            image_cache['p2_darkened'] = True
+
+
+    if(p2_blob.facing == "right"):
+        game_display.blit(pg.transform.flip(image_cache['p2_blob'], True, False), ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
+    else:
+        game_display.blit(image_cache['p2_blob'], ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
+    
+
+
+
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
