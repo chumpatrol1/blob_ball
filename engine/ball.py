@@ -198,6 +198,11 @@ class ball:
         elif(blob.used_ability == "snowball"):
             self.x_speed *= .98
             self.y_speed *= (.95 - (self.y_speed/1000))
+        elif(blob.used_ability == "geyser"):
+            if(self.y_speed > 0):
+                self.y_speed -= 1.5
+            else:
+                self.y_speed -= 1
 
     def move(self):
         ground = ball.ground
@@ -294,6 +299,8 @@ class ball:
         elif(self.y_pos >= ground): #Don't go under the floor!
             if(2 >= self.y_speed >= 0):
                 self.y_speed = 0
+            elif(self.y_speed < 0 ):
+                pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
                  #Reduces bounciness over time
