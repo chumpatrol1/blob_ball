@@ -16,19 +16,26 @@ game_display = pg.display.set_mode((0, 0)) # The canvas
 pg.init()
 clock = pg.time.Clock()
 #clock.tick(60)
+background_cache = {"initialized": False}
+def load_background(screen_size, game_screen):
+    global background_cache
+    background_cache['initialized'] = True
+    if(game_screen == "main_menu"):
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+    elif(game_screen == "casual_css"):
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+    elif(game_screen == "casual_match"):
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha.png")
+    elif(game_screen == "win_screen"):
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
 
 def draw_background(screen_size, game_display, game_screen):
     global cwd
-    if(game_screen == "main_menu"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
-    elif(game_screen == "casual_css"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
-    elif(game_screen == "casual_match"):
-        background = pg.image.load(cwd + "\\resources\\images\\field_alpha.png")
-    elif(game_screen == "win_screen"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
-    background = pg.transform.scale(background, screen_size)
-    game_display.blit(background, (0, 0))
+    global background_cache
+    if(not background_cache['initialized']):
+        load_background(screen_size, game_screen)
+    background_cache['background'] = pg.transform.scale(background_cache['background'], screen_size)
+    game_display.blit(background_cache['background'], (0, 0))
 
 def draw_main_menu(screen_size, game_display, selector_position):
     draw_background(screen_size, game_display, 'main_menu')
@@ -160,8 +167,11 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     global clock
     global cwd
     global image_cache
-    if not image_cache['initialized']:
+    if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
+        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        image_cache['ball_clone'] = ball.image
+        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
         image_cache['kick_icon'] = pg.image.load(cwd + "\\resources\\images\\kick_icon.png")
         image_cache['block_icon'] = pg.image.load(cwd + "\\resources\\images\\block_icon.png")
         image_cache['boost_icon'] = pg.image.load(cwd + "\\resources\\images\\boost_icon.png")
@@ -239,11 +249,11 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
 
-
-    ball_image = pg.image.load(ball.image)
-    ball_image = pg.transform.scale(ball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-    game_display.blit(ball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    fade_out = 200
+    if not (ball.image == image_cache['ball_clone']):
+        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        image_cache['ball_clone'] = ball.image
+    game_display.blit(image_cache['ball'], ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
+    #fade_out = 200
 
     #DISABLED DUE TO LAG
     '''for frame in ball.previous_locations:
@@ -390,6 +400,8 @@ def handle_graphics(game_state, main_cwd):
     global ruleset
     global game_stats
     global previous_screen
+    global background_cache
+    
     cwd = main_cwd
     if(game_state == "main_menu"):
         if(timer > 0):
@@ -399,6 +411,7 @@ def handle_graphics(game_state, main_cwd):
         draw_main_menu(screen_size, game_display, selector_position)
         game_state = info_getter[1]
         if(game_state == "rules"):
+            background_cache['initialized'] = False
             previous_screen = "main_menu"
     elif(game_state == "casual_css"):
         info_getter = engine.main_menu.casual_css_navigation()
@@ -407,13 +420,16 @@ def handle_graphics(game_state, main_cwd):
         draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
+            background_cache['initialized'] = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
         elif(game_state == "rules"):
+            background_cache['initialized'] = False
             previous_screen = "casual_css"
         elif(game_state == "main_menu"):
+            background_cache['initialized'] = False
             timer = 10
     elif(game_state == "casual_match"):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset)
@@ -425,6 +441,7 @@ def handle_graphics(game_state, main_cwd):
         game_state = info_getter[5]
         game_time = info_getter[6]
         if(game_state == "casual_win"):
+            background_cache['initialized'] = False
             game_stats = info_getter[6]
             timer = 300
             return game_state
@@ -433,6 +450,7 @@ def handle_graphics(game_state, main_cwd):
         draw_win_screen(screen_size, game_display, game_stats)
         timer -= 1
         if(timer == 0):
+            background_cache['initialized'] = False
             return "casual_css"
     elif(game_state == "rules"):
         info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen)
