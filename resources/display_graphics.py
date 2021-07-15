@@ -1,6 +1,8 @@
 import pygame as pg
 import os
 import ctypes
+
+from pygame import image
 import engine.main_menu
 import engine.gameplay
 import math
@@ -59,8 +61,7 @@ blob_array = [ #Creates an array of arrays, which contains the image to use, it'
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-] 
-
+]
 
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position):
     '''
@@ -153,11 +154,17 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
         if(p2_selector_position[2] == 2):
             game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
 
-
+image_cache = {"initialized": False}
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
     draw_background(screen_size, game_display, "casual_match")
     global clock
     global cwd
+    global image_cache
+    if not image_cache['initialized']:
+        image_cache['initialized'] = True
+        image_cache['kick_icon'] = pg.image.load(cwd + "\\resources\\images\\kick_icon.png")
+        image_cache['block_icon'] = pg.image.load(cwd + "\\resources\\images\\block_icon.png")
+        image_cache['boost_icon'] = pg.image.load(cwd + "\\resources\\images\\boost_icon.png")
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 

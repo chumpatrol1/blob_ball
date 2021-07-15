@@ -199,10 +199,14 @@ class ball:
             self.x_speed *= .98
             self.y_speed *= (.95 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
-            if(self.y_speed > 0):
-                self.y_speed -= 1.5
-            else:
-                self.y_speed -= 1
+            try:
+                geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
+                if(geyser_power < 0):
+                    self.y_speed += geyser_power
+            except Exception as exception:
+                print(exception)
+                self.y_speed -= 5
+
 
     def move(self):
         ground = ball.ground

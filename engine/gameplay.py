@@ -53,7 +53,7 @@ def score_goal(winner, goal_limit):
     if not time_limit == "NO LIMIT":
         time_limit += time_bonus
     game_score[winner] += 1
-    timer = 180
+    timer = 60
     if(game_score[winner] >= goal_limit):
         return "casual_win", (winner + 1)
     reset_round()

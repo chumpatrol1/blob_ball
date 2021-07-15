@@ -97,7 +97,7 @@ def type_to_stars(type):
             'boost_duration': 3,
 
             'special_ability': 'geyser',
-            'special_ability_cost': 150,
+            'special_ability_cost': 100,
             'special_ability_maintenance': 15,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
@@ -224,14 +224,15 @@ class blob:
         self.block_cooldown_visualization = 0
         self.boost_cooldown_visualization = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
+        self.special_ability_charge_base = 1
     
     ground = 1200
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
-            self.special_ability_charge = 5
+            self.special_ability_charge = self.special_ability_charge_base * 5
         else:
-            self.special_ability_charge = 1
+            self.special_ability_charge = self.special_ability_charge_base
 
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
