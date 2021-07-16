@@ -176,9 +176,11 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_darkened'] = False
-        image_cache['kick_icon'] = pg.image.load(cwd + "\\resources\\images\\kick_icon.png")
-        image_cache['block_icon'] = pg.image.load(cwd + "\\resources\\images\\block_icon.png")
-        image_cache['boost_icon'] = pg.image.load(cwd + "\\resources\\images\\boost_icon.png")
+        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\kick_icon.png"), (round(screen_size[0]*(50/1366)), round(screen_size[0]*(50/1366))))
+        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (round(screen_size[0]*(50/1366)), round(screen_size[0]*(50/1366))))
+        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (round(screen_size[0]*(50/1366)), round(screen_size[0]*(50/1366))))
+        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (round(screen_size[0]*(50/1366)), round(screen_size[0]*(50/1366))))
+
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -235,9 +237,6 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     else:
         game_display.blit(image_cache['p2_blob'], ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
     
-
-
-
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -296,16 +295,44 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(snowball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
+    menu_font = pg.font.SysFont('Arial', round(40*(screen_size[1]/768)))
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
+    text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)
     menu_text = menu_font.render("TIME: "+ str(game_time), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//7)
+    text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)
     
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (1/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["heart_icon"], (screen_size[0]*(1/20), 0))
+    menu_text = menu_font.render(str(p2_blob.hp), False, (0, 255, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0] * (1.4/20), screen_size[1] * (0.6/20))
+    game_display.blit(menu_text, text_rect)
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (2/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (3/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["kick_icon"], (screen_size[0]*(3/20), 0))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (4/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["block_icon"], (screen_size[0]*(4/20), 0))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (5/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["boost_icon"], (screen_size[0]*(5/20), 0))
+    
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (14/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["heart_icon"], (screen_size[0]*(14/20), 0))
+    menu_text = menu_font.render(str(p1_blob.hp), False, (0, 255, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0] * (14.4/20), screen_size[1] * (0.6/20))
+    game_display.blit(menu_text, text_rect)
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (15/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (16/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["kick_icon"], (screen_size[0]*(16/20), 0))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (17/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["block_icon"], (screen_size[0]*(17/20), 0))
+    pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (18/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
+    game_display.blit(image_cache["boost_icon"], (screen_size[0]*(18/20), 0))
+
     menu_text = menu_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
@@ -326,11 +353,6 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, 5*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("HP: " + str(p1_blob.hp)), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (4*screen_size[0]//5, 6*screen_size[1]//9)
-    game_display.blit(menu_text, text_rect)
-
 
     menu_text = menu_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
@@ -351,10 +373,6 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     menu_text = menu_font.render(("BOOST CD: " + str(p2_blob.boost_cooldown_visualization)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, 5*screen_size[1]//9)
-    game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(("HP: " + str(p2_blob.hp)), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//5, 6*screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
 
 
