@@ -127,7 +127,7 @@ class ball:
 
     def check_block_collisions(self, blob, other_blob):
         #Checks for block collisions
-        if(blob.block_timer == blob.block_timer_max):
+        if(blob.block_timer >= blob.block_timer_max - 3):
             collision_timer_duration = 30
             #Check for an active block (lasts one frame)
             #outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
