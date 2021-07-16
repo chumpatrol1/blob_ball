@@ -143,6 +143,8 @@ def player_to_controls(player):
         }
     return button_list
 
+def create_visualization(number):
+    return math.ceil(number/6)/10
 class blob:
     def __init__(self, type = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
         self.type = type
@@ -221,8 +223,13 @@ class blob:
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
         self.kick_cooldown_visualization = 0
+        self.kick_cooldown_percentage = 0
         self.block_cooldown_visualization = 0
+        self.block_cooldown_percentage = 0
         self.boost_cooldown_visualization = 0
+        self.boost_cooldown_percentage = 0
+        self.boost_timer_visualization = 0
+        self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
         self.special_ability_charge_base = 1
     
@@ -286,9 +293,14 @@ class blob:
         if(self.movement_lock > 0):
             self.movement_lock -= 1
 
-        self.kick_cooldown_visualization = math.ceil(self.kick_cooldown/self.kick_cooldown_rate/6)/10
-        self.block_cooldown_visualization = math.ceil(self.block_cooldown/self.block_cooldown_rate/6)/10
-        self.boost_cooldown_visualization = math.ceil(self.boost_cooldown_timer/6)/10
+        self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
+        self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
+        self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
+        self.block_cooldown_percentage = self.block_cooldown/self.block_cooldown_max
+        self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer)
+        self.boost_cooldown_percentage = self.boost_cooldown_timer/self.boost_cooldown_max
+        self.boost_timer_visualization = create_visualization(self.boost_timer)
+        self.boost_timer_percentage = self.boost_timer/self.boost_duration
     
     def ability(self):
         if(self.special_ability == 'boost'):
@@ -404,7 +416,7 @@ class blob:
                 if(self.focusing):
                     if(pressed_conversions[button] == "down"):
                         pressed.append(pressed_conversions[button])
-                    elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 10):
+                    elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 20):
                         pressed.append(pressed_conversions[button])
                     else:
                         continue
