@@ -8,7 +8,6 @@ image_cache = {"initialized": False}
 def draw_blob(screen_size, game_display, blob):
     global image_cache
     
-
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     global image_cache
     ui_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
@@ -40,11 +39,29 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     pg.draw.rect(game_display, (200, 200, 200), (screen_size[0] * (18/20), 0, screen_size[0] * (50/1366), screen_size[0] * (50/1366)))
     game_display.blit(image_cache["boost_icon"], (screen_size[0]*(18/20), 0))
 
+    nrg_surface = pg.Surface((screen_size[0]*(323/1366), screen_size[1]*(50/768)), pg.SRCALPHA)
+    p1_nrg_bar = 323 * p1_blob.special_ability_meter / p1_blob.special_ability_max
+    if(p1_blob.special_ability_meter >= p1_blob.special_ability_cost):
+        nrg_color = (255, 0, 0)
+    else:
+        nrg_color = (100, 0, 0)
+    if(p1_blob.special_ability_meter >= p1_blob.boost_cost and not p1_blob.boost_cooldown_timer > 0):
+        border_color = (255, 255, 0)
+    else:
+        border_color = (0, 0, 0)
+    pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, nrg_color, (screen_size[0]*(323/1366) - (p1_nrg_bar), 0, p1_nrg_bar, screen_size[1]*(50/768)))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3*nrg_surface.get_height()/50))
+    pg.draw.rect(nrg_surface, border_color, (0, 47*nrg_surface.get_height()/50, nrg_surface.get_width(), 3*nrg_surface.get_height()/50))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (320*nrg_surface.get_width()/323, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
+    game_display.blit(nrg_surface, (screen_size[0]*(14/20), screen_size[1]*50/768))
+
     menu_text = ui_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
-
+    
     if(p1_blob.kick_cooldown_visualization > 0):
         cooldown_surface = pg.Surface((screen_size[0] * 50/1366, screen_size[0]*(50/1366)), pg.SRCALPHA)
         cooldown_surface.set_alpha(124)
@@ -83,6 +100,24 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         text_rect = menu_text.get_rect()
         text_rect.center = (screen_size[0]*(18.35/20), screen_size[1] * (0.6)/20)
         game_display.blit(menu_text, text_rect)
+
+    nrg_surface = pg.Surface((screen_size[0]*(323/1366), screen_size[1]*(50/768)), pg.SRCALPHA)
+    p2_nrg_bar = 323 * p2_blob.special_ability_meter / p2_blob.special_ability_max
+    if(p2_blob.special_ability_meter >= p2_blob.special_ability_cost):
+        nrg_color = (0, 0, 255)
+    else:
+        nrg_color = (0, 0, 100)
+    if(p2_blob.special_ability_meter >= p2_blob.boost_cost and not p2_blob.boost_cooldown_timer > 0):
+        border_color = (255, 255, 0)
+    else:
+        border_color = (0, 0, 0)
+    pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, nrg_color, (0, 0, p2_nrg_bar, screen_size[1]*(50/768)))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3*nrg_surface.get_height()/50))
+    pg.draw.rect(nrg_surface, border_color, (0, 47*nrg_surface.get_height()/50, nrg_surface.get_width(), 3*nrg_surface.get_height()/50))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (320*nrg_surface.get_width()/323, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
+    game_display.blit(nrg_surface, (screen_size[0]*(1/20), screen_size[1]*50/768))
 
     menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()

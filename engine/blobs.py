@@ -37,7 +37,7 @@ def type_to_stars(type):
             'boost_duration': 5,
 
             'special_ability': 'boost',
-            'special_ability_cost': 300,
+            'special_ability_cost': 600,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
@@ -145,6 +145,7 @@ def player_to_controls(player):
 
 def create_visualization(number):
     return math.ceil(number/6)/10
+
 class blob:
     def __init__(self, type = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
         self.type = type
