@@ -7,7 +7,7 @@ import math
 pg.font.init()
 cwd = os.getcwd()
 print("GRAPHICS CWD: "+ cwd)
-screen_size = (720, 480)
+screen_size = (640, 360)
 game_display = pg.display.set_mode((0, 0)) # The canvas
 
 pg.init()
