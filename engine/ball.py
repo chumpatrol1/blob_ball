@@ -121,12 +121,35 @@ class ball:
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
                         
+                        pass
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
+        else:
+            if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                    print(self.previous_locations)
+                    for previous in self.previous_locations[4:]:
+                        if(previous[1] >= 1240):
+                            self.image = type_to_image('kicked_ball')
+                            self.type = "kicked_ball"
+                            self.special_timer = 30
+                            self.y_pos = self.y_pos + (p1_center_distance - 160)
+                            self.y_speed = -5
+                            self.x_speed = 0
+                            #blob.collision_timer = 5
+                    #p1_ball_nv = p1_vector - ball_vector
+                    #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                    #blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
+                    #blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((8*blob_collision_distance/104) - 8) #TODO: Fix for Sponge/Sci Slime
+                    #self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
+                    #if p1_vector.distance_to(ball_vector) < blob_collision_distance:
+                    #If the ball is stuck inside of the blob for some reason, move it out
+                    #THIS CAUSES THE DRIBBLE GLITCH
+                    #    self.x_pos += self.x_speed
+                    #    self.y_pos += self.y_speed
         return blob
 
     def check_block_collisions(self, blob, other_blob):
