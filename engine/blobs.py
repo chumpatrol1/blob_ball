@@ -88,11 +88,11 @@ def type_to_stars(type):
 def type_to_image(type):
     global cwd
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
-        "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
-        "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
-        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
-        "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
+        "quirkless": cwd+"/resources/images/blobs/quirkless_blob.png",
+        "fire": cwd+"/resources/images/blobs/fire_blob.png",
+        "ice": cwd+"/resources/images/blobs/ice_blob.png",
+        "random": cwd+"/resources/images/blobs/random_blob.png",
+        "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
     }
 
     return image_dict[type]

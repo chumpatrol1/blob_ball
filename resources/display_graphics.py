@@ -7,8 +7,7 @@ import math
 pg.font.init()
 cwd = os.getcwd()
 print("GRAPHICS CWD: "+ cwd)
-user32 = ctypes.windll.user32
-screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+screen_size = (720, 480)
 game_display = pg.display.set_mode((0, 0)) # The canvas
 
 pg.init()
@@ -18,13 +17,13 @@ clock = pg.time.Clock()
 def draw_background(screen_size, game_display, game_screen):
     global cwd
     if(game_screen == "main_menu"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        background = pg.image.load(cwd + "/resources/images/green_background.png")
     elif(game_screen == "casual_css"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        background = pg.image.load(cwd + "/resources/images/green_background.png")
     elif(game_screen == "casual_match"):
-        background = pg.image.load(cwd + "\\resources\\images\\field_alpha.png")
+        background = pg.image.load(cwd + "/resources/images/field_alpha.png")
     elif(game_screen == "win_screen"):
-        background = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        background = pg.image.load(cwd + "/resources/images/green_background.png")
     background = pg.transform.scale(background, screen_size)
     game_display.blit(background, (0, 0))
 
@@ -42,7 +41,7 @@ def draw_main_menu(screen_size, game_display, selector_position):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
     game_display.blit(ball, (screen_size[0]*(2/3), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 
@@ -54,11 +53,11 @@ def draw_main_menu(screen_size, game_display, selector_position):
         text_y += screen_size[1]//10
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\rules_icon.png", "Rules", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/rules_icon.png", "Rules", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ] #TODO: Incorporate this at a later time.
 
 
@@ -70,7 +69,7 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     
     x = 0
     y = 0
-    directory = cwd + "\\resources\\images"
+    directory = cwd + "/resources/images"
     for row in blob_array: #Temporary, until we make more blobs
         y += 1
         for icon in row:
@@ -124,17 +123,17 @@ def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector
         for y in range (0, 5):
             pg.draw.rect(game_display, (255, 255, 255), ((x*screen_size[0]*0.1) + (screen_size[0]/10), (y*screen_size[1]*(100/768))+(screen_size[1]*50/768), screen_size[0]*0.1, screen_size[1]*(100/768)), width = 3)
     css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position)
-    #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
+    #back_arrow = pg.image.load(cwd + "/resources/images/back_arrow.png")
     #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
     #game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
     if(p1_selector_position[2] == 0):
-        p1_ball = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
+        p1_ball = pg.image.load(cwd + "/resources/images/p1_token.png")
     else:
-        p1_ball = pg.image.load(cwd + "\\resources\\images\\p1_check.png")
+        p1_ball = pg.image.load(cwd + "/resources/images/p1_check.png")
     if(p2_selector_position[2] == 0):
-        p2_ball = pg.image.load(cwd + "\\resources\\images\\p2_token.png")
+        p2_ball = pg.image.load(cwd + "/resources/images/p2_token.png")
     else:
-        p2_ball = pg.image.load(cwd + "\\resources\\images\\p2_check.png")
+        p2_ball = pg.image.load(cwd + "/resources/images/p2_check.png")
 
     p1_ball = pg.transform.scale(p1_ball, (screen_size[1]//15, screen_size[1]//15))
     p2_ball = pg.transform.scale(p2_ball, (screen_size[1]//15, screen_size[1]//15))
@@ -158,7 +157,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_background(screen_size, game_display, "casual_match")
     global clock
     global cwd
-    blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
+    blob_special = pg.image.load(cwd + "/resources/images/blobs/special_blob.png")
     blob_special = blob_special.convert_alpha()
 
     p1_blob_image = pg.image.load(p1_blob.image)
@@ -203,7 +202,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         p2_blob_image = pg.transform.flip(p2_blob_image, True, False)
     game_display.blit(p2_blob_image, ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
     
-    blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
+    blob_special = pg.image.load(cwd + "/resources/images/blobs/special_blob.png")
     blob_special = blob_special.convert_alpha()
 
     if(p2_blob.focusing):
@@ -250,13 +249,13 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         fade_out -= 20'''
         
     if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
-        fireball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
+        fireball_image = pg.image.load(cwd + "/resources/images/special_ball.png")
         fireball_image = fireball_image.convert_alpha()
         fireball_image = pg.transform.scale(fireball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         fireball_image.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(fireball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
     if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        snowball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
+        snowball_image = pg.image.load(cwd + "/resources/images/special_ball.png")
         snowball_image = snowball_image.convert_alpha()
         snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
@@ -357,7 +356,7 @@ def draw_rules_screen(screen_size, game_display, ruleset, selector_position):
         game_display.blit(text_box, text_rect)
         text_y += screen_size[1]//10
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
     game_display.blit(ball, (screen_size[0]*(1/20), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 

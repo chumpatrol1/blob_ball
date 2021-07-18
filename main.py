@@ -17,7 +17,7 @@ clock = pg.time.Clock()
 clock.tick(60)
 
 def handle_input():
-    controls = open(cwd+"\\engine\\controls.txt", "r+")
+    #controls = open(cwd+"\\engine\\controls.txt", "r+")
     engine.handle_input.get_keypress()
 
 def display_graphics(game_state, cwd):

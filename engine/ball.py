@@ -8,17 +8,17 @@ def type_to_image(type):
     #print("The type is...")
     #print(type)
     if(type == "soccer_ball"):
-        image = cwd+"\\resources\\images\\soccer_ball.png"
+        image = cwd+"/resources/images/soccer_ball.png"
     elif(type == "p1_token"):
-        image = cwd+"\\resources\\images\\p1_token.png"
+        image = cwd+"/resources/images/p1_token.png"
     elif(type == "p2_token"):
-        image = cwd+"\\resources\\images\\p2_token.png"
+        image = cwd+"/resources/images/p2_token.png"
     elif(type == "kicked_ball"):
-        image = cwd+"\\resources\\images\\kicked_ball.png"
+        image = cwd+"/resources/images/kicked_ball.png"
     elif(type == "blocked_ball"):
-        image = cwd+"\\resources\\images\\blocked_ball.png"
+        image = cwd+"/resources/images/blocked_ball.png"
     elif(type == "goal_ball"):
-        image = cwd+"\\resources\\images\\goal_ball.png"
+        image = cwd+"/resources/images/goal_ball.png"
 
     return image
 
