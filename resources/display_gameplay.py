@@ -1,5 +1,6 @@
 from os import getcwd
 from resources.background_handler import draw_background as draw_background
+from math import ceil
 import pygame as pg
 cwd = getcwd()
 
@@ -127,6 +128,14 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         text_rect = menu_text.get_rect()
         text_rect.center = (screen_size[0]*(5.35/20), screen_size[1] * (0.6)/20)
         game_display.blit(menu_text, text_rect)
+
+def draw_timer(screen_size, game_display, timer):
+    if(timer > 0):
+            timer_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
+            timer_text = timer_font.render(str(ceil(timer/6)/10), False, (255, 124, 0))
+            text_rect = timer_text.get_rect()
+            text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
+            game_display.blit(timer_text, text_rect)
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
     #TODO: Simplify and remove
@@ -258,6 +267,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
         snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(snowball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
+    
     menu_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
@@ -270,8 +280,4 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     
     draw_ui(screen_size, game_display, p1_blob, p2_blob)    
 
-    if(timer > 0):
-        menu_text = menu_font.render(str(timer//5), False, (255, 124, 0))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
-        game_display.blit(menu_text, text_rect)
+    draw_timer(screen_size, game_display, timer)
