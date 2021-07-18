@@ -124,6 +124,7 @@ class ball:
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
+        return blob
 
     def check_block_collisions(self, blob, other_blob):
         #Checks for block collisions
