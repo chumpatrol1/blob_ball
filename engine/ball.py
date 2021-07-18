@@ -88,14 +88,15 @@ class ball:
                         self.y_speed = (-1 * self.y_speed) + blob.y_speed # Reflect!
                         blob.collision_timer = 10
                         if(blob.y_speed >= 0 and blob.y_pos >= 1100):
-                            self.y_pos = ball.ground + (p1_center_distance - 160)
+                            self.y_pos = self.y_pos + (p1_center_distance - 160)
                             self.y_speed = -5
                             self.x_speed = 0
+                            blob.collision_timer = 5
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
-                if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:
+                if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
                     self.image = type_to_image('kicked_ball')
                     self.type = "kicked_ball"
                     self.special_timer = 30
@@ -116,8 +117,10 @@ class ball:
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
                     if p1_vector.distance_to(ball_vector) < blob_collision_distance:
                         #If the ball is stuck inside of the blob for some reason, move it out
+                        #THIS CAUSES THE DRIBBLE GLITCH
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
+                        
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
