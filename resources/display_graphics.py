@@ -65,11 +65,18 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         for icon in row:
             x += 1
             blob = pg.image.load(directory + icon[0])
-            blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[1]//15))
-            game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
+            if(x == 1):
+                blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[0]//15))
+                game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(45/768))))
+            else:
+                blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[1]//15))
+                game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
         x = 0
     p1_selected_blob = pg.image.load(directory + blob_array[p1_selector_position[1]][p1_selector_position[0]][0])
-    p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[1]//7))
+    if(p1_selector_position[0] == 0):
+        p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[0]//7))
+    else:
+        p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[1]//7))
     p1_selected_blob = p1_selected_blob.convert_alpha()
     if(p1_selector_position[2] == 0):
         p1_selected_blob.set_alpha(200)
@@ -77,7 +84,10 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(255)
     game_display.blit(p1_selected_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
     p2_selected_blob = pg.image.load(directory + blob_array[p2_selector_position[1]][p2_selector_position[0]][0])
-    p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
+    if(p2_selector_position[0] == 0):
+        p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[0]//7))
+    else:
+        p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
     p2_selected_blob = pg.transform.flip(p2_selected_blob, True, False)
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
