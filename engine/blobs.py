@@ -67,7 +67,7 @@ def type_to_stars(type):
             'max_hp': 3,
             'top_speed': 5,
             'traction': 1,
-            'friction': 2,
+            'friction': 3,
             'gravity': 4,
             'kick_cooldown_rate': 3,
             'block_cooldown_rate': 5,
@@ -84,10 +84,10 @@ def type_to_stars(type):
         }
     elif(type == "water"):
         blob_dict = {
-            'max_hp': 3,
+            'max_hp': 2,
             'top_speed': 3,
             'traction': 3,
-            'friction': 3,
+            'friction': 2,
             'gravity': 3,
             'kick_cooldown_rate': 3,
             'block_cooldown_rate': 3,

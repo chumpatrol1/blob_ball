@@ -130,13 +130,15 @@ class ball:
                     self.image = type_to_image("soccer_ball")
         else:
             if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
-                    print(self.previous_locations)
                     for previous in self.previous_locations[4:]:
+                        #SUPERWARP GLITCH
                         if(previous[1] >= 1240):
                             self.image = type_to_image('kicked_ball')
                             self.type = "kicked_ball"
                             self.special_timer = 30
                             self.y_pos = self.y_pos + (p1_center_distance - 160)
+                            #print(previous[1], self.y_pos)
+                            self.x_pos = previous[0]
                             self.y_speed = -5
                             self.x_speed = 0
                             #blob.collision_timer = 5
