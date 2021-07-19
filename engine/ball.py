@@ -133,9 +133,9 @@ class ball:
                     for previous in self.previous_locations[4:]:
                         #SUPERWARP GLITCH
                         if(previous[1] >= 1240):
-                            self.image = type_to_image('kicked_ball')
-                            self.type = "kicked_ball"
-                            self.special_timer = 30
+                            #self.image = type_to_image('kicked_ball')
+                            #self.type = "kicked_ball"
+                            #self.special_timer = 30
                             self.y_pos = self.y_pos + (p1_center_distance - 160)
                             #print(previous[1], self.y_pos)
                             self.x_pos = previous[0]
