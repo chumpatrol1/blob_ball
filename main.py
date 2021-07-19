@@ -13,8 +13,7 @@ game_state = "main_menu"
 
 done = False
 pg.init()
-clock = pg.time.Clock()
-clock.tick(60)
+
 
 def handle_input():
     controls = open(cwd+"\\engine\\controls.txt", "r+")
@@ -28,6 +27,10 @@ def run():
     global done
     global game_state
     global cwd
+    clock = pg.time.Clock()
+    clock.tick_busy_loop(120)
+    if(clock.get_time() > 9):
+        print(clock.get_time())
     handle_input()
     game_state = display_graphics(game_state, cwd)
     for event in pg.event.get():

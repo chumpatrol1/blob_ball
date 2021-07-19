@@ -88,14 +88,15 @@ class ball:
                         self.y_speed = (-1 * self.y_speed) + blob.y_speed # Reflect!
                         blob.collision_timer = 10
                         if(blob.y_speed >= 0 and blob.y_pos >= 1100):
-                            self.y_pos = ball.ground + (p1_center_distance - 160)
+                            self.y_pos = self.y_pos + (p1_center_distance - 160)
                             self.y_speed = -5
                             self.x_speed = 0
+                            blob.collision_timer = 5
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
-                if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:
+                if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
                     self.image = type_to_image('kicked_ball')
                     self.type = "kicked_ball"
                     self.special_timer = 30
@@ -116,18 +117,46 @@ class ball:
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
                     if p1_vector.distance_to(ball_vector) < blob_collision_distance:
                         #If the ball is stuck inside of the blob for some reason, move it out
+                        #THIS CAUSES THE DRIBBLE GLITCH
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
+                        
+                        pass
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
+        else:
+            if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                    for previous in self.previous_locations[4:]:
+                        #SUPERWARP GLITCH
+                        if(previous[1] >= 1240):
+                            #self.image = type_to_image('kicked_ball')
+                            #self.type = "kicked_ball"
+                            #self.special_timer = 30
+                            self.y_pos = self.y_pos + (p1_center_distance - 160)
+                            #print(previous[1], self.y_pos)
+                            self.x_pos = previous[0]
+                            self.y_speed = -5
+                            self.x_speed = 0
+                            #blob.collision_timer = 5
+                    #p1_ball_nv = p1_vector - ball_vector
+                    #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                    #blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
+                    #blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((8*blob_collision_distance/104) - 8) #TODO: Fix for Sponge/Sci Slime
+                    #self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
+                    #if p1_vector.distance_to(ball_vector) < blob_collision_distance:
+                    #If the ball is stuck inside of the blob for some reason, move it out
+                    #THIS CAUSES THE DRIBBLE GLITCH
+                    #    self.x_pos += self.x_speed
+                    #    self.y_pos += self.y_speed
+        return blob
 
     def check_block_collisions(self, blob, other_blob):
         #Checks for block collisions
-        if(blob.block_timer == blob.block_timer_max):
+        if(blob.block_timer >= blob.block_timer_max - 3):
             collision_timer_duration = 30
             #Check for an active block (lasts one frame)
             #outer_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], blob.block_outer, 0)
@@ -198,6 +227,17 @@ class ball:
         elif(blob.used_ability == "snowball"):
             self.x_speed *= .98
             self.y_speed *= (.95 - (self.y_speed/1000))
+        elif(blob.used_ability == "geyser"):
+            try:
+                geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
+                if(geyser_power < 0.5 and self.y_speed > -25):
+                    self.y_speed += geyser_power
+                else:
+                    self.y_speed -= 0.5
+            except Exception as exception:
+                print(exception)
+                self.y_speed -= 5
+
 
     def move(self):
         ground = ball.ground
@@ -294,6 +334,8 @@ class ball:
         elif(self.y_pos >= ground): #Don't go under the floor!
             if(2 >= self.y_speed >= 0):
                 self.y_speed = 0
+            elif(self.y_speed < 0 ):
+                pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
                  #Reduces bounciness over time

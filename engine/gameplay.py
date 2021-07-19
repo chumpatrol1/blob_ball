@@ -53,7 +53,7 @@ def score_goal(winner, goal_limit):
     if not time_limit == "NO LIMIT":
         time_limit += time_bonus
     game_score[winner] += 1
-    timer = 180
+    timer = 60
     if(game_score[winner] >= goal_limit):
         return "casual_win", (winner + 1)
     reset_round()
@@ -116,8 +116,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             p1_blob.cooldown()
             p2_blob.cooldown()
             ball.move()
-            ball.check_blob_collisions(p1_blob)
-            ball.check_blob_collisions(p2_blob)
+            p1_blob = ball.check_blob_collisions(p1_blob)
+            p2_blob = ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
                 goal_scorer = 1
                 goal_scored = True
