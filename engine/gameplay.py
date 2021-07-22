@@ -115,7 +115,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                     #p2_blob.kick_timer = 0
             p1_blob.cooldown()
             p2_blob.cooldown()
-            ball.move()
+            ball.move(p1_blob, p2_blob)
             p1_blob = ball.check_blob_collisions(p1_blob)
             p2_blob = ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
@@ -159,7 +159,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
-                ball.move()
+                ball.move(p1_blob, p2_blob)
                 p1_blob.move([])
                 p2_blob.move([])
                 countdown -= 1

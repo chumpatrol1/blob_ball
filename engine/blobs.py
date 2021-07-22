@@ -50,7 +50,7 @@ def type_to_stars(type):
             'friction': 3,
             'gravity': 1,
             'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 3,
+            'block_cooldown_rate': 4,
 
             'boost_cost': 600,
             'boost_cooldown_max': 3,
@@ -102,6 +102,26 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
+    elif(type == "rock"):
+        blob_dict = {
+            'max_hp': 5,
+            'top_speed': 1,
+            'traction': 5,
+            'friction': 1,
+            'gravity': 5,
+            'kick_cooldown_rate': 2,
+            'block_cooldown_rate': 2,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'spire',
+            'special_ability_cost': 400,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 300,
+        }
 
     return blob_dict
 
@@ -112,6 +132,7 @@ def type_to_image(type):
         "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
         "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
         'water': cwd+"\\resources\\images\\blobs\\water_blob.png",
+        'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -342,6 +363,12 @@ class blob:
                     self.used_ability = "geyser"
                     self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+        elif(self.special_ability == "spire"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+                #Spire activation
+                self.used_ability = "spire"
+                self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     
     def kick(self):
         if(self.kick_cooldown <= 0):

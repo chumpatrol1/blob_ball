@@ -51,7 +51,10 @@ class ball:
         self.grounded = False #True if the ball is on the ground
         self.special_timer = 0 #Used when the ball is hit with a kick or block
         #Stores 10 afterimages
-        self.previous_locations = [(902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball")]
+        self.previous_locations = []
+        for i in range(10):
+            #First number is X position, second is Y, third is ball speed, 4th is ball image, 5th is p1 ability, 6th is p2 ability
+            self.previous_locations.append((902, 900, 0, "soccer_ball", "none", "none"))
     
     ground = 1240
 
@@ -128,30 +131,6 @@ class ball:
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
-        else:
-            if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
-                    for previous in self.previous_locations[4:]:
-                        #SUPERWARP GLITCH
-                        if(previous[1] >= 1240):
-                            #self.image = type_to_image('kicked_ball')
-                            #self.type = "kicked_ball"
-                            #self.special_timer = 30
-                            self.y_pos = self.y_pos + (p1_center_distance - 160)
-                            #print(previous[1], self.y_pos)
-                            self.x_pos = previous[0]
-                            self.y_speed = -5
-                            self.x_speed = 0
-                            #blob.collision_timer = 5
-                    #p1_ball_nv = p1_vector - ball_vector
-                    #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    #blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
-                    #blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((8*blob_collision_distance/104) - 8) #TODO: Fix for Sponge/Sci Slime
-                    #self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
-                    #if p1_vector.distance_to(ball_vector) < blob_collision_distance:
-                    #If the ball is stuck inside of the blob for some reason, move it out
-                    #THIS CAUSES THE DRIBBLE GLITCH
-                    #    self.x_pos += self.x_speed
-                    #    self.y_pos += self.y_speed
         return blob
 
     def check_block_collisions(self, blob, other_blob):
@@ -230,16 +209,18 @@ class ball:
         elif(blob.used_ability == "geyser"):
             try:
                 geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
-                if(geyser_power < 0.5 and self.y_speed > -25):
+                if(geyser_power < 0.8 and self.y_speed > -25):
                     self.y_speed += geyser_power
                 else:
-                    self.y_speed -= 0.5
+                    self.y_speed -= 0.8
             except Exception as exception:
                 print(exception)
                 self.y_speed -= 5
+        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60):
+            self.y_speed = -50
 
 
-    def move(self):
+    def move(self, p1_blob, p2_blob):
         ground = ball.ground
         left_wall = 0
         right_wall = 1805
@@ -249,7 +230,7 @@ class ball:
         goal_top = 825
         goal_bottom = 950
 
-        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.type))
+        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.type, p1_blob.used_ability, p2_blob.used_ability))
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
