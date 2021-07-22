@@ -12,7 +12,10 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
         particle_cache['fire_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\fire_particle.png").convert_alpha(), (round(screen_size[0]*(40/1366)), round(screen_size[0]*(40/1366))))
         particle_cache['ice_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\ice_particle.png").convert_alpha(), (round(screen_size[0]*(40/1366)), round(screen_size[0]*(40/1366))))
         particle_cache['water_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\water_particle.png").convert_alpha(), (round(screen_size[0]*(40/1366)), round(screen_size[0]*(40/1366))))
+        particle_cache['rock_glyph'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\rock_glyph.png").convert_alpha(), (round(screen_size[0]*(200/1366)), round(screen_size[1]*(100/768))))
+        particle_cache['rock_spire'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\rock_spire.png").convert_alpha(), (round(screen_size[0]*(200/1366)), round(screen_size[1]*(100/768))))
         
+
     for previous_location in ball.previous_locations:
         alpha = 150
         if(previous_location[4] == "fireball" or previous_location[5] == "fireball"):
@@ -32,3 +35,10 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             else:
                 particle_cache['water_particle'].set_alpha(255)
             game_display.blit(particle_cache['water_particle'], ((screen_size[0]/1366)* ball.x_pos * (1000/1366), (screen_size[1]/768) * ((1240 - y*40) + randint(-10, 10)) * (400/768)))
+    
+    if(p1_blob.used_ability == "spire" or p2_blob.used_ability == "spire"):
+        if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 60):
+            game_display.blit(particle_cache['rock_glyph'], ((screen_size[0]/1366)* ball.x_pos * (900/1366), (700* screen_size[1]/768)))
+        if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 60):
+            game_display.blit(particle_cache['rock_glyph'], ((screen_size[0]/1366)* ball.x_pos * (900/1366), (700* screen_size[1]/768)))
+    
