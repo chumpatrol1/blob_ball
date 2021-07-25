@@ -21,7 +21,7 @@ def load_background(game_screen):
     elif(game_screen == "casual_css"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha.jpg").convert()
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha.png").convert()
     elif(game_screen == "win_screen"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
 
