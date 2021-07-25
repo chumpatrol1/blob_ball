@@ -21,7 +21,7 @@ def load_background(game_screen):
     elif(game_screen == "casual_css"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha_v1.png").convert()
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha_v2.png").convert()
     elif(game_screen == "win_screen"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
 
@@ -31,6 +31,7 @@ def draw_background(game_display, game_screen):
     global previous_game_screen
     if not (game_screen == previous_game_screen):
         background_cache['initialized'] = False
+        previous_game_screen = game_screen
     if(not background_cache['initialized']):
         load_background(game_screen)
     game_display.blit(background_cache['background'], (0, 0))
