@@ -41,4 +41,6 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             game_display.blit(particle_cache['rock_glyph'], ((screen_size[0]/1366)* ball.x_pos * (900/1366), (700* screen_size[1]/768)))
         if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 60):
             game_display.blit(particle_cache['rock_glyph'], ((screen_size[0]/1366)* ball.x_pos * (900/1366), (700* screen_size[1]/768)))
+        if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 60):
+            game_display.blit(particle_cache['rock_spire'], ((screen_size[0]/1366)* ball.x_pos * (900/1366), (500* screen_size[1]/768)))
     

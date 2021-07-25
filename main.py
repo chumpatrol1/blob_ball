@@ -28,7 +28,7 @@ def run():
     global game_state
     global cwd
     clock = pg.time.Clock()
-    clock.tick_busy_loop(120)
+    clock.tick_busy_loop(240)
     if(clock.get_time() > 9):
         print(clock.get_time())
     handle_input()

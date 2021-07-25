@@ -13,24 +13,24 @@ clock = pg.time.Clock()
 #clock.tick(60)
 background_cache = {"initialized": False}
 previous_game_screen = "main_menu"
-def load_background(screen_size, game_screen):
+def load_background(game_screen):
     global background_cache
     background_cache['initialized'] = True
     if(game_screen == "main_menu"):
-        background_cache['background'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\green_background.png"), screen_size)
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_css"):
-        background_cache['background'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\green_background.png"), screen_size)
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
-        background_cache['background'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\field_alpha.png"), screen_size)
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha.png").convert()
     elif(game_screen == "win_screen"):
-        background_cache['background'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\green_background.png"), screen_size)
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
 
-def draw_background(screen_size, game_display, game_screen):
+def draw_background(game_display, game_screen):
     global cwd
     global background_cache
     global previous_game_screen
     if not (game_screen == previous_game_screen):
         background_cache['initialized'] = False
     if(not background_cache['initialized']):
-        load_background(screen_size, game_screen)
+        load_background(game_screen)
     game_display.blit(background_cache['background'], (0, 0))

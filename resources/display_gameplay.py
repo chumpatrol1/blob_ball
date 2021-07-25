@@ -182,7 +182,7 @@ def draw_timer(screen_size, game_display, timer):
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
     #TODO: Simplify and remove
-    draw_background(screen_size, game_display, "casual_match")
+    draw_background(game_display, "casual_match")
     global cwd
     global image_cache
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
