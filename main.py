@@ -1,3 +1,5 @@
+#python -m cProfile -o out.prof main.py
+#snakeviz out.prof
 import os
 
 print(os.chdir(os.path.dirname(os.path.abspath(__file__))))
@@ -23,14 +25,13 @@ def display_graphics(game_state, cwd):
     game_state = dg.handle_graphics(game_state, cwd)
     return game_state
 
+clock = pg.time.Clock()
 def run():
     global done
+    global clock
     global game_state
     global cwd
-    clock = pg.time.Clock()
-    clock.tick_busy_loop(240)
-    if(clock.get_time() > 9):
-        print(clock.get_time())
+    clock.tick_busy_loop(60)
     handle_input()
     game_state = display_graphics(game_state, cwd)
     for event in pg.event.get():
