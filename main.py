@@ -30,7 +30,6 @@ def run():
     global game_state
     global cwd
     clock.tick_busy_loop(60)
-    print(round(clock.get_fps()))
     handle_input()
     game_state = display_graphics(game_state, cwd)
     for event in pg.event.get():
