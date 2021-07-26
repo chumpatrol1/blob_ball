@@ -216,7 +216,7 @@ class ball:
             except Exception as exception:
                 print(exception)
                 self.y_speed -= 5
-        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60):
+        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60 and self.y_pos >= 900):
             self.y_speed = -50
 
 

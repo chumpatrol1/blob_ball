@@ -99,20 +99,26 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             ball.check_blob_ability(p2_blob)
             if(p1_blob.kick_timer == 1):
                 p1_blob.check_blob_collision(p2_blob)
-                if(p2_blob.hp <= 0):
+                   
+            if(p2_blob.kick_timer == 1):
+                p2_blob.check_blob_collision(p1_blob)
+
+            p1_blob.check_ability_collision(p2_blob, ball)
+            p2_blob.check_ability_collision(p1_blob, ball)
+
+            if(p2_blob.hp <= 0):
                     timer = 120
                     p2_ko = True
                     p1_blob.cooldown()
                     p2_blob.damage_flash_timer = 0
-                    
-            if(p2_blob.kick_timer == 1):
-                p2_blob.check_blob_collision(p1_blob)
-                if(p1_blob.hp <= 0):
+            
+            if(p1_blob.hp <= 0):
                     timer = 120
                     p1_ko = True
                     p2_blob.cooldown()
                     p1_blob.damage_flash_timer = 0
-                    #p2_blob.kick_timer = 0
+
+
             p1_blob.cooldown()
             p2_blob.cooldown()
             ball.move(p1_blob, p2_blob)

@@ -412,6 +412,12 @@ class blob:
 
                     blob.damage_flash_timer = 60
 
+    def check_ability_collision(self, blob, ball):
+        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 60
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
+            blob.hp -= 1
+            blob.damage_flash_timer = 60
+
     def blob_ko(self):
         self.y_speed = 10
         if(self.y_pos < 2000):
