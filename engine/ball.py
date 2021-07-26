@@ -204,7 +204,7 @@ class ball:
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))
         elif(blob.used_ability == "snowball"):
-            self.x_speed *= .98
+            self.x_speed *= .975
             self.y_speed *= (.95 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
             try:
