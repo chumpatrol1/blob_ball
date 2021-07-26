@@ -1,3 +1,6 @@
+#python -m cProfile -o out.prof main.py
+#snakeviz out.prof
+
 import os
 
 print(os.chdir(os.path.dirname(os.path.abspath(__file__))))
