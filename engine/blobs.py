@@ -65,7 +65,7 @@ def type_to_stars(type):
     elif(type == "ice"):
         blob_dict = {
             'max_hp': 3,
-            'top_speed': 5,
+            'top_speed': 4,
             'traction': 1,
             'friction': 3,
             'gravity': 4,
