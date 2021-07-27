@@ -242,7 +242,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_darkened'] = False
 
-    if(p2_blob.type == p1_blob.type):
+    if(p2_blob.species == p1_blob.species):
         if(not image_cache['p2_darkened']):
             image_cache['p2_blob'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
             image_cache['p2_darkened'] = True

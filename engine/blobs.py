@@ -2,7 +2,7 @@ import math
 import os
 
 cwd = os.getcwd()
-def type_to_stars(type):
+def type_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
     top_speed: The fastest that a blob can naturally accelerate to in the ground/air
@@ -22,7 +22,7 @@ def type_to_stars(type):
     speical_ability_max: The most special ability that can be stored at once
     special_ability_cooldown: The time between special ability uses. 0 means that it can be held down.
     '''
-    if(type == "quirkless"):
+    if(species == "quirkless"):
         blob_dict = {
             'max_hp': 4,
             'top_speed': 4,
@@ -42,7 +42,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
         }
-    elif(type == "fire"):
+    elif(species == "fire"):
         blob_dict = {
             'max_hp': 2,
             'top_speed': 4,
@@ -62,7 +62,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
-    elif(type == "ice"):
+    elif(species == "ice"):
         blob_dict = {
             'max_hp': 3,
             'top_speed': 4,
@@ -82,7 +82,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
-    elif(type == "water"):
+    elif(species == "water"):
         blob_dict = {
             'max_hp': 2,
             'top_speed': 3,
@@ -102,7 +102,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
-    elif(type == "rock"):
+    elif(species == "rock"):
         blob_dict = {
             'max_hp': 5,
             'top_speed': 1,
@@ -125,7 +125,7 @@ def type_to_stars(type):
 
     return blob_dict
 
-def type_to_image(type):
+def type_to_image(species):
     global cwd
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
@@ -137,7 +137,7 @@ def type_to_image(type):
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
 
-    return image_dict[type]
+    return image_dict[species]
 
 def player_to_controls(player):
     if(player == 1):
@@ -168,15 +168,15 @@ def create_visualization(number):
     return math.ceil(number/6)/10
 
 class blob:
-    def __init__(self, type = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
-        self.type = type
+    def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
+        self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
             self.danger_zone = 1475
         else:
             self.danger_zone = 225
-        self.image = type_to_image(type)
-        self.stars = type_to_stars(type) #Gets many values for each blob
+        self.image = type_to_image(species)
+        self.stars = type_to_stars(species) #Gets many values for each blob
         self.max_hp = self.stars['max_hp'] + 3 #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
@@ -255,7 +255,7 @@ class blob:
         self.movement_lock = 0 #Caused if the blob has its movement blocked
         self.special_ability_charge_base = 1
         self.info = {
-            
+
         }
     
     ground = 1200
@@ -313,7 +313,7 @@ class blob:
             if((self.damage_flash_timer // 10) % 2 == 1):
                 self.image = type_to_image('invisible')
             else:
-                self.image = type_to_image(self.type)
+                self.image = type_to_image(self.species)
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
@@ -443,7 +443,7 @@ class blob:
         self.block_timer = 0
         self.focusing = False
         self.damage_flash_timer = 0
-        self.image = type_to_image(self.type)
+        self.image = type_to_image(self.species)
         self.special_ability_timer = 0
         
     def move(self, pressed_buttons):

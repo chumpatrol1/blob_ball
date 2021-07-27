@@ -3,21 +3,20 @@ import os
 import pygame as pg
 cwd = os.getcwd()
 
-def type_to_image(type):
+def type_to_image(species):
     global cwd
-    #print("The type is...")
-    #print(type)
-    if(type == "soccer_ball"):
+
+    if(species == "soccer_ball"):
         image = cwd+"\\resources\\images\\soccer_ball.png"
-    elif(type == "p1_token"):
+    elif(species == "p1_token"):
         image = cwd+"\\resources\\images\\p1_token.png"
-    elif(type == "p2_token"):
+    elif(species == "p2_token"):
         image = cwd+"\\resources\\images\\p2_token.png"
-    elif(type == "kicked_ball"):
+    elif(species == "kicked_ball"):
         image = cwd+"\\resources\\images\\kicked_ball.png"
-    elif(type == "blocked_ball"):
+    elif(species == "blocked_ball"):
         image = cwd+"\\resources\\images\\blocked_ball.png"
-    elif(type == "goal_ball"):
+    elif(species == "goal_ball"):
         image = cwd+"\\resources\\images\\goal_ball.png"
 
     return image
@@ -33,9 +32,9 @@ def lineFromPoints(P, Q, D, E):
             return 0
 
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
-        self.type = type
-        self.image = type_to_image(type)
+    def __init__(self, species = "soccer_ball", x_pos = 902, y_pos = 900):
+        self.species = species
+        self.image = type_to_image(species)
         self.x_speed = 0
         self.y_speed = 0
         self.speed = 0
@@ -101,7 +100,7 @@ class ball:
                     blob.collision_timer = 10
                 if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
                     self.image = type_to_image('kicked_ball')
-                    self.type = "kicked_ball"
+                    self.species = "kicked_ball"
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
                     try:
@@ -155,7 +154,7 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
-                        self.type = "blocked_ball"
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
@@ -170,7 +169,7 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
-                        self.type = "blocked_ball"
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
@@ -235,7 +234,7 @@ class ball:
         goal_top = 825
         goal_bottom = 950
 
-        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.type, p1_blob.used_ability, p2_blob.used_ability))
+        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.species, p1_blob.used_ability, p2_blob.used_ability))
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
@@ -347,5 +346,5 @@ class ball:
             self.special_timer -= 1
             if(self.special_timer == 0):
                 self.image = type_to_image('soccer_ball')
-                self.type = "soccer_ball"
+                self.species = "soccer_ball"
         
