@@ -254,6 +254,9 @@ class blob:
         self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
         self.special_ability_charge_base = 1
+        self.info = {
+            
+        }
     
     ground = 1200
 
@@ -414,7 +417,8 @@ class blob:
 
     def check_ability_collision(self, blob, ball):
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 60
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
+        and blob.block_timer == 0):
             blob.hp -= 1
             blob.damage_flash_timer = 60
 
@@ -440,6 +444,7 @@ class blob:
         self.focusing = False
         self.damage_flash_timer = 0
         self.image = type_to_image(self.type)
+        self.special_ability_timer = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)

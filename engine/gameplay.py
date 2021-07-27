@@ -3,6 +3,8 @@ import sys
 import engine.handle_input
 import engine.blobs
 import engine.ball
+import time
+from json import dumps
 
 def initialize_players(p1_selected, p2_selected, ruleset):
     global goal_limit
@@ -30,9 +32,15 @@ p1_ko = False
 p2_ko = False
 goal_scored = False
 goal_scorer = None
-goal_limit = 5 #Defaults to 5 goals
-time_limit = 3600 #Defaults to 3600, or 1 minute
-time_bonus = 600 #Defaults to 600, or 10 seconds
+#goal_limit = 5 #Defaults to 5 goals
+#time_limit = 3600 #Defaults to 3600, or 1 minute
+#time_bonus = 600 #Defaults to 600, or 10 seconds
+game_info = {
+        'game_score': game_score,
+        'time': 0,
+        'time_seconds': 0,
+        'avg_goal_time': 0,
+        }
 
 def reset_round():
     global p1_blob
@@ -88,6 +96,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
+        
         initialized = True
     else:
         if(timer == 0):
@@ -146,6 +155,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                     else:
                         winner_info = 3
                     game_state = "casual_win"
+            game_info['time'] += 1
 
         else:
             if(p1_ko):
@@ -181,9 +191,23 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             p1_blob = None
             p2_blob = None
             ball = None
+            game_info["game_score"] = game_score
+            game_info["time_seconds"] = round(game_info['time']/60, 2)
+            game_info["avg_goal_time"] = round(game_info['time']/(game_score[0] + game_score[1]), 2)
+            game_info["avg_goal_time_seconds"] = round(game_info['time_seconds']/(game_score[0] + game_score[1]) , 2)
             game_score = [0, 0]
             timer = 180
             countdown = 0
             time_limit = 3600
+            with open('blob_ball_results.txt', 'a') as bbr:
+                bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
+                bbr.write("\n")
+                bbr.write("RULESET: " + dumps(ruleset))
+                bbr.write("\n")
+                bbr.write("GENERAL INFO: " + dumps(game_info))
+                bbr.write("\n")
+                bbr.write("\n")
+            game_info['time'] = 0
+
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info)
     return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit
