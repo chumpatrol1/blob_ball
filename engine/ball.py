@@ -115,7 +115,7 @@ class ball:
                         else:
                             blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
-                    self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (40 * p1_ball_collision[1] - blob_kick_y_modifier)
+                    self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (45 * p1_ball_collision[1] - blob_kick_y_modifier)
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
