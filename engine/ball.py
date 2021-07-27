@@ -54,6 +54,15 @@ class ball:
         for i in range(10):
             #First number is X position, second is Y, third is ball speed, 4th is ball image, 5th is p1 ability, 6th is p2 ability
             self.previous_locations.append((902, 900, 0, "soccer_ball", "none", "none"))
+        self.info = {
+            'blob_standard_collisions': 0,
+            'blob_reflect_collisions': 0,
+            'blob_warp_collisions': 0,
+            'kicked': 0,
+            'blocked': 0,
+            'x_distance_moved': 0,
+            'y_distance_moved': 0,
+        }
     
     ground = 1240
 
@@ -84,6 +93,7 @@ class ball:
                     self.y_speed = -5
                     self.x_speed = 0
                     blob.collision_timer = 5
+                    self.info['blob_warp_collisions'] += 1
                 elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
@@ -94,12 +104,16 @@ class ball:
                             self.y_speed = -5
                             self.x_speed = 0
                             blob.collision_timer = 5
+                            self.info['blob_warp_collisions'] += 1
+                        else:
+                            self.info['blob_reflect_collisions'] += 1
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
                 if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
                     self.image = type_to_image('kicked_ball')
+                    self.info['kicked'] += 1
                     self.species = "kicked_ball"
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
@@ -117,6 +131,7 @@ class ball:
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                    self.info['blob_standard_collisions'] += 1
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                     blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
@@ -159,6 +174,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
                 elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= ball_midpoint[1] <= blob.y_center + blob.block_lower):
@@ -174,6 +191,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
             else:
                 #If the blob is facing right
                 if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
@@ -187,6 +206,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
@@ -201,6 +222,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
         return blob, other_blob
 
     def check_blob_ability(self, blob):
@@ -312,6 +335,7 @@ class ball:
         elif(self.x_speed < -1 * self.x_speed_max):
             self.x_speed = -1 * self.x_speed_max
         self.x_pos += self.x_speed
+        self.info['x_distance_moved'] += abs(self.x_speed)
 
         #Interacting with the ground
         if(self.y_pos < ground):
@@ -337,7 +361,7 @@ class ball:
         elif(self.y_speed < -1 * self.y_speed_max):
             self.y_speed = -1 * self.y_speed_max
         self.y_pos += self.y_speed
-
+        self.info['y_distance_moved'] += abs(self.y_speed)
         self.speed = math.sqrt(self.x_speed ** 2 + self.y_speed **2)
 
         self.x_center = self.x_pos+27 #Rough Estimate :)
