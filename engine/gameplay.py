@@ -119,12 +119,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                     timer = 120
                     p2_ko = True
                     p1_blob.cooldown()
+                    p1_blob.info['points_from_kos'] += 1
                     p2_blob.damage_flash_timer = 0
             
             if(p1_blob.hp <= 0):
                     timer = 120
                     p1_ko = True
                     p2_blob.cooldown()
+                    p2_blob.info['points_from_kos'] += 1
                     p1_blob.damage_flash_timer = 0
 
 
@@ -138,12 +140,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                 goal_scored = True
                 countdown = 60
                 timer = 60
+                p1_blob.info['points_from_goals'] += 1
                 
             elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                 goal_scorer = 0
                 goal_scored = True
                 countdown = 60
                 timer = 60
+                p2_blob.info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
@@ -187,9 +191,6 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             timer -= 1
 
         if(game_state == "casual_win"):
-            initialized = False
-            p1_blob = None
-            p2_blob = None
             ball = None
             game_info["game_score"] = game_score
             game_info["time_seconds"] = round(game_info['time']/60, 2)
@@ -206,8 +207,15 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                 bbr.write("\n")
                 bbr.write("GENERAL INFO: " + dumps(game_info))
                 bbr.write("\n")
+                bbr.write("PLAYER 1: " + dumps(p1_blob.info))
+                bbr.write("\n")
+                bbr.write("PLAYER 2: " + dumps(p2_blob.info))
+                bbr.write("\n")
                 bbr.write("\n")
             game_info['time'] = 0
+            initialized = False
+            p1_blob = None
+            p2_blob = None
 
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info)
     return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit
