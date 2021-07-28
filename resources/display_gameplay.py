@@ -47,8 +47,8 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     pg.draw.rect(game_display, (200, 200, 200), (1286, 0, 70, 70))
     game_display.blit(image_cache["boost_icon"], (1286, 0))
 
-    nrg_surface = pg.Surface((screen_size[0]*(323/1366), screen_size[1]*(25/768)), pg.SRCALPHA)
-    p2_nrg_bar = 323 * p2_blob.special_ability_meter / p2_blob.special_ability_max
+    nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
+    p2_nrg_bar = nrg_surface.get_width() * p2_blob.special_ability_meter / p2_blob.special_ability_max
     if(p2_blob.special_ability_meter >= p2_blob.special_ability_cost):
         nrg_color = (0, 0, 255)
     else:
@@ -58,12 +58,12 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     else:
         border_color = (0, 0, 0)
     pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, nrg_color, (screen_size[0]*(323/1366) - (p2_nrg_bar), 0, p2_nrg_bar, screen_size[1]*(25/768)))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 2*nrg_surface.get_height()/25))
-    pg.draw.rect(nrg_surface, border_color, (0, 23*nrg_surface.get_height()/25, nrg_surface.get_width(), 2*nrg_surface.get_height()/25))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (320*nrg_surface.get_width()/323, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
-    game_display.blit(nrg_surface, (screen_size[0]*(14/20), screen_size[1]*75/768))
+    pg.draw.rect(nrg_surface, nrg_color, (nrg_surface.get_width() - (p2_nrg_bar), 0, p2_nrg_bar, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
+    game_display.blit(nrg_surface, (966, 75))
 
     menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
@@ -109,8 +109,8 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         text_rect.center = (1322, 30)
         game_display.blit(menu_text, text_rect)
 
-    nrg_surface = pg.Surface((screen_size[0]*(323/1366), screen_size[1]*(25/768)), pg.SRCALPHA)
-    p1_nrg_bar = 323 * p1_blob.special_ability_meter / p1_blob.special_ability_max
+    nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
+    p1_nrg_bar = nrg_surface.get_width() * p1_blob.special_ability_meter / p1_blob.special_ability_max
     if(p1_blob.special_ability_meter >= p1_blob.special_ability_cost):
         nrg_color = (255, 0, 0)
     else:
@@ -120,12 +120,12 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     else:
         border_color = (0, 0, 0)
     pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, nrg_color, (0, 0, p1_nrg_bar, screen_size[1]*(25/768)))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 2*nrg_surface.get_height()/25))
-    pg.draw.rect(nrg_surface, border_color, (0, 23*nrg_surface.get_height()/25, nrg_surface.get_width(), 2*nrg_surface.get_height()/25))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (320*nrg_surface.get_width()/323, 0, 3*nrg_surface.get_width()/323, nrg_surface.get_height()))
-    game_display.blit(nrg_surface, (screen_size[0]*(1/20), screen_size[1]*75/768))
+    pg.draw.rect(nrg_surface, nrg_color, (nrg_surface.get_width() - (p1_nrg_bar), 0, p1_nrg_bar, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
+    game_display.blit(nrg_surface, (10, 75))
 
     menu_text = ui_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
     text_rect = menu_text.get_rect()

@@ -194,9 +194,16 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
         if(game_state == "casual_win"):
             game_info["game_score"] = game_score
             game_info["time_seconds"] = round(game_info['time']/60, 2)
-            game_info["avg_goal_time"] = round(game_info['time']/(game_score[0] + game_score[1]), 2)
-            game_info["avg_goal_time_seconds"] = round(game_info['time_seconds']/(game_score[0] + game_score[1]) , 2)
-            game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
+            try:
+                game_info["avg_goal_time"] = round(game_info['time']/(game_score[0] + game_score[1]), 2)
+                game_info["avg_goal_time_seconds"] = round(game_info['time_seconds']/(game_score[0] + game_score[1]) , 2)
+            except:
+                game_info['avg_goal_time'] = 0
+                game_info['avg_goal_time_seconds'] = 0
+            try:
+                game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
+            except:
+                game_info['avg_collisions_per_goal'] = 0
             game_score = [0, 0]
             timer = 180
             countdown = 0
