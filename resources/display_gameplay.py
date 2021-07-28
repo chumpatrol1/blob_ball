@@ -120,7 +120,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     else:
         border_color = (0, 0, 0)
     pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, nrg_color, (nrg_surface.get_width() - (p1_nrg_bar), 0, p1_nrg_bar, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, nrg_color, (0, 0, p1_nrg_bar, nrg_surface.get_height()))
     pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
     pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
     pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))

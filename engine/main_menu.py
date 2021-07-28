@@ -203,11 +203,11 @@ def rules_navigation(timer, ruleset, previous_screen):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = 4
+            selector_position = len(ruleset)
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == 4:
+        if selector_position == len(ruleset):
             selector_position = 0
         else:
             selector_position += 1
@@ -227,6 +227,11 @@ def rules_navigation(timer, ruleset, previous_screen):
                 ruleset['time_bonus'] -= 300
             else:
                 ruleset['time_bonus'] = 3600
+        elif(selector_position == 3):
+            if(ruleset['special_ability_charge_base'] > 0):
+                ruleset['special_ability_charge_base'] -= 1
+            else:
+                ruleset['special_ability_charge_base'] = 20
     elif('p1_right' in pressed or 'p2_right' in pressed):
         if(selector_position == 0):
             if(ruleset['goal_limit'] < 25):
@@ -243,18 +248,26 @@ def rules_navigation(timer, ruleset, previous_screen):
                 ruleset['time_bonus'] += 300
             else:
                 ruleset['time_bonus'] = 0
+        elif(selector_position == 3):
+            if(ruleset['special_ability_charge_base'] < 20):
+                ruleset['special_ability_charge_base'] += 1
+            else:
+                ruleset['special_ability_charge_base'] = 0
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
-        if(selector_position == 4): #Casual
+        if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
                 selector_position = 4
             else:
                 selector_position = 0
             print(previous_screen)
             game_state = previous_screen
-        elif(selector_position == 3):
+        elif(selector_position == len(ruleset) - 1):
             ruleset['goal_limit'] = 5
             ruleset['time_limit'] = 3600
             ruleset['time_bonus'] = 600
+            ruleset['special_ability_charge_base'] = 1
+            ruleset['danger_zone_enabled'] = True
+        elif(selector_position == 4):
+            ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
             
-        print("Selected position {}!".format(selector_position))
     return selector_position, game_state

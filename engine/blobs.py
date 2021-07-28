@@ -168,7 +168,8 @@ def create_visualization(number):
     return math.ceil(number/6)/10
 
 class blob:
-    def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
+    def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
+    special_ability_charge_base = 1, danger_zone_enabled = True):
         self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
@@ -238,6 +239,7 @@ class blob:
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = self.stars['special_ability_cooldown'] #Cooldown between uses
+        self.special_ability_charge_base = special_ability_charge_base
         self.used_ability = None
 
         self.collision_distance = 104 #Used for calculating ball collisions
@@ -253,7 +255,7 @@ class blob:
         self.boost_timer_visualization = 0
         self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
-        self.special_ability_charge_base = 1
+        self.danger_zone_enabled = danger_zone_enabled
         self.info = {
             'species': self.species,
             'damage_taken': 0,
@@ -435,9 +437,8 @@ class blob:
                         else:
                             blob.hp -= 2
                             blob.info['damage_taken'] += 2
-                        if((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)):
+                        if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                             #Take additional damage from kicks if you are hiding by your goal
-                            print("BONUS")
                             blob.hp -= 1
                             blob.info['damage_taken'] += 1
 
