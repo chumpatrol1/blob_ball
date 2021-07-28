@@ -180,9 +180,9 @@ def draw_timer(screen_size, game_display, timer):
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
             game_display.blit(timer_text, text_rect)
 
-def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time):
+def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
     #TODO: Simplify and remove
-    draw_background(game_display, "casual_match")
+    draw_background(game_display, "casual_match", settings)
     global cwd
     global image_cache
     if not image_cache['initialized']: #Load in the images so we don't keep importing them

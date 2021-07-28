@@ -42,8 +42,8 @@ def menu_navigation(timer):
             selector_position = 0
             game_state = "rules"
         elif(selector_position == 5):
-            #game_state = "settings"
-            game_state = "casual_css"
+            selector_position = 0
+            game_state = "settings"
         elif(selector_position == 6): #Quits the game
             print("QUIT")
             pg.quit()
@@ -142,9 +142,9 @@ def casual_css_navigation():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 2):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "settings"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 3):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
@@ -168,9 +168,9 @@ def casual_css_navigation():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 2):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "settings"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 3):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
@@ -269,5 +269,43 @@ def rules_navigation(timer, ruleset, previous_screen):
             ruleset['danger_zone_enabled'] = True
         elif(selector_position == 4):
             ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
+            
+    return selector_position, game_state
+
+def settings_navigation(timer, settings, previous_screen):
+    game_state = "settings"
+    pressed = engine.handle_input.menu_input()
+    global selector_position
+    if('p1_up' in pressed or 'p2_up' in pressed):
+        if selector_position == 0:
+            selector_position = len(settings) + 2
+        else:
+            selector_position -= 1
+    elif('p1_down' in pressed or 'p2_down' in pressed):
+        if selector_position == len(settings) + 2:
+            selector_position = 0
+        else:
+            selector_position += 1
+
+    if('p1_left' in pressed or 'p2_left' in pressed):
+        pass
+    elif('p1_right' in pressed or 'p2_right' in pressed):
+        pass
+
+    if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
+        if(selector_position == len(settings) + 2):
+            if(previous_screen == "main_menu"):
+                selector_position = 5
+            else:
+                selector_position = 0
+            print(previous_screen)
+            game_state = previous_screen
+        elif(selector_position == len(settings) + 1):
+            settings['hd_backgrounds'] = True
+            settings['hd_blobs'] = True
+        elif(selector_position == 1):
+            settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
+        elif(selector_position == 2):
+            settings['hd_blobs'] = not(settings['hd_blobs'])
             
     return selector_position, game_state

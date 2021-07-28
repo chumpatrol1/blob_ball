@@ -6,7 +6,7 @@ import engine.ball
 import time
 from json import dumps
 
-def initialize_players(p1_selected, p2_selected, ruleset):
+def initialize_players(p1_selected, p2_selected, ruleset, settings):
     global goal_limit
     global time_limit
     global time_bonus
@@ -69,7 +69,7 @@ def score_goal(winner, goal_limit):
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected, ruleset):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
     pressed = engine.handle_input.gameplay_input()
     global initialized
     global p1_blob
@@ -93,7 +93,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
 
 
     if not initialized:
-        blobs = initialize_players(p1_selected, p2_selected, ruleset)
+        blobs = initialize_players(p1_selected, p2_selected, ruleset, settings)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
