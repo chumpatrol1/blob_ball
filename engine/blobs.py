@@ -172,9 +172,9 @@ class blob:
         self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
-            self.danger_zone = 1475
-        else:
             self.danger_zone = 225
+        else:
+            self.danger_zone = 1475
         self.image = type_to_image(species)
         self.stars = type_to_stars(species) #Gets many values for each blob
         self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
@@ -437,6 +437,7 @@ class blob:
                             blob.info['damage_taken'] += 2
                         if((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)):
                             #Take additional damage from kicks if you are hiding by your goal
+                            print("BONUS")
                             blob.hp -= 1
                             blob.info['damage_taken'] += 1
 
