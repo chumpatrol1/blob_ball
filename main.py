@@ -19,7 +19,6 @@ pg.init()
 
 
 def handle_input():
-    controls = open(cwd+"\\engine\\controls.txt", "r+")
     engine.handle_input.get_keypress()
 
 def display_graphics(game_state, cwd):

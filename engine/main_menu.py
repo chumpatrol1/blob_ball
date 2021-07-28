@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 import engine.handle_input
+from engine.handle_input import reset_inputs
 
 pg.init()
 clock = pg.time.Clock()
@@ -304,7 +305,9 @@ def settings_navigation(timer, settings, previous_screen):
             settings['hd_backgrounds'] = True
             settings['hd_blobs'] = True
         elif(selector_position == len(settings) + 1):
-            pass #CONTROLLER RECON
+            reset_inputs()
+        elif(selector_position == 0):
+            game_state = "rebind"
         elif(selector_position == 1):
             settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         elif(selector_position == 2):

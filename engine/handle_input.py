@@ -1,11 +1,12 @@
 import pygame as pg
 import sys
-import os
+from os import getcwd
+from json import loads, dumps
 
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
-
+controls = open(getcwd()+"\\engine\\controls.txt", "r+")
 input_map = {
     'p2_up': pg.K_UP,
     'p2_down': pg.K_DOWN,
@@ -25,8 +26,47 @@ input_map = {
     'p1_boost': pg.K_4
 }
 
-def bind_inputs(controls, input_map):
-    pass
+input_map = loads(controls.readlines()[0])
+
+def unbind_inputs():
+    global input_map
+    for button in input_map:
+        input_map[button] = 0
+
+def bind_input(key_to_rebind):
+    global input_map
+    
+    for event in pg.event.get():
+        if event.type == pg.KEYDOWN and not event.key in input_map.values():
+            input_map[key_to_rebind] = event.key
+            if(key_to_rebind == "p2_boost"):
+                with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+                    control_list.write(dumps(input_map))
+            return True
+        else:
+            return False
+
+
+def reset_inputs():
+    global input_map
+    input_map = {
+    'p2_up': pg.K_UP,
+    'p2_down': pg.K_DOWN,
+    'p2_left': pg.K_LEFT,
+    'p2_right': pg.K_RIGHT,
+    'p2_ability': pg.K_n,
+    'p2_kick': pg.K_m,
+    'p2_block': pg.K_COMMA,
+    'p2_boost': pg.K_PERIOD,
+    'p1_up': pg.K_w,
+    'p1_down': pg.K_s,
+    'p1_left': pg.K_a,
+    'p1_right': pg.K_d,
+    'p1_ability': pg.K_1,
+    'p1_kick': pg.K_2,
+    'p1_block': pg.K_3,
+    'p1_boost': pg.K_4
+    }
 
 def get_keypress():
     global input_map

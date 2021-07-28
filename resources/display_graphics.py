@@ -7,7 +7,7 @@ import engine.main_menu
 import engine.gameplay
 from resources.background_handler import draw_background as draw_background
 from resources.display_gameplay import draw_gameplay as draw_gameplay
-from resources.display_settings import draw_settings_screen as draw_settings_screen
+from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 import math
 pg.font.init()
 cwd = os.getcwd()
@@ -245,6 +245,7 @@ def handle_graphics(game_state, main_cwd):
             p1_blob = info_getter[3]
             p2_blob = info_getter[4]
         elif(game_state == "rules" or game_state == "settings"):
+            timer = 3
             previous_screen = "casual_css"
         elif(game_state == "main_menu"):
             timer = 10
@@ -268,6 +269,8 @@ def handle_graphics(game_state, main_cwd):
         if(timer == 0):
             return "casual_css"
     elif(game_state == "rules"):
+        if(timer > 0):
+            timer -= 1
         info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen)
         selector_position = info_getter[0]
         game_state = info_getter[1]
@@ -277,6 +280,10 @@ def handle_graphics(game_state, main_cwd):
         selector_position = info_getter[0]
         game_state = info_getter[1]
         draw_settings_screen(game_surface, settings, selector_position)
+    elif(game_state == "rebind"):
+        info_getter = draw_rebind_screen(game_surface, settings)
+        game_state = info_getter[0]
+
     #print(selector_position)
     game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
     pg.display.flip()
