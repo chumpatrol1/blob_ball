@@ -278,11 +278,11 @@ def settings_navigation(timer, settings, previous_screen):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = len(settings) + 2
+            selector_position = len(settings) + 3
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == len(settings) + 2:
+        if selector_position == len(settings) + 3:
             selector_position = 0
         else:
             selector_position += 1
@@ -293,16 +293,18 @@ def settings_navigation(timer, settings, previous_screen):
         pass
 
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
-        if(selector_position == len(settings) + 2):
+        if(selector_position == len(settings) + 3):
             if(previous_screen == "main_menu"):
                 selector_position = 5
             else:
                 selector_position = 0
             print(previous_screen)
             game_state = previous_screen
-        elif(selector_position == len(settings) + 1):
+        elif(selector_position == len(settings) + 2):
             settings['hd_backgrounds'] = True
             settings['hd_blobs'] = True
+        elif(selector_position == len(settings) + 1):
+            pass #CONTROLLER RECON
         elif(selector_position == 1):
             settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         elif(selector_position == 2):
