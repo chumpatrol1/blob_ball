@@ -86,36 +86,36 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(200)
     else:
         p1_selected_blob.set_alpha(255)
-    game_display.blit(p1_selected_blob, (screen_size[0]* (3/4), screen_size[1]*(3/4)))
+    p1_selected_blob = pg.transform.flip(p1_selected_blob, True, False)
+    game_display.blit(p1_selected_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
     p2_selected_blob = pg.image.load(directory + blob_array[p2_selector_position[1]][p2_selector_position[0]][0])
     if(p2_selector_position[0] == 0):
         p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[0]//7))
     else:
         p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
-    p2_selected_blob = pg.transform.flip(p2_selected_blob, True, False)
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
         p2_selected_blob.set_alpha(200)
     else:
         p2_selected_blob.set_alpha(255)
-    game_display.blit(p2_selected_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
+    game_display.blit(p2_selected_blob, (screen_size[0]*(3/4), screen_size[1]*(3/4)))
 
     menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
-    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][1]), False, (255, 124, 0))
+    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (5*screen_size[0]//6, 11*screen_size[1]//12)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (255, 124, 0))
+    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//6, 11*screen_size[1]//12)
     game_display.blit(menu_text, text_rect)
 
     menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
-    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (255, 124, 0))
+    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][2]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (5*screen_size[0]//6, 24*screen_size[1]//25)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][2]), False, (255, 124, 0))
+    menu_text = menu_font.render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//6, 24*screen_size[1]//25)
     game_display.blit(menu_text, text_rect)
@@ -194,6 +194,7 @@ p1_blob = []
 p2_blob = []
 timer = 0
 ruleset = {
+    'version': 'v0.5.0a',
     'goal_limit': 5,
     'time_limit': 3600,
     'time_bonus': 600

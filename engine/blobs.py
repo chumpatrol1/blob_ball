@@ -265,6 +265,7 @@ class blob:
             'parries': 0,
             'clanks': 0,
             'x_distance_moved': 0,
+            'wavebounces': 0,
             'jumps': 0,
             'jump_cancelled_focuses': 0,
             'time_focused': 0,
@@ -434,7 +435,7 @@ class blob:
                         else:
                             blob.hp -= 1
                             blob.info['damage_taken'] += 1
-                        if((blob.player == 1 and blob.x_pos >= blob.danger_zone) or (blob.player == 2 and blob.x_pos <= blob.danger_zone)):
+                        if((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)):
                             #Take additional damage from kicks if you are hiding by your goal
                             blob.hp -= 1
                             blob.info['damage_taken'] += 1
@@ -462,11 +463,11 @@ class blob:
         self.x_speed = 0
         self.y_speed = 0
         if(player == 1):
-            self.x_pos = 1600
-            self.facing = 'left'
-        else:
             self.x_pos = 100
             self.facing = 'right'
+        else:
+            self.x_pos = 1600
+            self.facing = 'left'
         self.y_pos = blob.ground
         self.boost_timer = 0
         self.focus_lock = 0
@@ -509,7 +510,12 @@ class blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed -= self.traction #Accelerate based off of traction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
+                        if(not round(prev_speed) == -1*self.top_speed):
+                            print(prev_speed, self.x_speed)
+                            self.info['wavebounces'] += 1
+                        
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
@@ -519,7 +525,11 @@ class blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed += self.traction #Accelerate based off of traction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
+                        if(not round(prev_speed) == self.top_speed):
+                            print(prev_speed, self.x_speed)
+                            self.info['wavebounces'] += 1
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:

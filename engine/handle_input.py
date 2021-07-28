@@ -7,22 +7,22 @@ pg.init()
 #clock.tick(120)
 
 input_map = {
-    'p1_up': pg.K_UP,
-    'p1_down': pg.K_DOWN,
-    'p1_left': pg.K_LEFT,
-    'p1_right': pg.K_RIGHT,
-    'p1_ability': pg.K_n,
-    'p1_kick': pg.K_m,
-    'p1_block': pg.K_COMMA,
-    'p1_boost': pg.K_PERIOD,
-    'p2_up': pg.K_w,
-    'p2_down': pg.K_s,
-    'p2_left': pg.K_a,
-    'p2_right': pg.K_d,
-    'p2_ability': pg.K_1,
-    'p2_kick': pg.K_2,
-    'p2_block': pg.K_3,
-    'p2_boost': pg.K_4
+    'p2_up': pg.K_UP,
+    'p2_down': pg.K_DOWN,
+    'p2_left': pg.K_LEFT,
+    'p2_right': pg.K_RIGHT,
+    'p2_ability': pg.K_n,
+    'p2_kick': pg.K_m,
+    'p2_block': pg.K_COMMA,
+    'p2_boost': pg.K_PERIOD,
+    'p1_up': pg.K_w,
+    'p1_down': pg.K_s,
+    'p1_left': pg.K_a,
+    'p1_right': pg.K_d,
+    'p1_ability': pg.K_1,
+    'p1_kick': pg.K_2,
+    'p1_block': pg.K_3,
+    'p1_boost': pg.K_4
 }
 
 def bind_inputs(controls, input_map):
@@ -98,18 +98,7 @@ def css_input():
         return []
 
 def player_to_controls(player):
-    if(player == 1):
-        button_list = {
-            'p1_up': 'up',
-            'p1_down': 'down',
-            'p1_left': 'left',
-            'p1_right': 'right',
-            'p1_ability': 'ability',
-            'p1_kick': 'kick',
-            'p1_block': 'block',
-            'p1_boost': 'boost'
-        }
-    else:
+    if(player == 2):
         button_list = {
             'p2_up': 'up',
             'p2_down': 'down',
@@ -119,6 +108,17 @@ def player_to_controls(player):
             'p2_kick': 'kick',
             'p2_block': 'block',
             'p2_boost': 'boost'
+        }
+    else:
+        button_list = {
+            'p1_up': 'up',
+            'p1_down': 'down',
+            'p1_left': 'left',
+            'p1_right': 'right',
+            'p1_ability': 'ability',
+            'p1_kick': 'kick',
+            'p1_block': 'block',
+            'p1_boost': 'boost'
         }
     return button_list
 

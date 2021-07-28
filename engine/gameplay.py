@@ -10,8 +10,8 @@ def initialize_players(p1_selected, p2_selected, ruleset):
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 1600, facing = 'left')
-    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 100, facing = 'right')
+    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right')
+    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left')
     ball = engine.ball.ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
