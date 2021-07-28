@@ -177,7 +177,7 @@ class blob:
             self.danger_zone = 225
         self.image = type_to_image(species)
         self.stars = type_to_stars(species) #Gets many values for each blob
-        self.max_hp = self.stars['max_hp'] + 3 #Each star adds an additional HP.
+        self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted
@@ -220,9 +220,9 @@ class blob:
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
-        self.boost_top_speed = 10+(1*self.stars['top_speed'] + 1) #These stats are increased by 1 star
-        self.boost_traction = 0.2 + ((self.stars['traction'] + 1) * 0.15)
-        self.boost_friction = 0.2 + ((self.stars['friction'] + 1) * 0.15) 
+        self.boost_top_speed = 10+(1*self.stars['top_speed'] + 3) #This stat is increased by 3 stars
+        self.boost_traction = 0.2 + ((self.stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
+        self.boost_friction = 0.2 + ((self.stars['friction'] + 5) * 0.15) 
 
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
         self.focus_lock_max = 60
@@ -430,11 +430,11 @@ class blob:
                 if(blob.block_timer == 0):
                     if(not blob.kick_timer == 1):
                         if(self.boost_timer > 0):
+                            blob.hp -= 3
+                            blob.info['damage_taken'] += 3
+                        else:
                             blob.hp -= 2
                             blob.info['damage_taken'] += 2
-                        else:
-                            blob.hp -= 1
-                            blob.info['damage_taken'] += 1
                         if((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)):
                             #Take additional damage from kicks if you are hiding by your goal
                             blob.hp -= 1
@@ -513,7 +513,6 @@ class blob:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
                         if(not round(prev_speed) == -1*self.top_speed):
-                            print(prev_speed, self.x_speed)
                             self.info['wavebounces'] += 1
                         
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
@@ -528,7 +527,6 @@ class blob:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
                         if(not round(prev_speed) == self.top_speed):
-                            print(prev_speed, self.x_speed)
                             self.info['wavebounces'] += 1
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate

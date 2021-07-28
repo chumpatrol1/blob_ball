@@ -52,7 +52,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p2_blob.special_ability_meter >= p2_blob.special_ability_cost):
         nrg_color = (0, 0, 255)
     else:
-        nrg_color = (0, 0, 100)
+        nrg_color = (0, 0, 50)
     if(p2_blob.special_ability_meter >= p2_blob.boost_cost and not p2_blob.boost_cooldown_timer > 0):
         border_color = (255, 255, 0)
     else:
@@ -114,7 +114,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p1_blob.special_ability_meter >= p1_blob.special_ability_cost):
         nrg_color = (255, 0, 0)
     else:
-        nrg_color = (100, 0, 0)
+        nrg_color = (50, 0, 0)
     if(p1_blob.special_ability_meter >= p1_blob.boost_cost and not p1_blob.boost_cooldown_timer > 0):
         border_color = (255, 255, 0)
     else:
