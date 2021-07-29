@@ -299,7 +299,6 @@ def settings_navigation(timer, settings, previous_screen):
                 selector_position = 5
             else:
                 selector_position = 0
-            print(previous_screen)
             game_state = previous_screen
         elif(selector_position == len(settings) + 2):
             settings['hd_backgrounds'] = True

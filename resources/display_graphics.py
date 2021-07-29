@@ -122,6 +122,8 @@ def handle_graphics(game_state, main_cwd):
         game_state = info_getter[1]
         draw_rules_screen(screen_size, game_surface, ruleset, selector_position, settings)
     elif(game_state == "settings"):
+        if(timer > 0):
+            timer -= 1
         info_getter = engine.main_menu.settings_navigation(timer, settings, previous_screen)
         selector_position = info_getter[0]
         game_state = info_getter[1]
