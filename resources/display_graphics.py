@@ -318,7 +318,7 @@ def handle_graphics(game_state, main_cwd):
                 display_height = 576
                 full_screen = True
             
-            toggle_timer = 5
+            toggle_timer = 10
 
 
     if(full_screen):
