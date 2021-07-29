@@ -18,7 +18,7 @@ def draw_ball(screen_size, game_display, ball):
 
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     global image_cache
-    ui_font = pg.font.SysFont('Arial', 40)
+    ui_font = image_cache['ui_font']
     pg.draw.rect(game_display, (200, 200, 200), (10, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
     game_display.blit(image_cache["heart_icon"], (10, 0))
     menu_text = ui_font.render(str(p1_blob.hp), False, (0, 255, 0))
@@ -173,8 +173,9 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         game_display.blit(menu_text, text_rect)
 
 def draw_timer(screen_size, game_display, timer):
+    global image_cache
     if(timer > 0):
-            timer_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
+            timer_font = image_cache['menu_font']
             timer_text = timer_font.render(str(ceil(timer/6)/10), False, (255, 124, 0))
             text_rect = timer_text.get_rect()
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
@@ -198,7 +199,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
-
+        image_cache['menu_font'] = pg.font.SysFont('Arial', 35)
+        image_cache['ui_font'] = pg.font.SysFont('Arial', 40)
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -288,31 +290,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     #fade_out = 200
     draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob)
     draw_ball(screen_size, game_display, ball)
-    #DISABLED DUE TO LAG
-    '''for frame in ball.previous_locations:
-        if(frame[2] >= 35):
-            afterimage = pg.image.load(engine.ball.type_to_image(frame[3]))
-            afterimage = pg.transform.scale(afterimage, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-            afterimage = afterimage.convert_alpha()
-            real_fade = fade_out
-            afterimage.set_alpha(real_fade)
-            game_display.blit(afterimage, ((screen_size[0]/1366)*frame[0] * (1000/1366), (screen_size[1]/768) * frame[1] * (400/768)))
-        fade_out -= 20'''
-        
-    '''if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
-        fireball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
-        fireball_image = fireball_image.convert_alpha()
-        fireball_image = pg.transform.scale(fireball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-        fireball_image.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(fireball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        snowball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
-        snowball_image = snowball_image.convert_alpha()
-        snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-        snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(snowball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    '''
-    menu_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
+
+    menu_font = image_cache['menu_font']
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
