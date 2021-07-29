@@ -166,14 +166,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
             if(p1_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(0, goal_limit)
+                    game_state, winner_info = score_goal(1, goal_limit)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
                     reset_round()
             if(p2_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(1, goal_limit)
+                    game_state, winner_info = score_goal(0, goal_limit)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
                     reset_round()
