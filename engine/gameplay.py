@@ -141,14 +141,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 goal_scored = True
                 countdown = 60
                 timer = 60
-                p1_blob.info['points_from_goals'] += 1
+                p2_blob.info['points_from_goals'] += 1
                 
             elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                 goal_scorer = 0
                 goal_scored = True
                 countdown = 60
                 timer = 60
-                p2_blob.info['points_from_goals'] += 1
+                p1_blob.info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
