@@ -58,7 +58,7 @@ def draw_rebind_screen(game_display, settings):
         rebind_number += 1
         if(rebind_number == 16):
             game_state = "settings"
-            rebind_number = 0
+            rebind_number = -1
 
     game_display.blit(menu_text, text_rect)
     return [game_state]

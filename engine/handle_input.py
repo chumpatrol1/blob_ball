@@ -67,6 +67,8 @@ def reset_inputs():
     'p1_block': pg.K_3,
     'p1_boost': pg.K_4
     }
+    with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+                    control_list.write(dumps(input_map))
 
 def get_keypress():
     global input_map
