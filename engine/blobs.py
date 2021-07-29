@@ -480,6 +480,9 @@ class blob:
         self.image = type_to_image(self.species)
         self.special_ability_timer = 0
         self.used_ability = None
+        self.top_speed = self.base_top_speed
+        self.friction = self.base_friction
+        self.traction = self.base_traction
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
