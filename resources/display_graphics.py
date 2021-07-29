@@ -11,21 +11,28 @@ from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from engine.handle_input import toggle_fullscreen
 import math
-pg.font.init()
+
 cwd = os.getcwd()
+pg.quit()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 print("GRAPHICS CWD: "+ cwd)
+
+x = 100
+y = 200
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+pg.init()
+
 user32 = ctypes.windll.user32
 real_screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
 #real_screen_size = (960, 540)
+
 display_width = 1024
 display_height = 576
+
 pg.display.set_caption('Blob Ball')
-game_display = pg.display.set_mode((display_width, display_height), RESIZABLE) # The canvas
+game_display = pg.display.set_mode((display_width, display_height)) # The canvas
 game_surface = pg.Surface((1366, 768))
 
-
-pg.init()
 clock = pg.time.Clock()
 #clock.tick(60)
 
@@ -300,16 +307,18 @@ def handle_graphics(game_state, main_cwd):
         toggle = toggle_fullscreen()
         if(toggle):
             if(full_screen):
-                game_display = pg.display.set_mode((display_width, display_height), RESIZABLE)
+                pg.display.quit()
+                pg.display.init()
+                pg.display.set_caption('Blob Ball')
+                game_display = pg.display.set_mode((display_width, display_height))
                 full_screen = False
-                print("OK")
             else: 
                 game_display = pg.display.set_mode(real_screen_size, FULLSCREEN)
                 display_width = 1024
                 display_height = 576
                 full_screen = True
             
-            toggle_timer = 10
+            toggle_timer = 5
 
 
     if(full_screen):
