@@ -7,6 +7,7 @@ from pygame.constants import FULLSCREEN, RESIZABLE
 import engine.main_menu
 import engine.gameplay
 from resources.background_handler import draw_background as draw_background
+from resources.display_main_menu import draw_main_menu
 from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from engine.handle_input import toggle_fullscreen
@@ -35,31 +36,6 @@ game_surface = pg.Surface((1366, 768))
 
 clock = pg.time.Clock()
 #clock.tick(60)
-
-def draw_main_menu(screen_size, game_display, selector_position, settings):
-    draw_background(game_display, 'main_menu', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 50)
-    text_array = [
-        menu_font.render('Casual', False, (0, 0, 150)),
-        menu_font.render('Competitive', False, (0, 0, 150)),
-        menu_font.render('Online', False, (0, 0, 150)),
-        menu_font.render('Almanac', False, (0, 0, 150)),
-        menu_font.render('Rules', False, (0, 0, 150)),
-        menu_font.render('Settings', False, (0, 0, 150)),
-        menu_font.render('Quit', False, (0, 0, 150))
-    ]
-
-
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
-    ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
-    game_display.blit(ball, (850, ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
-
-    text_y = screen_size[1]//10
-    for text_box in text_array:
-        text_rect = text_box.get_rect()
-        text_rect.center = (screen_size[0]//2, text_y)
-        game_display.blit(text_box, text_rect)
-        text_y += screen_size[1]//10
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "Geyser"], ["\\blobs\\rock_blob.png", "Rock Blob", "Spire"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["\\blobs\\quirkless_blob.png", "", ""],],
