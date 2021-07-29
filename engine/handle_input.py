@@ -8,6 +8,14 @@ pg.init()
 #clock.tick(120)
 controls = open(getcwd()+"\\engine\\controls.txt", "r+")
 input_map = {
+    'p1_up': pg.K_w,
+    'p1_down': pg.K_s,
+    'p1_left': pg.K_a,
+    'p1_right': pg.K_d,
+    'p1_ability': pg.K_1,
+    'p1_kick': pg.K_2,
+    'p1_block': pg.K_3,
+    'p1_boost': pg.K_4,
     'p2_up': pg.K_UP,
     'p2_down': pg.K_DOWN,
     'p2_left': pg.K_LEFT,
@@ -16,14 +24,6 @@ input_map = {
     'p2_kick': pg.K_m,
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
-    'p1_up': pg.K_w,
-    'p1_down': pg.K_s,
-    'p1_left': pg.K_a,
-    'p1_right': pg.K_d,
-    'p1_ability': pg.K_1,
-    'p1_kick': pg.K_2,
-    'p1_block': pg.K_3,
-    'p1_boost': pg.K_4
 }
 
 input_map = loads(controls.readlines()[0])
@@ -50,6 +50,14 @@ def bind_input(key_to_rebind):
 def reset_inputs():
     global input_map
     input_map = {
+    'p1_up': pg.K_w,
+    'p1_down': pg.K_s,
+    'p1_left': pg.K_a,
+    'p1_right': pg.K_d,
+    'p1_ability': pg.K_1,
+    'p1_kick': pg.K_2,
+    'p1_block': pg.K_3,
+    'p1_boost': pg.K_4,
     'p2_up': pg.K_UP,
     'p2_down': pg.K_DOWN,
     'p2_left': pg.K_LEFT,
@@ -58,14 +66,6 @@ def reset_inputs():
     'p2_kick': pg.K_m,
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
-    'p1_up': pg.K_w,
-    'p1_down': pg.K_s,
-    'p1_left': pg.K_a,
-    'p1_right': pg.K_d,
-    'p1_ability': pg.K_1,
-    'p1_kick': pg.K_2,
-    'p1_block': pg.K_3,
-    'p1_boost': pg.K_4
     }
     with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
