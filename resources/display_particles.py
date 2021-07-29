@@ -14,6 +14,8 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
         particle_cache['water_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\water_particle.png").convert_alpha(), (40, 40))
         particle_cache['rock_glyph'] = pg.image.load(cwd + "\\resources\\images\\particles\\rock_glyph.png").convert_alpha()
         particle_cache['rock_spire'] = pg.image.load(cwd + "\\resources\\images\\particles\\rock_spire.png").convert_alpha()
+        particle_cache['thunder_glyph'] = pg.image.load(cwd + "\\resources\\images\\particles\\thunder_glyph.png").convert_alpha()
+        particle_cache['thunder_bolt'] = pg.image.load(cwd + "\\resources\\images\\particles\\thunder_bolt.png").convert_alpha()
         
 
     for previous_location in ball.previous_locations:
@@ -56,5 +58,24 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             particle_cache['rock_spire'].set_alpha(alpha)
             game_display.blit(particle_cache['rock_spire'], (particle_cache['p2_spire_x'], 500))
         
+    if(p1_blob.used_ability == "thunderbolt"):
+        if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 60):
+            game_display.blit(particle_cache['thunder_glyph'], (ball.x_center * (1000/1366) - 50, 700))
+        elif(p1_blob.special_ability_cooldown - 95 <= p1_blob.special_ability_timer <= p1_blob.special_ability_cooldown - 60):
+            if(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown - 60):
+                particle_cache['p1_spire_x'] = (ball.x_center * 1000/1366) - 50
+            alpha = 255 - 7 * ((p1_blob.special_ability_cooldown - 60) - p1_blob.special_ability_timer)
+            particle_cache['thunder_bolt'].set_alpha(alpha)
+            game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p1_spire_x'], 125))
+
+    if(p2_blob.used_ability == "thunderbolt"):
+        if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 60):
+            game_display.blit(particle_cache['thunder_glyph'], (ball.x_center * (1000/1366) - 50, 700))
+        elif(p2_blob.special_ability_cooldown - 95 <= p2_blob.special_ability_timer <= p2_blob.special_ability_cooldown - 60):
+            if(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown - 60):
+                particle_cache['p2_spire_x'] = (ball.x_center * 1000/1366) - 50
+            alpha = 255 - 7 * ((p2_blob.special_ability_cooldown - 60) - p2_blob.special_ability_timer)
+            particle_cache['thunder_bolt'].set_alpha(alpha)
+            game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p2_spire_x'], 125))
         
     

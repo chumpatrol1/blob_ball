@@ -245,6 +245,8 @@ class ball:
                 self.y_speed -= 5
         elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60 and self.y_pos >= 900):
             self.y_speed = -50
+        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 60):
+            self.y_speed = ball.ground - self.y_pos
 
 
     def move(self, p1_blob, p2_blob):
@@ -302,6 +304,10 @@ class ball:
                 self.x_speed += 0.5
                 if(self.y_speed >= 0):
                     self.y_speed = self.y_speed * -0.5
+                    if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                        for previous_location in self.previous_locations:
+                            if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                                self.y_speed = self.y_speed * 0.9
 
         if(self.x_pos > right_goal):
             side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)            
@@ -347,6 +353,12 @@ class ball:
                 pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
+                if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                    for previous_location in self.previous_locations:
+                        if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                            self.y_speed = self.y_speed * 0.9
+
+                
                  #Reduces bounciness over time
             self.y_pos = ground
             
