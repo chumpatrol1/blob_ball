@@ -1,7 +1,7 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.5.0b**
+**v0.5.2b**
 
 **Features:**
 * Casual Matches!
