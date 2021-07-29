@@ -12,6 +12,7 @@ from resources.display_css import draw_casual_css
 from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
+from resources.display_settings import draw_rules_screen as draw_rules_screen
 from engine.handle_input import toggle_fullscreen
 import math
 
@@ -35,31 +36,6 @@ display_height = 576
 pg.display.set_caption('Blob Ball')
 game_display = pg.display.set_mode((display_width, display_height)) # The canvas
 game_surface = pg.Surface((1366, 768))
-
-def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
-    draw_background(game_display, "win_screen", settings)
-    menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
-    text_array = [
-        menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, (255, 124, 0)),
-        menu_font.render("Time Limit: " + str(ruleset['time_limit']), False, (255, 124, 0)),
-        menu_font.render("Time Bonus: " + str(ruleset['time_bonus']), False, (255, 124, 0)),
-        menu_font.render("NRG Charge Rate: " + str(ruleset['special_ability_charge_base']), False, (255, 124, 0)),
-        menu_font.render("Danger Zone Enabled: " + str(ruleset['danger_zone_enabled']), False, (255, 124, 0)),
-        menu_font.render("Reset to Default", False, (255, 124, 0)),
-        menu_font.render("<-- Back", False, (255, 124, 0)),
-    ]
-    text_y = screen_size[1]//10
-    for text_box in text_array:
-        text_rect = text_box.get_rect()
-        text_rect.topleft = (screen_size[0]//20, text_y)
-        game_display.blit(text_box, text_rect)
-        text_y += screen_size[1]//10
-
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
-    ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
-    game_display.blit(ball, (screen_size[0]*(1/20), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
-
-
 
 p1_blob = []
 p2_blob = []
