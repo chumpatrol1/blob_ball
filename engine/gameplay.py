@@ -3,13 +3,15 @@ import sys
 import engine.handle_input
 import engine.blobs
 import engine.ball
+import time
+from json import dumps
 
-def initialize_players(p1_selected, p2_selected, ruleset):
+def initialize_players(p1_selected, p2_selected, ruleset, settings):
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.blob(type = p1_selected, player = 1, x_pos = 1600, facing = 'left')
-    p2_blob = engine.blobs.blob(type = p2_selected, player = 2, x_pos = 100, facing = 'right')
+    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'])
+    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'])
     ball = engine.ball.ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
@@ -30,9 +32,16 @@ p1_ko = False
 p2_ko = False
 goal_scored = False
 goal_scorer = None
-goal_limit = 5 #Defaults to 5 goals
-time_limit = 3600 #Defaults to 3600, or 1 minute
-time_bonus = 600 #Defaults to 600, or 10 seconds
+#goal_limit = 5 #Defaults to 5 goals
+#time_limit = 3600 #Defaults to 3600, or 1 minute
+#time_bonus = 600 #Defaults to 600, or 10 seconds
+game_info = {
+        'game_score': game_score,
+        'time': 0,
+        'time_seconds': 0,
+        'avg_point_time': 0,
+        'avg_collisions_per_goal': 0,
+        }
 
 def reset_round():
     global p1_blob
@@ -60,7 +69,7 @@ def score_goal(winner, goal_limit):
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected, ruleset):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
     pressed = engine.handle_input.gameplay_input()
     global initialized
     global p1_blob
@@ -84,10 +93,11 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
 
 
     if not initialized:
-        blobs = initialize_players(p1_selected, p2_selected, ruleset)
+        blobs = initialize_players(p1_selected, p2_selected, ruleset, settings)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
+        
         initialized = True
     else:
         if(timer == 0):
@@ -99,23 +109,31 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             ball.check_blob_ability(p2_blob)
             if(p1_blob.kick_timer == 1):
                 p1_blob.check_blob_collision(p2_blob)
-                if(p2_blob.hp <= 0):
+                   
+            if(p2_blob.kick_timer == 1):
+                p2_blob.check_blob_collision(p1_blob)
+
+            p1_blob.check_ability_collision(p2_blob, ball)
+            p2_blob.check_ability_collision(p1_blob, ball)
+
+            if(p2_blob.hp <= 0):
                     timer = 120
                     p2_ko = True
                     p1_blob.cooldown()
+                    p1_blob.info['points_from_kos'] += 1
                     p2_blob.damage_flash_timer = 0
-                    
-            if(p2_blob.kick_timer == 1):
-                p2_blob.check_blob_collision(p1_blob)
-                if(p1_blob.hp <= 0):
+            
+            if(p1_blob.hp <= 0):
                     timer = 120
                     p1_ko = True
                     p2_blob.cooldown()
+                    p2_blob.info['points_from_kos'] += 1
                     p1_blob.damage_flash_timer = 0
-                    #p2_blob.kick_timer = 0
+
+
             p1_blob.cooldown()
             p2_blob.cooldown()
-            ball.move()
+            ball.move(p1_blob, p2_blob)
             p1_blob = ball.check_blob_collisions(p1_blob)
             p2_blob = ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
@@ -123,12 +141,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                 goal_scored = True
                 countdown = 60
                 timer = 60
+                p1_blob.info['points_from_goals'] += 1
                 
             elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                 goal_scorer = 0
                 goal_scored = True
                 countdown = 60
                 timer = 60
+                p2_blob.info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
@@ -140,6 +160,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
                     else:
                         winner_info = 3
                     game_state = "casual_win"
+            game_info['time'] += 1
 
         else:
             if(p1_ko):
@@ -159,7 +180,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
-                ball.move()
+                ball.move(p1_blob, p2_blob)
                 p1_blob.move([])
                 p2_blob.move([])
                 countdown -= 1
@@ -171,13 +192,41 @@ def handle_gameplay(p1_selected, p2_selected, ruleset):
             timer -= 1
 
         if(game_state == "casual_win"):
-            initialized = False
-            p1_blob = None
-            p2_blob = None
-            ball = None
+            game_info["game_score"] = game_score
+            game_info["time_seconds"] = round(game_info['time']/60, 2)
+            try:
+                game_info["avg_goal_time"] = round(game_info['time']/(game_score[0] + game_score[1]), 2)
+                game_info["avg_goal_time_seconds"] = round(game_info['time_seconds']/(game_score[0] + game_score[1]) , 2)
+            except:
+                game_info['avg_goal_time'] = 0
+                game_info['avg_goal_time_seconds'] = 0
+            try:
+                game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
+            except:
+                game_info['avg_collisions_per_goal'] = 0
             game_score = [0, 0]
             timer = 180
             countdown = 0
             time_limit = 3600
+            with open('blob_ball_results.txt', 'a') as bbr:
+                bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
+                bbr.write("\n")
+                bbr.write("RULESET: " + dumps(ruleset))
+                bbr.write("\n")
+                bbr.write("GENERAL INFO: " + dumps(game_info))
+                bbr.write("\n")
+                bbr.write("PLAYER 1: " + dumps(p1_blob.info))
+                bbr.write("\n")
+                bbr.write("PLAYER 2: " + dumps(p2_blob.info))
+                bbr.write("\n")
+                bbr.write("BALL: " + dumps(ball.info))
+                bbr.write("\n")
+                bbr.write("\n")
+            game_info['time'] = 0
+            initialized = False
+            p1_blob = None
+            p2_blob = None
+            ball = None
+
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info)
     return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit

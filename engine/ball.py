@@ -3,21 +3,20 @@ import os
 import pygame as pg
 cwd = os.getcwd()
 
-def type_to_image(type):
+def type_to_image(species):
     global cwd
-    #print("The type is...")
-    #print(type)
-    if(type == "soccer_ball"):
+
+    if(species == "soccer_ball"):
         image = cwd+"\\resources\\images\\soccer_ball.png"
-    elif(type == "p1_token"):
+    elif(species == "p1_token"):
         image = cwd+"\\resources\\images\\p1_token.png"
-    elif(type == "p2_token"):
+    elif(species == "p2_token"):
         image = cwd+"\\resources\\images\\p2_token.png"
-    elif(type == "kicked_ball"):
+    elif(species == "kicked_ball"):
         image = cwd+"\\resources\\images\\kicked_ball.png"
-    elif(type == "blocked_ball"):
+    elif(species == "blocked_ball"):
         image = cwd+"\\resources\\images\\blocked_ball.png"
-    elif(type == "goal_ball"):
+    elif(species == "goal_ball"):
         image = cwd+"\\resources\\images\\goal_ball.png"
 
     return image
@@ -33,9 +32,9 @@ def lineFromPoints(P, Q, D, E):
             return 0
 
 class ball:
-    def __init__(self, type = "soccer_ball", x_pos = 902, y_pos = 900):
-        self.type = type
-        self.image = type_to_image(type)
+    def __init__(self, species = "soccer_ball", x_pos = 902, y_pos = 900):
+        self.species = species
+        self.image = type_to_image(species)
         self.x_speed = 0
         self.y_speed = 0
         self.speed = 0
@@ -51,7 +50,19 @@ class ball:
         self.grounded = False #True if the ball is on the ground
         self.special_timer = 0 #Used when the ball is hit with a kick or block
         #Stores 10 afterimages
-        self.previous_locations = [(902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball"), (902, 900, 0, "soccer_ball")]
+        self.previous_locations = []
+        for i in range(10):
+            #First number is X position, second is Y, third is ball speed, 4th is ball image, 5th is p1 ability, 6th is p2 ability
+            self.previous_locations.append((902, 900, 0, "soccer_ball", "none", "none"))
+        self.info = {
+            'blob_standard_collisions': 0,
+            'blob_reflect_collisions': 0,
+            'blob_warp_collisions': 0,
+            'kicked': 0,
+            'blocked': 0,
+            'x_distance_moved': 0,
+            'y_distance_moved': 0,
+        }
     
     ground = 1240
 
@@ -82,6 +93,7 @@ class ball:
                     self.y_speed = -5
                     self.x_speed = 0
                     blob.collision_timer = 5
+                    self.info['blob_warp_collisions'] += 1
                 elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
@@ -92,24 +104,34 @@ class ball:
                             self.y_speed = -5
                             self.x_speed = 0
                             blob.collision_timer = 5
+                            self.info['blob_warp_collisions'] += 1
+                        else:
+                            self.info['blob_reflect_collisions'] += 1
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
                     blob.collision_timer = 10
                 if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
                     self.image = type_to_image('kicked_ball')
-                    self.type = "kicked_ball"
+                    self.info['kicked'] += 1
+                    self.species = "kicked_ball"
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
-                    p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    if(blob.x_speed < 0 and self.x_speed < 0) or (blob.x_speed > 0 and blob.x_speed > 0):
-                        #Are blob and blob moving in the same direction?
-                        blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10 + (blob.x_speed * 0.75)
-                    else:
+                    try:
+                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv).normalize()
+                        if(self.x_center > blob.x_center):
+                            p1_ball_collision[0] = abs(p1_ball_collision[0])
+                        else:
+                            p1_ball_collision[0] = -1 * abs(p1_ball_collision[0])
+                        blob_kick_x_modifier = 0
+                    except: #Stationary ball?
+                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
-                    blob_kick_y_modifier = ((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
-                    self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (1 * p1_ball_collision[1] - blob_kick_y_modifier)
+                    
+                    blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
+                    self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                    self.info['blob_standard_collisions'] += 1
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                     blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
@@ -128,30 +150,6 @@ class ball:
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
-        else:
-            if p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
-                    for previous in self.previous_locations[4:]:
-                        #SUPERWARP GLITCH
-                        if(previous[1] >= 1240):
-                            #self.image = type_to_image('kicked_ball')
-                            #self.type = "kicked_ball"
-                            #self.special_timer = 30
-                            self.y_pos = self.y_pos + (p1_center_distance - 160)
-                            #print(previous[1], self.y_pos)
-                            self.x_pos = previous[0]
-                            self.y_speed = -5
-                            self.x_speed = 0
-                            #blob.collision_timer = 5
-                    #p1_ball_nv = p1_vector - ball_vector
-                    #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
-                    #blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
-                    #blob_kick_y_modifier = ((blob.y_center - self.y_center)/104) * ((8*blob_collision_distance/104) - 8) #TODO: Fix for Sponge/Sci Slime
-                    #self.x_speed, self.y_speed = (p1_ball_collision[0] + (blob.x_speed * 1.25)) + blob_kick_x_modifier, (1 * p1_ball_collision[1] + ((blob.y_speed - 5) * 1.5)) - blob_kick_y_modifier
-                    #if p1_vector.distance_to(ball_vector) < blob_collision_distance:
-                    #If the ball is stuck inside of the blob for some reason, move it out
-                    #THIS CAUSES THE DRIBBLE GLITCH
-                    #    self.x_pos += self.x_speed
-                    #    self.y_pos += self.y_speed
         return blob
 
     def check_block_collisions(self, blob, other_blob):
@@ -171,11 +169,13 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
-                        self.type = "blocked_ball"
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
                 elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= ball_midpoint[1] <= blob.y_center + blob.block_lower):
@@ -186,11 +186,13 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
-                        self.type = "blocked_ball"
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
             else:
                 #If the blob is facing right
                 if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
@@ -204,6 +206,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
@@ -218,6 +222,8 @@ class ball:
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
                         #Stops the ball completely
+                        if(blob.block_timer == blob.block_timer_max - 3):
+                            self.info['blocked'] += 1
         return blob, other_blob
 
     def check_blob_ability(self, blob):
@@ -225,21 +231,23 @@ class ball:
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))
         elif(blob.used_ability == "snowball"):
-            self.x_speed *= .98
+            self.x_speed *= .975
             self.y_speed *= (.95 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
             try:
                 geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
-                if(geyser_power < 0.5 and self.y_speed > -25):
+                if(geyser_power < 0.8 and self.y_speed > -25):
                     self.y_speed += geyser_power
                 else:
-                    self.y_speed -= 0.5
+                    self.y_speed -= 0.8
             except Exception as exception:
                 print(exception)
                 self.y_speed -= 5
+        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60 and self.y_pos >= 900):
+            self.y_speed = -50
 
 
-    def move(self):
+    def move(self, p1_blob, p2_blob):
         ground = ball.ground
         left_wall = 0
         right_wall = 1805
@@ -249,7 +257,7 @@ class ball:
         goal_top = 825
         goal_bottom = 950
 
-        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.type))
+        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.species, p1_blob.used_ability, p2_blob.used_ability))
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
@@ -327,6 +335,7 @@ class ball:
         elif(self.x_speed < -1 * self.x_speed_max):
             self.x_speed = -1 * self.x_speed_max
         self.x_pos += self.x_speed
+        self.info['x_distance_moved'] += abs(self.x_speed)
 
         #Interacting with the ground
         if(self.y_pos < ground):
@@ -352,7 +361,7 @@ class ball:
         elif(self.y_speed < -1 * self.y_speed_max):
             self.y_speed = -1 * self.y_speed_max
         self.y_pos += self.y_speed
-
+        self.info['y_distance_moved'] += abs(self.y_speed)
         self.speed = math.sqrt(self.x_speed ** 2 + self.y_speed **2)
 
         self.x_center = self.x_pos+27 #Rough Estimate :)
@@ -361,5 +370,5 @@ class ball:
             self.special_timer -= 1
             if(self.special_timer == 0):
                 self.image = type_to_image('soccer_ball')
-                self.type = "soccer_ball"
+                self.species = "soccer_ball"
         

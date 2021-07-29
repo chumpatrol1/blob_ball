@@ -2,7 +2,7 @@ import math
 import os
 
 cwd = os.getcwd()
-def type_to_stars(type):
+def type_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
     top_speed: The fastest that a blob can naturally accelerate to in the ground/air
@@ -22,7 +22,7 @@ def type_to_stars(type):
     speical_ability_max: The most special ability that can be stored at once
     special_ability_cooldown: The time between special ability uses. 0 means that it can be held down.
     '''
-    if(type == "quirkless"):
+    if(species == "quirkless"):
         blob_dict = {
             'max_hp': 4,
             'top_speed': 4,
@@ -42,7 +42,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
         }
-    elif(type == "fire"):
+    elif(species == "fire"):
         blob_dict = {
             'max_hp': 2,
             'top_speed': 4,
@@ -50,7 +50,7 @@ def type_to_stars(type):
             'friction': 3,
             'gravity': 1,
             'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 3,
+            'block_cooldown_rate': 4,
 
             'boost_cost': 600,
             'boost_cooldown_max': 3,
@@ -62,10 +62,10 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
-    elif(type == "ice"):
+    elif(species == "ice"):
         blob_dict = {
             'max_hp': 3,
-            'top_speed': 5,
+            'top_speed': 4,
             'traction': 1,
             'friction': 3,
             'gravity': 4,
@@ -82,7 +82,7 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
-    elif(type == "water"):
+    elif(species == "water"):
         blob_dict = {
             'max_hp': 2,
             'top_speed': 3,
@@ -102,21 +102,42 @@ def type_to_stars(type):
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
+    elif(species == "rock"):
+        blob_dict = {
+            'max_hp': 5,
+            'top_speed': 1,
+            'traction': 5,
+            'friction': 1,
+            'gravity': 5,
+            'kick_cooldown_rate': 1,
+            'block_cooldown_rate': 2,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'spire',
+            'special_ability_cost': 400,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 300,
+        }
 
     return blob_dict
 
-def type_to_image(type):
+def type_to_image(species):
     global cwd
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
         "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
         "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
         'water': cwd+"\\resources\\images\\blobs\\water_blob.png",
+        'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
 
-    return image_dict[type]
+    return image_dict[species]
 
 def player_to_controls(player):
     if(player == 1):
@@ -147,16 +168,17 @@ def create_visualization(number):
     return math.ceil(number/6)/10
 
 class blob:
-    def __init__(self, type = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1):
-        self.type = type
+    def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
+    special_ability_charge_base = 1, danger_zone_enabled = True):
+        self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
-            self.danger_zone = 1475
-        else:
             self.danger_zone = 225
-        self.image = type_to_image(type)
-        self.stars = type_to_stars(type) #Gets many values for each blob
-        self.max_hp = self.stars['max_hp'] + 3 #Each star adds an additional HP.
+        else:
+            self.danger_zone = 1475
+        self.image = type_to_image(species)
+        self.stars = type_to_stars(species) #Gets many values for each blob
+        self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted
@@ -199,9 +221,9 @@ class blob:
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
-        self.boost_top_speed = 10+(1*self.stars['top_speed'] + 1) #These stats are increased by 1 star
-        self.boost_traction = 0.2 + ((self.stars['traction'] + 1) * 0.15)
-        self.boost_friction = 0.2 + ((self.stars['friction'] + 1) * 0.15) 
+        self.boost_top_speed = 10+(1*self.stars['top_speed'] + 3) #This stat is increased by 3 stars
+        self.boost_traction = 0.2 + ((self.stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
+        self.boost_friction = 0.2 + ((self.stars['friction'] + 5) * 0.15) 
 
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
         self.focus_lock_max = 60
@@ -217,6 +239,7 @@ class blob:
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = self.stars['special_ability_cooldown'] #Cooldown between uses
+        self.special_ability_charge_base = special_ability_charge_base
         self.used_ability = None
 
         self.collision_distance = 104 #Used for calculating ball collisions
@@ -232,13 +255,36 @@ class blob:
         self.boost_timer_visualization = 0
         self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
-        self.special_ability_charge_base = 1
+        self.danger_zone_enabled = danger_zone_enabled
+        self.info = {
+            'species': self.species,
+            'damage_taken': 0,
+            'points_from_goals': 0,
+            'points_from_kos': 0,
+            'kick_count': 0,
+            'block_count': 0,
+            'boost_count': 0,
+            'parries': 0,
+            'clanks': 0,
+            'x_distance_moved': 0,
+            'wavebounces': 0,
+            'jumps': 0,
+            'jump_cancelled_focuses': 0,
+            'time_focused': 0,
+            'time_focuseded_seconds': 0,
+            'time_airborne': 0,
+            'time_airborne_seconds': 0,
+            'time_grounded': 0,
+            'time_grounded_seconds': 0,
+        }
     
     ground = 1200
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
             self.special_ability_charge = self.special_ability_charge_base * 5
+            self.info['time_focused'] += 1
+            self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
         else:
             self.special_ability_charge = self.special_ability_charge_base
 
@@ -289,7 +335,7 @@ class blob:
             if((self.damage_flash_timer // 10) % 2 == 1):
                 self.image = type_to_image('invisible')
             else:
-                self.image = type_to_image(self.type)
+                self.image = type_to_image(self.species)
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
@@ -342,6 +388,12 @@ class blob:
                     self.used_ability = "geyser"
                     self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+        elif(self.special_ability == "spire"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+                #Spire activation
+                self.used_ability = "spire"
+                self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -350,6 +402,7 @@ class blob:
             self.kick_cooldown = self.kick_cooldown_max
             self.collision_distance = 175
             self.kick_visualization = self.kick_visualization_max
+            self.info['kick_count'] += 1
 
     def block(self):
         if(self.block_cooldown <= 0):
@@ -360,6 +413,7 @@ class blob:
             self.x_speed = 0
             if(self.y_speed < 0): #If we are moving upwards, halt your momentum!
                 self.y_speed = 0
+            self.info['block_count'] += 1
 
     def boost(self):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
@@ -369,21 +423,38 @@ class blob:
             self.friction = self.boost_friction
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
             self.boost_cooldown_timer = self.boost_cooldown_max
+            self.info['boost_count'] += 1
     
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
-                if(blob.block_timer == 0 and not blob.kick_timer == 1):
-                    if(self.boost_timer > 0):
-                        blob.hp -= 2
-                    else:
-                        blob.hp -= 1
-                    if((blob.player == 1 and blob.x_pos >= blob.danger_zone) or (blob.player == 2 and blob.x_pos <= blob.danger_zone)):
-                        #Take additional damage from kicks if you are hiding by your goal
-                        blob.hp -= 1
+                if(blob.block_timer == 0):
+                    if(not blob.kick_timer == 1):
+                        if(self.boost_timer > 0):
+                            blob.hp -= 3
+                            blob.info['damage_taken'] += 3
+                        else:
+                            blob.hp -= 2
+                            blob.info['damage_taken'] += 2
+                        if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                            #Take additional damage from kicks if you are hiding by your goal
+                            blob.hp -= 1
+                            blob.info['damage_taken'] += 1
 
-                    blob.damage_flash_timer = 60
+                        blob.damage_flash_timer = 60
+                    else:
+                        blob.info['clanks'] += 1
+                else:
+                    blob.info['parries'] += 1
+
+    def check_ability_collision(self, blob, ball):
+        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 60
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
+        and blob.block_timer == 0):
+            blob.hp -= 1
+            blob.info['damage_taken'] += 1
+            blob.damage_flash_timer = 60
 
     def blob_ko(self):
         self.y_speed = 10
@@ -394,11 +465,11 @@ class blob:
         self.x_speed = 0
         self.y_speed = 0
         if(player == 1):
-            self.x_pos = 1600
-            self.facing = 'left'
-        else:
             self.x_pos = 100
             self.facing = 'right'
+        else:
+            self.x_pos = 1600
+            self.facing = 'left'
         self.y_pos = blob.ground
         self.boost_timer = 0
         self.focus_lock = 0
@@ -406,7 +477,9 @@ class blob:
         self.block_timer = 0
         self.focusing = False
         self.damage_flash_timer = 0
-        self.image = type_to_image(self.type)
+        self.image = type_to_image(self.species)
+        self.special_ability_timer = 0
+        self.used_ability = None
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
@@ -419,6 +492,7 @@ class blob:
                         pressed.append(pressed_conversions[button])
                     elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 20):
                         pressed.append(pressed_conversions[button])
+                        self.info['jump_cancelled_focuses'] += 1
                     else:
                         continue
                 else:
@@ -438,7 +512,11 @@ class blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed -= self.traction #Accelerate based off of traction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
+                        if(not round(prev_speed) == -1*self.top_speed):
+                            self.info['wavebounces'] += 1
+                        
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
@@ -448,7 +526,10 @@ class blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed += self.traction #Accelerate based off of traction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
+                        if(not round(prev_speed) == self.top_speed):
+                            self.info['wavebounces'] += 1
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:
@@ -493,6 +574,7 @@ class blob:
                     else:
                         self.x_speed -= self.friction #Normal deceleration
         self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        self.info['x_distance_moved'] += abs(self.x_speed)
         if(self.x_pos <= 0): #Don't move off screen!
             self.x_speed = 0
             self.x_pos = 0
@@ -505,6 +587,7 @@ class blob:
             self.y_speed = -1 * self.jump_force
             self.focus_lock = 0
             self.focusing = False
+            self.info['jumps'] += 1
         elif('down' in pressed):
             if(self.y_pos < blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
@@ -518,10 +601,16 @@ class blob:
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
         if(self.y_pos < blob.ground): #Applies gravity while airborne, respecting fast fall status.
+            self.info['time_airborne'] += 1
+            self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
             if(self.fastfalling):
                 self.y_speed += self.gravity_mod
             else:
                 self.y_speed += self.gravity_stars
+        else:
+            self.info['time_grounded'] += 1
+            self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
+        
         if(self.fastfalling and self.y_pos == blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
