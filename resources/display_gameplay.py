@@ -182,6 +182,7 @@ def draw_timer(screen_size, game_display, timer):
             game_display.blit(timer_text, text_rect)
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
+
     #TODO: Simplify and remove
     draw_background(game_display, "casual_match", settings)
     global cwd
@@ -304,3 +305,14 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_ui(screen_size, game_display, p1_blob, p2_blob)    
 
     draw_timer(screen_size, game_display, timer)
+
+def draw_win_screen(screen_size, game_display, game_stats, settings):
+    draw_background(game_display, "win_screen", settings)
+    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
+    if(game_stats == 3):
+        menu_text = menu_font.render("TIE", False, (255, 124, 0))
+    else:
+        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
+    game_display.blit(menu_text, text_rect)

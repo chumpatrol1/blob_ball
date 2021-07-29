@@ -10,6 +10,7 @@ from resources.background_handler import draw_background as draw_background
 from resources.display_main_menu import draw_main_menu
 from resources.display_css import draw_casual_css
 from resources.display_gameplay import draw_gameplay as draw_gameplay
+from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from engine.handle_input import toggle_fullscreen
 import math
@@ -34,17 +35,6 @@ display_height = 576
 pg.display.set_caption('Blob Ball')
 game_display = pg.display.set_mode((display_width, display_height)) # The canvas
 game_surface = pg.Surface((1366, 768))
-        
-def draw_win_screen(screen_size, game_display, game_stats, settings):
-    draw_background(game_display, "win_screen", settings)
-    menu_font = pg.font.SysFont('Arial', round(50*(screen_size[1]/768)))
-    if(game_stats == 3):
-        menu_text = menu_font.render("TIE", False, (255, 124, 0))
-    else:
-        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (255, 124, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
-    game_display.blit(menu_text, text_rect)
 
 def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
     draw_background(game_display, "win_screen", settings)
