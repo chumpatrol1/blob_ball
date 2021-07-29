@@ -14,7 +14,7 @@ cwd = os.getcwd()
 print("GRAPHICS CWD: "+ cwd)
 user32 = ctypes.windll.user32
 real_screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-#real_screen_size = (1040, 650)
+#real_screen_size = (1920, 1080)
 game_display = pg.display.set_mode((0, 0)) # The canvas
 game_surface = pg.Surface((1366, 768))
 
@@ -25,21 +25,21 @@ clock = pg.time.Clock()
 
 def draw_main_menu(screen_size, game_display, selector_position, settings):
     draw_background(game_display, 'main_menu', settings)
-    menu_font = pg.font.SysFont('Arial', round(40*(screen_size[1]/768)))
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 50)
     text_array = [
-        menu_font.render('Casual', False, (255, 0, 0)),
-        menu_font.render('Competitive', False, (255, 0, 0)),
-        menu_font.render('Online (Unimplemented)', False, (255, 0, 0)),
-        menu_font.render('Almanac', False, (255, 0, 0)),
-        menu_font.render('Rules', False, (255, 0, 0)),
-        menu_font.render('Settings', False, (255, 0, 0)),
-        menu_font.render('Quit', False, (255, 0, 0))
+        menu_font.render('Casual', False, (0, 0, 150)),
+        menu_font.render('Competitive', False, (0, 0, 150)),
+        menu_font.render('Online', False, (0, 0, 150)),
+        menu_font.render('Almanac', False, (0, 0, 150)),
+        menu_font.render('Rules', False, (0, 0, 150)),
+        menu_font.render('Settings', False, (0, 0, 150)),
+        menu_font.render('Quit', False, (0, 0, 150))
     ]
 
 
     ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
-    game_display.blit(ball, (screen_size[0]*(2/3), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
+    game_display.blit(ball, (850, ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 
     text_y = screen_size[1]//10
     for text_box in text_array:
@@ -285,6 +285,6 @@ def handle_graphics(game_state, main_cwd):
         game_state = info_getter[0]
 
     #print(selector_position)
-    game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+    game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
     pg.display.flip()
     return game_state

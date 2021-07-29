@@ -248,7 +248,6 @@ class ball:
         elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 60):
             self.y_speed = ball.ground - self.y_pos
 
-
     def move(self, p1_blob, p2_blob):
         ground = ball.ground
         left_wall = 0

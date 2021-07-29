@@ -17,7 +17,10 @@ def load_background(game_screen, settings):
     global background_cache
     background_cache['initialized'] = True
     if(game_screen == "main_menu"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        if(settings['hd_backgrounds']):
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background_hd.png")
+        else:
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_css"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "casual_match"):
