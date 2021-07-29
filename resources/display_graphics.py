@@ -3,19 +3,25 @@ import os
 import ctypes
 
 from pygame import image
+from pygame.constants import FULLSCREEN, RESIZABLE
 import engine.main_menu
 import engine.gameplay
 from resources.background_handler import draw_background as draw_background
 from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
+from engine.handle_input import toggle_fullscreen
 import math
 pg.font.init()
 cwd = os.getcwd()
+os.environ['SDL_VIDEO_CENTERED'] = '1'
 print("GRAPHICS CWD: "+ cwd)
 user32 = ctypes.windll.user32
 real_screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-#real_screen_size = (1920, 1080)
-game_display = pg.display.set_mode((0, 0)) # The canvas
+#real_screen_size = (960, 540)
+display_width = 1024
+display_height = 576
+pg.display.set_caption('Blob Ball')
+game_display = pg.display.set_mode((display_width, display_height), RESIZABLE) # The canvas
 game_surface = pg.Surface((1366, 768))
 
 
@@ -210,6 +216,8 @@ settings = {
 }
 game_stats = ()
 previous_screen = ""
+toggle_timer = 0
+full_screen = False
 def handle_graphics(game_state, main_cwd):
     global real_screen_size
     global game_surface
@@ -283,8 +291,34 @@ def handle_graphics(game_state, main_cwd):
     elif(game_state == "rebind"):
         info_getter = draw_rebind_screen(game_surface, settings)
         game_state = info_getter[0]
+    global toggle_timer
+    global full_screen
+    global display_height, display_width
+    if(toggle_timer > 0):
+        toggle_timer -= 1
+    else:
+        toggle = toggle_fullscreen()
+        if(toggle):
+            if(full_screen):
+                game_display = pg.display.set_mode((display_width, display_height), RESIZABLE)
+                full_screen = False
+                print("OK")
+            else: 
+                game_display = pg.display.set_mode(real_screen_size, FULLSCREEN)
+                display_width = 1024
+                display_height = 576
+                full_screen = True
+            
+            toggle_timer = 10
 
-    #print(selector_position)
-    game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+
+    if(full_screen):
+        game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+    else:
+        for event in pg.event.get():
+            if(event.type == pg.VIDEORESIZE):
+                display_width, display_height = event.w, event.h
+        game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
+    
     pg.display.flip()
     return game_state

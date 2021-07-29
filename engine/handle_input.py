@@ -25,6 +25,7 @@ input_map = {
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
 }
+forbidden_keys = [pg.K_ESCAPE, pg.KMOD_CTRL, pg.K_KP_ENTER]
 
 input_map = loads(controls.readlines()[0])
 
@@ -37,7 +38,7 @@ def bind_input(key_to_rebind):
     global input_map
     
     for event in pg.event.get():
-        if event.type == pg.KEYDOWN and not event.key in input_map.values():
+        if event.type == pg.KEYDOWN and not event.key in input_map.values() and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
             if(key_to_rebind == "p2_boost"):
                 with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
@@ -45,7 +46,6 @@ def bind_input(key_to_rebind):
             return True
         else:
             return False
-
 
 def reset_inputs():
     global input_map
@@ -164,6 +164,13 @@ def player_to_controls(player):
         }
     return button_list
 
+def toggle_fullscreen():
+
+    pressed = pg.key.get_pressed()
+    if(pressed[pg.K_LCTRL] or pressed[pg.K_RCTRL]):
+        return True
+    else:
+        return False
 
 def gameplay_input():
     pressed = get_keypress()
