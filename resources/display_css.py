@@ -11,20 +11,31 @@ blob_array = [ #Creates an array of arrays, which contains the image to use, it'
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 ]
 
+bic_cached = False
+blob_image_cache = [
+]
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
     global cwd
+    global bic_cached
     
     x = 0
     y = 0
     directory = cwd + "\\resources\\images"
-    for row in blob_array: #Temporary, until we make more blobs
+    if not bic_cached:
+        for row in blob_array: #Temporary, until we make more blobs
+            blob_image_cache.append([])
+            for icon in row:
+                blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+        bic_cached = True
+            
+    for row in blob_image_cache: #Temporary, until we make more blobs
         y += 1
         for icon in row:
             x += 1
-            blob = pg.image.load(directory + icon[0])
+            blob = blob_image_cache[y-1][x-1]
             if(x == 1):
                 blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[0]//15))
                 game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(45/768))))
