@@ -303,6 +303,7 @@ def settings_navigation(timer, settings, previous_screen):
         elif(selector_position == len(settings) + 2):
             settings['hd_backgrounds'] = True
             settings['hd_blobs'] = True
+            settings['smooth_scaling'] = True
         elif(selector_position == len(settings) + 1):
             reset_inputs()
         elif(selector_position == 0):
@@ -311,5 +312,7 @@ def settings_navigation(timer, settings, previous_screen):
             settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         elif(selector_position == 2):
             settings['hd_blobs'] = not(settings['hd_blobs'])
+        elif(selector_position == 3):
+            settings['smooth_scaling'] = not(settings['smooth_scaling'])
             
     return selector_position, game_state

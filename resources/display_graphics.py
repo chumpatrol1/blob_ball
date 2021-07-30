@@ -51,6 +51,7 @@ ruleset = {
 settings = {
     'hd_backgrounds': True,
     'hd_blobs': True,
+    'smooth_scaling': True,
 }
 game_stats = ()
 previous_screen = ""
@@ -155,12 +156,17 @@ def handle_graphics(game_state, main_cwd):
 
 
     if(full_screen):
-        game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+        if(settings['smooth_scaling']):
+            game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+        else:
+            game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
     else:
         for event in pg.event.get():
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = event.w, event.h
-        game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
-    
+        if(settings['smooth_scaling']):
+            game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
+        else:
+            game_display.blit(pg.transform.scale(game_surface, (display_width, display_height)), (0, 0))
     pg.display.flip()
     return game_state

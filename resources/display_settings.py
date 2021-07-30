@@ -23,6 +23,7 @@ def draw_settings_screen(game_display, settings, selector_position):
         menu_font.render("Remap Inputs", False, (255, 124, 0)),
         menu_font.render("HD Backgrounds: " + str(settings['hd_backgrounds']), False, (255, 124, 0)),
         menu_font.render("HD Blobs: " + str(settings['hd_blobs']), False, (255, 124, 0)),
+        menu_font.render("Smooth Scaling: " + str(settings['smooth_scaling']), False, (255, 124, 0)),
         menu_font.render("Default Controls", False, (255, 124, 0)),
         menu_font.render("Reset to Default", False, (255, 124, 0)),
         menu_font.render("<-- Back", False, (255, 124, 0)),
