@@ -140,7 +140,7 @@ def type_to_stars(species):
             'special_ability_cost': 400,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 300,
+            'special_ability_cooldown': 240,
         }
 
     return blob_dict
@@ -482,7 +482,7 @@ class blob:
             blob.hp -= 1
             blob.info['damage_taken'] += 1
             blob.damage_flash_timer = 60
-        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown - 60
+        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown - 30
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
             blob.hp -= 1

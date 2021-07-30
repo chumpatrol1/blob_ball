@@ -245,7 +245,7 @@ class ball:
                 self.y_speed -= 5
         elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60 and self.y_pos >= 900):
             self.y_speed = -50
-        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 60):
+        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 30):
             self.y_speed = ball.ground - self.y_pos
 
     def move(self, p1_blob, p2_blob):

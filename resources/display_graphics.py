@@ -41,7 +41,7 @@ p1_blob = []
 p2_blob = []
 timer = 0
 ruleset = {
-    'version': 'v0.5.3b',
+    'version': 'v0.6.0a',
     'goal_limit': 5,
     'time_limit': 3600,
     'time_bonus': 600,
