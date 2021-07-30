@@ -5,6 +5,13 @@ import pygame as pg
 from random import randint
 cwd = getcwd()
 
+def blitRotateCenter(game_display, image, topleft, angle):
+
+    rotated_image = pg.transform.rotate(image, angle)
+    new_rect = rotated_image.get_rect(center = image.get_rect(topleft = topleft).center)
+
+    game_display.blit(rotated_image, new_rect)
+
 particle_cache = {"initialized": False}
 def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
     if not particle_cache['initialized']:
@@ -58,7 +65,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             particle_cache['rock_spire'].set_alpha(alpha)
             game_display.blit(particle_cache['rock_spire'], (particle_cache['p2_spire_x'], 500))
         
-    if(p1_blob.used_ability == "thunderbolt"):
+    if(p1_blob.species == "lightning"):
         if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 30):
             game_display.blit(particle_cache['thunder_glyph'], (ball.x_center * (1000/1366) - 50, 700))
         elif(p1_blob.special_ability_cooldown - 95 <= p1_blob.special_ability_timer <= p1_blob.special_ability_cooldown - 30):
@@ -68,7 +75,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             particle_cache['thunder_bolt'].set_alpha(alpha)
             game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p1_spire_x'], 125))
 
-    if(p2_blob.used_ability == "thunderbolt"):
+    if(p2_blob.species == "lightning"):
         if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 30):
             game_display.blit(particle_cache['thunder_glyph'], (ball.x_center * (1000/1366) - 50, 700))
         elif(p2_blob.special_ability_cooldown - 95 <= p2_blob.special_ability_timer <= p2_blob.special_ability_cooldown - 30):
@@ -77,5 +84,15 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             alpha = 255 - 7 * ((p2_blob.special_ability_cooldown - 30) - p2_blob.special_ability_timer)
             particle_cache['thunder_bolt'].set_alpha(alpha)
             game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p2_spire_x'], 125))
-        
+
+overlay_cache = {'initialized': False} 
+def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
+    if not overlay_cache['initialized']:
+        particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\thunder_particle.png").convert_alpha(), (40, 40))
     
+    for previous_location in ball.previous_locations:
+        alpha = 100
+        if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+            particle_cache['thunder_particle'].set_alpha(alpha)
+            blitRotateCenter(game_display, particle_cache['thunder_particle'], (ball.previous_locations[-1][0] * (1000/1366) + randint(-10, 10), ball.previous_locations[-1][1] * (400/768) + randint(-10, 10)), (60 * randint(0, 5)))
+            alpha += 10

@@ -24,7 +24,7 @@ def type_to_stars(species):
     '''
     if(species == "quirkless"):
         blob_dict = {
-            'max_hp': 4,
+            'max_hp': 3,
             'top_speed': 4,
             'traction': 4,
             'friction': 4,
@@ -321,6 +321,11 @@ class blob:
 
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
+            if(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 30):
+                self.used_ability = "thunderbolt"
+            elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 180):
+                self.used_ability = None
+            
             if(self.special_ability_timer == 0):
                 self.used_ability = None
         
@@ -418,7 +423,7 @@ class blob:
         elif(self.special_ability == "thunderbolt"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
                 #Thunder activation
-                self.used_ability = "thunderbolt"
+                self.used_ability = None
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     

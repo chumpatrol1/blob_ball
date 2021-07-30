@@ -1,6 +1,6 @@
 from os import getcwd
 from resources.background_handler import draw_background as draw_background
-from resources.display_particles import draw_ball_particles as draw_ball_particles
+from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -291,6 +291,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     #fade_out = 200
     draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob)
     draw_ball(screen_size, game_display, ball)
+    draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob)
 
     menu_font = image_cache['menu_font']
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
