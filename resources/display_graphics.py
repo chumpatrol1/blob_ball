@@ -15,6 +15,7 @@ from resources.display_settings import draw_rebind_screen, draw_settings_screen 
 from resources.display_settings import draw_rules_screen as draw_rules_screen
 from engine.handle_input import toggle_fullscreen
 import math
+from json import loads, dumps
 
 cwd = os.getcwd()
 pg.quit()
@@ -48,11 +49,18 @@ ruleset = {
     'special_ability_charge_base': 1,
     'danger_zone_enabled': True,
 }
+
 settings = {
     'hd_backgrounds': True,
     'hd_blobs': True,
     'smooth_scaling': True,
 }
+
+with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
+    ruleset = loads(rulesetdoc.readline())
+
+with open(cwd+'/engine/config/settings.txt', 'r') as settingsdoc:
+    settings = loads(settingsdoc.readline())
 game_stats = ()
 previous_screen = ""
 toggle_timer = 0
@@ -118,14 +126,14 @@ def handle_graphics(game_state, main_cwd):
     elif(game_state == "rules"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen)
+        info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
         selector_position = info_getter[0]
         game_state = info_getter[1]
         draw_rules_screen(screen_size, game_surface, ruleset, selector_position, settings)
     elif(game_state == "settings"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.settings_navigation(timer, settings, previous_screen)
+        info_getter = engine.main_menu.settings_navigation(timer, settings, previous_screen, cwd)
         selector_position = info_getter[0]
         game_state = info_getter[1]
         draw_settings_screen(game_surface, settings, selector_position)

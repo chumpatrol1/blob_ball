@@ -6,7 +6,7 @@ from json import loads, dumps
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
-controls = open(getcwd()+"\\engine\\controls.txt", "r+")
+controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
 input_map = {
     'p1_up': pg.K_w,
     'p1_down': pg.K_s,
@@ -41,7 +41,7 @@ def bind_input(key_to_rebind):
         if event.type == pg.KEYDOWN and not event.key in input_map.values() and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
             if(key_to_rebind == "p2_boost"):
-                with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+                with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
             return True
         else:
@@ -67,7 +67,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
-    with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def get_keypress():

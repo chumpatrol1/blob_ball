@@ -292,7 +292,7 @@ class blob:
             'jumps': 0,
             'jump_cancelled_focuses': 0,
             'time_focused': 0,
-            'time_focuseded_seconds': 0,
+            'time_focused_seconds': 0,
             'time_airborne': 0,
             'time_airborne_seconds': 0,
             'time_grounded': 0,

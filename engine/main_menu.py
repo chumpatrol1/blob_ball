@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 import engine.handle_input
 from engine.handle_input import reset_inputs
+from json import dumps
 
 pg.init()
 clock = pg.time.Clock()
@@ -198,7 +199,7 @@ def casual_css_navigation():
         p2_timer -= 1
     return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
 
-def rules_navigation(timer, ruleset, previous_screen):
+def rules_navigation(timer, ruleset, previous_screen, cwd):
     game_state = "rules"
     pressed = engine.handle_input.menu_input()
     global selector_position
@@ -233,6 +234,8 @@ def rules_navigation(timer, ruleset, previous_screen):
                 ruleset['special_ability_charge_base'] -= 1
             else:
                 ruleset['special_ability_charge_base'] = 20
+        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+            rulesetdoc.write(dumps(ruleset))
     elif('p1_right' in pressed or 'p2_right' in pressed):
         if(selector_position == 0):
             if(ruleset['goal_limit'] < 25):
@@ -254,6 +257,8 @@ def rules_navigation(timer, ruleset, previous_screen):
                 ruleset['special_ability_charge_base'] += 1
             else:
                 ruleset['special_ability_charge_base'] = 0
+        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+            rulesetdoc.write(dumps(ruleset))
     if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
         if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
@@ -270,10 +275,12 @@ def rules_navigation(timer, ruleset, previous_screen):
             ruleset['danger_zone_enabled'] = True
         elif(selector_position == 4):
             ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
+        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+            rulesetdoc.write(dumps(ruleset))
             
     return selector_position, game_state
 
-def settings_navigation(timer, settings, previous_screen):
+def settings_navigation(timer, settings, previous_screen, cwd):
     game_state = "settings"
     pressed = engine.handle_input.menu_input()
     global selector_position
@@ -314,5 +321,8 @@ def settings_navigation(timer, settings, previous_screen):
             settings['hd_blobs'] = not(settings['hd_blobs'])
         elif(selector_position == 3):
             settings['smooth_scaling'] = not(settings['smooth_scaling'])
-            
+
+        with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+            settingsdoc.write(dumps(settings))
+
     return selector_position, game_state

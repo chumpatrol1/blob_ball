@@ -1,0 +1,1 @@
+{"hd_backgrounds": true, "hd_blobs": true, "smooth_scaling": true}

@@ -89,6 +89,7 @@ overlay_cache = {'initialized': False}
 def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
     if not overlay_cache['initialized']:
         particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\thunder_particle.png").convert_alpha(), (40, 40))
+        overlay_cache['initialized'] = True
     
     for previous_location in ball.previous_locations:
         alpha = 100
