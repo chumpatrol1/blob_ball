@@ -3,6 +3,8 @@ import sys
 from os import getcwd
 from json import loads, dumps
 
+from pygame.constants import K_KP_ENTER
+
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
@@ -25,7 +27,7 @@ input_map = {
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
 }
-forbidden_keys = [pg.K_ESCAPE, pg.KMOD_CTRL, pg.K_KP_ENTER]
+forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
 
@@ -106,6 +108,8 @@ def get_keypress():
         pressed_array.append('p2_block')
     if(pressed[input_map['p2_boost']]):
         pressed_array.append('p2_boost')
+    if(pressed[pg.K_RETURN]):
+        pressed_array.append('return')
     return pressed_array
 
 button_timer = 0
@@ -114,7 +118,7 @@ def menu_input():
     global button_timer
     pressed = get_keypress()
     selected = False
-    if("p1_ability" in pressed or "p2_ability" in pressed):
+    if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed):
         selected = True
     if(pressed == []):
         button_timer = 0

@@ -28,7 +28,7 @@ def menu_navigation(timer):
             selector_position = 0
         else:
             selector_position += 1
-    if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == 0): #Casual
             game_state = "casual_css"
             print(game_state)
@@ -236,7 +236,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] = 20
         with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
-    elif('p1_right' in pressed or 'p2_right' in pressed):
+    elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
         if(selector_position == 0):
             if(ruleset['goal_limit'] < 25):
                 ruleset['goal_limit'] += 1
@@ -259,7 +259,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] = 0
         with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
-    if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed):
         if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
                 selector_position = 4
@@ -300,7 +300,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     elif('p1_right' in pressed or 'p2_right' in pressed):
         pass
 
-    if(not timer) and('p1_ability' in pressed or 'p2_ability' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(settings) + 3):
             if(previous_screen == "main_menu"):
                 selector_position = 5
