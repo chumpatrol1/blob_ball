@@ -98,9 +98,6 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
 def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     global cwd
     draw_background(game_display, "casual_css", settings)
-    for x in range(0, 8):
-        for y in range (0, 5):
-            pg.draw.rect(game_display, (255, 255, 255), ((x*screen_size[0]*0.1) + (screen_size[0]/10), (y*screen_size[1]*(100/768))+(screen_size[1]*50/768), screen_size[0]*0.1, screen_size[1]*(100/768)), width = 3)
     css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings)
     #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
     #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))

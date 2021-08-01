@@ -65,7 +65,7 @@ def draw_rebind_screen(game_display, settings):
     return [game_state]
     
 def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
-    draw_background(game_display, "win_screen", settings)
+    draw_background(game_display, "rules", settings)
     menu_font = pg.font.SysFont('Arial', round(30*(screen_size[1]/768)))
     text_array = [
         menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, (255, 124, 0)),

@@ -15,7 +15,7 @@ from resources.display_settings import draw_rebind_screen, draw_settings_screen 
 from resources.display_settings import draw_rules_screen as draw_rules_screen
 from engine.handle_input import toggle_fullscreen
 import math
-from json import loads, dumps
+from json import loads
 
 cwd = os.getcwd()
 pg.quit()
@@ -115,7 +115,7 @@ def handle_graphics(game_state, main_cwd):
         game_time = info_getter[6]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
-            timer = 300
+            timer = 120
             return game_state
         draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
     elif(game_state == "casual_win"):
