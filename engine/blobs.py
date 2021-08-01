@@ -137,7 +137,7 @@ def type_to_stars(species):
             'boost_duration': 3,
 
             'special_ability': 'thunderbolt',
-            'special_ability_cost': 400,
+            'special_ability_cost': 600,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 240,

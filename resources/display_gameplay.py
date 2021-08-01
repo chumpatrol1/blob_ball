@@ -298,7 +298,10 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (255, 124, 0))
+    try:
+        menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (255, 124, 0))
+    except:
+        menu_text = menu_font.render("NO TIME LIMIT", False, (255, 124, 0))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)

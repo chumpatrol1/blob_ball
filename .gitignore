@@ -4,3 +4,4 @@ main.spec
 *.pyc
 blob_ball_results.txt
 out.prof
+engine/config/ruleset.txt
