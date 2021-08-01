@@ -15,7 +15,7 @@ from resources.display_settings import draw_rebind_screen, draw_settings_screen 
 from resources.display_settings import draw_rules_screen as draw_rules_screen
 from engine.handle_input import toggle_fullscreen
 import math
-from json import loads
+from json import loads, dumps
 
 cwd = os.getcwd()
 pg.quit()
@@ -55,12 +55,18 @@ settings = {
     'hd_blobs': True,
     'smooth_scaling': True,
 }
-
-with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
-    ruleset = loads(rulesetdoc.readline())
-
-with open(cwd+'/engine/config/settings.txt', 'r') as settingsdoc:
-    settings = loads(settingsdoc.readline())
+try:
+    with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
+        ruleset = loads(rulesetdoc.readline())
+except:
+    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+        rulesetdoc.write(dumps(ruleset))
+try:
+    with open(cwd+'/engine/config/settings.txt', 'r') as settingsdoc:
+        settings = loads(settingsdoc.readline())
+except:
+    with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+        settingsdoc.write(dumps(settings))
 game_stats = ()
 previous_screen = ""
 toggle_timer = 0

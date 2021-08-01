@@ -8,7 +8,7 @@ from pygame.constants import K_KP_ENTER
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
-controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+
 input_map = {
     'p1_up': pg.K_w,
     'p1_down': pg.K_s,
@@ -27,6 +27,15 @@ input_map = {
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
 }
+
+try:
+    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+except:
+    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as controls:
+        controls.write(dumps(input_map))
+    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+    
+
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
