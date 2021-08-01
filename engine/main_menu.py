@@ -20,33 +20,30 @@ def menu_navigation(timer):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = 6
+            selector_position = 5
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == 6:
+        if selector_position == 5:
             selector_position = 0
         else:
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == 0): #Casual
-            game_state = "casual_css"
+            game_state = "css"
             print(game_state)
         elif(selector_position == 1):
-            #game_state = "competitive_css"
-            game_state = "casual_css"
-        elif(selector_position == 2):
             selector_position = 0
-        elif(selector_position == 3):
+        elif(selector_position == 2):
             #game_state = "almanac"
-            game_state = "casual_css"
-        elif(selector_position == 4):
+            game_state = "css"
+        elif(selector_position == 3):
             selector_position = 0
             game_state = "rules"
-        elif(selector_position == 5):
+        elif(selector_position == 4):
             selector_position = 0
             game_state = "settings"
-        elif(selector_position == 6): #Quits the game
+        elif(selector_position == 5): #Quits the game
             print("QUIT")
             pg.quit()
             sys.exit()
@@ -122,14 +119,14 @@ def css_navigation(player, selector, timer, other_selector):
     
 p1_timer = 0
 p2_timer = 0
-def casual_css_navigation():
+def css_handler():
     global p1_selector_position
     global p2_selector_position
     global p1_blob
     global p2_blob
     global p1_timer
     global p2_timer
-    game_state = "casual_css"
+    game_state = "css"
     p1_selector_position, p1_timer, p2_selector_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position)
     p2_selector_position, p2_timer, p1_selector_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position)
     

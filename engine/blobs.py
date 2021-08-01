@@ -85,8 +85,8 @@ def type_to_stars(species):
     elif(species == "water"):
         blob_dict = {
             'max_hp': 2,
-            'top_speed': 3,
-            'traction': 3,
+            'top_speed': 4,
+            'traction': 4,
             'friction': 2,
             'gravity': 3,
             'kick_cooldown_rate': 3,
@@ -215,7 +215,7 @@ class blob:
         self.base_traction = self.traction #Non-boosted
         self.base_friction = self.friction #No boost
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = round(.3 + (self.stars['gravity'] + 4) * .15, 3) #Fastfalling increases gravity
+        self.gravity_mod = round(.3 + (self.stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
         self.fastfalling = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         

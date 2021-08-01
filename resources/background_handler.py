@@ -21,7 +21,7 @@ def load_background(game_screen, settings):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background_hd.png").convert()
         else:
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background.png").convert()
-    elif(game_screen == "casual_css"):
+    elif(game_screen == "css"):
         if(settings['hd_backgrounds']):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\css_background.png").convert()
         else:

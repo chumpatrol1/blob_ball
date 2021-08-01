@@ -95,9 +95,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     text_rect.center = (screen_size[0]//6, 24*screen_size[1]//25)
     game_display.blit(menu_text, text_rect)
 
-def draw_casual_css(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
+def draw_css(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     global cwd
-    draw_background(game_display, "casual_css", settings)
+    draw_background(game_display, "css", settings)
     css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings)
     #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
     #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))

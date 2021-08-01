@@ -8,7 +8,7 @@ import engine.main_menu
 import engine.gameplay
 from resources.background_handler import draw_background as draw_background
 from resources.display_main_menu import draw_main_menu
-from resources.display_css import draw_casual_css
+from resources.display_css import draw_css
 from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
@@ -88,11 +88,11 @@ def handle_graphics(game_state, main_cwd):
         game_state = info_getter[1]
         if(game_state == "rules" or game_state == "settings"):
             previous_screen = "main_menu"
-    elif(game_state == "casual_css"):
-        info_getter = engine.main_menu.casual_css_navigation()
+    elif(game_state == "css"):
+        info_getter = engine.main_menu.css_handler()
         p1_selector_position = info_getter[0]
         p2_selector_position = info_getter[1]
-        draw_casual_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
+        draw_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
             p1_selector_position[2] = 0
@@ -101,7 +101,7 @@ def handle_graphics(game_state, main_cwd):
             p2_blob = info_getter[4]
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
-            previous_screen = "casual_css"
+            previous_screen = "css"
         elif(game_state == "main_menu"):
             timer = 10
     elif(game_state == "casual_match"):
