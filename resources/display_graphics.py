@@ -128,7 +128,7 @@ def handle_graphics(game_state, main_cwd):
         draw_win_screen(screen_size, game_surface, game_stats, settings)
         timer -= 1
         if(timer == 0):
-            return "casual_css"
+            return "css"
     elif(game_state == "rules"):
         if(timer > 0):
             timer -= 1
