@@ -32,12 +32,12 @@ def type_to_stars(species):
             'kick_cooldown_rate': 5,
             'block_cooldown_rate': 5,
 
-            'boost_cost': 600,
+            'boost_cost': 840,
             'boost_cooldown_max': 5,
             'boost_duration': 5,
 
             'special_ability': 'boost',
-            'special_ability_cost': 600,
+            'special_ability_cost': 840,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
