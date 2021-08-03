@@ -3,7 +3,6 @@
 
 import os
 
-print(os.chdir(os.path.dirname(os.path.abspath(__file__))))
 cwd = os.getcwd()
 print("MAIN",cwd)
 
@@ -15,8 +14,6 @@ import engine.handle_input
 game_state = "main_menu"
 
 done = False
-pg.init()
-
 
 def handle_input():
     engine.handle_input.get_keypress()

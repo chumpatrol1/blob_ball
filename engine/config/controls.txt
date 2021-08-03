@@ -1,0 +1,1 @@
+{"p1_up": 119, "p1_down": 115, "p1_left": 97, "p1_right": 100, "p1_ability": 49, "p1_kick": 50, "p1_block": 51, "p1_boost": 52, "p2_up": 1073741906, "p2_down": 1073741905, "p2_left": 1073741904, "p2_right": 1073741903, "p2_ability": 110, "p2_kick": 109, "p2_block": 44, "p2_boost": 46}

@@ -87,14 +87,14 @@ class ball:
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
             elif(blob.y_center < (self.y_center)): #Is the slime low enough to interact with the ball?
-                if(abs(blob.x_center - self.x_center) < blob_collision_distance) and self.grounded and blob.y_speed >= 0:
+                if(abs(blob.x_center - self.x_center) <= blob_collision_distance) and self.grounded and blob.y_speed >= 0:
                     #True if x is close enough, ball is grounded, hit the bottom, and blob moving downwards
                     self.y_pos = self.y_pos + (p1_center_distance - 160) #Pop the ball upwards
                     self.y_speed = -5
                     self.x_speed = 0
-                    blob.collision_timer = 5
+                    blob.collision_timer = 0
                     self.info['blob_warp_collisions'] += 1
-                elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
+                elif(abs(blob.x_center - self.x_center) <= blob_collision_distance) and not self.grounded:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
                         self.y_speed = (-1 * self.y_speed) + blob.y_speed # Reflect!
@@ -150,6 +150,18 @@ class ball:
                     pass
                 else:
                     self.image = type_to_image("soccer_ball")
+        else:
+            if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
+                if(abs(blob.x_center - self.x_center) < blob_collision_distance):
+                    pass
+            elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
+                #True if x is close enough, and ball is airborne.
+                if(self.y_speed < 0): #Are we moving upwards?
+                    self.y_pos = self.y_pos + (p1_center_distance - 160)
+                    self.y_speed = -5
+                    self.x_speed = 0
+                    blob.collision_timer = 0
+                    self.info['blob_warp_collisions'] += 1
         return blob
 
     def check_block_collisions(self, blob, other_blob):
@@ -202,6 +214,7 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
@@ -218,6 +231,7 @@ class ball:
                         self.x_speed = 0
                         self.y_speed = 0
                         self.image = type_to_image("blocked_ball")
+                        self.species = "blocked_ball"
                         self.special_timer = 30
                         blob.collision_timer = collision_timer_duration
                         other_blob.collision_timer = collision_timer_duration
@@ -245,7 +259,8 @@ class ball:
                 self.y_speed -= 5
         elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 60 and self.y_pos >= 900):
             self.y_speed = -50
-
+        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 30):
+            self.y_speed = ball.ground - self.y_pos
 
     def move(self, p1_blob, p2_blob):
         ground = ball.ground
@@ -297,14 +312,18 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit top of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed += 0.5
                 if(self.y_speed >= 0):
                     self.y_speed = self.y_speed * -0.5
+                    if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                        for previous_location in self.previous_locations:
+                            if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                                self.y_speed = self.y_speed * 0.9
 
         if(self.x_pos > right_goal):
-            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)            
+            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
             if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
                 self.x_pos = right_goal - 1
                 if(self.x_speed > 0):
@@ -313,7 +332,7 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0): #Hit bottom of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed -= 0.5
                 if(self.y_speed >= 0):
@@ -341,12 +360,18 @@ class ball:
         if(self.y_pos < ground):
             self.y_speed += self.gravity
         elif(self.y_pos >= ground): #Don't go under the floor!
-            if(2 >= self.y_speed >= 0):
+            if(2 >= self.y_speed >= 0 or self.species == "blocked_ball"):
                 self.y_speed = 0
             elif(self.y_speed < 0 ):
                 pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
+                if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                    for previous_location in self.previous_locations:
+                        if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                            self.y_speed = self.y_speed * 0.9
+
+                
                  #Reduces bounciness over time
             self.y_pos = ground
             

@@ -24,7 +24,7 @@ def type_to_stars(species):
     '''
     if(species == "quirkless"):
         blob_dict = {
-            'max_hp': 4,
+            'max_hp': 3,
             'top_speed': 4,
             'traction': 4,
             'friction': 4,
@@ -32,12 +32,12 @@ def type_to_stars(species):
             'kick_cooldown_rate': 5,
             'block_cooldown_rate': 5,
 
-            'boost_cost': 600,
+            'boost_cost': 840,
             'boost_cooldown_max': 5,
             'boost_duration': 5,
 
             'special_ability': 'boost',
-            'special_ability_cost': 600,
+            'special_ability_cost': 840,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
@@ -85,8 +85,8 @@ def type_to_stars(species):
     elif(species == "water"):
         blob_dict = {
             'max_hp': 2,
-            'top_speed': 3,
-            'traction': 3,
+            'top_speed': 4,
+            'traction': 4,
             'friction': 2,
             'gravity': 3,
             'kick_cooldown_rate': 3,
@@ -122,6 +122,26 @@ def type_to_stars(species):
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
         }
+    elif(species == "lightning"):
+        blob_dict = {
+            'max_hp': 1,
+            'top_speed': 5,
+            'traction': 3,
+            'friction': 5,
+            'gravity': 5,
+            'kick_cooldown_rate': 2,
+            'block_cooldown_rate': 1,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'thunderbolt',
+            'special_ability_cost': 600,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 240,
+        }
 
     return blob_dict
 
@@ -133,6 +153,7 @@ def type_to_image(species):
         "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
         'water': cwd+"\\resources\\images\\blobs\\water_blob.png",
         'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
+        'lightning': cwd+"\\resources\\images\\blobs\\lightning_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -194,7 +215,7 @@ class blob:
         self.base_traction = self.traction #Non-boosted
         self.base_friction = self.friction #No boost
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = round(.3 + (self.stars['gravity'] + 4) * .15, 3) #Fastfalling increases gravity
+        self.gravity_mod = round(.3 + (self.stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
         self.fastfalling = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
@@ -271,7 +292,7 @@ class blob:
             'jumps': 0,
             'jump_cancelled_focuses': 0,
             'time_focused': 0,
-            'time_focuseded_seconds': 0,
+            'time_focused_seconds': 0,
             'time_airborne': 0,
             'time_airborne_seconds': 0,
             'time_grounded': 0,
@@ -300,6 +321,11 @@ class blob:
 
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
+            if(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 30):
+                self.used_ability = "thunderbolt"
+            elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 180):
+                self.used_ability = None
+            
             if(self.special_ability_timer == 0):
                 self.used_ability = None
         
@@ -390,8 +416,14 @@ class blob:
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == "spire"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
-                #Spire activation
+                #Thunder activation
                 self.used_ability = "spire"
+                self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+        elif(self.special_ability == "thunderbolt"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+                #Thunder activation
+                self.used_ability = None
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
     
@@ -450,6 +482,12 @@ class blob:
 
     def check_ability_collision(self, blob, ball):
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 60
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
+        and blob.block_timer == 0):
+            blob.hp -= 1
+            blob.info['damage_taken'] += 1
+            blob.damage_flash_timer = 60
+        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown - 30
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
             blob.hp -= 1

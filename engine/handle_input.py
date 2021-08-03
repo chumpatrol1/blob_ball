@@ -3,10 +3,12 @@ import sys
 from os import getcwd
 from json import loads, dumps
 
+from pygame.constants import K_KP_ENTER
+
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
-controls = open(getcwd()+"\\engine\\controls.txt", "r+")
+
 input_map = {
     'p1_up': pg.K_w,
     'p1_down': pg.K_s,
@@ -26,6 +28,16 @@ input_map = {
     'p2_boost': pg.K_PERIOD,
 }
 
+try:
+    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+except:
+    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as controls:
+        controls.write(dumps(input_map))
+    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+    
+
+forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
+
 input_map = loads(controls.readlines()[0])
 
 def unbind_inputs():
@@ -37,15 +49,14 @@ def bind_input(key_to_rebind):
     global input_map
     
     for event in pg.event.get():
-        if event.type == pg.KEYDOWN and not event.key in input_map.values():
+        if event.type == pg.KEYDOWN and not event.key in input_map.values() and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
             if(key_to_rebind == "p2_boost"):
-                with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+                with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
             return True
         else:
             return False
-
 
 def reset_inputs():
     global input_map
@@ -67,7 +78,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
-    with open(getcwd()+"\\engine\\controls.txt", "w") as control_list:
+    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def get_keypress():
@@ -106,6 +117,8 @@ def get_keypress():
         pressed_array.append('p2_block')
     if(pressed[input_map['p2_boost']]):
         pressed_array.append('p2_boost')
+    if(pressed[pg.K_RETURN]):
+        pressed_array.append('return')
     return pressed_array
 
 button_timer = 0
@@ -114,7 +127,7 @@ def menu_input():
     global button_timer
     pressed = get_keypress()
     selected = False
-    if("p1_ability" in pressed or "p2_ability" in pressed):
+    if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed):
         selected = True
     if(pressed == []):
         button_timer = 0
@@ -164,6 +177,13 @@ def player_to_controls(player):
         }
     return button_list
 
+def toggle_fullscreen():
+
+    pressed = pg.key.get_pressed()
+    if(pressed[pg.K_LCTRL] or pressed[pg.K_RCTRL]):
+        return True
+    else:
+        return False
 
 def gameplay_input():
     pressed = get_keypress()

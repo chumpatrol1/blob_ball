@@ -17,9 +17,15 @@ def load_background(game_screen, settings):
     global background_cache
     background_cache['initialized'] = True
     if(game_screen == "main_menu"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
-    elif(game_screen == "casual_css"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        if(settings['hd_backgrounds']):
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background_hd.png").convert()
+        else:
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background.png").convert()
+    elif(game_screen == "css"):
+        if(settings['hd_backgrounds']):
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\css_background.png").convert()
+        else:
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
     elif(game_screen == "casual_match"):
         if(settings['hd_backgrounds']):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\field_alpha_hd.png").convert()
@@ -28,9 +34,16 @@ def load_background(game_screen, settings):
     elif(game_screen == "win_screen"):
         background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
     elif(game_screen == "rules"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        print("RULES")
+        if(settings['hd_backgrounds']):
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\rules_background.png").convert()
+        else:
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
     elif(game_screen == "settings"):
-        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png")
+        if(settings['hd_backgrounds']):
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\settings_background.png").convert()
+        else:
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
 def draw_background(game_display, game_screen, settings):
     global cwd
     global background_cache

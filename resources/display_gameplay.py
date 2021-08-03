@@ -1,6 +1,6 @@
 from os import getcwd
 from resources.background_handler import draw_background as draw_background
-from resources.display_particles import draw_ball_particles as draw_ball_particles
+from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -18,7 +18,7 @@ def draw_ball(screen_size, game_display, ball):
 
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     global image_cache
-    ui_font = pg.font.SysFont('Arial', 40)
+    ui_font = image_cache['ui_font']
     pg.draw.rect(game_display, (200, 200, 200), (10, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
     game_display.blit(image_cache["heart_icon"], (10, 0))
     menu_text = ui_font.render(str(p1_blob.hp), False, (0, 255, 0))
@@ -65,7 +65,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
     game_display.blit(nrg_surface, (966, 75))
 
-    menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 124, 0))
+    menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 255, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -93,7 +93,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p2_blob.boost_timer_visualization > 0):
         cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
         cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (255, 124, 0), (0, 70-p2_blob.boost_timer_percentage*70, 70, 70))
+        pg.draw.rect(cooldown_surface, (0, 0, 255), (0, 70-p2_blob.boost_timer_percentage*70, 70, 70))
         game_display.blit(cooldown_surface, (1286, 0))
         menu_text = ui_font.render(str(p2_blob.boost_timer_visualization), False, (0, 255, 124))
         text_rect = menu_text.get_rect()
@@ -127,7 +127,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
     game_display.blit(nrg_surface, (10, 75))
 
-    menu_text = ui_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 124, 0))
+    menu_text = ui_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 255, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
@@ -156,7 +156,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p1_blob.boost_timer_visualization > 0):
         cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
         cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (255, 124, 0), (0, 70-p1_blob.boost_timer_percentage*70, 70, 70))
+        pg.draw.rect(cooldown_surface, (0, 0, 255), (0, 70-p1_blob.boost_timer_percentage*70, 70, 70))
         game_display.blit(cooldown_surface, (330, 0))
         menu_text = ui_font.render(str(p1_blob.boost_timer_visualization), False, (0, 255, 124))
         text_rect = menu_text.get_rect()
@@ -173,14 +173,16 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         game_display.blit(menu_text, text_rect)
 
 def draw_timer(screen_size, game_display, timer):
+    global image_cache
     if(timer > 0):
-            timer_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
-            timer_text = timer_font.render(str(ceil(timer/6)/10), False, (255, 124, 0))
+            timer_font = image_cache['menu_font']
+            timer_text = timer_font.render(str(ceil(timer/6)/10), False, (220, 100, 2))
             text_rect = timer_text.get_rect()
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
             game_display.blit(timer_text, text_rect)
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
+
     #TODO: Simplify and remove
     draw_background(game_display, "casual_match", settings)
     global cwd
@@ -198,7 +200,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
-
+        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 35)
+        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -238,6 +241,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
         blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
+
+    draw_blob_particles(game_display, ball, p1_blob)
     
     if not (p2_blob.image == image_cache['p2_blob_clone']):
         image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
@@ -285,39 +290,22 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
 
+    draw_blob_particles(game_display, ball, p2_blob)
+
     #fade_out = 200
     draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob)
     draw_ball(screen_size, game_display, ball)
-    #DISABLED DUE TO LAG
-    '''for frame in ball.previous_locations:
-        if(frame[2] >= 35):
-            afterimage = pg.image.load(engine.ball.type_to_image(frame[3]))
-            afterimage = pg.transform.scale(afterimage, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-            afterimage = afterimage.convert_alpha()
-            real_fade = fade_out
-            afterimage.set_alpha(real_fade)
-            game_display.blit(afterimage, ((screen_size[0]/1366)*frame[0] * (1000/1366), (screen_size[1]/768) * frame[1] * (400/768)))
-        fade_out -= 20'''
-        
-    '''if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
-        fireball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
-        fireball_image = fireball_image.convert_alpha()
-        fireball_image = pg.transform.scale(fireball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-        fireball_image.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(fireball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        snowball_image = pg.image.load(cwd + "\\resources\\images\\special_ball.png")
-        snowball_image = snowball_image.convert_alpha()
-        snowball_image = pg.transform.scale(snowball_image, (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
-        snowball_image.fill((0, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(snowball_image, ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
-    '''
-    menu_font = pg.font.SysFont('Arial', round(35*(screen_size[1]/768)))
-    menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (255, 124, 0))
+    draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob)
+
+    menu_font = image_cache['menu_font']
+    menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (200, 230, 200))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)
-    menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (255, 124, 0))
+    try:
+        menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (200, 230, 200))
+    except:
+        menu_text = menu_font.render("NO TIME LIMIT", False, (0, 0, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//14)
     game_display.blit(menu_text, text_rect)
@@ -325,3 +313,14 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_ui(screen_size, game_display, p1_blob, p2_blob)    
 
     draw_timer(screen_size, game_display, timer)
+
+def draw_win_screen(screen_size, game_display, game_stats, settings):
+    draw_background(game_display, "win_screen", settings)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", round(50*(screen_size[1]/768)))
+    if(game_stats == 3):
+        menu_text = menu_font.render("TIE", False, (0, 0, 255))
+    else:
+        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (0, 0, 255))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
+    game_display.blit(menu_text, text_rect)
