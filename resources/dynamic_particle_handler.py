@@ -15,8 +15,8 @@ class Particle:
         self.alpha -= self.fade
         self.x_pos += self.x_speed
         self.y_pos += self.y_speed
-        if(self.y_pos > 650 and not self.ground_clip):
-            self.y_pos = 650
+        if(self.y_pos > 685 - self.image.get_height()/2 and not self.ground_clip):
+            self.y_pos = 685 - self.image.get_height()/2
         self.y_speed += self.gravity
         self.lifetime -= 1
 

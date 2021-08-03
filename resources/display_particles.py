@@ -15,7 +15,19 @@ def blitRotateCenter(game_display, image, topleft, angle):
 
 particle_cache = {"initialized": False}
 overlay_cache = {'initialized': False}
-particle_memory = [] 
+particle_memory = []
+
+def draw_top_speed_particles(generator_x, particle_memory):
+    global particle_cache
+    if(randint(0, 1) == 1):
+        random_image = randint(0, 1)
+        if(random_image == 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['earth_particle'], x_pos = (generator_x) * (1000/1366), y_pos = 685, alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
+        elif(random_image == 1):
+            particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_2'], x_pos = (generator_x) * (1000/1366), y_pos = 685, alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
+        elif(random_image == 2):
+            particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_3'], x_pos = (generator_x) * (1000/1366), y_pos = 685, alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
+    return particle_memory
 
 def draw_blob_particles(game_display, ball, blob):
     global particle_memory
@@ -34,30 +46,10 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\ice_particle.png").convert_alpha(), (30, 30))
     
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
-        if(randint(0, 1) == 1):
-            random_image = randint(0, 2)
-            if(random_image == 0):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_2'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_3'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-        if(randint(0, 1) == 1):
-            random_image = randint(0, 2)
-            if(random_image == 0):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle'], x_pos = blob.x_center * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_2'], x_pos = blob.x_center * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_3'], x_pos = blob.x_center * (1000/1366), y_pos = (blob.y_center - 25) * (400/768), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-        if(randint(0, 1) == 1):
-            random_image = randint(0, 2)
-            if(random_image == 0):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_2'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
-            elif(random_image == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['earth_particle_3'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 2), y_speed = randint(-3, -1), gravity = 0.1))
+        particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
+        particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
+        particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
+
 
     if(blob.impact_land_frames == 9):
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))

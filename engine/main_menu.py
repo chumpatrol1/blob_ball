@@ -256,7 +256,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] = 0
         with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
-    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
                 selector_position = 4
