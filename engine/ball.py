@@ -312,7 +312,7 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed += 0.5
                 if(self.y_speed >= 0):
@@ -332,7 +332,7 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed -= 0.5
                 if(self.y_speed >= 0):
