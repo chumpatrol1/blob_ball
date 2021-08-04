@@ -52,9 +52,9 @@ def menu_navigation(timer):
     return selector_position, game_state
 
 blob_list = [
-    ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "quirkless",],
+    ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "wind",],
     ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
 ]
