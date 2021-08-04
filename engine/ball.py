@@ -154,7 +154,7 @@ class ball:
             if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
-            elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
+            elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded and p1_vector.distance_to(ball_vector) <= blob_collision_distance:
                 #True if x is close enough, and ball is airborne.
                 if(self.y_speed < 0): #Are we moving upwards?
                     self.y_pos = self.y_pos + (p1_center_distance - 160)
@@ -312,7 +312,7 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed += 0.5
                 if(self.y_speed >= 0):
@@ -332,7 +332,7 @@ class ball:
                 self.y_pos = goal_bottom
                 if(self.y_speed < 0):
                     self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and self.y_speed >= 0  or self.species == "blocked_ball"): #Hit top of goalpost
+            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
                 self.y_pos = goal_top - 1
                 self.x_speed -= 0.5
                 if(self.y_speed >= 0):
