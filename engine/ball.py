@@ -154,7 +154,7 @@ class ball:
             if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
-            elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded:
+            elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded and p1_vector.distance_to(ball_vector) <= blob_collision_distance:
                 #True if x is close enough, and ball is airborne.
                 if(self.y_speed < 0): #Are we moving upwards?
                     self.y_pos = self.y_pos + (p1_center_distance - 160)
