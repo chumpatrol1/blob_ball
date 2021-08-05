@@ -131,6 +131,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             particle_cache['thunder_bolt'].set_alpha(alpha)
             game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p2_spire_x'], 125))
 
+
 def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
     if not overlay_cache['initialized']:
         particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\thunder_particle.png").convert_alpha(), (40, 40))

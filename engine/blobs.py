@@ -58,7 +58,7 @@ def type_to_stars(species):
 
             'special_ability': 'fireball',
             'special_ability_cost': 150,
-            'special_ability_maintenance': 15,
+            'special_ability_maintenance': 12,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
         }
@@ -114,7 +114,7 @@ def type_to_stars(species):
 
             'boost_cost': 600,
             'boost_cooldown_max': 3,
-            'boost_duration': 3,
+            'boost_duration': 4,
 
             'special_ability': 'spire',
             'special_ability_cost': 400,
@@ -346,6 +346,8 @@ class blob:
                 self.used_ability = "thunderbolt"
             elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 180):
                 self.used_ability = None
+            elif(self.species == "wind" and self.special_ability_timer == self.special_ability_cooldown - 240):
+                self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -521,21 +523,18 @@ class blob:
             blob.hp -= 1
             blob.info['damage_taken'] += 1
             blob.damage_flash_timer = 60
-        elif((self.used_ability == "gale" and self.special_ability_timer >= self.special_ability_cooldown - 300) or \
-            (blob.used_ability == "gale" and blob.special_ability_timer >= blob.special_ability_cooldown - 300)) and\
-            blob.y_pos != blob.ground: #Gale Affecting the opponent
-            if(self.player == 1 and self.used_ability == "gale"):
-                blob.x_speed += 1
-            elif(self.player == 2 and self.used_ability == "gale"):
-                blob.x_speed -= 1
-
-        if((self.used_ability == "gale" and self.special_ability_timer >= self.special_ability_cooldown - 300) or \
-            (blob.used_ability == "gale" and blob.special_ability_timer >= blob.special_ability_cooldown - 300)) and\
-            self.y_pos != self.ground: #Gale Affecting the self
-            if(self.player == 1 and self.used_ability == "gale"):
-                self.x_speed += 1
-            elif(self.player == 2 and self.used_ability == "gale"):
-                self.x_speed -= 1        
+        elif((self.used_ability == "gale") or \
+            (blob.used_ability == "gale")):
+            if blob.y_pos != blob.ground: #Gale Affecting the opponent
+                if(self.player == 1 and self.used_ability == "gale"):
+                    blob.x_speed += 1
+                elif(self.player == 2 and self.used_ability == "gale"):
+                    blob.x_speed -= 1
+            if self.y_pos != self.ground: #Gale Affecting the self
+                if(self.player == 1 and self.used_ability == "gale"):
+                    self.x_speed += 1
+                elif(self.player == 2 and self.used_ability == "gale"):
+                    self.x_speed -= 1
 
 
 

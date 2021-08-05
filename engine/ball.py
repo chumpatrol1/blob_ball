@@ -179,7 +179,7 @@ class ball:
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= self.y_center <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
-                        self.y_speed = 0
+                        self.y_speed = -0.9
                         self.image = type_to_image("blocked_ball")
                         self.species = "blocked_ball"
                         self.special_timer = 30
@@ -196,7 +196,7 @@ class ball:
                         self.y_pos = ball_midpoint[1]
                         #Teleport the ball to the midpoint
                         self.x_speed = 0
-                        self.y_speed = 0
+                        self.y_speed = -0.9
                         self.image = type_to_image("blocked_ball")
                         self.species = "blocked_ball"
                         self.special_timer = 30
@@ -212,7 +212,7 @@ class ball:
                     if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
-                        self.y_speed = 0
+                        self.y_speed = -0.9
                         self.image = type_to_image("blocked_ball")
                         self.species = "blocked_ball"
                         self.special_timer = 30
@@ -229,7 +229,7 @@ class ball:
                         self.y_pos = ball_midpoint[1]
                         #If the ball is within the y values of the bounding box
                         self.x_speed = 0
-                        self.y_speed = 0
+                        self.y_speed = -0.9
                         self.image = type_to_image("blocked_ball")
                         self.species = "blocked_ball"
                         self.special_timer = 30
@@ -325,7 +325,8 @@ class ball:
                     if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                         for previous_location in self.previous_locations:
                             if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                                self.y_speed = self.y_speed * 0.9
+                                self.y_speed = self.y_speed * 0.35
+                                break
 
         if(self.x_pos > right_goal):
             side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
