@@ -565,6 +565,7 @@ class blob:
         self.top_speed = self.base_top_speed
         self.friction = self.base_friction
         self.traction = self.base_traction
+        self.impact_land_frames = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)

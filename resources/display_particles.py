@@ -18,6 +18,13 @@ overlay_cache = {'initialized': False}
 particle_memory = []
 
 def draw_top_speed_particles(generator_x, particle_memory):
+    '''
+    HOW TO ADD A NEW PARTICLE TO THE MIX:
+    CHANGE random_image = randint(0, #) to whatever # you want (it will generate a number between 0 and #, inclusive)
+    ADD AN ELIF STATEMENT BY COPYING + PASTING A PREVIOUS ONE
+    ENSURE THAT THE elif(random_image == #): IS SET TO AN APPROPRIATE # (OTHERWISE IT WON'T APPEAR)
+    IN particle_memory.append... ENSURE THAT particle_cache['particle_name'] HAS THE CORRECT PARTICLE NAME
+    '''
     global particle_cache
     if(randint(0, 1) == 1):
         random_image = randint(0, 1)
@@ -30,6 +37,16 @@ def draw_top_speed_particles(generator_x, particle_memory):
     return particle_memory
 
 def draw_blob_particles(game_display, ball, blob):
+    '''HOW TO ADD TO THE PARTICLE CACHE
+    COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
+    ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
+    particle_cache['fire_particle'] #GETS OVERWRITTEN
+    particle_cache['ice_particle']
+    particle_cache['water_particle]
+    particle_cache['fire_particle'] #OVERWRITES THE ORIGINAL
+    ENSURE THAT IT HAS THE CORRECT IMAGE ADDRESS
+    ENSURE THAT IT HAS THE CORRECT SCALING (FOR PARTICLES THAT HAVE A SCALING FUNCTION ATTACHED)
+    '''
     global particle_memory
     if not particle_cache['initialized']:
         particle_cache['initialized'] = True
@@ -50,14 +67,22 @@ def draw_blob_particles(game_display, ball, blob):
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
 
-
-    if(blob.impact_land_frames == 9):
+    #TODO: Add all of these into an array
+    if(blob.impact_land_frames == 9): #Landing Particles
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
 
+    if(blob.used_ability == "gale"):
+        random_number = randint(0,2)
+        if(random_number):
+            if(blob.player == 1):
+                particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
+            elif(blob.player == 2):
+                particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+    
     #Manages and updates particles
     temparray = []
     for particle in particle_memory:
