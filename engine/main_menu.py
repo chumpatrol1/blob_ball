@@ -31,12 +31,11 @@ def menu_navigation(timer):
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == 0): #Casual
             game_state = "css"
-            print(game_state)
         elif(selector_position == 1):
             selector_position = 0
         elif(selector_position == 2):
-            #game_state = "almanac"
-            game_state = "css"
+            selector_position = 0
+            game_state = "almanac"
         elif(selector_position == 3):
             selector_position = 0
             game_state = "rules"
@@ -48,14 +47,123 @@ def menu_navigation(timer):
             pg.quit()
             sys.exit()
             
+    return selector_position, game_state
+
+def almanac_navigation(timer, previous_screen):
+    game_state = "almanac"
+    pressed = engine.handle_input.menu_input()
+    global selector_position
+    if('p1_up' in pressed or 'p2_up' in pressed):
+        if selector_position == 0:
+            selector_position = 5
+        else:
+            selector_position -= 1
+    elif('p1_down' in pressed or 'p2_down' in pressed):
+        if selector_position == 5:
+            selector_position = 0
+        else:
+            selector_position += 1
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        if(selector_position == 0): #Casual
+            game_state = "almanac"
+        elif(selector_position == 1):
+            selector_position = 0
+        elif(selector_position == 2):
+            game_state = "almanac"
+        elif(selector_position == 3):
+            selector_position = 0
+            game_state = "almanac_art"
+        elif(selector_position == 4):
+            game_state = "credits"
+        elif(selector_position == 5): #Go back
+            game_state = previous_screen
+            if(previous_screen == "main_menu"):
+                selector_position = 2
+            else:
+                selector_position = 0
+            
         print("Selected position {}!".format(selector_position))
     return selector_position, game_state
+
+def almanac_art_navigation(timer):
+    game_state = "almanac_art"
+    pressed = engine.handle_input.menu_input()
+    global selector_position
+    if('p1_up' in pressed or 'p2_up' in pressed):
+        if selector_position == 0:
+            selector_position = 5
+        else:
+            selector_position -= 1
+    elif('p1_down' in pressed or 'p2_down' in pressed):
+        if selector_position == 5:
+            selector_position = 0
+        else:
+            selector_position += 1
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        if(selector_position == 5): #Casual
+            game_state = "almanac"
+            selector_position = 3
+        elif(selector_position == 0):
+            game_state = "almanac_art_backgrounds"
+        elif(selector_position == 1):
+            selector_position = 0
+            game_state = "almanac_art_blobs"
+            
+        print("Selected position {}!".format(selector_position))
+    return selector_position, game_state
+
+def almanac_art_backgrounds_navigation(timer):
+    game_state = "almanac_art_backgrounds"
+    pressed = engine.handle_input.menu_input()
+    global selector_position
+    if('p1_left' in pressed or 'p2_left' in pressed):
+        if selector_position == 0:
+            selector_position = 6
+        else:
+            selector_position -= 1
+    elif('p1_right' in pressed or 'p2_right' in pressed):
+        if selector_position == 6:
+            selector_position = 0
+        else:
+            selector_position += 1
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        selector_position = 0
+        game_state = "almanac_art"
+
+    return selector_position, game_state
+
+def almanac_art_blobs_navigation(timer):
+    game_state = "almanac_art_blobs"
+    pressed = engine.handle_input.menu_input()
+    global selector_position
+    if('p1_left' in pressed or 'p2_left' in pressed):
+        if selector_position == 0:
+            selector_position = 39
+        else:
+            selector_position -= 1
+    elif('p1_right' in pressed or 'p2_right' in pressed):
+        if selector_position == 39:
+            selector_position = 0
+        else:
+            selector_position += 1
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        selector_position = 0
+        game_state = "almanac_art"
+
+    return selector_position, game_state
+
+def credits_navigation(timer):
+    pressed = engine.handle_input.menu_input()
+    game_state = "credits"
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        game_state = "almanac"
+    return [game_state]
 
 blob_list = [
     ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "wind",],
     ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["almanac", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
 ]
 
@@ -145,9 +253,9 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 3):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "almanac"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 4):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]
@@ -171,9 +279,9 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 3):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                game_state = "almanac"
+                p1_selector_position[2] = 0
+                p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 4):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0]

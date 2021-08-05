@@ -13,6 +13,8 @@ from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.display_settings import draw_rules_screen as draw_rules_screen
+from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_main as draw_almanac_main
+from resources.display_almanac import draw_almanac_credits as draw_almanac_credits
 from engine.handle_input import toggle_fullscreen
 import math
 from json import loads, dumps
@@ -92,7 +94,7 @@ def handle_graphics(game_state, main_cwd):
         selector_position = info_getter[0]
         draw_main_menu(screen_size, game_surface, selector_position, settings)
         game_state = info_getter[1]
-        if(game_state == "rules" or game_state == "settings"):
+        if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
             previous_screen = "main_menu"
     elif(game_state == "css"):
         info_getter = engine.main_menu.css_handler()
@@ -110,6 +112,9 @@ def handle_graphics(game_state, main_cwd):
             previous_screen = "css"
         elif(game_state == "main_menu"):
             timer = 10
+        elif(game_state == "almanac"):
+            timer = 10
+            previous_screen = "css"
     elif(game_state == "casual_match"):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings)
         p1_blob = info_getter[0]
@@ -146,6 +151,44 @@ def handle_graphics(game_state, main_cwd):
     elif(game_state == "rebind"):
         info_getter = draw_rebind_screen(game_surface, settings)
         game_state = info_getter[0]
+    elif(game_state == "almanac"):
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.almanac_navigation(timer, previous_screen)
+        selector_position = info_getter[0]
+        game_state = info_getter[1]
+        if(game_state != "almanac"):
+            timer = 10
+        draw_almanac_main(game_surface, selector_position, settings)
+    elif(game_state == "almanac_art"):
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.almanac_art_navigation(timer)
+        selector_position = info_getter[0]
+        game_state = info_getter[1]
+        if(game_state != "almanac_art"):
+            timer = 10
+        draw_almanac_art(game_surface, selector_position, settings)
+    elif(game_state == "almanac_art_backgrounds"):
+        info_getter = engine.main_menu.almanac_art_backgrounds_navigation(timer)
+        selector_position = info_getter[0]
+        game_state = info_getter[1]
+        if(timer > 0):
+            timer -=1
+        draw_almanac_backgrounds(game_surface, selector_position)
+    elif(game_state == "almanac_art_blobs"):
+        info_getter = engine.main_menu.almanac_art_blobs_navigation(timer)
+        selector_position = info_getter[0]
+        game_state = info_getter[1]
+        if(timer > 0):
+            timer -=1
+        draw_almanac_blobs(game_surface, selector_position)
+    elif(game_state == "credits"):
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.credits_navigation(timer)
+        game_state = info_getter[0]
+        draw_almanac_credits(game_surface, settings)
     global toggle_timer
     global full_screen
     global display_height, display_width
