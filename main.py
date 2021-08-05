@@ -2,7 +2,8 @@
 #snakeviz out.prof
 
 import os
-
+from sys import argv
+os.chdir(os.path.dirname(argv[0]))
 cwd = os.getcwd()
 print("MAIN",cwd)
 
