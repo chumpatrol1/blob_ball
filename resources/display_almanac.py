@@ -28,6 +28,21 @@ def draw_almanac_main(game_display, selector_position, settings):
         game_display.blit(text_box, text_rect)
         text_y += 76
 
+def draw_almanac_stats(game_display, settings):
+    draw_background(game_display, 'almanac_stats', settings)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)
+    text_array = [
+        menu_font.render('Game Developers', False, (0, 0, 150)),
+        menu_font.render('Stat 1', False, (0, 0, 150)),
+    ]
+
+    text_y = 76
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 76
+
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)

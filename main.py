@@ -12,10 +12,59 @@ import pygame as pg
 import resources.display_graphics as dg
 import sys
 import engine.handle_input
-
+from json import loads, dumps
 game_state = "main_menu"
 
 done = False
+
+game_stats = {
+    #Stats about the state of the game
+    'original_version': 'v0.7.0a', #Version this file was created on
+    'times_bb_started': 0, #Number of times Blob Ball was started up
+    'time_open': 0, #Time in seconds.mm that the game has been open
+    'time_in_game': 0, #Time in seconds.mm that was spent in an actual match
+    'blobs_unlocked': 1, #Number of blobs unlocked
+    'costumes_unlocked': 0, #Number of costumes unlocked
+    'backgrounds_unlocked': 0, #Number of backgrounds unlocked
+    'most_played_character': 'quirkless', #Most played character
+
+    #Stats about game/match info
+    'points_scored': 0, #Total points scored (should be sum of bottom 2)
+    'points_from_goals': 0, #Total points scored from kicking the ball into the goal
+    'points_from_kos': 0, #Total points scored from kills
+
+    #Stats relating directly to blobs
+    'damage_dealt': 0, #Total damage accumulated
+    'kick_count': 0, #Total amount of times the kick button was pressed
+    'block_count': 0, #Total amount of times the block button was pressed
+    'boost_count': 0, #Total amount of times the boost button was pressed
+    'parries': 0, #Total number of kicks or attacks deflected by blocks
+    'clanks': 0, #Total numbers of kicks deflected by other kicks
+    'blob_x_distance_moved': 0, #Total distance moved by blobs
+    'wavebounces': 0, #Total wavebounces performed
+    'jumps': 0, #Total jumps
+    'jump_cancelled_focuses': 0, #Total focuses cancelled by jumps
+    'time_focused_seconds': 0, #Total time spent focusing
+    'time_airborne_seconds': 0, #Total time spent in the air
+    'time_grounded_seconds': 0, #Total time spent on the ground
+
+    'blob_standard_collisions': 0, #Normal ball collisions (hitting the top)
+    'blob_reflect_collisions': 0, #Reflecting ball collisions (hitting the bottom)
+    'blob_warp_collisions': 0, #Warp ball collisions (ball warps above the blob)
+    'kicked': 0, #Times hit with a kick
+    'blocked': 0, #Times hit with a block
+    'ball_x_distance_moved': 0, #Distance moved horizontally
+    'ball_y_distance_moved': 0, #Distance moved vertically
+        }
+
+try:
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+        game_stats = loads(statsdoc.readline())
+except:
+    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+        statsdoc.write(dumps(game_stats))
+        print("Not OK!")
+
 
 def handle_input():
     engine.handle_input.get_keypress()

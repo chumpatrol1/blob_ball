@@ -69,7 +69,7 @@ def almanac_navigation(timer, previous_screen):
         elif(selector_position == 1):
             selector_position = 0
         elif(selector_position == 2):
-            game_state = "almanac"
+            game_state = "almanac_stats"
         elif(selector_position == 3):
             selector_position = 0
             game_state = "almanac_art"
@@ -84,6 +84,13 @@ def almanac_navigation(timer, previous_screen):
             
         print("Selected position {}!".format(selector_position))
     return selector_position, game_state
+
+def almanac_stats_navigation(timer):
+    pressed = engine.handle_input.menu_input()
+    game_state = "almanac_stats"
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        game_state = "almanac"
+    return [game_state]
 
 def almanac_art_navigation(timer):
     game_state = "almanac_art"

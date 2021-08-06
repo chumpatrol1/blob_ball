@@ -60,7 +60,9 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_2.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_3.png").convert_alpha(), (20, 20))
-        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\ice_particle.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_2.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_3.png").convert_alpha(), (30, 30))
     
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
@@ -74,14 +76,28 @@ def draw_blob_particles(game_display, ball, blob):
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
+        
+    if(blob.impact_land_frames == 9): #Landing Particles
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
+        
+    if(blob.impact_land_frames == 9): #Landing Particles
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
 
     if(blob.used_ability == "gale"):
         random_number = randint(0,2)
         if(random_number):
             if(blob.player == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
             elif(blob.player == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
     
     #Manages and updates particles
     temparray = []

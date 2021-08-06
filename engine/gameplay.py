@@ -39,7 +39,6 @@ game_info = {
         'game_score': game_score,
         'time': 0,
         'time_seconds': 0,
-        'avg_point_time': 0,
         'avg_collisions_per_goal': 0,
         }
 
