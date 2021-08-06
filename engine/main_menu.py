@@ -367,7 +367,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
-                selector_position = 4
+                selector_position = 3
             else:
                 selector_position = 0
             print(previous_screen)
@@ -408,7 +408,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(settings) + 3):
             if(previous_screen == "main_menu"):
-                selector_position = 5
+                selector_position = 4
             else:
                 selector_position = 0
             game_state = previous_screen

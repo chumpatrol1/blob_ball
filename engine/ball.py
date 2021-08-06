@@ -261,7 +261,7 @@ class ball:
             self.y_speed = -50
         elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 30):
             self.y_speed = ball.ground - self.y_pos
-        elif(blob.used_ability == "gale"):
+        elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1):
                 self.x_speed += 0.25
             else:

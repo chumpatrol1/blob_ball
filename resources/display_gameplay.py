@@ -1,6 +1,7 @@
 from os import getcwd
 from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
+from resources.display_particles import clear_particle_memory as clear_particle_memory
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -318,6 +319,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 
 def draw_win_screen(screen_size, game_display, game_stats, settings):
     draw_background(game_display, "win_screen", settings)
+    clear_particle_memory()
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", round(50*(screen_size[1]/768)))
     if(game_stats == 3):
         menu_text = menu_font.render("TIE", False, (0, 0, 255))

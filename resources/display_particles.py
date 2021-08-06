@@ -94,6 +94,10 @@ def draw_blob_particles(game_display, ball, blob):
 
     particle_memory = temparray 
 
+def clear_particle_memory():
+    global particle_memory
+    particle_memory = []
+
 def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
 
     for previous_location in ball.previous_locations:

@@ -183,6 +183,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 ball.move(p1_blob, p2_blob)
                 p1_blob.move([])
                 p2_blob.move([])
+                p1_blob.impact_land_frames = 0
+                p2_blob.impact_land_frames = 0
                 countdown -= 1
                 if(countdown == 0):
                     game_state, winner_info = score_goal(goal_scorer, goal_limit)

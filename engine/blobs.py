@@ -525,12 +525,12 @@ class blob:
             blob.damage_flash_timer = 60
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
-            if blob.y_pos != blob.ground: #Gale Affecting the opponent
+            if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
                 if(self.player == 1 and self.used_ability == "gale"):
                     blob.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
                     blob.x_speed -= 1
-            if self.y_pos != self.ground: #Gale Affecting the self
+            if self.y_pos != self.ground and not self.block_timer: #Gale Affecting the self
                 if(self.player == 1 and self.used_ability == "gale"):
                     self.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
@@ -566,6 +566,7 @@ class blob:
         self.friction = self.base_friction
         self.traction = self.base_traction
         self.impact_land_frames = 0
+        self.movement_lock = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
