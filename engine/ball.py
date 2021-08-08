@@ -48,6 +48,7 @@ class ball:
         self.friction = 0.1 #Air Friction
         self.gravity = 0.9
         self.grounded = False #True if the ball is on the ground
+        self.goal_grounded = False #True if the ball is rolling along the goal
         self.special_timer = 0 #Used when the ball is hit with a kick or block
         #Stores 10 afterimages
         self.previous_locations = []
@@ -130,7 +131,7 @@ class ball:
                     
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
-                elif p1_vector.distance_to(ball_vector) <= blob_collision_distance: #Standard collision
+                elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                     self.info['blob_standard_collisions'] += 1
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
@@ -252,6 +253,8 @@ class ball:
                 geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
                 if(geyser_power < 0.8 and self.y_speed > -25):
                     self.y_speed += geyser_power
+                    if(self.y_speed > 0):
+                        self.y_speed += geyser_power #Effectively, it's twice as powerful
                 else:
                     self.y_speed -= 0.8
             except Exception as exception:
@@ -307,42 +310,51 @@ class ball:
                     self.x_speed -= self.friction #Normal deceleration
         
         #Interacting with the goalposts
-        if(self.x_pos < left_goal):
-            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
-            if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
-                self.x_pos = left_goal + 1
-                if(self.x_speed < 0):
-                    self.x_speed = self.x_speed * -0.5
-            elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
-                self.y_pos = goal_bottom
-                if(self.y_speed < 0):
-                    self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
-                self.y_pos = goal_top - 1
-                self.x_speed += 0.5
-                if(self.y_speed >= 0):
-                    self.y_speed = self.y_speed * -0.5
-                    if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
-                        for previous_location in self.previous_locations:
-                            if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                                self.y_speed = self.y_speed * 0.35
-                                break
+        if(self.x_pos < left_goal or self.x_pos > right_goal):
+            if(self.x_pos < left_goal):
+                side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
+                if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    self.x_pos = left_goal + 1
+                    if(self.x_speed < 0):
+                        self.x_speed = self.x_speed * -0.5
+                elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    self.y_pos = goal_bottom
+                    if(self.y_speed < 0):
+                        self.y_speed = self.y_speed * -0.5
+                elif(self.y_pos - self.y_speed < goal_top < self.y_pos + 1 and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
+                    self.y_pos = goal_top - self.gravity
+                    self.x_speed += 0.5
+                    self.goal_grounded = True
+                    if(self.y_speed >= 0):
+                        self.y_speed = self.y_speed * -0.5
+                        if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                            for previous_location in self.previous_locations:
+                                if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                                    self.y_speed = self.y_speed * 0.35
+                                    break
+                else:
+                    self.goal_grounded = False
 
-        if(self.x_pos > right_goal):
-            side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
-            if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
-                self.x_pos = right_goal - 1
-                if(self.x_speed > 0):
-                    self.x_speed = self.x_speed * -0.5
-            elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
-                self.y_pos = goal_bottom
-                if(self.y_speed < 0):
-                    self.y_speed = self.y_speed * -0.5
-            elif(self.y_pos - self.y_speed < goal_top < self.y_pos and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
-                self.y_pos = goal_top - 1
-                self.x_speed -= 0.5
-                if(self.y_speed >= 0):
-                    self.y_speed = self.y_speed * -0.5
+            if(self.x_pos > right_goal):
+                side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
+                if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    self.x_pos = right_goal - 1
+                    if(self.x_speed > 0):
+                        self.x_speed = self.x_speed * -0.5
+                elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    self.y_pos = goal_bottom
+                    if(self.y_speed < 0):
+                        self.y_speed = self.y_speed * -0.5
+                elif(self.y_pos - self.y_speed < goal_top < self.y_pos + 1 and (self.y_speed >= 0  or self.species == "blocked_ball")): #Hit top of goalpost
+                    self.y_pos = goal_top - self.gravity
+                    self.x_speed -= 0.5
+                    self.goal_grounded = True
+                    if(self.y_speed >= 0):
+                        self.y_speed = self.y_speed * -0.5
+                else:
+                    self.goal_grounded = False
+        else:
+            self.goal_grounded = False
 
         #Interacting with the walls
         if(self.x_pos < left_wall): #Hit side of goalpoast
