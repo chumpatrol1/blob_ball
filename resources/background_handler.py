@@ -16,7 +16,9 @@ previous_game_screen = "main_menu"
 def load_background(game_screen, settings):
     global background_cache
     background_cache['initialized'] = True
-    if(game_screen == "main_menu"):
+    if(game_screen == "green_background"):
+        background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
+    elif(game_screen == "main_menu"):
         if(settings['hd_backgrounds']):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\main_menu_background_hd.png").convert()
         else:
@@ -46,9 +48,9 @@ def load_background(game_screen, settings):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
     elif(game_screen == "almanac"):
         if(settings['hd_backgrounds']):
-            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\almanac_background.png").convert()
         else:
-            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()
+            background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\almanac_background.png").convert()
     elif(game_screen == "credits"):
         if(settings['hd_backgrounds']):
             background_cache['background'] = pg.image.load(cwd + "\\resources\\images\\green_background.png").convert()

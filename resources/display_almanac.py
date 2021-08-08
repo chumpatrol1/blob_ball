@@ -91,7 +91,6 @@ def draw_almanac_art(game_display, selector_position, settings):
     return
 
 def draw_almanac_backgrounds(game_display, selector_position):
-    print(selector_position)
     if(selector_position == 0):
         settings = {'hd_backgrounds': True,}
         draw_background(game_display, 'green_background', settings)
