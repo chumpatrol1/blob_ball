@@ -37,9 +37,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     directory = cwd + "\\resources\\images"
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
-        font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 50)
-        font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
-        font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 80)
+        font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
+        font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+        font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
         token_cache['p1_ball'] = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
         token_cache['p1_selected'] = pg.image.load(cwd + "\\resources\\images\\p1_check.png")
         token_cache['p2_ball'] = pg.image.load(cwd + "\\resources\\images\\p2_token.png")

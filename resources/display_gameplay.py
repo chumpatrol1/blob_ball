@@ -201,8 +201,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
-        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 35)
-        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
+        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
+        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 

@@ -5,7 +5,7 @@ cwd = getcwd()
 
 def draw_main_menu(screen_size, game_display, selector_position, settings):
     draw_background(game_display, 'main_menu', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 50)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
     text_array = [
         menu_font.render('Play!', False, (0, 0, 150)),
         menu_font.render('Online', False, (0, 0, 150)),

@@ -6,7 +6,7 @@ cwd = getcwd()
 
 def draw_almanac_main(game_display, selector_position, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 50)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render('Blobs and Info', False, (0, 0, 150)),
         menu_font.render('Medals', False, (0, 0, 150)),
@@ -30,8 +30,8 @@ def draw_almanac_main(game_display, selector_position, settings):
 
 def draw_almanac_stats(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
-    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
     from json import loads
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
@@ -122,7 +122,7 @@ def draw_almanac_stats(game_display, settings):
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 23)
     text_array = [
         menu_font.render('Game Developers', False, (0, 0, 150)),
         menu_font.render('Elijah "Chumpatrol1" McLaughlin (Lead Programmer, Lead Designer)', False, (0, 0, 150)),
@@ -141,7 +141,7 @@ def draw_almanac_credits(game_display, settings):
 
 def draw_almanac_art(game_display, selector_position, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 50)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render('Backgrounds', False, (0, 0, 150)),
         menu_font.render('Blobs and Icons', False, (0, 0, 150)),
