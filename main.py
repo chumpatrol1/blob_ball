@@ -13,6 +13,7 @@ import resources.display_graphics as dg
 import sys
 import engine.handle_input
 from json import loads, dumps
+import time
 game_state = "main_menu"
 
 done = False
@@ -65,6 +66,11 @@ except:
         statsdoc.write(dumps(game_stats))
         print("Not OK!")
 
+with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+    game_stats['times_bb_started'] += 1
+    start_time = time.time()
+    statsdoc.write(dumps(game_stats))
+
 
 def handle_input():
     engine.handle_input.get_keypress()
@@ -87,9 +93,8 @@ def run():
             done = True
     pressed =  pg.key.get_pressed()
     if(pressed[pg.K_ESCAPE]):
-        pg.quit()
-        sys.exit()
         done = True #Ends the game
+        
     '''Runs the program'''
     return game_state
 
@@ -97,3 +102,9 @@ while not done:
     game_state = run()
 else:
     print("All done!")
+    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
+            statsdoc.write(dumps(game_stats))
+    pg.quit()
+    sys.exit()
+        

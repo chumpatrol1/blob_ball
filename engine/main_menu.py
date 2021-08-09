@@ -3,6 +3,8 @@ import sys
 import engine.handle_input
 from engine.handle_input import reset_inputs
 from json import dumps
+from os import getcwd
+cwd = getcwd()
 
 pg.init()
 clock = pg.time.Clock()
