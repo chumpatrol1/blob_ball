@@ -171,7 +171,7 @@ def handle_graphics(game_state, main_cwd):
             timer -= 1
         info_getter = engine.main_menu.almanac_stats_navigation(timer)
         game_state = info_getter[0]
-        if(game_state != "almanac_art"):
+        if(game_state != "almanac_stats"):
             timer = 10
         draw_almanac_stats(game_surface, settings)
     elif(game_state == "almanac_art"):
