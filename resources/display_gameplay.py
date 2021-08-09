@@ -201,8 +201,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
-        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 35)
-        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)
+        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 35)
+        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -320,7 +320,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 def draw_win_screen(screen_size, game_display, game_stats, settings):
     draw_background(game_display, "win_screen", settings)
     clear_particle_memory()
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", round(50*(screen_size[1]/768)))
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", round(50*(screen_size[1]/768)))
     if(game_stats == 3):
         menu_text = menu_font.render("TIE", False, (0, 0, 255))
     else:
