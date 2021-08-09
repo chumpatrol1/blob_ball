@@ -63,6 +63,10 @@ class ball:
             'blocked': 0,
             'x_distance_moved': 0,
             'y_distance_moved': 0,
+            'floor_collisions': 0,
+            'wall_collisions': 0,
+            'ceiling_collisions': 0,
+            'goal_collisions': 0,
         }
     
     ground = 1240
@@ -314,10 +318,12 @@ class ball:
             if(self.x_pos < left_goal):
                 side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
                 if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    self.info['goal_collisions'] += 1
                     self.x_pos = left_goal + 1
                     if(self.x_speed < 0):
                         self.x_speed = self.x_speed * -0.5
                 elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    self.info['goal_collisions'] += 1
                     self.y_pos = goal_bottom
                     if(self.y_speed < 0):
                         self.y_speed = self.y_speed * -0.5
@@ -326,11 +332,12 @@ class ball:
                     self.x_speed += 0.5
                     self.goal_grounded = True
                     if(self.y_speed >= 0):
+                        self.info['goal_collisions'] += 1
                         self.y_speed = self.y_speed * -0.5
                         if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                             for previous_location in self.previous_locations:
                                 if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                                    self.y_speed = self.y_speed * 0.35
+                                    self.y_speed = self.y_speed * 0.3
                                     break
                 else:
                     self.goal_grounded = False
@@ -338,10 +345,12 @@ class ball:
             if(self.x_pos > right_goal):
                 side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
                 if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    self.info['goal_collisions'] += 1
                     self.x_pos = right_goal - 1
                     if(self.x_speed > 0):
                         self.x_speed = self.x_speed * -0.5
                 elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    self.info['goal_collisions'] += 1
                     self.y_pos = goal_bottom
                     if(self.y_speed < 0):
                         self.y_speed = self.y_speed * -0.5
@@ -350,19 +359,27 @@ class ball:
                     self.x_speed -= 0.5
                     self.goal_grounded = True
                     if(self.y_speed >= 0):
+                        self.info['goal_collisions'] += 1
                         self.y_speed = self.y_speed * -0.5
+                        if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
+                            for previous_location in self.previous_locations:
+                                if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                                    self.y_speed = self.y_speed * 0.3
+                                    break
                 else:
                     self.goal_grounded = False
         else:
             self.goal_grounded = False
 
         #Interacting with the walls
-        if(self.x_pos < left_wall): #Hit side of goalpoast
+        if(self.x_pos < left_wall): #Hit side of the wall
+            self.info['wall_collisions'] += 1
             self.x_pos = left_wall
             if(self.x_speed < 0):
                 self.x_speed = self.x_speed * -0.5
 
         if(self.x_pos > right_wall):
+            self.info['wall_collisions'] += 1
             self.x_pos = right_wall
             if(self.x_speed > 0):
                 self.x_speed = self.x_speed * -0.5
@@ -384,16 +401,20 @@ class ball:
                 pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
+                self.info['floor_collisions'] += 1
                 if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                     for previous_location in self.previous_locations:
                         if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                            self.y_speed = self.y_speed * 0.9
+                            self.y_speed = self.y_speed * 0.3
+                            break
+                            
 
                 
                  #Reduces bounciness over time
             self.y_pos = ground
             
         if(self.y_pos < ceiling): #Don't raze the roof!
+            self.info['ceiling_collisions'] += 1
             if(self.y_speed > -4):
                 self.y_speed = 0
             else:

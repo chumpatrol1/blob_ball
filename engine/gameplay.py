@@ -249,6 +249,11 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 game_stats['ball_blocked'] = game_stats['ball_blocked'] + ball.info['blocked']
                 game_stats['ball_x_distance_moved'] = round(game_stats['ball_x_distance_moved'] + ball.info['x_distance_moved'])
                 game_stats['ball_y_distance_moved'] = round(game_stats['ball_y_distance_moved'] + ball.info['y_distance_moved'])
+                game_stats['ball_floor_collisions'] = game_stats['ball_floor_collisions'] + ball.info['floor_collisions']
+                game_stats['ball_goal_collisions'] = game_stats['ball_goal_collisions'] + ball.info['goal_collisions']
+                game_stats['ball_ceiling_collisions'] = game_stats['ball_ceiling_collisions'] + ball.info['ceiling_collisions']
+                game_stats['ball_wall_collisions'] = game_stats['ball_wall_collisions'] + ball.info['wall_collisions']
+                
                 
                 game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
                 statsdoc.write(dumps(game_stats))

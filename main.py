@@ -57,6 +57,10 @@ game_stats = {
     'ball_blocked': 0, #Times hit with a block
     'ball_x_distance_moved': 0, #Distance moved horizontally
     'ball_y_distance_moved': 0, #Distance moved vertically
+    'ball_wall_collisions': 0, #Hitting a wall
+    'ball_ceiling_collisions': 0, #Hitting the ceiling
+    'ball_floor_collisions': 0, #Bouncing off of the floor specifically
+    'ball_goal_collisions': 0, #Goalpost collisions
         }
 
 try:

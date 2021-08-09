@@ -63,15 +63,30 @@ def draw_almanac_stats(game_display, settings):
         tiny_font.render('Wavebounces: ' + str(game_stats['wavebounces']), False, (0, 0, 150)),
         tiny_font.render('Jumps: ' + str(game_stats['jumps']), False, (0, 0, 150)),
         tiny_font.render('Jump Cancelled Focuses: ' + str(game_stats['jump_cancelled_focuses']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
-        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Time Grounded: ' + str(game_stats['time_grounded_seconds']), False, (0, 0, 150)),
+        tiny_font.render('Time Airborne: ' + str(game_stats['time_airborne_seconds']), False, (0, 0, 150)),
+        tiny_font.render('Time Focused: ' + str(game_stats['time_focused_seconds']), False, (0, 0, 150)),
+        tiny_font.render('Damage Dealt: ' + str(game_stats['damage_dealt']), False, (0, 0, 150)),
+        tiny_font.render('Parries: ' + str(game_stats['parries']), False, (0, 0, 150)),
+        tiny_font.render('Clanks: ' + str(game_stats['clanks']), False, (0, 0, 150)),
+        tiny_font.render('Kicks: ' + str(game_stats['kick_count']), False, (0, 0, 150)),
+        tiny_font.render('Blocks: ' + str(game_stats['block_count']), False, (0, 0, 150)),
+        tiny_font.render('Boosts: ' + str(game_stats['boost_count']), False, (0, 0, 150)),
+    ]
+
+    ball_text = [
+        tiny_font.render('Ball Statistics', False, (0, 0, 150)),
+        tiny_font.render('Wall Collisions: ' + str(game_stats['ball_wall_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Ceiling Collisions: ' + str(game_stats['ball_ceiling_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Floor Collisions: ' + str(game_stats['ball_floor_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Goal Collisions: ' + str(game_stats['ball_goal_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Blob Standard Collisions: ' + str(game_stats['blob_standard_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Blob Reflect Collisions: ' + str(game_stats['blob_reflect_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Blob Warp Collisions: ' + str(game_stats['blob_warp_collisions']), False, (0, 0, 150)),
+        tiny_font.render('Kicked: ' + str(game_stats['ball_kicked']), False, (0, 0, 150)),
+        tiny_font.render('Blocked: ' + str(game_stats['ball_blocked']), False, (0, 0, 150)),
+        tiny_font.render('X Distance Moved: ' + str(game_stats['ball_x_distance_moved']), False, (0, 0, 150)),
+        tiny_font.render('Y Distance Moved: ' + str(game_stats['ball_y_distance_moved']), False, (0, 0, 150)),
     ]
 
     text_y = 76
@@ -96,6 +111,12 @@ def draw_almanac_stats(game_display, settings):
     for text_box in blob_text:
         text_rect = text_box.get_rect()
         text_rect.topleft = (550, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y = 120
+    for text_box in ball_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (950, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
 
