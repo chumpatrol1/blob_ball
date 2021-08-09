@@ -30,6 +30,7 @@ game_stats = {
     'most_played_character': 'quirkless', #Most played character
 
     #Stats about game/match info
+    'matches_played': 0, #Number of matches completed
     'points_scored': 0, #Total points scored (should be sum of bottom 2)
     'points_from_goals': 0, #Total points scored from kicking the ball into the goal
     'points_from_kos': 0, #Total points scored from kills
@@ -52,8 +53,8 @@ game_stats = {
     'blob_standard_collisions': 0, #Normal ball collisions (hitting the top)
     'blob_reflect_collisions': 0, #Reflecting ball collisions (hitting the bottom)
     'blob_warp_collisions': 0, #Warp ball collisions (ball warps above the blob)
-    'kicked': 0, #Times hit with a kick
-    'blocked': 0, #Times hit with a block
+    'ball_kicked': 0, #Times hit with a kick
+    'ball_blocked': 0, #Times hit with a block
     'ball_x_distance_moved': 0, #Distance moved horizontally
     'ball_y_distance_moved': 0, #Distance moved vertically
         }
@@ -94,6 +95,8 @@ def run():
     pressed =  pg.key.get_pressed()
     if(pressed[pg.K_ESCAPE]):
         done = True #Ends the game
+    if(game_state == "quit"):
+        done = True
         
     '''Runs the program'''
     return game_state
@@ -102,6 +105,8 @@ while not done:
     game_state = run()
 else:
     print("All done!")
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
     with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
             game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
             statsdoc.write(dumps(game_stats))

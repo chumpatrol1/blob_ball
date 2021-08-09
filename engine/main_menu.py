@@ -45,9 +45,7 @@ def menu_navigation(timer):
             selector_position = 0
             game_state = "settings"
         elif(selector_position == 5): #Quits the game
-            print("QUIT")
-            pg.quit()
-            sys.exit()
+            game_state = "quit"
             
     return selector_position, game_state
 

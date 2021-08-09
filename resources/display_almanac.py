@@ -31,9 +31,47 @@ def draw_almanac_main(game_display, selector_position, settings):
 def draw_almanac_stats(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)
+    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 30)
+    from json import loads
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
     text_array = [
-        menu_font.render('Game Developers', False, (0, 0, 150)),
-        menu_font.render('Stat 1', False, (0, 0, 150)),
+        menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
+    ]
+    general_text = [
+        tiny_font.render('General Statistics', False, (0, 0, 150)),
+        tiny_font.render('Times Game Started: ' + str(game_stats['times_bb_started']), False, (0, 0, 150)),
+        tiny_font.render('Time Open: ' + str(game_stats['time_open']), False, (0, 0, 150)),
+        tiny_font.render('Times In Match: ' + str(game_stats['time_in_game']), False, (0, 0, 150)),
+        tiny_font.render('Blobs Unlocked: ' + str(game_stats['blobs_unlocked']), False, (0, 0, 150)),
+        tiny_font.render('Costumes Unlocked: ' + str(game_stats['costumes_unlocked']), False, (0, 0, 150)),
+        tiny_font.render('Backgrounds Unlocked: ' + str(game_stats['backgrounds_unlocked']), False, (0, 0, 150)),
+        tiny_font.render('Most Played Blob: ' + game_stats['most_played_character'], False, (0, 0, 150)),
+        tiny_font.render('First Played Version: ' + game_stats['original_version'], False, (0, 0, 150)),
+    ]
+    match_text = [
+        tiny_font.render('Match Statistics', False, (0, 0, 150)),
+        tiny_font.render('Matches Played: ' + str(game_stats['matches_played']), False, (0, 0, 150)),
+        tiny_font.render('Points Scored: ' + str(game_stats['points_scored']), False, (0, 0, 150)),
+        tiny_font.render('Points from KOs: ' + str(game_stats['points_from_kos']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+    ]
+
+    blob_text = [
+        tiny_font.render('Blob Statistics', False, (0, 0, 150)),
+        tiny_font.render('X Distance Moved: ' + str(game_stats['blob_x_distance_moved']), False, (0, 0, 150)),
+        tiny_font.render('Wavebounces: ' + str(game_stats['wavebounces']), False, (0, 0, 150)),
+        tiny_font.render('Jumps: ' + str(game_stats['jumps']), False, (0, 0, 150)),
+        tiny_font.render('Jump Cancelled Focuses: ' + str(game_stats['jump_cancelled_focuses']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
+        tiny_font.render('Points from Goals: ' + str(game_stats['points_from_goals']), False, (0, 0, 150)),
     ]
 
     text_y = 76
@@ -42,6 +80,24 @@ def draw_almanac_stats(game_display, settings):
         text_rect.center = (683, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 76
+    text_y = 120
+    for text_box in general_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y += 40
+    for text_box in match_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y = 120
+    for text_box in blob_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (550, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)

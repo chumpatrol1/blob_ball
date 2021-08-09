@@ -43,8 +43,9 @@ game_surface = pg.Surface((1366, 768))
 p1_blob = []
 p2_blob = []
 timer = 0
+game_version = '0.7.0a'
 ruleset = {
-    'version': 'v0.7.0a',
+    'version': game_version,
     'goal_limit': 5,
     'time_limit': 3600,
     'time_bonus': 600,
@@ -61,6 +62,9 @@ settings = {
 try:
     with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
         ruleset = loads(rulesetdoc.readline())
+    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+        ruleset['version'] = game_version
+        rulesetdoc.write(dumps(ruleset))
 except:
     with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
         rulesetdoc.write(dumps(ruleset))
