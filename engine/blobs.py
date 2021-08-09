@@ -511,7 +511,7 @@ class blob:
                     blob.info['parries'] += 1
 
     def check_ability_collision(self, blob, ball):
-        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 60
+        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 45
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
             blob.hp -= 1
@@ -530,11 +530,16 @@ class blob:
                     blob.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
                     blob.x_speed -= 1
+            elif blob.y_pos == blob.ground and not blob.block_timer:
+                if(self.player == 1 and self.used_ability == "gale"):
+                    blob.x_speed += 0.3
+                elif(self.player == 2 and self.used_ability == "gale"):
+                    blob.x_speed -= 0.3
             if self.y_pos != self.ground and not self.block_timer: #Gale Affecting the self
                 if(self.player == 1 and self.used_ability == "gale"):
-                    self.x_speed += 1
+                    pass #self.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
-                    self.x_speed -= 1
+                    pass #self.x_speed -= 1
 
 
 
