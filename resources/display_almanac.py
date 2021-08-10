@@ -42,7 +42,7 @@ def draw_almanac_stats(game_display, settings):
         tiny_font.render('General Statistics', False, (0, 0, 150)),
         tiny_font.render('Times Game Started: ' + str(game_stats['times_bb_started']), False, (0, 0, 150)),
         tiny_font.render('Time Open: ' + str(game_stats['time_open']), False, (0, 0, 150)),
-        tiny_font.render('Times In Match: ' + str(game_stats['time_in_game']), False, (0, 0, 150)),
+        tiny_font.render('Time In Match: ' + str(game_stats['time_in_game']), False, (0, 0, 150)),
         tiny_font.render('Blobs Unlocked: ' + str(game_stats['blobs_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Costumes Unlocked: ' + str(game_stats['costumes_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Backgrounds Unlocked: ' + str(game_stats['backgrounds_unlocked']), False, (0, 0, 150)),
