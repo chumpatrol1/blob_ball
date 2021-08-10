@@ -67,9 +67,16 @@ try:
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
         game_stats = loads(statsdoc.readline())
 except:
-    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-        statsdoc.write(dumps(game_stats))
-        print("Not OK!")
+    try:
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            statsdoc.write(dumps(game_stats))
+            print("Not OK!")
+    except:
+        os.mkdir(cwd+"/saves")
+        print("Made new directory!")
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            statsdoc.write(dumps(game_stats))
+            print("Not OK!")
 
 with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
