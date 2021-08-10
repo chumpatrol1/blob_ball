@@ -43,7 +43,7 @@ game_surface = pg.Surface((1366, 768))
 p1_blob = []
 p2_blob = []
 timer = 0
-game_version = '0.7.0a'
+game_version = '0.7.0b'
 ruleset = {
     'version': game_version,
     'goal_limit': 5,
