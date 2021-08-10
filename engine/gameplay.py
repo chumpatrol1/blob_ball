@@ -239,9 +239,9 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 game_stats['wavebounces'] = game_stats['wavebounces'] + p1_blob.info['wavebounces'] + p2_blob.info['wavebounces']
                 game_stats['jumps'] = game_stats['jumps'] + p1_blob.info['jumps'] + p2_blob.info['jumps']
                 game_stats['jump_cancelled_focuses'] = game_stats['jump_cancelled_focuses'] + p1_blob.info['jump_cancelled_focuses'] + p2_blob.info['jump_cancelled_focuses']
-                game_stats['time_focused_seconds'] = game_stats['time_focused_seconds'] + p1_blob.info['time_focused_seconds'] + p2_blob.info['time_focused_seconds']
-                game_stats['time_airborne_seconds'] = game_stats['time_airborne_seconds'] + p1_blob.info['time_airborne_seconds'] + p2_blob.info['time_airborne_seconds']
-                game_stats['time_grounded_seconds'] = game_stats['time_grounded_seconds'] + p1_blob.info['time_grounded_seconds'] + p2_blob.info['time_grounded_seconds']
+                game_stats['time_focused_seconds'] = round(game_stats['time_focused_seconds'] + p1_blob.info['time_focused_seconds'] + p2_blob.info['time_focused_seconds'])
+                game_stats['time_airborne_seconds'] = round(game_stats['time_airborne_seconds'] + p1_blob.info['time_airborne_seconds'] + p2_blob.info['time_airborne_seconds'])
+                game_stats['time_grounded_seconds'] = round(game_stats['time_grounded_seconds'] + p1_blob.info['time_grounded_seconds'] + p2_blob.info['time_grounded_seconds'])
                 game_stats['blob_standard_collisions'] = game_stats['blob_standard_collisions'] + ball.info['blob_standard_collisions']
                 game_stats['blob_reflect_collisions'] = game_stats['blob_reflect_collisions'] + ball.info['blob_reflect_collisions']
                 game_stats['blob_warp_collisions'] = game_stats['blob_warp_collisions'] + ball.info['blob_warp_collisions']
