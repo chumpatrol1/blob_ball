@@ -1,7 +1,7 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.6.0b**
+**v0.6.2b**
 
 **Features:**
 * Casual Matches!
@@ -51,3 +51,10 @@ Slime Soccer type game
 * Improved game performance
 * Added full screen toggle
 * Added config files (search the root --> engine/config/ ...). Delete these to reset your settings!
+
+V0.6.1b
+* Fixed goal block warp glitch
+* Fixed ball stick glitch
+
+V0.6.2b
+* Fixed an issue that caused the game to crash on startup
