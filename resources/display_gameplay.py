@@ -1,6 +1,7 @@
 from os import getcwd
 from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
+from resources.display_particles import clear_particle_memory as clear_particle_memory
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -200,8 +201,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
-        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 35)
-        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 40)
+        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
+        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
     blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
     blob_special = blob_special.convert_alpha()
 
@@ -240,6 +241,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     if(p1_blob.kick_visualization):
         blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
         blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        blob_special.set_alpha(255 - 16 * (p1_blob.kick_visualization_max - p1_blob.kick_visualization))
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
 
     draw_blob_particles(game_display, ball, p1_blob)
@@ -284,6 +286,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     if(p2_blob.kick_visualization):
         blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
         blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        blob_special.set_alpha(255 - 16 * (p2_blob.kick_visualization_max - p2_blob.kick_visualization))
         game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
     if(p2_blob.boost_timer):
         blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
@@ -316,7 +319,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 
 def draw_win_screen(screen_size, game_display, game_stats, settings):
     draw_background(game_display, "win_screen", settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", round(50*(screen_size[1]/768)))
+    clear_particle_memory()
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", round(50*(screen_size[1]/768)))
     if(game_stats == 3):
         menu_text = menu_font.render("TIE", False, (0, 0, 255))
     else:

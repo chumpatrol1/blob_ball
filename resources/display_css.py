@@ -4,10 +4,10 @@ from os import getcwd
 cwd = getcwd()
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "Geyser"], ["\\blobs\\rock_blob.png", "Rock Blob", "Spire"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "Geyser"], ["\\blobs\\rock_blob.png", "Rock Blob", "Spire"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["\\blobs\\wind_blob.png", "Wind Blob", "Gale"],],
 [["\\rules_icon.png", "Rules", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\gear_icon.png", "Settings", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\almanac_icon.png", "Almanac", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 ]
 
@@ -17,24 +17,29 @@ blob_image_cache = [
 
 font_cache = {}
 token_cache = {}
+
+def load_blobs(blob_image_cache, directory):
+    for row in blob_array: #Temporary, until we make more blobs
+            blob_image_cache.append([])
+            for icon in row:
+                blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+    return blob_image_cache
+
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
     global cwd
     global bic_cached
-    
+    global blob_image_cache
     x = 0
     y = 0
     directory = cwd + "\\resources\\images"
     if not bic_cached:
-        for row in blob_array: #Temporary, until we make more blobs
-            blob_image_cache.append([])
-            for icon in row:
-                blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
-        font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 50)
-        font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 30)
-        font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\TX_Jello2.ttf", 80)
+        blob_image_cache = load_blobs(blob_image_cache, directory)
+        font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
+        font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+        font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
         token_cache['p1_ball'] = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
         token_cache['p1_selected'] = pg.image.load(cwd + "\\resources\\images\\p1_check.png")
         token_cache['p2_ball'] = pg.image.load(cwd + "\\resources\\images\\p2_token.png")

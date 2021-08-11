@@ -18,6 +18,13 @@ overlay_cache = {'initialized': False}
 particle_memory = []
 
 def draw_top_speed_particles(generator_x, particle_memory):
+    '''
+    HOW TO ADD A NEW PARTICLE TO THE MIX:
+    CHANGE random_image = randint(0, #) to whatever # you want (it will generate a number between 0 and #, inclusive)
+    ADD AN ELIF STATEMENT BY COPYING + PASTING A PREVIOUS ONE
+    ENSURE THAT THE elif(random_image == #): IS SET TO AN APPROPRIATE # (OTHERWISE IT WON'T APPEAR)
+    IN particle_memory.append... ENSURE THAT particle_cache['particle_name'] HAS THE CORRECT PARTICLE NAME
+    '''
     global particle_cache
     if(randint(0, 1) == 1):
         random_image = randint(0, 1)
@@ -30,6 +37,16 @@ def draw_top_speed_particles(generator_x, particle_memory):
     return particle_memory
 
 def draw_blob_particles(game_display, ball, blob):
+    '''HOW TO ADD TO THE PARTICLE CACHE
+    COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
+    ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
+    particle_cache['fire_particle'] #GETS OVERWRITTEN
+    particle_cache['ice_particle']
+    particle_cache['water_particle]
+    particle_cache['fire_particle'] #OVERWRITES THE ORIGINAL
+    ENSURE THAT IT HAS THE CORRECT IMAGE ADDRESS
+    ENSURE THAT IT HAS THE CORRECT SCALING (FOR PARTICLES THAT HAVE A SCALING FUNCTION ATTACHED)
+    '''
     global particle_memory
     if not particle_cache['initialized']:
         particle_cache['initialized'] = True
@@ -43,21 +60,45 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_2.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_3.png").convert_alpha(), (20, 20))
-        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\ice_particle.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_2.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_3.png").convert_alpha(), (30, 30))
     
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
 
-
-    if(blob.impact_land_frames == 9):
+    #TODO: Add all of these into an array
+    if(blob.impact_land_frames == 9): #Landing Particles
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
         particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
+        
+    if(blob.impact_land_frames == 9): #Landing Particles
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_2'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
+        
+    if(blob.impact_land_frames == 9): #Landing Particles
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center + 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(1, 3), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(0, 2), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-1, 1), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['landing_particle_3'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
 
+    if(blob.used_ability == "gale"):
+        random_number = randint(0,2)
+        if(random_number):
+            if(blob.player == 1):
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
+            elif(blob.player == 2):
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+    
     #Manages and updates particles
     temparray = []
     for particle in particle_memory:
@@ -68,6 +109,10 @@ def draw_blob_particles(game_display, ball, blob):
            temparray.append(particle)
 
     particle_memory = temparray 
+
+def clear_particle_memory():
+    global particle_memory
+    particle_memory = []
 
 def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
 
@@ -92,22 +137,22 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             game_display.blit(particle_cache['water_particle'], ((screen_size[0]/1366)* ball.x_pos * (1000/1366), (screen_size[1]/768) * ((1240 - y*40) + randint(-10, 10)) * (400/768)))
     
     if(p1_blob.used_ability == "spire"):
-        if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 60):
+        if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 45):
             game_display.blit(particle_cache['rock_glyph'], (ball.x_center * (1000/1366) - 50, 700))
-        elif(p1_blob.special_ability_cooldown - 95 <= p1_blob.special_ability_timer <= p1_blob.special_ability_cooldown - 60):
-            if(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown - 60):
+        elif(p1_blob.special_ability_cooldown - 80 <= p1_blob.special_ability_timer <= p1_blob.special_ability_cooldown - 45):
+            if(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown - 45):
                 particle_cache['p1_spire_x'] = (ball.x_center * 1000/1366) - 50
-            alpha = 255 - 7 * ((p1_blob.special_ability_cooldown - 60) - p1_blob.special_ability_timer)
+            alpha = 255 - 7 * ((p1_blob.special_ability_cooldown - 45) - p1_blob.special_ability_timer)
             particle_cache['rock_spire'].set_alpha(alpha)
             game_display.blit(particle_cache['rock_spire'], (particle_cache['p1_spire_x'], 500))
 
     if(p2_blob.used_ability == "spire"):
-        if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 60):
+        if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 45):
             game_display.blit(particle_cache['rock_glyph'], (ball.x_center * (1000/1366) - 50, 700))
-        elif(p2_blob.special_ability_cooldown - 95 <= p2_blob.special_ability_timer <= p2_blob.special_ability_cooldown - 60):
-            if(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown - 60):
+        elif(p2_blob.special_ability_cooldown - 80 <= p2_blob.special_ability_timer <= p2_blob.special_ability_cooldown - 45):
+            if(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown - 45):
                 particle_cache['p2_spire_x'] = (ball.x_center * 1000/1366) - 50
-            alpha = 255 - 7 * ((p2_blob.special_ability_cooldown - 60) - p2_blob.special_ability_timer)
+            alpha = 255 - 7 * ((p2_blob.special_ability_cooldown - 45) - p2_blob.special_ability_timer)
             particle_cache['rock_spire'].set_alpha(alpha)
             game_display.blit(particle_cache['rock_spire'], (particle_cache['p2_spire_x'], 500))
         
@@ -130,6 +175,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             alpha = 255 - 7 * ((p2_blob.special_ability_cooldown - 30) - p2_blob.special_ability_timer)
             particle_cache['thunder_bolt'].set_alpha(alpha)
             game_display.blit(particle_cache['thunder_bolt'], (particle_cache['p2_spire_x'], 125))
+
 
 def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
     if not overlay_cache['initialized']:
