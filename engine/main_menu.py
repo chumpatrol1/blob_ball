@@ -89,6 +89,13 @@ def almanac_stats_navigation(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "almanac_stats"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        game_state = "almanac_stats_page_2"
+    return [game_state]
+
+def almanac_stats_navigation_2(timer):
+    pressed = engine.handle_input.menu_input()
+    game_state = "almanac_stats_page_2"
+    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state = "almanac"
     return [game_state]
 

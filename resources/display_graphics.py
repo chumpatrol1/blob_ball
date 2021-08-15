@@ -13,7 +13,7 @@ from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.display_settings import draw_rules_screen as draw_rules_screen
-from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_main as draw_almanac_main
+from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_main as draw_almanac_main
 from resources.display_almanac import draw_almanac_credits as draw_almanac_credits
 from engine.handle_input import toggle_fullscreen
 import math
@@ -174,6 +174,15 @@ def handle_graphics(game_state, main_cwd):
         if(game_state != "almanac_stats"):
             timer = 10
         draw_almanac_stats(game_surface, settings)
+    elif(game_state == "almanac_stats_page_2"):
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.almanac_stats_navigation_2(timer)
+        game_state = info_getter[0]
+        if(game_state != "almanac_stats_page_2"):
+            timer = 10
+        draw_almanac_stats_2(game_surface, settings)
+
     elif(game_state == "almanac_art"):
         if(timer > 0):
             timer -= 1
