@@ -258,6 +258,37 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
                 statsdoc.write(dumps(game_stats))
             
+            with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
+                mu_chart = loads(muchart.readline())
+            with open(cwd+'/saves/matchup_chart.txt', 'w') as muchart:
+                print(game_score)
+                if(game_score[0] > game_score[1]):
+                    winner = p1_blob.species
+                    loser = p2_blob.species
+                elif(game_score[1] > game_score[0]):
+                    winner = p2_blob.species
+                    loser = p1_blob.species
+                print("WINNER", winner)
+                print("LOSER", loser)
+                if winner in mu_chart: #Entry for the winner
+                    if loser in mu_chart[winner]: #Has this MU been played before?
+                        mu_chart[winner][loser][0] += 1
+                    else:
+                        mu_chart[winner][loser] = [1, 0]
+                else:
+                    mu_chart[winner] = dict()
+                    mu_chart[winner][loser] = [1, 0]
+
+                if loser in mu_chart: #Entry for the winner
+                    if winner in mu_chart[loser]: #Has this MU been played before?
+                        mu_chart[loser][winner][1] += 1
+                    else:
+                        mu_chart[loser][winner] = [0, 1]
+                else:
+                    mu_chart[loser] = dict()
+                    mu_chart[loser][winner] = [0, 1]
+                muchart.write(dumps(mu_chart))
+
             game_score = [0, 0]
             timer = 180
             countdown = 0
