@@ -5,8 +5,7 @@ import engine.blobs
 import engine.ball
 import time
 from json import dumps, loads
-from os import getcwd
-cwd = getcwd()
+from engine.endgame import update_game_stats, update_mu_chart
 
 def initialize_players(p1_selected, p2_selected, ruleset, settings):
     global goal_limit
@@ -221,43 +220,10 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 bbr.write("BALL: " + dumps(ball.info))
                 bbr.write("\n")
                 bbr.write("\n")
-
-            with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-                game_stats = loads(statsdoc.readline())
-            with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-                game_stats['matches_played'] += 1
-                game_stats['points_scored'] = game_stats['points_scored'] + game_info['game_score'][0] + game_info['game_score'][1]
-                game_stats['points_from_goals'] = game_stats['points_from_goals'] + p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals']
-                game_stats['points_from_kos'] = game_stats['points_from_kos'] + p1_blob.info['points_from_kos'] + p2_blob.info['points_from_kos']
-                game_stats['damage_dealt'] = game_stats['damage_dealt'] + p1_blob.info['damage_taken'] + p2_blob.info['damage_taken']
-                game_stats['kick_count'] = game_stats['kick_count'] + p1_blob.info['kick_count'] + p2_blob.info['kick_count']
-                game_stats['block_count'] = game_stats['block_count'] + p1_blob.info['block_count'] + p2_blob.info['block_count']
-                game_stats['boost_count'] = game_stats['boost_count'] + p1_blob.info['boost_count'] + p2_blob.info['boost_count']
-                game_stats['parries'] = game_stats['parries'] + p1_blob.info['parries'] + p2_blob.info['parries']
-                game_stats['clanks'] = game_stats['clanks'] + p1_blob.info['clanks'] + p2_blob.info['clanks']
-                game_stats['blob_x_distance_moved'] = game_stats['blob_x_distance_moved'] + round(p1_blob.info['x_distance_moved'] + p2_blob.info['x_distance_moved'])
-                game_stats['wavebounces'] = game_stats['wavebounces'] + p1_blob.info['wavebounces'] + p2_blob.info['wavebounces']
-                game_stats['jumps'] = game_stats['jumps'] + p1_blob.info['jumps'] + p2_blob.info['jumps']
-                game_stats['jump_cancelled_focuses'] = game_stats['jump_cancelled_focuses'] + p1_blob.info['jump_cancelled_focuses'] + p2_blob.info['jump_cancelled_focuses']
-                game_stats['time_focused_seconds'] = round(game_stats['time_focused_seconds'] + p1_blob.info['time_focused_seconds'] + p2_blob.info['time_focused_seconds'])
-                game_stats['time_airborne_seconds'] = round(game_stats['time_airborne_seconds'] + p1_blob.info['time_airborne_seconds'] + p2_blob.info['time_airborne_seconds'])
-                game_stats['time_grounded_seconds'] = round(game_stats['time_grounded_seconds'] + p1_blob.info['time_grounded_seconds'] + p2_blob.info['time_grounded_seconds'])
-                game_stats['blob_standard_collisions'] = game_stats['blob_standard_collisions'] + ball.info['blob_standard_collisions']
-                game_stats['blob_reflect_collisions'] = game_stats['blob_reflect_collisions'] + ball.info['blob_reflect_collisions']
-                game_stats['blob_warp_collisions'] = game_stats['blob_warp_collisions'] + ball.info['blob_warp_collisions']
-                game_stats['ball_kicked'] = game_stats['ball_kicked'] + ball.info['kicked']
-                game_stats['ball_blocked'] = game_stats['ball_blocked'] + ball.info['blocked']
-                game_stats['ball_x_distance_moved'] = round(game_stats['ball_x_distance_moved'] + ball.info['x_distance_moved'])
-                game_stats['ball_y_distance_moved'] = round(game_stats['ball_y_distance_moved'] + ball.info['y_distance_moved'])
-                game_stats['ball_floor_collisions'] = game_stats['ball_floor_collisions'] + ball.info['floor_collisions']
-                game_stats['ball_goal_collisions'] = game_stats['ball_goal_collisions'] + ball.info['goal_collisions']
-                game_stats['ball_ceiling_collisions'] = game_stats['ball_ceiling_collisions'] + ball.info['ceiling_collisions']
-                game_stats['ball_wall_collisions'] = game_stats['ball_wall_collisions'] + ball.info['wall_collisions']
-                
-                
-                game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
-                statsdoc.write(dumps(game_stats))
             
+            update_game_stats(game_info, p1_blob, p2_blob, ball)
+            update_mu_chart(game_score, p1_blob, p2_blob)
+
             game_score = [0, 0]
             timer = 180
             countdown = 0

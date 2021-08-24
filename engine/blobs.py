@@ -526,15 +526,15 @@ class blob:
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
-                if(self.player == 1 and self.used_ability == "gale"):
+                if(self.player == 1 and self.used_ability == "gale" and blob.x_speed < 5): #Airborne
                     blob.x_speed += 1
-                elif(self.player == 2 and self.used_ability == "gale"):
+                elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
                     blob.x_speed -= 1
-            elif blob.y_pos == blob.ground and not blob.block_timer:
+            '''elif blob.y_pos == blob.ground and not blob.block_timer:
                 if(self.player == 1 and self.used_ability == "gale"):
                     blob.x_speed += 0.3
                 elif(self.player == 2 and self.used_ability == "gale"):
-                    blob.x_speed -= 0.3
+                    blob.x_speed -= 0.3'''
             if self.y_pos != self.ground and not self.block_timer: #Gale Affecting the self
                 if(self.player == 1 and self.used_ability == "gale"):
                     pass #self.x_speed += 1

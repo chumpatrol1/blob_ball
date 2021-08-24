@@ -78,6 +78,13 @@ except:
             statsdoc.write(dumps(game_stats))
             print("Not OK!")
 
+try:
+    with open(cwd+'/saves/matchup_chart.txt', 'r') as statsdoc:
+        print("Sucessfully Opened MU Chart")
+except:
+     with open(cwd+'/saves/matchup_chart.txt', 'w') as statsdoc:
+            statsdoc.write(dumps({}))
+            print("Created MU Chart")
 with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
     start_time = time.time()

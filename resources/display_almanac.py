@@ -40,14 +40,11 @@ def draw_almanac_stats(game_display, settings):
     ]
     general_text = [
         tiny_font.render('General Statistics', False, (0, 0, 150)),
-        tiny_font.render('Times Game Started: ' + str(game_stats['times_bb_started']), False, (0, 0, 150)),
-        tiny_font.render('Time Open: ' + str(game_stats['time_open']), False, (0, 0, 150)),
         tiny_font.render('Time In Match: ' + str(game_stats['time_in_game']), False, (0, 0, 150)),
         tiny_font.render('Blobs Unlocked: ' + str(game_stats['blobs_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Costumes Unlocked: ' + str(game_stats['costumes_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Backgrounds Unlocked: ' + str(game_stats['backgrounds_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Most Played Blob: ' + game_stats['most_played_character'], False, (0, 0, 150)),
-        tiny_font.render('First Played Version: ' + game_stats['original_version'], False, (0, 0, 150)),
     ]
     match_text = [
         tiny_font.render('Match Statistics', False, (0, 0, 150)),
@@ -59,12 +56,9 @@ def draw_almanac_stats(game_display, settings):
 
     blob_text = [
         tiny_font.render('Blob Statistics', False, (0, 0, 150)),
-        tiny_font.render('X Distance Moved: ' + str(game_stats['blob_x_distance_moved']), False, (0, 0, 150)),
         tiny_font.render('Wavebounces: ' + str(game_stats['wavebounces']), False, (0, 0, 150)),
         tiny_font.render('Jumps: ' + str(game_stats['jumps']), False, (0, 0, 150)),
         tiny_font.render('Jump Cancelled Focuses: ' + str(game_stats['jump_cancelled_focuses']), False, (0, 0, 150)),
-        tiny_font.render('Time Grounded: ' + str(game_stats['time_grounded_seconds']), False, (0, 0, 150)),
-        tiny_font.render('Time Airborne: ' + str(game_stats['time_airborne_seconds']), False, (0, 0, 150)),
         tiny_font.render('Time Focused: ' + str(game_stats['time_focused_seconds']), False, (0, 0, 150)),
         tiny_font.render('Damage Dealt: ' + str(game_stats['damage_dealt']), False, (0, 0, 150)),
         tiny_font.render('Parries: ' + str(game_stats['parries']), False, (0, 0, 150)),
@@ -72,6 +66,56 @@ def draw_almanac_stats(game_display, settings):
         tiny_font.render('Kicks: ' + str(game_stats['kick_count']), False, (0, 0, 150)),
         tiny_font.render('Blocks: ' + str(game_stats['block_count']), False, (0, 0, 150)),
         tiny_font.render('Boosts: ' + str(game_stats['boost_count']), False, (0, 0, 150)),
+    ]
+
+    text_y = 76
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 76
+    text_y = 120
+    for text_box in general_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y += 40
+    for text_box in match_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y = 120
+    for text_box in blob_text:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (550, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+    text_y = 120
+
+def draw_almanac_stats_2(game_display, settings):
+    draw_background(game_display, 'almanac_stats', settings)
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+    from json import loads
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+    text_array = [
+        menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
+    ]
+    general_text = [
+        tiny_font.render('General Statistics', False, (0, 0, 150)),
+        tiny_font.render('Times Game Started: ' + str(game_stats['times_bb_started']), False, (0, 0, 150)),
+        tiny_font.render('Time Open: ' + str(game_stats['time_open']), False, (0, 0, 150)),
+        tiny_font.render('First Played Version: ' + game_stats['original_version'], False, (0, 0, 150)),
+    ]
+
+    blob_text = [
+        tiny_font.render('Blob Statistics', False, (0, 0, 150)),
+        tiny_font.render('X Distance Moved: ' + str(game_stats['blob_x_distance_moved']), False, (0, 0, 150)),
+        tiny_font.render('Time Grounded: ' + str(game_stats['time_grounded_seconds']), False, (0, 0, 150)),
+        tiny_font.render('Time Airborne: ' + str(game_stats['time_airborne_seconds']), False, (0, 0, 150)),
     ]
 
     ball_text = [
@@ -101,22 +145,17 @@ def draw_almanac_stats(game_display, settings):
         text_rect.topleft = (50, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
+
     text_y += 40
-    for text_box in match_text:
+    for text_box in blob_text:
         text_rect = text_box.get_rect()
         text_rect.topleft = (50, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
     text_y = 120
-    for text_box in blob_text:
-        text_rect = text_box.get_rect()
-        text_rect.topleft = (550, text_y)
-        game_display.blit(text_box, text_rect)
-        text_y += 40
-    text_y = 120
     for text_box in ball_text:
         text_rect = text_box.get_rect()
-        text_rect.topleft = (950, text_y)
+        text_rect.topleft = (750, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
 
