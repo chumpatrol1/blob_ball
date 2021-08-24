@@ -99,6 +99,41 @@ def almanac_stats_navigation_2(timer):
         game_state = "almanac"
     return [game_state]
 
+def almanac_stats_navigation_3(selector):
+    pressed = engine.handle_input.css_input()
+
+    if('up' in pressed):
+            if selector[1] == 0:
+                selector[1] = 4
+                
+            else:
+                selector[1] -= 1
+    elif('down' in pressed):
+            if selector[1] == 4:
+                selector[1] = 0
+            else:
+                selector[1] += 1
+    if('left' in pressed):
+            if selector[0] == 0:
+                selector[0] = 7
+            else:
+                selector[0] -= 1
+    elif('right' in pressed):
+            if selector[0] == 7:
+                selector[0] = 0
+            else:
+                selector[0] += 1
+    
+    if(selector[2] == 0):
+        if('ability' in pressed):
+            selector[2] = 1
+    elif('kick' in pressed):
+        selector[2] = 0
+    elif(selector[2] >= 1):
+        if('ability' in pressed):
+            selector[2] = 2
+
+
 def almanac_art_navigation(timer):
     game_state = "almanac_art"
     pressed = engine.handle_input.menu_input()
