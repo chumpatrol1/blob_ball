@@ -96,42 +96,55 @@ def almanac_stats_navigation_2(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "almanac_stats_page_2"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        game_state = "almanac"
+        game_state = "almanac_stats_page_3"
+        global p1_selector_position
+        p1_selector_position = [3, 2, 0]
     return [game_state]
 
-def almanac_stats_navigation_3(selector):
+p1_selector_position
+
+def almanac_stats_navigation_3():
+    game_state = "almanac_stats_page_3"
     pressed = engine.handle_input.css_input()
+    pressed = engine.handle_input.merge_inputs(pressed)
+    global p1_selector_position
 
     if('up' in pressed):
-            if selector[1] == 0:
-                selector[1] = 4
+            if p1_selector_position[1] == 0:
+                p1_selector_position[1] = 4
                 
             else:
-                selector[1] -= 1
+                p1_selector_position[1] -= 1
     elif('down' in pressed):
-            if selector[1] == 4:
-                selector[1] = 0
+            if p1_selector_position[1] == 4:
+                p1_selector_position[1] = 0
             else:
-                selector[1] += 1
+                p1_selector_position[1] += 1
     if('left' in pressed):
-            if selector[0] == 0:
-                selector[0] = 7
-            else:
-                selector[0] -= 1
+        print("OK")
+        if p1_selector_position[0] == 0:
+            p1_selector_position[0] = 6
+        else:
+            p1_selector_position[0] -= 1
     elif('right' in pressed):
-            if selector[0] == 7:
-                selector[0] = 0
-            else:
-                selector[0] += 1
+        if p1_selector_position[0] == 6:
+            p1_selector_position[0] = 0
+        else:
+            p1_selector_position[0] += 1
     
-    if(selector[2] == 0):
+    if(p1_selector_position[2] == 0):
+        
         if('ability' in pressed):
-            selector[2] = 1
+            if(p1_selector_position == [3, 2, 0]):
+                game_state = "almanac"
+            else:
+                p1_selector_position[2] = 1
     elif('kick' in pressed):
-        selector[2] = 0
-    elif(selector[2] >= 1):
+        p1_selector_position[2] = 0
+    elif(p1_selector_position[2] >= 1):
         if('ability' in pressed):
-            selector[2] = 2
+            p1_selector_position[2] = 2
+    return game_state, p1_selector_position
 
 
 def almanac_art_navigation(timer):

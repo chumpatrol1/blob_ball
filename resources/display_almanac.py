@@ -2,6 +2,27 @@ from engine.blobs import blob
 from resources.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd
+
+blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
+[["\\blobs\\quirkless_blob.png", "Quirkless Blob", "quirkless"], ["\\blobs\\fire_blob.png", "Fire Blob", "fire"], ["\\blobs\\ice_blob.png", "ice", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "water"], ["\\blobs\\rock_blob.png", "Rock Blob", "rock"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "lightning"], ["\\blobs\\wind_blob.png", "Wind Blob", "wind"],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+]
+
+bic_cached = False
+blob_image_cache = [
+]
+ball = None
+
+def load_blobs(blob_image_cache, directory):
+    for row in blob_array: #Temporary, until we make more blobs
+        blob_image_cache.append([])
+        for icon in row:
+            blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+    return blob_image_cache
+
 cwd = getcwd()
 
 def draw_almanac_main(game_display, selector_position, settings):
@@ -158,6 +179,28 @@ def draw_almanac_stats_2(game_display, settings):
         text_rect.topleft = (750, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
+
+def draw_almanac_stats_3(game_display, settings, selector_position):
+    draw_background(game_display, 'almanac_stats', settings)
+    global bic_cached
+    global blob_image_cache
+    global ball
+    directory = cwd + "\\resources\\images"
+    if not bic_cached:
+        blob_image_cache = load_blobs(blob_image_cache, directory)
+        bic_cached = True
+        ball = pg.transform.scale(pg.image.load(directory+"\\soccer_ball.png"), (50, 50))
+    x = 0
+    y = 0
+    for row in blob_image_cache: #Temporary, until we make more blobs
+        for icon in row:
+            blob = blob_image_cache[y][x]
+            blob = pg.transform.scale(blob, (122, 68))
+            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100)))
+            x += 1
+        x = 0
+        y += 1
+    game_display.blit(ball, ((selector_position[0] + 1) * 160, (selector_position[1] + 1) * 90))
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)

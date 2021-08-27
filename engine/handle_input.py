@@ -121,6 +121,25 @@ def get_keypress():
         pressed_array.append('return')
     return pressed_array
 
+def merge_inputs(pressed):
+    global button_timer
+    merged_press = []
+    if not button_timer:
+        if('p1_up' in pressed or 'p2_up' in pressed):
+            merged_press.append('up')
+        if('p1_down' in pressed or 'p2_down' in pressed):
+            merged_press.append('down')
+        if('p1_left' in pressed or 'p2_left' in pressed):
+            merged_press.append('left')
+        if('p1_right' in pressed or 'p2_right' in pressed):
+            merged_press.append('right')
+        if('p1_ability' in pressed or 'p2_ability' in pressed):
+            merged_press.append('ability')
+        if('p1_kick' in pressed or 'p2_kick' in pressed):
+            merged_press.append('kick')
+    if(len(merged_press)):
+        button_timer = 10
+    return merged_press
 button_timer = 0
 
 def menu_input():
