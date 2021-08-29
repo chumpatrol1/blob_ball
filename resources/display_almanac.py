@@ -4,7 +4,7 @@ import pygame as pg
 from os import getcwd
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\blobs\\quirkless_blob.png", "Quirkless Blob", "quirkless"], ["\\blobs\\fire_blob.png", "Fire Blob", "fire"], ["\\blobs\\ice_blob.png", "ice", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "water"], ["\\blobs\\rock_blob.png", "Rock Blob", "rock"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "lightning"], ["\\blobs\\wind_blob.png", "Wind Blob", "wind"],],
+[["\\blobs\\quirkless_blob.png", "Quirkless Blob", "quirkless"], ["\\blobs\\fire_blob.png", "Fire Blob", "fire"], ["\\blobs\\ice_blob.png", "Ice Blob", "ice"], ["\\blobs\\water_blob.png", "Water Blob", "water"], ["\\blobs\\rock_blob.png", "Rock Blob", "rock"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "lightning"], ["\\blobs\\wind_blob.png", "Wind Blob", "wind"],],
 [["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
@@ -15,6 +15,8 @@ bic_cached = False
 blob_image_cache = [
 ]
 ball = None
+ball_state = 'deselected'
+mu_chart = None
 
 def load_blobs(blob_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
@@ -180,16 +182,49 @@ def draw_almanac_stats_2(game_display, settings):
         game_display.blit(text_box, text_rect)
         text_y += 40
 
+def load_mu_chart():
+    global mu_chart
+    from json import loads
+    with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
+        mu_chart = loads(muchart.readline())
+    return mu_chart
+
+def read_mu_chart(blob):
+    #Reads the MU chart.
+    global mu_chart
+    global blob_array
+    mu_percent_array = []
+    if(blob in mu_chart):
+        for row in blob_array:
+            mu_percent_array.append([])
+            for blob_item in row:
+                if(blob_item[2] in mu_chart[blob]):
+                    record = mu_chart[blob][blob_item[2]]
+                    win_rate = record[0]
+                    win_rate = round(win_rate / (record[0] + record[1]), 4) * 100
+                    win_rate = str(win_rate) + "%"
+                    mu_percent_array[-1].append(win_rate)
+                else:
+                    mu_percent_array[-1].append("-")
+    else:
+        for i in range(5):
+            mu_percent_array.append([])
+            for j in range(7):
+                mu_percent_array[-1].append("-")
+    return mu_percent_array
+
 def draw_almanac_stats_3(game_display, settings, selector_position):
     draw_background(game_display, 'almanac_stats', settings)
     global bic_cached
     global blob_image_cache
     global ball
+    global ball_state
     directory = cwd + "\\resources\\images"
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
         bic_cached = True
         ball = pg.transform.scale(pg.image.load(directory+"\\soccer_ball.png"), (50, 50))
+
     x = 0
     y = 0
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -200,7 +235,65 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
             x += 1
         x = 0
         y += 1
+    if(selector_position[2] == 1 and ball_state == "deselected"):
+        ball_state = "selected"
+        ball = ball = pg.transform.scale(pg.image.load(directory+"\\goal_ball.png"), (50, 50))
+        load_mu_chart()
+    if(selector_position[2] == 0 and ball_state == "selected"):
+        ball_state = "deselected"
+        ball = pg.transform.scale(pg.image.load(directory+"\\soccer_ball.png"), (50, 50))
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    if(selector_position[2] == 1):
+        mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][2])
+        
+        text_x = 170
+        text_y = 130
+        for row in mu_chart_text:
+            for mu in row:
+                text_box = menu_font.render(mu, False, (255, 255, 255))
+                text_rect = text_box.get_rect()
+                text_rect.center = (text_x, text_y)
+                game_display.blit(text_box, text_rect)
+                text_x += 170
+            text_y += 100
+            text_x = 170
     game_display.blit(ball, ((selector_position[0] + 1) * 160, (selector_position[1] + 1) * 90))
+    game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
+
+    text_box = menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 530)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render("to navigate the screen. Press", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 560)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 590)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render("of a blob compared to others.", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 620)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render("Select the middlemost blob to return", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 650)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render("   to the almanac.", False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (50, 680)
+    game_display.blit(text_box, text_rect)
+
+    text_box = menu_font.render(blob_array[selector_position[1]][selector_position[0]][1], False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.center = (925, 700)
+    game_display.blit(text_box, text_rect)
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)

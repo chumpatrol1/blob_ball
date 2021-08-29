@@ -121,7 +121,6 @@ def almanac_stats_navigation_3():
             else:
                 p1_selector_position[1] += 1
     if('left' in pressed):
-        print("OK")
         if p1_selector_position[0] == 0:
             p1_selector_position[0] = 6
         else:
@@ -133,17 +132,17 @@ def almanac_stats_navigation_3():
             p1_selector_position[0] += 1
     
     if(p1_selector_position[2] == 0):
-        
         if('ability' in pressed):
             if(p1_selector_position == [3, 2, 0]):
                 game_state = "almanac"
             else:
                 p1_selector_position[2] = 1
-    elif('kick' in pressed):
+    if(p1_selector_position[2] == 1 and 
+    ('up' in pressed or 'down' in pressed or 'left' in pressed or 'right' in pressed)):
         p1_selector_position[2] = 0
-    elif(p1_selector_position[2] >= 1):
-        if('ability' in pressed):
-            p1_selector_position[2] = 2
+    if('kick' in pressed):
+        p1_selector_position[2] = 0
+
     return game_state, p1_selector_position
 
 
