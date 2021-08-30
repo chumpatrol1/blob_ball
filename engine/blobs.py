@@ -219,6 +219,7 @@ class blob:
         else:
             self.danger_zone = 1475
         self.is_cpu = is_cpu
+        self.cpu_memory = []
         self.image = type_to_image(species)
         self.stars = type_to_stars(species) #Gets many values for each blob
         self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
