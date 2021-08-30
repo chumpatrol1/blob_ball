@@ -8,7 +8,7 @@ blob_array = [ #Creates an array of arrays, which contains the image to use, it'
 [["\\rules_icon.png", "Rules", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\gear_icon.png", "Settings", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 [["\\almanac_icon.png", "Almanac", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\cpu_icon.png", "Toggle CPU", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
 ]
 
 bic_cached = False
@@ -40,10 +40,16 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
         font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
         font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
+        
         token_cache['p1_ball'] = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
         token_cache['p1_selected'] = pg.image.load(cwd + "\\resources\\images\\p1_check.png")
+        token_cache['cpu1_ball'] = pg.image.load(cwd + "\\resources\\images\\cpu1_token.png")
+        token_cache['cpu1_selected'] = pg.image.load(cwd + "\\resources\\images\\cpu1_check.png")
+
         token_cache['p2_ball'] = pg.image.load(cwd + "\\resources\\images\\p2_token.png")
         token_cache['p2_selected'] = pg.image.load(cwd + "\\resources\\images\\p2_check.png")
+        token_cache['cpu2_ball'] = pg.image.load(cwd + "\\resources\\images\\cpu2_token.png")
+        token_cache['cpu2_selected'] = pg.image.load(cwd + "\\resources\\images\\cpu2_check.png")
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -107,14 +113,27 @@ def draw_css(screen_size, game_display, p1_selector_position, p2_selector_positi
     #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
     #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
     #game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
-    if(p1_selector_position[2] == 0):
-        p1_ball = token_cache['p1_ball']
+    if(not p1_selector_position[3]): #Are we a CPU?
+        if(p1_selector_position[2] == 0):
+            p1_ball = token_cache['p1_ball']
+        else:
+            p1_ball = token_cache['p1_selected']
     else:
-        p1_ball = token_cache['p1_selected']
-    if(p2_selector_position[2] == 0):
-        p2_ball = token_cache['p2_ball']
+        if(p1_selector_position[2] == 0):
+            p1_ball = token_cache['cpu1_ball']
+        else:
+            p1_ball = token_cache['cpu1_selected']
+
+    if(not p2_selector_position[3]):
+        if(p2_selector_position[2] == 0):
+            p2_ball = token_cache['p2_ball']
+        else:
+            p2_ball = token_cache['p2_selected']
     else:
-        p2_ball = token_cache['p2_selected']
+        if(p2_selector_position[2] == 0):
+            p2_ball = token_cache['cpu2_ball']
+        else:
+            p2_ball = token_cache['cpu2_selected']
 
     p1_ball = pg.transform.scale(p1_ball, (screen_size[1]//15, screen_size[1]//15))
     p2_ball = pg.transform.scale(p2_ball, (screen_size[1]//15, screen_size[1]//15))

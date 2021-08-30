@@ -42,6 +42,8 @@ game_surface = pg.Surface((1366, 768))
 
 p1_blob = []
 p2_blob = []
+p1_is_cpu = False
+p2_is_cpu = False
 timer = 0
 game_version = '0.7.0b'
 ruleset = {
@@ -85,6 +87,8 @@ def handle_graphics(game_state, main_cwd):
     global game_display
     global p1_blob
     global p2_blob
+    global p1_is_cpu
+    global p2_is_cpu
     global cwd
     global timer
     global ruleset
@@ -109,6 +113,10 @@ def handle_graphics(game_state, main_cwd):
         draw_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
+            if(p1_selector_position[3]):
+                p1_is_cpu = True
+            if(p2_selector_position[3]):
+                p2_is_cpu = True
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]
@@ -122,7 +130,7 @@ def handle_graphics(game_state, main_cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu)
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
         ball = info_getter[2]
@@ -191,7 +199,6 @@ def handle_graphics(game_state, main_cwd):
         if(game_state != "almanac_stats_page_3"):
             timer = 10
         draw_almanac_stats_3(game_surface, settings, selector_position)
-
     elif(game_state == "almanac_art"):
         if(timer > 0):
             timer -= 1

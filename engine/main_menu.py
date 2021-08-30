@@ -11,8 +11,8 @@ clock = pg.time.Clock()
 clock.tick(60)
 
 selector_position = 0
-p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
-p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p1_blob = "quirkless"
 p2_blob = "quirkless"
 
@@ -303,8 +303,8 @@ def css_handler():
         if(p1_selector_position[0] == 0):
             if(p1_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position = [4, 2, 0, 0]
+                p2_selector_position = [4, 2, 0, 0]
             elif(p1_selector_position[1] == 1):
                 game_state = "rules"
                 p1_selector_position[2] = 0
@@ -318,9 +318,9 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 4):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position[2] = 0
+                p1_selector_position[3] = not p1_selector_position[3]
+
         else:
             #TODO: Fix this spaghetti
             p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
@@ -329,8 +329,8 @@ def css_handler():
         if(p2_selector_position[0] == 0):
             if(p2_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position = [4, 2, 0, 0]
+                p2_selector_position = [4, 2, 0, 0]
             elif(p2_selector_position[1] == 1):
                 game_state = "rules"
                 p1_selector_position[2] = 0
@@ -344,9 +344,8 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 4):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p2_selector_position[2] = 0
+                p2_selector_position[3] = not p2_selector_position[3]
         else:
             #TODO: Fix this spaghetti
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]

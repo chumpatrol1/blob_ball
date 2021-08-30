@@ -211,13 +211,14 @@ def create_visualization(number):
 
 class blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, danger_zone_enabled = True):
+    special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False):
         self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
             self.danger_zone = 225
         else:
             self.danger_zone = 1475
+        self.is_cpu = is_cpu
         self.image = type_to_image(species)
         self.stars = type_to_stars(species) #Gets many values for each blob
         self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.

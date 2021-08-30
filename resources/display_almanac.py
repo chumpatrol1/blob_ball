@@ -257,38 +257,24 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
                 text_x += 170
             text_y += 100
             text_x = 170
-    game_display.blit(ball, ((selector_position[0] + 1) * 160, (selector_position[1] + 1) * 90))
+    game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
-    text_box = menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 530)
-    game_display.blit(text_box, text_rect)
+    text_array = [
+        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
+        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
+        menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255)),
+        menu_font.render("of a blob compared to others.", False, (0, 0, 255)),
+        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
+        menu_font.render("   to the almanac.", False, (0, 0, 255)),
+    ]
 
-    text_box = menu_font.render("to navigate the screen. Press", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 560)
-    game_display.blit(text_box, text_rect)
-
-    text_box = menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 590)
-    game_display.blit(text_box, text_rect)
-
-    text_box = menu_font.render("of a blob compared to others.", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 620)
-    game_display.blit(text_box, text_rect)
-
-    text_box = menu_font.render("Select the middlemost blob to return", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 650)
-    game_display.blit(text_box, text_rect)
-
-    text_box = menu_font.render("   to the almanac.", False, (0, 0, 255))
-    text_rect = text_box.get_rect()
-    text_rect.topleft = (50, 680)
-    game_display.blit(text_box, text_rect)
+    text_y = 530
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 30
 
     text_box = menu_font.render(blob_array[selector_position[1]][selector_position[0]][1], False, (0, 0, 255))
     text_rect = text_box.get_rect()
