@@ -25,11 +25,11 @@ def load_blobs(blob_image_cache, big_image_cache, directory):
             big_image_cache.append([])
             for icon in row:
                 if(blob_image_cache[-1] == []):
-                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (91, 91)))
-                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (195, 195)))
+                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 195)))
                 else:
-                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (91, 51)))
-                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (195, 109)))
+                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 51)))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 109)))
     return blob_image_cache, big_image_cache
 
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
@@ -50,15 +50,15 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
         font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
         
-        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_token.png"), (51, 51))
-        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_check.png"), (51, 51))
-        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_token.png"), (51, 51))
-        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_check.png"), (51, 51))
+        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_token.png").convert_alpha(), (51, 51))
+        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_check.png").convert_alpha(), (51, 51))
 
-        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_token.png"), (51, 51))
-        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_check.png"), (51, 51))
-        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_token.png"), (51, 51))
-        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_check.png"), (51, 51))
+        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_token.png").convert_alpha(), (51, 51))
+        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_check.png").convert_alpha(), (51, 51))
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs

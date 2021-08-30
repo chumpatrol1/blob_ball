@@ -201,7 +201,7 @@ def read_mu_chart(blob):
                 if(blob_item[2] in mu_chart[blob]):
                     record = mu_chart[blob][blob_item[2]]
                     win_rate = record[0]
-                    win_rate = round(win_rate / (record[0] + record[1]), 4) * 100
+                    win_rate = round(win_rate / (record[0] + record[1] + record[2]), 4) * 100
                     win_rate = str(win_rate) + "%"
                     mu_percent_array[-1].append(win_rate)
                 else:

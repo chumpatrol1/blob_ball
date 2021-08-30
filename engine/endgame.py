@@ -40,30 +40,58 @@ def update_game_stats(game_info, p1_blob, p2_blob, ball):
         statsdoc.write(dumps(game_stats))
 
 def update_mu_chart(game_score, p1_blob, p2_blob):
-    with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
-                mu_chart = loads(muchart.readline())
+    try:
+        with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
+                    mu_chart = loads(muchart.readline())
+    except:
+        mu_chart = {}
     with open(cwd+'/saves/matchup_chart.txt', 'w') as muchart:
         if(game_score[0] > game_score[1]):
+            tied = False
             winner = p1_blob.species
             loser = p2_blob.species
         elif(game_score[1] > game_score[0]):
+            tied = False
             winner = p2_blob.species
             loser = p1_blob.species
-        if winner in mu_chart: #Entry for the winner
-            if loser in mu_chart[winner]: #Has this MU been played before?
-                mu_chart[winner][loser][0] += 1
-            else:
-                mu_chart[winner][loser] = [1, 0]
         else:
-            mu_chart[winner] = dict()
-            mu_chart[winner][loser] = [1, 0]
+            tied = True
+            winner = p1_blob.species
+            loser = p2_blob.species
+        if(not tied):
+            if winner in mu_chart: #Entry for the winner
+                if loser in mu_chart[winner]: #Has this MU been played before?
+                    mu_chart[winner][loser][0] += 1
+                else:
+                    mu_chart[winner][loser] = [1, 0, 0]
+            else:
+                mu_chart[winner] = dict()
+                mu_chart[winner][loser] = [1, 0, 0]
 
-        if loser in mu_chart: #Entry for the winner
-            if winner in mu_chart[loser]: #Has this MU been played before?
-                mu_chart[loser][winner][1] += 1
+            if loser in mu_chart: #Entry for the winner
+                if winner in mu_chart[loser]: #Has this MU been played before?
+                    mu_chart[loser][winner][1] += 1
+                else:
+                    mu_chart[loser][winner] = [0, 1, 0]
             else:
-                mu_chart[loser][winner] = [0, 1]
+                mu_chart[loser] = dict()
+                mu_chart[loser][winner] = [0, 1, 0]
         else:
-            mu_chart[loser] = dict()
-            mu_chart[loser][winner] = [0, 1]
+            if winner in mu_chart: #Entry for the winner
+                if loser in mu_chart[winner]: #Has this MU been played before?
+                    mu_chart[winner][loser][2] += 1
+                else:
+                    mu_chart[winner][loser] = [0, 0, 1]
+            else:
+                mu_chart[winner] = dict()
+                mu_chart[winner][loser] = [0, 0, 1]
+
+            if loser in mu_chart: #Entry for the winner
+                if winner in mu_chart[loser]: #Has this MU been played before?
+                    mu_chart[loser][winner][2] += 1
+                else:
+                    mu_chart[loser][winner] = [0, 0, 1]
+            else:
+                mu_chart[loser] = dict()
+                mu_chart[loser][winner] = [0, 0, 1]
         muchart.write(dumps(mu_chart))
