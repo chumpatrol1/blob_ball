@@ -14,16 +14,23 @@ blob_array = [ #Creates an array of arrays, which contains the image to use, it'
 bic_cached = False
 blob_image_cache = [
 ]
+big_image_cache = []
 
 font_cache = {}
 token_cache = {}
 
-def load_blobs(blob_image_cache, directory):
+def load_blobs(blob_image_cache, big_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])
+            big_image_cache.append([])
             for icon in row:
-                blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
-    return blob_image_cache
+                if(blob_image_cache[-1] == []):
+                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (91, 91)))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (195, 195)))
+                else:
+                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (91, 51)))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]), (195, 109)))
+    return blob_image_cache, big_image_cache
 
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     '''
@@ -32,24 +39,26 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     global cwd
     global bic_cached
     global blob_image_cache
+    global big_image_cache
     x = 0
     y = 0
     directory = cwd + "\\resources\\images"
     if not bic_cached:
-        blob_image_cache = load_blobs(blob_image_cache, directory)
+        blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
+
         font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
         font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
         font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
         
-        token_cache['p1_ball'] = pg.image.load(cwd + "\\resources\\images\\p1_token.png")
-        token_cache['p1_selected'] = pg.image.load(cwd + "\\resources\\images\\p1_check.png")
-        token_cache['cpu1_ball'] = pg.image.load(cwd + "\\resources\\images\\cpu1_token.png")
-        token_cache['cpu1_selected'] = pg.image.load(cwd + "\\resources\\images\\cpu1_check.png")
+        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_token.png"), (51, 51))
+        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_check.png"), (51, 51))
+        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_token.png"), (51, 51))
+        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_check.png"), (51, 51))
 
-        token_cache['p2_ball'] = pg.image.load(cwd + "\\resources\\images\\p2_token.png")
-        token_cache['p2_selected'] = pg.image.load(cwd + "\\resources\\images\\p2_check.png")
-        token_cache['cpu2_ball'] = pg.image.load(cwd + "\\resources\\images\\cpu2_token.png")
-        token_cache['cpu2_selected'] = pg.image.load(cwd + "\\resources\\images\\cpu2_check.png")
+        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_token.png"), (51, 51))
+        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_check.png"), (51, 51))
+        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_token.png"), (51, 51))
+        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_check.png"), (51, 51))
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -58,17 +67,12 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
             x += 1
             blob = blob_image_cache[y-1][x-1]
             if(x == 1):
-                blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[0]//15))
                 game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(45/768))))
             else:
-                blob = pg.transform.scale(blob, (screen_size[0]//15, screen_size[1]//15))
                 game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
         x = 0
-    p1_selected_blob = blob_image_cache[p1_selector_position[1]][p1_selector_position[0]]
-    if(p1_selector_position[0] == 0):
-        p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[0]//7))
-    else:
-        p1_selected_blob = pg.transform.scale(p1_selected_blob, (screen_size[0]//7, screen_size[1]//7))
+    
+    p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
     p1_selected_blob = p1_selected_blob.convert_alpha()
     if(p1_selector_position[2] == 0):
         p1_selected_blob.set_alpha(200)
@@ -76,11 +80,8 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(255)
     p1_selected_blob = pg.transform.flip(p1_selected_blob, True, False)
     game_display.blit(p1_selected_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
-    p2_selected_blob = blob_image_cache[p2_selector_position[1]][p2_selector_position[0]]
-    if(p2_selector_position[0] == 0):
-        p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[0]//7))
-    else:
-        p2_selected_blob = pg.transform.scale(p2_selected_blob, (screen_size[0]//7, screen_size[1]//7))
+
+    p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
         p2_selected_blob.set_alpha(200)
@@ -135,8 +136,6 @@ def draw_css(screen_size, game_display, p1_selector_position, p2_selector_positi
         else:
             p2_ball = token_cache['cpu2_selected']
 
-    p1_ball = pg.transform.scale(p1_ball, (screen_size[1]//15, screen_size[1]//15))
-    p2_ball = pg.transform.scale(p2_ball, (screen_size[1]//15, screen_size[1]//15))
     game_display.blit(p1_ball, ((screen_size[0]//10 * (p1_selector_position[0] + 1) + screen_size[0]*(1/135)), (screen_size[1]*(100/768)) * (p1_selector_position[1] + 1) - (screen_size[1] * (25/768))))
     game_display.blit(p2_ball, ((screen_size[0]//10 * (p2_selector_position[0] + 1) + screen_size[0]*(8/135)), (screen_size[1]*(100/768)) * (p2_selector_position[1] + 1) - (screen_size[1] * (25/768))))
 
