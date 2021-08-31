@@ -37,7 +37,7 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
             'back': 'left',
             'forward': 'right',
             'jump': 'up',
-            'down': 'down'
+            'down': 'down',
             'ability': 'ability',
             'kick': 'kick',
             'block': 'blob',
@@ -46,7 +46,7 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
             'back': 'right',
             'forward': 'left',
             'jump': 'up',
-            'down': 'down'
+            'down': 'down',
             'ability': 'ability',
             'kick': 'kick',
             'block': 'blob',
