@@ -32,43 +32,34 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     '''
     pressed = []
     logic_memory = blob.cpu_memory
-    convertdict = {
-        '1': {
-            'back': 'left',
-            'forward': 'right',
-            'jump': 'up',
-            'down': 'down',
-            'ability': 'ability',
-            'kick': 'kick',
-            'block': 'blob',
-            'boost': 'boost'},
-        '2': {
-            'back': 'right',
-            'forward': 'left',
-            'jump': 'up',
-            'down': 'down',
-            'ability': 'ability',
-            'kick': 'kick',
-            'block': 'blob',
-            'boost': 'boost'}
-        }
-
     #Decide which strategy to use
-    if abs(blob.x_center - ball.x_center) > (abs(other_blob.x_center - ball.x_center)+10):
+
+    if (abs(blob.x_center - ball.x_center) < 500) and (abs(blob.x_center - ball.x_center) < abs(other_blob.x_center - ball.x_center)):
+        logic_memory = ['agressive']
+    elif abs(other_blob.x_center - ball.x_center) < 500:
         logic_memory = ['defensive']
+    elif abs(other_blob.x_center - ball.x_center) > 500:
+        if abs(blob.x_center - ball.x_center) > 500:
+            logic_memory = ['agressive']
+        if abs(blob.x_center - ball.x_center) < 500:
+            logic_memory = ['defensive']
     else:
-        logic_memory = ['aggressive']
+        logic_memory = ['agressive']
+
 
     #Logic for each strategy goes here
-    inputstoconvert = []
+    if 'agressive' in logic_memory:
+        pressed.append('left')
     if 'defensive' in logic_memory:
-        inputstoconvert.append('back')
-    if 'aggresive' in logic_memory:
-        inputstoconvert.append('forward')
+        pressed.append('right')
 
-    #Convert inputs to something the engine can read    
-    for tupin in inputstoconvert:
-        pressed.append(convertdict[str(blob.player)][tupin])
+    #Convert logic for player 1 cpu
+    if(blob.player == 1):
+        for i in range(len(pressed)):
+            if pressed[i]=='left':
+                pressed[i]='right'
+            if pressed[i]=='right':
+                pressed[i]='left'
 
     #Converts the logic to something readable by the blob's movement function
     if(blob.player == 1):
