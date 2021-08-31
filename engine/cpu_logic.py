@@ -21,7 +21,7 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     Powers are usually either single input (ex: Gale, Spire) or held (ex: Fireball, Geyser))
     kick (Kick input, which does damage and smacks the ball really hard)
     blob (Block input, which protects against kicks and can stop the ball)
-    boost (Boost input, which increases player stats greaty)
+    boost (Boost input, which increases player stats greatly)
     '''
 
     '''
@@ -32,30 +32,43 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     '''
     pressed = []
     logic_memory = blob.cpu_memory
+    convertdict = {
+        '1': {
+            'back': 'left',
+            'forward': 'right',
+            'jump': 'up',
+            'down': 'down'
+            'ability': 'ability',
+            'kick': 'kick',
+            'block': 'blob',
+            'boost': 'boost'},
+        '2': {
+            'back': 'right',
+            'forward': 'left',
+            'jump': 'up',
+            'down': 'down'
+            'ability': 'ability',
+            'kick': 'kick',
+            'block': 'blob',
+            'boost': 'boost'}
+        }
 
-    #This logic is just an example... it needs to be heavily edited
-    if(ball.x_center > blob.x_center):
-        if("defensive" in logic_memory):
-            pressed.append('left')
-        else:
-            pressed.append('right')
+    #Decide which strategy to use
+    if abs(blob.x_center - ball.x_center) > (abs(other_blob.x_center - ball.x_center)+10):
+        logic_memory = ['defensive']
     else:
-        if("defensive" in logic_memory):
-            pressed.append('right')
-        else:
-            pressed.append('left')
+        logic_memory = ['aggressive']
 
-    #Example of switching the logic. For example, the blobs will randomly switch in and out of a
-    #"defensive" playstyle
-    if(random.randint(0, 249) == 249):
-        if("defensive" in logic_memory):
-            logic_memory = []
-        else:
-            logic_memory.append("defensive")
-    if(random.randint(0, 249) == 249):
-        pressed.append('up')
+    #Logic for each strategy goes here
+    inputstoconvert = []
+    if 'defensive' in logic_memory:
+        inputstoconvert.append('back')
+    if 'aggresive' in logic_memory:
+        inputstoconvert.append('forward')
 
-
+    #Convert inputs to something the engine can read    
+    for tupin in inputstoconvert:
+        pressed.append(convertdict[str(blob.player)][tupin])
 
     #Converts the logic to something readable by the blob's movement function
     if(blob.player == 1):
