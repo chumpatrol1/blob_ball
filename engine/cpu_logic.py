@@ -33,12 +33,13 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     pressed = []
     logic_memory = blob.cpu_memory
     #Decide which strategy to use
-
-    if (abs(blob.x_center - ball.x_center) < 500) and (abs(blob.x_center - ball.x_center) < abs(other_blob.x_center - ball.x_center)):
+    if ((blob.x_center < ball.x_center+60) and (blob.player != 1)) or ((blob.x_center > ball.x_center-60) and (blob.player == 1)):
+        logic_memory = ['defensive']
+    elif (abs(other_blob.x_center - ball.x_center)>200)and(((other_blob.facing=='left')and(other_blob.player==1))or((other_blob.facing=='right')and(other_blob.player!=1))):
+        logic_memory = ['agressive']
+    elif (abs(blob.x_center - ball.x_center) < 600) and (abs(blob.x_center - ball.x_center) < abs(other_blob.x_center - ball.x_center)):
         logic_memory = ['agressive']
     elif abs(other_blob.x_center - ball.x_center) < 500:
-        logic_memory = ['defensive']
-    elif abs(other_blob.x_center - ball.x_center) > 500:
         if abs(blob.x_center - ball.x_center) > 500:
             logic_memory = ['agressive']
         if abs(blob.x_center - ball.x_center) < 500:
