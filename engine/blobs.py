@@ -242,18 +242,18 @@ class blob:
         self.fastfalling = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
-        self.kick_cooldown_rate = 5 + self.stars['kick_cooldown_rate'] #Each star reduces kick cooldown
+        self.kick_cooldown_rate = 1 #Each star reduces kick cooldown
         self.kick_cooldown = 0 #Cooldown timer between kicks
         self.kick_timer = 0 #Active frames of kick
-        self.kick_cooldown_max = 2400
+        self.kick_cooldown_max = 240 + 30 * (5 - self.stars['kick_cooldown_rate'])
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
-        self.block_cooldown_rate = (5 + self.stars['block_cooldown_rate']) #Each star reduces block cooldown
+        self.block_cooldown_rate = 1 #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
-        self.block_cooldown_max = 3000 #How long the block cooldown lasts
+        self.block_cooldown_max = 300 + 30 * (5 - self.stars['block_cooldown_rate']) #How long the block cooldown lasts
 
         self.block_outer = 150
         self.block_inner = -25
@@ -514,11 +514,15 @@ class blob:
 
     def check_ability_collision(self, blob, ball):
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 45
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
-        and blob.block_timer == 0):
-            blob.hp -= 1
-            blob.info['damage_taken'] += 1
-            blob.damage_flash_timer = 60
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
+            if(blob.block_timer == 0):
+                blob.hp -= 1
+                blob.info['damage_taken'] += 1
+                blob.damage_flash_timer = 60
+                blob.y_speed = -30
+                blob.movement_lock = 20
+            else:
+                blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown - 30
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
@@ -584,7 +588,7 @@ class blob:
                 if(self.focusing):
                     if(pressed_conversions[button] == "down"):
                         pressed.append(pressed_conversions[button])
-                    elif(pressed_conversions[button] == "up" and self.focus_lock >= self.focus_lock_max - 20):
+                    elif(pressed_conversions[button] == "up"):
                         pressed.append(pressed_conversions[button])
                         self.info['jump_cancelled_focuses'] += 1
                     else:

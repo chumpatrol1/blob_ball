@@ -182,6 +182,41 @@ def draw_timer(screen_size, game_display, timer):
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
             game_display.blit(timer_text, text_rect)
 
+def draw_blob_special(blob, game_display):
+    
+    if(blob.boost_timer):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+
+    if(blob.focusing):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        if(blob.focus_lock):
+            blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        else:
+            blob_special.fill((200, 200, 200, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+    if(blob.block_timer):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+        p1_block_surface = pg.Surface((110, 220), pg.SRCALPHA)
+        p1_block_surface.set_alpha(124)
+        if(blob.block_timer < blob.block_timer_max - 3):
+            p1_block_surface.set_alpha(124 - 10 * (blob.block_timer_max - blob.block_timer))
+        pg.draw.rect(p1_block_surface, (0, 0, 255), (0, 0, 110, 220), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
+        #TODO: Scaling based off of block size
+        if(blob.facing == 'left'):
+            #Grab Box Visualization
+            game_display.blit(p1_block_surface, ((blob.x_pos - 150)*(1000/1366), (blob.y_pos - 105)*(382/768)))
+        else:
+            game_display.blit(p1_block_surface, ((blob.x_pos + 186)*(1000/1366), (blob.y_pos - 105)*(382/768)))
+    if(blob.kick_visualization):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        blob_special.set_alpha(255 - 16 * (blob.kick_visualization_max - blob.kick_visualization))
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
 
     #TODO: Simplify and remove
@@ -214,36 +249,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     else:
         game_display.blit(image_cache['p1_blob'], ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
 
-    if(p1_blob.boost_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((p1_blob.x_pos - 42)*(1000/1366), (p1_blob.y_pos*(382/768))))
-
-    if(p1_blob.focusing):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-    if(p1_blob.block_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-        p1_block_surface = pg.Surface((screen_size[0] * 110/1366, screen_size[1]*(220/768)), pg.SRCALPHA)
-        p1_block_surface.set_alpha(124)
-        if(p1_blob.block_timer < p1_blob.block_timer_max - 3):
-            p1_block_surface.set_alpha(124 - 10 * (p1_blob.block_timer_max - p1_blob.block_timer))
-        pg.draw.rect(p1_block_surface, (0, 0, 255), (0, 0, screen_size[0] * 110/1366, screen_size[1]*(220/768)), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
-        #TODO: Scaling based off of block size
-        if(p1_blob.facing == 'left'):
-            #Grab Box Visualization
-            game_display.blit(p1_block_surface, ((screen_size[0]/1366)*(p1_blob.x_pos - 150)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
-        else:
-            game_display.blit(p1_block_surface, ((screen_size[0]/1366)*(p1_blob.x_pos + 186)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
-    if(p1_blob.kick_visualization):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        blob_special.set_alpha(255 - 16 * (p1_blob.kick_visualization_max - p1_blob.kick_visualization))
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-
+    draw_blob_special(p1_blob, game_display)
     draw_blob_particles(game_display, ball, p1_blob)
     
     if not (p2_blob.image == image_cache['p2_blob_clone']):
@@ -261,35 +267,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     else:
         game_display.blit(image_cache['p2_blob'], ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
 
-    if(p2_blob.focusing):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-    if(p2_blob.block_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-        p2_block_surface = pg.Surface((screen_size[0] * 110/1366, screen_size[1]*(220/768)), pg.SRCALPHA)
-        p2_block_surface.set_alpha(124)
-        if(p2_blob.block_timer < p2_blob.block_timer_max - 3):
-            p2_block_surface.set_alpha(124 - 10 * (p2_blob.block_timer_max - p2_blob.block_timer))
-        pg.draw.rect(p2_block_surface, (0, 0, 255), (0, 0, screen_size[0] * 110/1366, screen_size[1]*(220/768)), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
-        #TODO: Scaling based off of block size
-        if(p2_blob.facing == 'left'):
-            #Grab Box Visualization
-            game_display.blit(p2_block_surface, ((screen_size[0]/1366)*(p2_blob.x_pos - 150)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos - 105)*(382/768)))
-        else:
-            game_display.blit(p2_block_surface, ((screen_size[0]/1366)*(p2_blob.x_pos + 186)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos - 105)*(382/768)))
-    if(p2_blob.kick_visualization):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        blob_special.set_alpha(255 - 16 * (p2_blob.kick_visualization_max - p2_blob.kick_visualization))
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-    if(p2_blob.boost_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-
+    draw_blob_special(p2_blob, game_display)
     draw_blob_particles(game_display, ball, p2_blob)
 
     #fade_out = 200
