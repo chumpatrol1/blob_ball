@@ -323,12 +323,16 @@ class blob:
         }
     
     ground = 1200
+    ceiling = 200
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
             self.special_ability_charge = self.special_ability_charge_base * 5
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
+            if(self.y_pos < blob.ground):
+                self.focusing = False
+                self.focus_lock = 0
         else:
             self.special_ability_charge = self.special_ability_charge_base
 
@@ -712,8 +716,8 @@ class blob:
         if(self.fastfalling and self.y_pos == blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
-        if(self.y_pos < 0): #How did we get here?
-            self.y_pos = 0
+        if(self.y_pos < blob.ceiling): #How did we get here?
+            self.y_pos = blob.ceiling
             self.y_speed = 0
         if(self.y_pos > blob.ground): #Don't go under the floor!
             self.y_speed = 0

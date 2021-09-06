@@ -98,52 +98,53 @@ def almanac_stats_navigation_2(timer):
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state = "almanac_stats_page_3"
         global p1_selector_position
-        p1_selector_position = [3, 2, 0]
+        p1_selector_position = [3, 2, 0, 0]
     return [game_state]
 
-p1_selector_position
+almanac_mu_chart_selector = [3, 2, 0]
 
 def almanac_stats_navigation_3():
+    global almanac_mu_chart_selector
     game_state = "almanac_stats_page_3"
     pressed = engine.handle_input.css_input()
     pressed = engine.handle_input.merge_inputs(pressed)
-    global p1_selector_position
+    global almanac_mu_chart_selector
 
     if('up' in pressed):
-            if p1_selector_position[1] == 0:
-                p1_selector_position[1] = 4
+            if almanac_mu_chart_selector[1] == 0:
+                almanac_mu_chart_selector[1] = 4
                 
             else:
-                p1_selector_position[1] -= 1
+                almanac_mu_chart_selector[1] -= 1
     elif('down' in pressed):
-            if p1_selector_position[1] == 4:
-                p1_selector_position[1] = 0
+            if almanac_mu_chart_selector[1] == 4:
+                almanac_mu_chart_selector[1] = 0
             else:
-                p1_selector_position[1] += 1
+                almanac_mu_chart_selector[1] += 1
     if('left' in pressed):
-        if p1_selector_position[0] == 0:
-            p1_selector_position[0] = 6
+        if almanac_mu_chart_selector[0] == 0:
+            almanac_mu_chart_selector[0] = 6
         else:
-            p1_selector_position[0] -= 1
+            almanac_mu_chart_selector[0] -= 1
     elif('right' in pressed):
-        if p1_selector_position[0] == 6:
-            p1_selector_position[0] = 0
+        if almanac_mu_chart_selector[0] == 6:
+            almanac_mu_chart_selector[0] = 0
         else:
-            p1_selector_position[0] += 1
+            almanac_mu_chart_selector[0] += 1
     
-    if(p1_selector_position[2] == 0):
+    if(almanac_mu_chart_selector[2] == 0):
         if('ability' in pressed):
-            if(p1_selector_position == [3, 2, 0]):
+            if(almanac_mu_chart_selector == [3, 2, 0]):
                 game_state = "almanac"
             else:
-                p1_selector_position[2] = 1
-    if(p1_selector_position[2] == 1 and 
+                almanac_mu_chart_selector[2] = 1
+    if(almanac_mu_chart_selector[2] == 1 and 
     ('up' in pressed or 'down' in pressed or 'left' in pressed or 'right' in pressed)):
-        p1_selector_position[2] = 0
+        almanac_mu_chart_selector[2] = 0
     if('kick' in pressed):
-        p1_selector_position[2] = 0
+        almanac_mu_chart_selector[2] = 0
 
-    return game_state, p1_selector_position
+    return game_state, almanac_mu_chart_selector
 
 
 def almanac_art_navigation(timer):
