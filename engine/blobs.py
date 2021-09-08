@@ -526,10 +526,10 @@ class blob:
 
                         blob.damage_flash_timer = 60
                     else:
-                        self.clanked = 2
+                        blob.clanked = 2
                         blob.info['clanks'] += 1
                 else:
-                    self.parried = 2
+                    blob.parried = 2
                     blob.info['parries'] += 1
 
     def check_ability_collision(self, blob, ball):
@@ -539,7 +539,7 @@ class blob:
                 blob.hp -= 1
                 blob.info['damage_taken'] += 1
                 blob.damage_flash_timer = 60
-                blob.y_speed = -30
+                blob.y_speed = -30 - (5 * (blob.gravity_stars - 1.05))
                 blob.movement_lock = 20
             else:
                 blob.block_cooldown += 30

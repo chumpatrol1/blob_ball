@@ -74,7 +74,6 @@ def find_nrg_color(blob):
             nrg_color = (0, 0, 50)
     return nrg_color
 
-
 def draw_nrg_bar(game_display, blob, x_offset):
     nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
     nrg_bar = nrg_surface.get_width() * blob.special_ability_meter / blob.special_ability_max
@@ -94,7 +93,6 @@ def draw_nrg_bar(game_display, blob, x_offset):
     pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
     pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
     game_display.blit(nrg_surface, (x_offset, 75))
-
 
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     global image_cache
@@ -121,7 +119,6 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p2_blob.species in cooldown_species):
         if(p2_blob.special_ability_timer):
             draw_cooldown(game_display, p2_blob, ui_font, 1046, p2_blob.get_ability_visuals())
-    
     
     if(p2_blob.kick_cooldown_visualization > 0):
         draw_cooldown(game_display, p2_blob, ui_font, 1126, p2_blob.get_kick_visuals())
