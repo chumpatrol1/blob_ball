@@ -62,19 +62,19 @@ settings = {
 }
 
 try:
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
         ruleset = loads(rulesetdoc.readline())
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         ruleset['version'] = game_version
         rulesetdoc.write(dumps(ruleset))
 except:
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         rulesetdoc.write(dumps(ruleset))
 try:
-    with open(cwd+'/engine/config/settings.txt', 'r') as settingsdoc:
+    with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
         settings = loads(settingsdoc.readline())
 except:
-    with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
         settingsdoc.write(dumps(settings))
 
 game_stats = ()

@@ -400,7 +400,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] -= 1
             else:
                 ruleset['special_ability_charge_base'] = 20
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
         if(selector_position == 0):
@@ -423,7 +423,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] += 1
             else:
                 ruleset['special_ability_charge_base'] = 0
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(ruleset)):
@@ -441,7 +441,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
             ruleset['danger_zone_enabled'] = True
         elif(selector_position == 4):
             ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
             
     return selector_position, game_state
@@ -488,7 +488,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
         elif(selector_position == 3):
             settings['smooth_scaling'] = not(settings['smooth_scaling'])
 
-        with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+        with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
 
     return selector_position, game_state
