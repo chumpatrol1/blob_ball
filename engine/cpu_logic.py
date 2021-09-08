@@ -32,7 +32,7 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     '''
     pressed = []
     logic_memory = blob.cpu_memory
-    #Decide which strategy to use
+    #Aggress/Defend?
     if ((blob.x_center < ball.x_center+60) and (blob.player != 1)) or ((blob.x_center > ball.x_center-60) and (blob.player == 1)):
         logic_memory = ['defensive']
     elif (abs(other_blob.x_center - ball.x_center)>200)and(((other_blob.facing=='left')and(other_blob.player==1))or((other_blob.facing=='right')and(other_blob.player!=1))):
@@ -46,21 +46,24 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
             logic_memory = ['defensive']
     else:
         logic_memory = ['agressive']
+    #Jump?
+    if ((((blob.x_center - ball.x_center)>100) and (blob.player == 1)) or (((ball.x_center - blob.x_center)>100) and (blob.player != 1))) and (blob.y_center<ball.y_center):
+        logic_memory.append('jump')
 
 
     #Logic for each strategy goes here
-    if 'agressive' in logic_memory:
-        pressed.append('left')
-    if 'defensive' in logic_memory:
-        pressed.append('right')
-
-    #Convert logic for player 1 cpu
     if(blob.player == 1):
-        for i in range(len(pressed)):
-            if pressed[i]=='left':
-                pressed[i]='right'
-            if pressed[i]=='right':
-                pressed[i]='left'
+        if 'agressive' in logic_memory:
+            pressed.append('right')
+        if 'defensive' in logic_memory:
+            pressed.append('left')
+    else:
+        if 'agressive' in logic_memory:
+            pressed.append('left')
+        if 'defensive' in logic_memory:
+            pressed.append('right')
+    if 'jump' in logic_memory:
+        pressed.append('up')
 
     #Converts the logic to something readable by the blob's movement function
     if(blob.player == 1):
