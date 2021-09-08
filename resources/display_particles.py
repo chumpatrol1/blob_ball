@@ -111,6 +111,12 @@ def draw_blob_particles(game_display, ball, blob):
             elif(blob.player == 2):
                 particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
     
+    if(blob.parried):
+        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = blob.x_center * (1000/1366), y_pos = blob.y_center, alpha = 255, fade = 1,))
+
+    if(blob.clanked):
+        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = blob.x_center * (1000/1366), y_pos = blob.y_center, alpha = 255, fade = 1,))
+    
     #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 
