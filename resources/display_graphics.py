@@ -115,8 +115,12 @@ def handle_graphics(game_state, main_cwd):
         if(game_state == "casual_match"):
             if(p1_selector_position[3]):
                 p1_is_cpu = True
+            else:
+                p1_is_cpu = False
             if(p2_selector_position[3]):
                 p2_is_cpu = True
+            else:
+                p2_is_cpu = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]

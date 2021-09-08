@@ -40,7 +40,7 @@ def type_to_stars(species):
             'special_ability_cost': 840,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 300,
+            'special_ability_cooldown': 510,
         }
     elif(species == "fire"):
         blob_dict = {
@@ -290,6 +290,11 @@ class blob:
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
+        self.parried = False #True when parrying
+        self.clanked = False #True when clanking
+
+        self.ability_cooldown_visualization = 0
+        self.ability_cooldown_percentage = 0
         self.kick_cooldown_visualization = 0
         self.kick_cooldown_percentage = 0
         self.block_cooldown_visualization = 0
@@ -395,6 +400,14 @@ class blob:
         if(self.movement_lock > 0):
             self.movement_lock -= 1
 
+        if(self.parried):
+            self.parried -= 1
+
+        if(self.clanked):
+            self.clanked -= 1
+
+        self.ability_cooldown_visualization = create_visualization(self.special_ability_timer)
+        self.ability_cooldown_percentage = self.special_ability_timer/self.special_ability_cooldown
         self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
         self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
         self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
@@ -461,8 +474,7 @@ class blob:
                 self.used_ability = "gale"
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-
-    
+ 
     def kick(self):
         if(self.kick_cooldown <= 0):
             self.block_cooldown += 5 * (self.block_cooldown_rate)
@@ -492,6 +504,8 @@ class blob:
             self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
             self.boost_cooldown_timer = self.boost_cooldown_max
             self.info['boost_count'] += 1
+            if(self.species == "quirkless"):
+                self.special_ability_timer = self.special_ability_cooldown
     
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
@@ -512,8 +526,10 @@ class blob:
 
                         blob.damage_flash_timer = 60
                     else:
+                        blob.clanked = 2
                         blob.info['clanks'] += 1
                 else:
+                    blob.parried = 2
                     blob.info['parries'] += 1
 
     def check_ability_collision(self, blob, ball):
@@ -523,7 +539,7 @@ class blob:
                 blob.hp -= 1
                 blob.info['damage_taken'] += 1
                 blob.damage_flash_timer = 60
-                blob.y_speed = -30
+                blob.y_speed = -30 - (5 * (blob.gravity_stars - 1.05))
                 blob.movement_lock = 20
             else:
                 blob.block_cooldown += 30
@@ -550,8 +566,6 @@ class blob:
                     pass #self.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
                     pass #self.x_speed -= 1
-
-
 
     def blob_ko(self):
         self.y_speed = 10
@@ -740,4 +754,20 @@ class blob:
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
-        
+    
+    #The following functions are for visualizations and timers
+
+    def get_ability_visuals(self):
+        return self.ability_cooldown_percentage, self.ability_cooldown_visualization
+    
+    def get_kick_visuals(self):
+        return self.kick_cooldown_percentage, self.kick_cooldown_visualization
+    
+    def get_block_visuals(self):
+        return self.block_cooldown_percentage, self.block_cooldown_visualization
+
+    def get_boost_timer_visuals(self):
+        return self.boost_timer_percentage, self.boost_timer_visualization
+
+    def get_boost_cooldown_visuals(self):
+        return self.boost_cooldown_percentage, self.boost_cooldown_visualization
