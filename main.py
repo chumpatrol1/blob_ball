@@ -1,5 +1,19 @@
+'''
+INSTRUCTIONS FOR EVERY RELEASE
+Update Game Stats Version
+Update Setup.py Game Version
+python setup.py bdist_msi
+Install the Game
+Add Missing Resources/Files
+Update the Changelog
+ZIP the files together for release!
+'''
+
+'''OPTIMIZING'''
 #python -m cProfile -o out.prof main.py
 #snakeviz out.prof
+'''CREATING AN INSTALLER'''
+#python setup.py bdist_msi
 
 import os
 from sys import argv
