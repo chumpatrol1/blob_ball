@@ -282,7 +282,8 @@ class blob:
         self.special_ability_meter = 0 #Amount of SA charge stored up
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
-        self.special_ability_cooldown = self.stars['special_ability_cooldown'] #Cooldown between uses
+        self.special_ability_cooldown = 0 #Cooldown between uses
+        self.special_ability_cooldown_max = self.stars['special_ability_cooldown']
         self.special_ability_charge_base = special_ability_charge_base
         self.used_ability = None
 
@@ -353,16 +354,19 @@ class blob:
 
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
-            if(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 30):
+            if(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown_max - 30):
                 self.used_ability = "thunderbolt"
-            elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown - 180):
+            elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown_max - 180):
                 self.used_ability = None
-            elif(self.species == "wind" and self.special_ability_timer == self.special_ability_cooldown - 240):
+            elif(self.species == "wind" and self.special_ability_timer == self.special_ability_cooldown_max - 240):
                 self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
         
+        if(self.special_ability_cooldown > 0):
+            self.special_ability_cooldown -= 1
+
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
         if(self.kick_timer > 0):
@@ -406,8 +410,8 @@ class blob:
         if(self.clanked):
             self.clanked -= 1
 
-        self.ability_cooldown_visualization = create_visualization(self.special_ability_timer)
-        self.ability_cooldown_percentage = self.special_ability_timer/self.special_ability_cooldown
+        self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown)
+        self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
         self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
         self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
         self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
@@ -425,53 +429,56 @@ class blob:
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
                     self.used_ability = "fireball"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
                 else:
                     #If we ignite the ball
                     self.used_ability = "fireball"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == 'snowball'):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
                     self.used_ability = "snowball"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
                 else:
                     #If we ignite the ball
                     self.used_ability = "snowball"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == 'geyser'):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
                     self.used_ability = "geyser"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
                 else:
                     #If we ignite the ball
                     self.used_ability = "geyser"
-                    self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == "spire"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Spire activation
                 self.used_ability = "spire"
-                self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == "thunderbolt"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Thunderbolt activation
                 self.used_ability = None #This is done for a technical reason, to prevent premature electrocution
+                self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == "gale"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Gale activation
                 self.used_ability = "gale"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
  
@@ -505,7 +512,7 @@ class blob:
             self.boost_cooldown_timer = self.boost_cooldown_max
             self.info['boost_count'] += 1
             if(self.species == "quirkless"):
-                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_cooldown = self.special_ability_cooldown_max
     
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
@@ -582,6 +589,8 @@ class blob:
             self.x_pos = 1600
             self.facing = 'left'
         self.y_pos = blob.ground
+        if(self.species == "quirkless" and self.boost_timer):
+            self.special_ability_cooldown -= self.boost_timer
         self.boost_timer = 0
         self.focus_lock = 0
         self.kick_visualization = 0

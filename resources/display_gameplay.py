@@ -117,7 +117,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     game_display.blit(menu_text, text_rect)
 
     if(p2_blob.species in cooldown_species):
-        if(p2_blob.special_ability_timer):
+        if(p2_blob.special_ability_cooldown):
             draw_cooldown(game_display, p2_blob, ui_font, 1046, p2_blob.get_ability_visuals())
     
     if(p2_blob.kick_cooldown_visualization > 0):
@@ -132,7 +132,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_cooldown_visuals())
 
     if(p1_blob.species in cooldown_species):
-        if(p1_blob.special_ability_timer):
+        if(p1_blob.special_ability_cooldown):
             draw_cooldown(game_display, p1_blob, ui_font, 90, p1_blob.get_ability_visuals())
 
     if(p1_blob.kick_cooldown_visualization > 0):
