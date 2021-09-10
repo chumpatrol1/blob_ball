@@ -140,21 +140,21 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
                 particle_cache['water_particle'].set_alpha(100)
             else:
                 particle_cache['water_particle'].set_alpha(255)
-            game_display.blit(particle_cache['water_particle'], ((screen_size[0]/1366)* ball.x_pos * (1000/1366), (screen_size[1]/768) * ((1240 - y*40) + randint(-10, 10)) * (400/768)))
+            game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
     
     if(p1_blob.used_ability == "spire"):
         if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 45):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255, fade = 0, lifetime = 1))
         
         elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown - 45):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25))
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
 
     if(p2_blob.used_ability == "spire"):
         if(p2_blob.special_ability_timer > p2_blob.special_ability_cooldown - 45):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255, fade = 0, lifetime = 1))
         
         elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown - 45):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25))
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
         
     if(p1_blob.species == "lightning"):
         if(p1_blob.special_ability_timer > p1_blob.special_ability_cooldown - 30):
