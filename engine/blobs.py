@@ -41,6 +41,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 510,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
         }
     elif(species == "fire"):
         blob_dict = {
@@ -61,6 +63,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 12,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
         }
     elif(species == "ice"):
         blob_dict = {
@@ -81,6 +85,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 15,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
         }
     elif(species == "water"):
         blob_dict = {
@@ -101,6 +107,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 15,
             'special_ability_max': 1800,
             'special_ability_cooldown': 2,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
         }
     elif(species == "rock"):
         blob_dict = {
@@ -121,6 +129,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 300,
+            'special_ability_delay': 45,
+            'special_ability_duration': 0,
         }
     elif(species == "lightning"):
         blob_dict = {
@@ -141,6 +151,8 @@ def type_to_stars(species):
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
             'special_ability_cooldown': 240,
+            'special_ability_delay': 30,
+            'special_ability_duration': 0,
         }
     elif(species == "wind"):
         blob_dict = {
@@ -160,7 +172,9 @@ def type_to_stars(species):
             'special_ability_cost': 900,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 600,
+            'special_ability_cooldown': 720,
+            'special_ability_delay': 0,
+            'special_ability_duration': 240,
         }
 
     return blob_dict
@@ -285,6 +299,8 @@ class blob:
         self.special_ability_cooldown = 0 #Cooldown between uses
         self.special_ability_cooldown_max = self.stars['special_ability_cooldown']
         self.special_ability_charge_base = special_ability_charge_base
+        self.special_ability_duration = self.stars['special_ability_duration']
+        self.special_ability_delay = self.stars['special_ability_delay']
         self.used_ability = None
 
         self.collision_distance = 104 #Used for calculating ball collisions
@@ -354,11 +370,13 @@ class blob:
 
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
-            if(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown_max - 30):
+            if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
+                self.used_ability = "spire"
+            if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
-            elif(self.species == "lightning" and self.special_ability_timer == self.special_ability_cooldown_max - 180):
+            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - 180):
                 self.used_ability = None
-            elif(self.species == "wind" and self.special_ability_timer == self.special_ability_cooldown_max - 240):
+            elif(self.used_ability == "gale" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
                 self.used_ability = None
             
             if(self.special_ability_timer == 0):
@@ -463,14 +481,14 @@ class blob:
         elif(self.special_ability == "spire"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Spire activation
-                self.used_ability = "spire"
+                self.used_ability = "spire_wait"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(self.special_ability == "thunderbolt"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Thunderbolt activation
-                self.used_ability = None #This is done for a technical reason, to prevent premature electrocution
+                self.used_ability = 'thunderbolt_wait' #This is done for a technical reason, to prevent premature electrocution
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
@@ -540,7 +558,7 @@ class blob:
                     blob.info['parries'] += 1
 
     def check_ability_collision(self, blob, ball):
-        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown - 45
+        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
                 blob.hp -= 1
@@ -550,7 +568,7 @@ class blob:
                 blob.movement_lock = 20
             else:
                 blob.block_cooldown += 30
-        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown - 30
+        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
             blob.hp -= 1

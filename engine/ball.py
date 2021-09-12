@@ -264,9 +264,9 @@ class ball:
             except Exception as exception:
                 print(exception)
                 self.y_speed -= 5
-        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - 45 and self.y_pos >= 900):
+        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay and self.y_pos >= 900):
             self.y_speed = -50
-        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown_max - 30):
+        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay):
             self.y_speed = ball.ground - self.y_pos
         elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1 and self.x_speed < 15):
