@@ -343,6 +343,12 @@ class blob:
             'time_grounded': 0,
             'time_grounded_seconds': 0,
         }
+        self.recharge_indicators = {
+            'ability': False,
+            'kick': False,
+            'block': False,
+            'boost': False,
+        }
     
     ground = 1200
     ceiling = 200
@@ -368,6 +374,10 @@ class blob:
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
 
+        for key in self.recharge_indicators:
+            if(self.recharge_indicators[key]):
+                self.toggle_recharge_indicator(key)
+
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
             if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
@@ -384,9 +394,13 @@ class blob:
         
         if(self.special_ability_cooldown > 0):
             self.special_ability_cooldown -= 1
+            if(self.special_ability_cooldown == 0):
+                self.toggle_recharge_indicator('ability')
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
+            if(self.kick_cooldown == 0):
+                self.toggle_recharge_indicator('kick')
         if(self.kick_timer > 0):
             self.kick_timer -= 1
             if(self.kick_timer == 0):
@@ -399,6 +413,8 @@ class blob:
             self.block_timer -= 1
         if(self.block_cooldown > 0):
             self.block_cooldown -= self.block_cooldown_rate
+            if(self.block_cooldown == 0):
+                self.toggle_recharge_indicator('block')
         
         if(self.boost_timer > 0): #Reduces duration of active boost by 1
             self.boost_timer -= 1 
@@ -408,6 +424,8 @@ class blob:
                 self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
         elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
             self.boost_cooldown_timer -= 1
+            if(self.boost_cooldown_timer == 0):
+                self.toggle_recharge_indicator('boost')
 
         if(self.collision_timer > 0):
             self.collision_timer -=1 
@@ -798,3 +816,7 @@ class blob:
 
     def get_boost_cooldown_visuals(self):
         return self.boost_cooldown_percentage, self.boost_cooldown_visualization
+
+    def toggle_recharge_indicator(self, indicator):
+        self.recharge_indicators[indicator] = not self.recharge_indicators[indicator]
+    

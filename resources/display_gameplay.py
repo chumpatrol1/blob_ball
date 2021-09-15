@@ -2,6 +2,7 @@ from os import getcwd
 from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from resources.display_particles import clear_particle_memory as clear_particle_memory
+from resources.display_particles import draw_recharge_flash, draw_ui_particles
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -53,7 +54,7 @@ def draw_cooldown(game_display, blob, ui_font, box_x, blob_function, boost_activ
         text_color = (0, 255, 255)
     cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
     cooldown_surface.set_alpha(124)
-    pg.draw.rect(cooldown_surface, square_color, (0, 70-cooldown_percentage*70, 70, 70))
+    pg.draw.rect(cooldown_surface, square_color, (0, 70-cooldown_percentage*70, 70, 140))
     game_display.blit(cooldown_surface, (box_x, 0))
     menu_text = ui_font.render(str(cooldown_visualization), False, text_color)
     text_rect = menu_text.get_rect()
@@ -119,32 +120,56 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p2_blob.species in cooldown_species):
         if(p2_blob.special_ability_cooldown):
             draw_cooldown(game_display, p2_blob, ui_font, 1046, p2_blob.get_ability_visuals())
+        elif(p2_blob.recharge_indicators['ability']):
+            draw_recharge_flash(1046)
     
     if(p2_blob.kick_cooldown_visualization > 0):
         draw_cooldown(game_display, p2_blob, ui_font, 1126, p2_blob.get_kick_visuals())
 
+    if(p2_blob.recharge_indicators['kick']):
+        draw_recharge_flash(1126)
+
     if(p2_blob.block_cooldown_visualization > 0):
         draw_cooldown(game_display, p2_blob, ui_font, 1206, p2_blob.get_block_visuals())
+
+    if(p2_blob.recharge_indicators['block']):
+        draw_recharge_flash(1206)
 
     if(p2_blob.boost_timer_visualization > 0):
         draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_timer_visuals(), boost_active = True)
     elif(p2_blob.boost_cooldown_visualization > 0):
         draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_cooldown_visuals())
 
+    if(p2_blob.recharge_indicators['boost']):
+        draw_recharge_flash(1286)
+
     if(p1_blob.species in cooldown_species):
         if(p1_blob.special_ability_cooldown):
             draw_cooldown(game_display, p1_blob, ui_font, 90, p1_blob.get_ability_visuals())
+        elif(p1_blob.recharge_indicators['ability']):
+            draw_recharge_flash(90)
 
     if(p1_blob.kick_cooldown_visualization > 0):
         draw_cooldown(game_display, p1_blob, ui_font, 170, p1_blob.get_kick_visuals())
-    
+        
+    if(p1_blob.recharge_indicators['kick']):
+            draw_recharge_flash(170)
+
     if(p1_blob.block_cooldown_visualization > 0):
         draw_cooldown(game_display, p1_blob, ui_font, 250, p1_blob.get_block_visuals())
+    
+    if(p1_blob.recharge_indicators['block']):
+            draw_recharge_flash(250)
 
     if(p1_blob.boost_timer_visualization > 0):
         draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_timer_visuals(), boost_active = True)
     elif(p1_blob.boost_cooldown_visualization > 0):
         draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_cooldown_visuals())
+    
+    if(p1_blob.recharge_indicators['boost']):
+        draw_recharge_flash(330)
+    
+    draw_ui_particles(game_display)
 
 def draw_timer(screen_size, game_display, timer):
     global image_cache

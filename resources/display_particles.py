@@ -28,6 +28,7 @@ def blitRotateCenter(game_display, image, topleft, angle):
 particle_cache = {"initialized": False}
 overlay_cache = {'initialized': False}
 particle_memory = []
+ui_memory = []
 
 def draw_top_speed_particles(generator_x, particle_memory):
     '''
@@ -82,7 +83,7 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_2.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_3.png").convert_alpha(), (30, 30))
-    
+        particle_cache['recharge_flash'] = pg.image.load(cwd + "\\resources\\images\\particles\\recharge_flash.png").convert_alpha()
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
@@ -116,11 +117,17 @@ def draw_blob_particles(game_display, ball, blob):
     #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 
+def draw_recharge_flash(flash_x):
+    global particle_memory
+    ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+
 def clear_particle_memory():
     global particle_memory
     global ball_particle_memory
+    global ui_memory
     ball_particle_memory = []
     particle_memory = []
+    ui_memory = []
 
 
 
@@ -184,3 +191,7 @@ def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
             particle_cache['thunder_particle'].set_alpha(alpha)
             blitRotateCenter(game_display, particle_cache['thunder_particle'], (ball.previous_locations[-1][0] * (1000/1366) + randint(-10, 10), ball.previous_locations[-1][1] * (400/768) + randint(-10, 10)), (60 * randint(0, 5)))
             alpha += 10
+
+def draw_ui_particles(game_display):
+    global ui_memory
+    ui_memory = blit_and_update_particles(ui_memory, game_display)
