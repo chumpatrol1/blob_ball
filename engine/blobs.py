@@ -2,7 +2,7 @@ import math
 import os
 
 cwd = os.getcwd()
-def type_to_stars(species):
+def species_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
     top_speed: The fastest that a blob can naturally accelerate to in the ground/air
@@ -179,7 +179,19 @@ def type_to_stars(species):
 
     return blob_dict
 
-def type_to_image(species):
+def ability_to_classification(ability):
+    held_abilities = ['fireball', 'snowball', 'geyser']
+    if(ability in held_abilities):
+        return "held"
+    instant_abilities = ['boost', 'gale']
+    if(ability in instant_abilities):
+        return "instant"
+    delayed_abilities = ['spire', 'thunderbolt']
+    if(ability in delayed_abilities):
+        return "delayed"
+    return "other"
+
+def species_to_image(species):
     global cwd
     image_dict = {
         "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
@@ -193,6 +205,21 @@ def type_to_image(species):
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
 
+    return image_dict[species]
+
+def species_to_ability_icon(species):
+    global cwd
+    image_dict = {
+        "quirkless": cwd+"\\resources\\images\\ui_icons\\boost_icon.png",
+        "fire": cwd+"\\resources\\images\\ability_icons\\fireball.png",
+        "ice": cwd+"\\resources\\images\\ability_icons\\snowball.png",
+        'water': cwd+"\\resources\\images\\ability_icons\\geyser.png",
+        'rock': cwd+"\\resources\\images\\ability_icons\\spire.png",
+        'lightning': cwd+"\\resources\\images\\ability_icons\\thunderbolt.png",
+        'wind': cwd+"\\resources\\images\\ability_icons\\gale.png",
+        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
+    }
+    
     return image_dict[species]
 
 def player_to_controls(player):
@@ -234,8 +261,9 @@ class blob:
             self.danger_zone = 1475
         self.is_cpu = is_cpu
         self.cpu_memory = []
-        self.image = type_to_image(species)
-        self.stars = type_to_stars(species) #Gets many values for each blob
+        self.image = species_to_image(species)
+        self.ability_icon = species_to_ability_icon(species)
+        self.stars = species_to_stars(species) #Gets many values for each blob
         self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
@@ -289,6 +317,7 @@ class blob:
         self.impact_land_frames = 0 #Locks the player from focusing after landing (fastfall leniency)
 
         self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
+        self.ability_classification = ability_to_classification(self.special_ability)
         self.special_ability_max = self.stars['special_ability_max'] #Highest that the SA gauge can go
         self.special_ability_cost = self.stars['special_ability_cost'] #Price to activate SA
         self.special_ability_maintenance = self.stars['special_ability_maintenance'] #Price to maintain SA
@@ -433,9 +462,9 @@ class blob:
         if(self.damage_flash_timer > 0):
             self.damage_flash_timer -= 1
             if((self.damage_flash_timer // 10) % 2 == 1):
-                self.image = type_to_image('invisible')
+                self.image = species_to_image('invisible')
             else:
-                self.image = type_to_image(self.species)
+                self.image = species_to_image(self.species)
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
@@ -633,7 +662,7 @@ class blob:
         self.block_timer = 0
         self.focusing = False
         self.damage_flash_timer = 0
-        self.image = type_to_image(self.species)
+        self.image = species_to_image(self.species)
         self.special_ability_timer = 0
         self.used_ability = None
         self.top_speed = self.base_top_speed

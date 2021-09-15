@@ -18,9 +18,13 @@ def draw_ball(screen_size, game_display, ball):
         image_cache['ball_clone'] = ball.image
     game_display.blit(image_cache['ball'], ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
 
-cooldown_species = ['quirkless', 'rock', 'lightning', 'wind']
+cooldown_species = ['instant', 'delayed']
 
 def draw_ui_icons(game_display, ui_font, blob, x_offset):
+    if(blob.player == 1):
+        ability_icon = image_cache['p1_ability_icon']
+    else:
+        ability_icon = image_cache['p2_ability_icon']
     pg.draw.rect(game_display, (200, 200, 200), (x_offset, 0, 70, 70))
     game_display.blit(image_cache["heart_icon"], (x_offset, 0))
     menu_text = ui_font.render(str(blob.hp), False, (0, 255, 0))
@@ -28,7 +32,7 @@ def draw_ui_icons(game_display, ui_font, blob, x_offset):
     text_rect.center = (x_offset+35, 30)
     game_display.blit(menu_text, text_rect)
     pg.draw.rect(game_display, (200, 200, 200), (x_offset + 80, 0, 70, 70))
-    #PUT ABILITY ICON HERE
+    game_display.blit(ability_icon, (x_offset + 80, 0))
     pg.draw.rect(game_display, (200, 200, 200), (x_offset + 160, 0, 70, 70))
     game_display.blit(image_cache["kick_icon"], (x_offset + 160, 0))
     pg.draw.rect(game_display, (200, 200, 200), (x_offset + 240, 0, 70, 70))
@@ -117,7 +121,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
 
-    if(p2_blob.species in cooldown_species):
+    if(p2_blob.ability_classification in cooldown_species):
         if(p2_blob.special_ability_cooldown):
             draw_cooldown(game_display, p2_blob, ui_font, 1046, p2_blob.get_ability_visuals())
         elif(p2_blob.recharge_indicators['ability']):
@@ -143,7 +147,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     if(p2_blob.recharge_indicators['boost']):
         draw_recharge_flash(1286)
 
-    if(p1_blob.species in cooldown_species):
+    if(p1_blob.ability_classification in cooldown_species):
         if(p1_blob.special_ability_cooldown):
             draw_cooldown(game_display, p1_blob, ui_font, 90, p1_blob.get_ability_visuals())
         elif(p1_blob.recharge_indicators['ability']):
@@ -227,14 +231,16 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['ball_clone'] = ball.image
         image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_clone'] = p1_blob.image
+        image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
         image_cache['p2_blob_clone'] = p2_blob.image
+        image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
         image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png"), (180, 99)).convert_alpha()
-        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\kick_icon.png"), (70, 70))
-        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
-        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
-        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
+        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\kick_icon.png"), (70, 70))
+        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\block_icon.png"), (70, 70))
+        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\boost_icon.png"), (70, 70))
+        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\heart_icon.png"), (70, 70))
         image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
         image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
 
