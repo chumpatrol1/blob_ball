@@ -40,7 +40,7 @@ def draw_almanac_main(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -223,7 +223,7 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
         bic_cached = True
-        ball = pg.transform.scale(pg.image.load(directory+"\\soccer_ball.png"), (50, 50))
+        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
 
     x = 0
     y = 0
@@ -237,11 +237,11 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
         y += 1
     if(selector_position[2] == 1 and ball_state == "deselected"):
         ball_state = "selected"
-        ball = ball = pg.transform.scale(pg.image.load(directory+"\\goal_ball.png"), (50, 50))
+        ball = ball = pg.transform.scale(pg.image.load(directory+"\\balls\\goal_ball.png"), (50, 50))
         load_mu_chart()
     if(selector_position[2] == 0 and ball_state == "selected"):
         ball_state = "deselected"
-        ball = pg.transform.scale(pg.image.load(directory+"\\soccer_ball.png"), (50, 50))
+        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
     if(selector_position[2] == 1):
         mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][2])
@@ -291,6 +291,7 @@ def draw_almanac_credits(game_display, settings):
         menu_font.render('Zion "Chumpatrol2" McLaughlin (Game Balancer, Bug Hunter)', False, (0, 0, 150)),
         menu_font.render('Yael "Chumpatrol3" McLaughlin (Concept Artist)', False, (0, 0, 150)),
         menu_font.render('NeoPhyte_TPK (Font Contributor, Bug Hunter)', False, (0, 0, 150)),
+        menu_font.render('BoingK (CPU Programmer)', False, (0, 0, 150)),
     ]
 
     text_y = 76
@@ -316,7 +317,7 @@ def draw_almanac_art(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -357,13 +358,12 @@ def draw_almanac_blobs(game_display, selector_position):
     global blob_cached
     global blob_cache
     if not blob_cached:
-        from resources.display_css import load_blobs
-        blob_cache = load_blobs(blob_cache, cwd + "\\resources\\images")
+        #from resources.display_css import load_blobs
+        directory = cwd + "\\resources\\images"
+        blob_cache = load_blobs(blob_cache, directory)
         temp_cache = []
         for row in blob_cache:
-            temp_cache = temp_cache + row[1:]
-        for row in blob_cache:
-            temp_cache = temp_cache + [row[0]]
+            temp_cache = temp_cache + row
         blob_cache = temp_cache
         blob_cached = True
         

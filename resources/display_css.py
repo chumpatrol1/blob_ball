@@ -50,15 +50,15 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
         font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
         
-        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_token.png").convert_alpha(), (51, 51))
-        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p1_check.png").convert_alpha(), (51, 51))
-        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_token.png").convert_alpha(), (51, 51))
-        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu1_check.png").convert_alpha(), (51, 51))
+        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p1_token.png").convert_alpha(), (51, 51))
+        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p1_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu1_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu1_check.png").convert_alpha(), (51, 51))
 
-        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_token.png").convert_alpha(), (51, 51))
-        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\p2_check.png").convert_alpha(), (51, 51))
-        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_token.png").convert_alpha(), (51, 51))
-        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\cpu2_check.png").convert_alpha(), (51, 51))
+        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p2_token.png").convert_alpha(), (51, 51))
+        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p2_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu2_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu2_check.png").convert_alpha(), (51, 51))
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs

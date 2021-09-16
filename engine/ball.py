@@ -5,19 +5,19 @@ cwd = os.getcwd()
 
 def type_to_image(species):
     global cwd
-
+    ball_dir = cwd + "\\resources\\images\\balls\\"
     if(species == "soccer_ball"):
-        image = cwd+"\\resources\\images\\soccer_ball.png"
+        image = ball_dir+"soccer_ball.png"
     elif(species == "p1_token"):
         image = cwd+"\\resources\\images\\p1_token.png"
     elif(species == "p2_token"):
         image = cwd+"\\resources\\images\\p2_token.png"
     elif(species == "kicked_ball"):
-        image = cwd+"\\resources\\images\\kicked_ball.png"
+        image = ball_dir+"kicked_ball.png"
     elif(species == "blocked_ball"):
-        image = cwd+"\\resources\\images\\blocked_ball.png"
+        image = ball_dir+"blocked_ball.png"
     elif(species == "goal_ball"):
-        image = cwd+"\\resources\\images\\goal_ball.png"
+        image = ball_dir+"goal_ball.png"
 
     return image
 
