@@ -26,7 +26,7 @@ def load_blobs(blob_image_cache, big_image_cache, directory):
             for icon in row:
                 if(blob_image_cache[-1] == []):
                     blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
-                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 195)))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (100, 100)))
                 else:
                     blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 51)))
                     big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 109)))
@@ -78,8 +78,12 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p1_selected_blob.set_alpha(200)
     else:
         p1_selected_blob.set_alpha(255)
+
     p1_selected_blob = pg.transform.flip(p1_selected_blob, True, False)
-    game_display.blit(p1_selected_blob, (screen_size[0]/10, screen_size[1]*(3/4)))
+    if(p1_selector_position[0] == 0):
+        game_display.blit(p1_selected_blob, (191, 576))
+    else:
+        game_display.blit(p1_selected_blob, (136, 576))
 
     p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     p2_selected_blob = p2_selected_blob.convert_alpha()
@@ -87,8 +91,11 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         p2_selected_blob.set_alpha(200)
     else:
         p2_selected_blob.set_alpha(255)
-    game_display.blit(p2_selected_blob, (screen_size[0]*(3/4), screen_size[1]*(3/4)))
 
+    if(p2_selector_position[0] == 0):
+        game_display.blit(p2_selected_blob, (1079, 576))
+    else:
+        game_display.blit(p2_selected_blob, (1024, 576))
     menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (5*screen_size[0]//6, 11*screen_size[1]//12)
