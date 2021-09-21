@@ -13,7 +13,7 @@ from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.display_settings import draw_rules_screen as draw_rules_screen
-from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_main as draw_almanac_main
+from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
 from resources.display_almanac import draw_almanac_credits as draw_almanac_credits
 from engine.handle_input import toggle_fullscreen
 import math
@@ -42,6 +42,8 @@ game_surface = pg.Surface((1366, 768))
 
 p1_blob = []
 p2_blob = []
+p1_is_cpu = False
+p2_is_cpu = False
 timer = 0
 game_version = '0.7.0b'
 ruleset = {
@@ -60,19 +62,19 @@ settings = {
 }
 
 try:
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'r') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
         ruleset = loads(rulesetdoc.readline())
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         ruleset['version'] = game_version
         rulesetdoc.write(dumps(ruleset))
 except:
-    with open(cwd+'\\engine\\config\\ruleset.txt', 'w') as rulesetdoc:
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         rulesetdoc.write(dumps(ruleset))
 try:
-    with open(cwd+'/engine/config/settings.txt', 'r') as settingsdoc:
+    with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
         settings = loads(settingsdoc.readline())
 except:
-    with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
         settingsdoc.write(dumps(settings))
 
 game_stats = ()
@@ -85,6 +87,8 @@ def handle_graphics(game_state, main_cwd):
     global game_display
     global p1_blob
     global p2_blob
+    global p1_is_cpu
+    global p2_is_cpu
     global cwd
     global timer
     global ruleset
@@ -109,6 +113,14 @@ def handle_graphics(game_state, main_cwd):
         draw_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
         game_state = info_getter[2]
         if(game_state == "casual_match"):
+            if(p1_selector_position[3]):
+                p1_is_cpu = True
+            else:
+                p1_is_cpu = False
+            if(p2_selector_position[3]):
+                p2_is_cpu = True
+            else:
+                p2_is_cpu = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
             p1_blob = info_getter[3]
@@ -122,7 +134,7 @@ def handle_graphics(game_state, main_cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu)
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
         ball = info_getter[2]
@@ -182,7 +194,15 @@ def handle_graphics(game_state, main_cwd):
         if(game_state != "almanac_stats_page_2"):
             timer = 10
         draw_almanac_stats_2(game_surface, settings)
-
+    elif(game_state == "almanac_stats_page_3"):
+        if(timer > 0):
+            timer -= 1
+        info_getter = engine.main_menu.almanac_stats_navigation_3()
+        game_state = info_getter[0]
+        selector_position = info_getter[1]
+        if(game_state != "almanac_stats_page_3"):
+            timer = 10
+        draw_almanac_stats_3(game_surface, settings, selector_position)
     elif(game_state == "almanac_art"):
         if(timer > 0):
             timer -= 1

@@ -5,19 +5,19 @@ cwd = os.getcwd()
 
 def type_to_image(species):
     global cwd
-
+    ball_dir = cwd + "\\resources\\images\\balls\\"
     if(species == "soccer_ball"):
-        image = cwd+"\\resources\\images\\soccer_ball.png"
+        image = ball_dir+"soccer_ball.png"
     elif(species == "p1_token"):
         image = cwd+"\\resources\\images\\p1_token.png"
     elif(species == "p2_token"):
         image = cwd+"\\resources\\images\\p2_token.png"
     elif(species == "kicked_ball"):
-        image = cwd+"\\resources\\images\\kicked_ball.png"
+        image = ball_dir+"kicked_ball.png"
     elif(species == "blocked_ball"):
-        image = cwd+"\\resources\\images\\blocked_ball.png"
+        image = ball_dir+"blocked_ball.png"
     elif(species == "goal_ball"):
-        image = cwd+"\\resources\\images\\goal_ball.png"
+        image = ball_dir+"goal_ball.png"
 
     return image
 
@@ -264,9 +264,9 @@ class ball:
             except Exception as exception:
                 print(exception)
                 self.y_speed -= 5
-        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown - 45 and self.y_pos >= 900):
+        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay and self.y_pos >= 900):
             self.y_speed = -50
-        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown - 30):
+        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay):
             self.y_speed = ball.ground - self.y_pos
         elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1 and self.x_speed < 15):

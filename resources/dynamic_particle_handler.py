@@ -11,6 +11,9 @@ class Particle:
         self.lifetime = lifetime
         self.ground_clip = ground_clip
 
+    def __str__(self):
+        return "Particle at ({}, {})".format(self.x_pos, self.y_pos)
+
     def update(self):
         self.alpha -= self.fade
         self.x_pos += self.x_speed

@@ -11,8 +11,8 @@ clock = pg.time.Clock()
 clock.tick(60)
 
 selector_position = 0
-p1_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
-p2_selector_position = [4, 2, 0] #0 is unselected, 1 is selected, 2 is confirmed
+p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p1_blob = "quirkless"
 p2_blob = "quirkless"
 
@@ -96,42 +96,55 @@ def almanac_stats_navigation_2(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "almanac_stats_page_2"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        game_state = "almanac"
+        game_state = "almanac_stats_page_3"
+        global p1_selector_position
+        p1_selector_position = [3, 2, 0, 0]
     return [game_state]
 
-def almanac_stats_navigation_3(selector):
+almanac_mu_chart_selector = [3, 2, 0]
+
+def almanac_stats_navigation_3():
+    global almanac_mu_chart_selector
+    game_state = "almanac_stats_page_3"
     pressed = engine.handle_input.css_input()
+    pressed = engine.handle_input.merge_inputs(pressed)
+    global almanac_mu_chart_selector
 
     if('up' in pressed):
-            if selector[1] == 0:
-                selector[1] = 4
+            if almanac_mu_chart_selector[1] == 0:
+                almanac_mu_chart_selector[1] = 4
                 
             else:
-                selector[1] -= 1
+                almanac_mu_chart_selector[1] -= 1
     elif('down' in pressed):
-            if selector[1] == 4:
-                selector[1] = 0
+            if almanac_mu_chart_selector[1] == 4:
+                almanac_mu_chart_selector[1] = 0
             else:
-                selector[1] += 1
+                almanac_mu_chart_selector[1] += 1
     if('left' in pressed):
-            if selector[0] == 0:
-                selector[0] = 7
-            else:
-                selector[0] -= 1
+        if almanac_mu_chart_selector[0] == 0:
+            almanac_mu_chart_selector[0] = 6
+        else:
+            almanac_mu_chart_selector[0] -= 1
     elif('right' in pressed):
-            if selector[0] == 7:
-                selector[0] = 0
-            else:
-                selector[0] += 1
+        if almanac_mu_chart_selector[0] == 6:
+            almanac_mu_chart_selector[0] = 0
+        else:
+            almanac_mu_chart_selector[0] += 1
     
-    if(selector[2] == 0):
+    if(almanac_mu_chart_selector[2] == 0):
         if('ability' in pressed):
-            selector[2] = 1
-    elif('kick' in pressed):
-        selector[2] = 0
-    elif(selector[2] >= 1):
-        if('ability' in pressed):
-            selector[2] = 2
+            if(almanac_mu_chart_selector == [3, 2, 0]):
+                game_state = "almanac"
+            else:
+                almanac_mu_chart_selector[2] = 1
+    if(almanac_mu_chart_selector[2] == 1 and 
+    ('up' in pressed or 'down' in pressed or 'left' in pressed or 'right' in pressed)):
+        almanac_mu_chart_selector[2] = 0
+    if('kick' in pressed):
+        almanac_mu_chart_selector[2] = 0
+
+    return game_state, almanac_mu_chart_selector
 
 
 def almanac_art_navigation(timer):
@@ -291,8 +304,8 @@ def css_handler():
         if(p1_selector_position[0] == 0):
             if(p1_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position = [4, 2, 0, 0]
+                p2_selector_position = [4, 2, 0, 0]
             elif(p1_selector_position[1] == 1):
                 game_state = "rules"
                 p1_selector_position[2] = 0
@@ -306,9 +319,9 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 4):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position[2] = 0
+                p1_selector_position[3] = not p1_selector_position[3]
+
         else:
             #TODO: Fix this spaghetti
             p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
@@ -317,8 +330,8 @@ def css_handler():
         if(p2_selector_position[0] == 0):
             if(p2_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p1_selector_position = [4, 2, 0, 0]
+                p2_selector_position = [4, 2, 0, 0]
             elif(p2_selector_position[1] == 1):
                 game_state = "rules"
                 p1_selector_position[2] = 0
@@ -332,9 +345,8 @@ def css_handler():
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 4):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0]
-                p2_selector_position = [4, 2, 0]
+                p2_selector_position[2] = 0
+                p2_selector_position[3] = not p2_selector_position[3]
         else:
             #TODO: Fix this spaghetti
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
@@ -388,7 +400,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] -= 1
             else:
                 ruleset['special_ability_charge_base'] = 20
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
         if(selector_position == 0):
@@ -411,7 +423,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['special_ability_charge_base'] += 1
             else:
                 ruleset['special_ability_charge_base'] = 0
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(ruleset)):
@@ -429,7 +441,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
             ruleset['danger_zone_enabled'] = True
         elif(selector_position == 4):
             ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
-        with open(cwd+'/engine/config/ruleset.txt', 'w') as rulesetdoc:
+        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
             
     return selector_position, game_state
@@ -476,7 +488,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
         elif(selector_position == 3):
             settings['smooth_scaling'] = not(settings['smooth_scaling'])
 
-        with open(cwd+'/engine/config/settings.txt', 'w') as settingsdoc:
+        with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
 
     return selector_position, game_state

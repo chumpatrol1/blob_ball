@@ -2,6 +2,7 @@ from os import getcwd
 from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from resources.display_particles import clear_particle_memory as clear_particle_memory
+from resources.display_particles import draw_recharge_flash, draw_ui_particles
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -13,165 +14,166 @@ def draw_blob(screen_size, game_display, blob):
 def draw_ball(screen_size, game_display, ball):
     global image_cache
     if not (ball.image == image_cache['ball_clone']):
-        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
     game_display.blit(image_cache['ball'], ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
+
+cooldown_species = ['instant', 'delayed']
+
+def draw_ui_icons(game_display, ui_font, blob, x_offset):
+    if(blob.player == 1):
+        ability_icon = image_cache['p1_ability_icon']
+    else:
+        ability_icon = image_cache['p2_ability_icon']
+    pg.draw.rect(game_display, (200, 200, 200), (x_offset, 0, 70, 70))
+    game_display.blit(image_cache["heart_icon"], (x_offset, 0))
+    menu_text = ui_font.render(str(blob.hp), False, (0, 255, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (x_offset+35, 30)
+    game_display.blit(menu_text, text_rect)
+    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 80, 0, 70, 70))
+    game_display.blit(ability_icon, (x_offset + 80, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 160, 0, 70, 70))
+    game_display.blit(image_cache["kick_icon"], (x_offset + 160, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 240, 0, 70, 70))
+    game_display.blit(image_cache["block_icon"], (x_offset + 240, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 320, 0, 70, 70))
+    game_display.blit(image_cache["boost_icon"], (x_offset + 320, 0))
+
+def draw_cooldown(game_display, blob, ui_font, box_x, blob_function, boost_active = False, ability_active = False):
+    #Draws the cooldown squares for abilities, kicks, blocks and boosts.
+    #Blob function is a tuple with percentage first, and visualization second
+    #Valid blob_functions:
+    #get_ability_visuals
+    #get_kick_visuals
+    #get_block_visuals
+    #get_boost_timer_visuals
+    #get_boost_cooldown_visuals
+    cooldown_percentage, cooldown_visualization = blob_function
+    if(boost_active):
+        square_color = (0, 0, 255)
+        text_color = (0, 255, 124)
+    else:
+        square_color = (50, 50, 50)
+        text_color = (0, 255, 255)
+    cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
+    cooldown_surface.set_alpha(124)
+    pg.draw.rect(cooldown_surface, square_color, (0, 70-cooldown_percentage*70, 70, 140))
+    game_display.blit(cooldown_surface, (box_x, 0))
+    menu_text = ui_font.render(str(cooldown_visualization), False, text_color)
+    text_rect = menu_text.get_rect()
+    text_rect.center = (box_x + 36, 30)
+    game_display.blit(menu_text, text_rect)
+
+def find_nrg_color(blob):
+    nrg_color = (0, 0, 0)
+    if(blob.player == 1):
+        if(blob.special_ability_meter >= blob.special_ability_cost):
+            nrg_color = (255, 0, 0)
+        else:
+            nrg_color = (50, 0, 0)
+    else:
+        if(blob.special_ability_meter >= blob.special_ability_cost):
+            nrg_color = (0, 0, 255)
+        else:
+            nrg_color = (0, 0, 50)
+    return nrg_color
+
+def draw_nrg_bar(game_display, blob, x_offset):
+    nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
+    nrg_bar = nrg_surface.get_width() * blob.special_ability_meter / blob.special_ability_max
+    nrg_color = find_nrg_color(blob)
+    if(blob.special_ability_meter >= blob.boost_cost and not blob.boost_cooldown_timer > 0):
+        border_color = (255, 255, 0)
+    else:
+        border_color = (0, 0, 0)
+    pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
+    if(blob.player == 1):
+        pg.draw.rect(nrg_surface, nrg_color, (0, 0, nrg_bar, nrg_surface.get_height()))
+    else:
+        pg.draw.rect(nrg_surface, nrg_color, (nrg_surface.get_width() - (nrg_bar), 0, nrg_bar, nrg_surface.get_height()))
+    
+    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
+    pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
+    pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
+    game_display.blit(nrg_surface, (x_offset, 75))
 
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     global image_cache
     ui_font = image_cache['ui_font']
-    pg.draw.rect(game_display, (200, 200, 200), (10, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
-    game_display.blit(image_cache["heart_icon"], (10, 0))
-    menu_text = ui_font.render(str(p1_blob.hp), False, (0, 255, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (45, 30)
-    game_display.blit(menu_text, text_rect)
-    pg.draw.rect(game_display, (200, 200, 200), (90, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
-    pg.draw.rect(game_display, (200, 200, 200), (170, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
-    game_display.blit(image_cache["kick_icon"], (170, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (250, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
-    game_display.blit(image_cache["block_icon"], (250, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (330, 0, screen_size[0] * (70/1366), screen_size[0] * (70/1366)))
-    game_display.blit(image_cache["boost_icon"], (330, 0))
     
-    pg.draw.rect(game_display, (200, 200, 200), (966, 0, 70, 70))
-    game_display.blit(image_cache["heart_icon"], (966, 0))
-    menu_text = ui_font.render(str(p2_blob.hp), False, (0, 255, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (1001, 30)
-    game_display.blit(menu_text, text_rect)
-    pg.draw.rect(game_display, (200, 200, 200), (1046, 0, 70, 70))
-    pg.draw.rect(game_display, (200, 200, 200), (1126, 0, 70, 70))
-    game_display.blit(image_cache["kick_icon"], (1126, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (1206, 0, 70, 70))
-    game_display.blit(image_cache["block_icon"], (1206, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (1286, 0, 70, 70))
-    game_display.blit(image_cache["boost_icon"], (1286, 0))
+    draw_ui_icons(game_display, ui_font, p1_blob, 10)
+    draw_ui_icons(game_display, ui_font, p2_blob, 966)
 
-    nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
-    p2_nrg_bar = nrg_surface.get_width() * p2_blob.special_ability_meter / p2_blob.special_ability_max
-    if(p2_blob.special_ability_meter >= p2_blob.special_ability_cost):
-        nrg_color = (0, 0, 255)
-    else:
-        nrg_color = (0, 0, 50)
-    if(p2_blob.special_ability_meter >= p2_blob.boost_cost and not p2_blob.boost_cooldown_timer > 0):
-        border_color = (255, 255, 0)
-    else:
-        border_color = (0, 0, 0)
-    pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, nrg_color, (nrg_surface.get_width() - (p2_nrg_bar), 0, p2_nrg_bar, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
-    pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
-    game_display.blit(nrg_surface, (966, 75))
+    draw_nrg_bar(game_display, p1_blob, 10)
+    draw_nrg_bar(game_display, p2_blob, 966)
 
-    menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 255, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
-    game_display.blit(menu_text, text_rect)
-    
-    if(p2_blob.kick_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p2_blob.kick_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (1126, 0))
-        menu_text = ui_font.render(str(p2_blob.kick_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (1162, 30)
-        game_display.blit(menu_text, text_rect)
-    
-    if(p2_blob.block_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p2_blob.block_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (1206, 0))
-        menu_text = ui_font.render(str(p2_blob.block_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (1242, 30)
-        game_display.blit(menu_text, text_rect)
-
-    if(p2_blob.boost_timer_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (0, 0, 255), (0, 70-p2_blob.boost_timer_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (1286, 0))
-        menu_text = ui_font.render(str(p2_blob.boost_timer_visualization), False, (0, 255, 124))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (1322, 30)
-        game_display.blit(menu_text, text_rect)
-    elif(p2_blob.boost_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p2_blob.boost_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (1286, 0))
-        menu_text = ui_font.render(str(p2_blob.boost_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (1322, 30)
-        game_display.blit(menu_text, text_rect)
-
-    nrg_surface = pg.Surface((390, 35), pg.SRCALPHA)
-    p1_nrg_bar = nrg_surface.get_width() * p1_blob.special_ability_meter / p1_blob.special_ability_max
-    if(p1_blob.special_ability_meter >= p1_blob.special_ability_cost):
-        nrg_color = (255, 0, 0)
-    else:
-        nrg_color = (50, 0, 0)
-    if(p1_blob.special_ability_meter >= p1_blob.boost_cost and not p1_blob.boost_cooldown_timer > 0):
-        border_color = (255, 255, 0)
-    else:
-        border_color = (0, 0, 0)
-    pg.draw.rect(nrg_surface, (124, 124, 124), (0, 0, nrg_surface.get_width(), nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, nrg_color, (0, 0, p1_nrg_bar, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, nrg_surface.get_width(), 3))
-    pg.draw.rect(nrg_surface, border_color, (0, nrg_surface.get_height()-3, nrg_surface.get_width(), 3))
-    pg.draw.rect(nrg_surface, border_color, (0, 0, 3, nrg_surface.get_height()))
-    pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
-    game_display.blit(nrg_surface, (10, 75))
-
+    #DEBUG TEXT
     menu_text = ui_font.render(("NRG: " + str(p1_blob.special_ability_meter)), False, (255, 255, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
+    
+    #DEBUG TEXT
+    menu_text = ui_font.render(("NRG: " + str(p2_blob.special_ability_meter)), False, (255, 255, 255))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
+    game_display.blit(menu_text, text_rect)
 
+    if(p2_blob.ability_classification in cooldown_species):
+        if(p2_blob.special_ability_cooldown):
+            draw_cooldown(game_display, p2_blob, ui_font, 1046, p2_blob.get_ability_visuals())
+        elif(p2_blob.recharge_indicators['ability']):
+            draw_recharge_flash(1046)
+    
+    if(p2_blob.kick_cooldown_visualization > 0):
+        draw_cooldown(game_display, p2_blob, ui_font, 1126, p2_blob.get_kick_visuals())
+
+    if(p2_blob.recharge_indicators['kick']):
+        draw_recharge_flash(1126)
+
+    if(p2_blob.block_cooldown_visualization > 0):
+        draw_cooldown(game_display, p2_blob, ui_font, 1206, p2_blob.get_block_visuals())
+
+    if(p2_blob.recharge_indicators['block']):
+        draw_recharge_flash(1206)
+
+    if(p2_blob.boost_timer_visualization > 0):
+        draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_timer_visuals(), boost_active = True)
+    elif(p2_blob.boost_cooldown_visualization > 0):
+        draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_cooldown_visuals())
+
+    if(p2_blob.recharge_indicators['boost']):
+        draw_recharge_flash(1286)
+
+    if(p1_blob.ability_classification in cooldown_species):
+        if(p1_blob.special_ability_cooldown):
+            draw_cooldown(game_display, p1_blob, ui_font, 90, p1_blob.get_ability_visuals())
+        elif(p1_blob.recharge_indicators['ability']):
+            draw_recharge_flash(90)
 
     if(p1_blob.kick_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p1_blob.kick_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (170, 0))
-        menu_text = ui_font.render(str(p1_blob.kick_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (206, 30)
-        game_display.blit(menu_text, text_rect)
-    
+        draw_cooldown(game_display, p1_blob, ui_font, 170, p1_blob.get_kick_visuals())
+        
+    if(p1_blob.recharge_indicators['kick']):
+            draw_recharge_flash(170)
+
     if(p1_blob.block_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p1_blob.block_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (250, 0))
-        menu_text = ui_font.render(str(p1_blob.block_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (286, 30)
-        game_display.blit(menu_text, text_rect)
+        draw_cooldown(game_display, p1_blob, ui_font, 250, p1_blob.get_block_visuals())
+    
+    if(p1_blob.recharge_indicators['block']):
+            draw_recharge_flash(250)
 
     if(p1_blob.boost_timer_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (0, 0, 255), (0, 70-p1_blob.boost_timer_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (330, 0))
-        menu_text = ui_font.render(str(p1_blob.boost_timer_visualization), False, (0, 255, 124))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (366, 30)
-        game_display.blit(menu_text, text_rect)
+        draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_timer_visuals(), boost_active = True)
     elif(p1_blob.boost_cooldown_visualization > 0):
-        cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
-        cooldown_surface.set_alpha(124)
-        pg.draw.rect(cooldown_surface, (50, 50, 50), (0, 70-p1_blob.boost_cooldown_percentage*70, 70, 70))
-        game_display.blit(cooldown_surface, (330, 0))
-        menu_text = ui_font.render(str(p1_blob.boost_cooldown_visualization), False, (0, 255, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (366, 30)
-        game_display.blit(menu_text, text_rect)
+        draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_cooldown_visuals())
+    
+    if(p1_blob.recharge_indicators['boost']):
+        draw_recharge_flash(330)
+    
+    draw_ui_particles(game_display)
 
 def draw_timer(screen_size, game_display, timer):
     global image_cache
@@ -182,6 +184,41 @@ def draw_timer(screen_size, game_display, timer):
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
             game_display.blit(timer_text, text_rect)
 
+def draw_blob_special(blob, game_display):
+    
+    if(blob.boost_timer):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+
+    if(blob.focusing):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        if(blob.focus_lock):
+            blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        else:
+            blob_special.fill((200, 200, 200, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+    if(blob.block_timer):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+        p1_block_surface = pg.Surface((110, 220), pg.SRCALPHA)
+        p1_block_surface.set_alpha(124)
+        if(blob.block_timer < blob.block_timer_max - 3):
+            p1_block_surface.set_alpha(124 - 10 * (blob.block_timer_max - blob.block_timer))
+        pg.draw.rect(p1_block_surface, (0, 0, 255), (0, 0, 110, 220), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
+        #TODO: Scaling based off of block size
+        if(blob.facing == 'left'):
+            #Grab Box Visualization
+            game_display.blit(p1_block_surface, ((blob.x_pos - 150)*(1000/1366), (blob.y_pos - 105)*(382/768)))
+        else:
+            game_display.blit(p1_block_surface, ((blob.x_pos + 186)*(1000/1366), (blob.y_pos - 105)*(382/768)))
+    if(blob.kick_visualization):
+        blob_special = image_cache['blob_special'].convert_alpha()
+        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        blob_special.set_alpha(255 - 16 * (blob.kick_visualization_max - blob.kick_visualization))
+        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
 
     #TODO: Simplify and remove
@@ -190,21 +227,22 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     global image_cache
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
-        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (round(screen_size[0]*(40/1366)), round(screen_size[1]*(40/768))))
+        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_clone'] = p1_blob.image
-        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
         image_cache['p2_blob_clone'] = p2_blob.image
+        image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
-        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\kick_icon.png"), (70, 70))
-        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\block_icon.png"), (70, 70))
-        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\boost_icon.png"), (70, 70))
-        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\heart_icon.png"), (70, 70))
+        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png"), (180, 99)).convert_alpha()
+        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\kick_icon.png"), (70, 70))
+        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\block_icon.png"), (70, 70))
+        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\boost_icon.png"), (70, 70))
+        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\heart_icon.png"), (70, 70))
         image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
         image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
-    blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
-    blob_special = blob_special.convert_alpha()
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):
         image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
@@ -214,36 +252,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         game_display.blit(pg.transform.flip(image_cache['p1_blob'], True, False), ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
     else:
         game_display.blit(image_cache['p1_blob'], ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
-    
-    if(p1_blob.boost_timer):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-    if(p1_blob.focusing):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-    if(p1_blob.block_timer):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
-        p1_block_surface = pg.Surface((screen_size[0] * 110/1366, screen_size[1]*(220/768)), pg.SRCALPHA)
-        p1_block_surface.set_alpha(124)
-        if(p1_blob.block_timer < p1_blob.block_timer_max - 3):
-            p1_block_surface.set_alpha(124 - 10 * (p1_blob.block_timer_max - p1_blob.block_timer))
-        pg.draw.rect(p1_block_surface, (0, 0, 255), (0, 0, screen_size[0] * 110/1366, screen_size[1]*(220/768)), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
-        #TODO: Scaling based off of block size
-        if(p1_blob.facing == 'left'):
-            #Grab Box Visualization
-            game_display.blit(p1_block_surface, ((screen_size[0]/1366)*(p1_blob.x_pos - 150)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
-        else:
-            game_display.blit(p1_block_surface, ((screen_size[0]/1366)*(p1_blob.x_pos + 186)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos - 105)*(382/768)))
-    if(p1_blob.kick_visualization):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        blob_special.set_alpha(255 - 16 * (p1_blob.kick_visualization_max - p1_blob.kick_visualization))
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p1_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(382/768))))
 
+    draw_blob_special(p1_blob, game_display)
     draw_blob_particles(game_display, ball, p1_blob)
     
     if not (p2_blob.image == image_cache['p2_blob_clone']):
@@ -260,39 +270,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         game_display.blit(pg.transform.flip(image_cache['p2_blob'], True, False), ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
     else:
         game_display.blit(image_cache['p2_blob'], ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
-    
-    blob_special = pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png")
-    blob_special = blob_special.convert_alpha()
 
-    if(p2_blob.focusing):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-    if(p2_blob.block_timer):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-        p2_block_surface = pg.Surface((screen_size[0] * 110/1366, screen_size[1]*(220/768)), pg.SRCALPHA)
-        p2_block_surface.set_alpha(124)
-        if(p2_blob.block_timer < p2_blob.block_timer_max - 3):
-            p2_block_surface.set_alpha(124 - 10 * (p2_blob.block_timer_max - p2_blob.block_timer))
-        pg.draw.rect(p2_block_surface, (0, 0, 255), (0, 0, screen_size[0] * 110/1366, screen_size[1]*(220/768)), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
-        #TODO: Scaling based off of block size
-        if(p2_blob.facing == 'left'):
-            #Grab Box Visualization
-            game_display.blit(p2_block_surface, ((screen_size[0]/1366)*(p2_blob.x_pos - 150)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos - 105)*(382/768)))
-        else:
-            game_display.blit(p2_block_surface, ((screen_size[0]/1366)*(p2_blob.x_pos + 186)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos - 105)*(382/768)))
-    if(p2_blob.kick_visualization):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        blob_special.set_alpha(255 - 16 * (p2_blob.kick_visualization_max - p2_blob.kick_visualization))
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-    if(p2_blob.boost_timer):
-        blob_special = pg.transform.scale(blob_special, (round(screen_size[0]*(180/1366)), round(screen_size[1]*(99/768))))
-        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((screen_size[0]/1366)*(p2_blob.x_pos - 42)*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(382/768))))
-
+    draw_blob_special(p2_blob, game_display)
     draw_blob_particles(game_display, ball, p2_blob)
 
     #fade_out = 200

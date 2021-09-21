@@ -29,11 +29,11 @@ input_map = {
 }
 
 try:
-    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+    controls = open(getcwd()+"\\config\\controls.txt", "r+")
 except:
-    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as controls:
+    with open(getcwd()+"\\config\\controls.txt", "w") as controls:
         controls.write(dumps(input_map))
-    controls = open(getcwd()+"\\engine\\config\\controls.txt", "r+")
+    controls = open(getcwd()+"\\config\\controls.txt", "r+")
     
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
@@ -52,7 +52,7 @@ def bind_input(key_to_rebind):
         if event.type == pg.KEYDOWN and not event.key in input_map.values() and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
             if(key_to_rebind == "p2_boost"):
-                with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
+                with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
             return True
         else:
@@ -78,7 +78,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
-    with open(getcwd()+"\\engine\\config\\controls.txt", "w") as control_list:
+    with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def get_keypress():
@@ -121,6 +121,25 @@ def get_keypress():
         pressed_array.append('return')
     return pressed_array
 
+def merge_inputs(pressed):
+    global button_timer
+    merged_press = []
+    if not button_timer:
+        if('p1_up' in pressed or 'p2_up' in pressed):
+            merged_press.append('up')
+        if('p1_down' in pressed or 'p2_down' in pressed):
+            merged_press.append('down')
+        if('p1_left' in pressed or 'p2_left' in pressed):
+            merged_press.append('left')
+        if('p1_right' in pressed or 'p2_right' in pressed):
+            merged_press.append('right')
+        if('p1_ability' in pressed or 'p2_ability' in pressed):
+            merged_press.append('ability')
+        if('p1_kick' in pressed or 'p2_kick' in pressed):
+            merged_press.append('kick')
+    if(len(merged_press)):
+        button_timer = 10
+    return merged_press
 button_timer = 0
 
 def menu_input():

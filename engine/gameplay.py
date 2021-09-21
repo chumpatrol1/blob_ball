@@ -6,13 +6,14 @@ import engine.ball
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
+import engine.cpu_logic
 
-def initialize_players(p1_selected, p2_selected, ruleset, settings):
+def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'])
-    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'])
+    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu)
+    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu)
     ball = engine.ball.ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
@@ -69,7 +70,7 @@ def score_goal(winner, goal_limit):
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
     pressed = engine.handle_input.gameplay_input()
     global initialized
     global p1_blob
@@ -93,7 +94,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
 
 
     if not initialized:
-        blobs = initialize_players(p1_selected, p2_selected, ruleset, settings)
+        blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
@@ -101,8 +102,18 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
         initialized = True
     else:
         if(timer == 0):
-            p1_blob.move(pressed)
-            p2_blob.move(pressed)
+            if(p1_blob.is_cpu):
+                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic(p1_blob, p2_blob, ball, game_score, timer)
+                p1_blob.cpu_memory = cpu_memory
+                p1_blob.move(cpu_logic)
+            else:
+                p1_blob.move(pressed)
+            if(p2_blob.is_cpu):
+                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic(p2_blob, p1_blob, ball, game_score, timer)
+                p2_blob.cpu_memory = cpu_memory
+                p2_blob.move(cpu_logic)
+            else:
+                p2_blob.move(pressed)
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
             ball.check_blob_ability(p1_blob)
@@ -185,6 +196,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings):
                 p2_blob.move([])
                 p1_blob.impact_land_frames = 0
                 p2_blob.impact_land_frames = 0
+                p1_blob.used_ability = ""
+                p2_blob.used_ability = ""
                 countdown -= 1
                 if(countdown == 0):
                     game_state, winner_info = score_goal(goal_scorer, goal_limit)

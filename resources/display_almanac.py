@@ -2,6 +2,29 @@ from engine.blobs import blob
 from resources.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd
+
+blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
+[["\\blobs\\quirkless_blob.png", "Quirkless Blob", "quirkless"], ["\\blobs\\fire_blob.png", "Fire Blob", "fire"], ["\\blobs\\ice_blob.png", "Ice Blob", "ice"], ["\\blobs\\water_blob.png", "Water Blob", "water"], ["\\blobs\\rock_blob.png", "Rock Blob", "rock"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "lightning"], ["\\blobs\\wind_blob.png", "Wind Blob", "wind"],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+]
+
+bic_cached = False
+blob_image_cache = [
+]
+ball = None
+ball_state = 'deselected'
+mu_chart = None
+
+def load_blobs(blob_image_cache, directory):
+    for row in blob_array: #Temporary, until we make more blobs
+        blob_image_cache.append([])
+        for icon in row:
+            blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+    return blob_image_cache
+
 cwd = getcwd()
 
 def draw_almanac_main(game_display, selector_position, settings):
@@ -17,7 +40,7 @@ def draw_almanac_main(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -159,6 +182,105 @@ def draw_almanac_stats_2(game_display, settings):
         game_display.blit(text_box, text_rect)
         text_y += 40
 
+def load_mu_chart():
+    global mu_chart
+    from json import loads
+    with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
+        mu_chart = loads(muchart.readline())
+    return mu_chart
+
+def read_mu_chart(blob):
+    #Reads the MU chart.
+    global mu_chart
+    global blob_array
+    mu_percent_array = []
+    if(blob in mu_chart):
+        for row in blob_array:
+            mu_percent_array.append([])
+            for blob_item in row:
+                if(blob_item[2] in mu_chart[blob]):
+                    record = mu_chart[blob][blob_item[2]]
+                    win_rate = record[0]
+                    win_rate = round(win_rate / (record[0] + record[1] + record[2]) * 100, 2)
+                    win_rate = str(win_rate) + "%"
+                    mu_percent_array[-1].append(win_rate)
+                else:
+                    mu_percent_array[-1].append("-")
+    else:
+        for i in range(5):
+            mu_percent_array.append([])
+            for j in range(7):
+                mu_percent_array[-1].append("-")
+    return mu_percent_array
+
+def draw_almanac_stats_3(game_display, settings, selector_position):
+    draw_background(game_display, 'almanac_stats', settings)
+    global bic_cached
+    global blob_image_cache
+    global ball
+    global ball_state
+    directory = cwd + "\\resources\\images"
+    if not bic_cached:
+        blob_image_cache = load_blobs(blob_image_cache, directory)
+        bic_cached = True
+        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
+
+    x = 0
+    y = 0
+    for row in blob_image_cache: #Temporary, until we make more blobs
+        for icon in row:
+            blob = blob_image_cache[y][x]
+            blob = pg.transform.scale(blob, (122, 68))
+            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100)))
+            x += 1
+        x = 0
+        y += 1
+    if(selector_position[2] == 1 and ball_state == "deselected"):
+        ball_state = "selected"
+        ball = ball = pg.transform.scale(pg.image.load(directory+"\\balls\\goal_ball.png"), (50, 50))
+        load_mu_chart()
+    if(selector_position[2] == 0 and ball_state == "selected"):
+        ball_state = "deselected"
+        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
+    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    if(selector_position[2] == 1):
+        mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][2])
+        
+        text_x = 170
+        text_y = 130
+        for row in mu_chart_text:
+            for mu in row:
+                text_box = menu_font.render(mu, False, (255, 255, 255))
+                text_rect = text_box.get_rect()
+                text_rect.center = (text_x, text_y)
+                game_display.blit(text_box, text_rect)
+                text_x += 170
+            text_y += 100
+            text_x = 170
+    game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
+    game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
+
+    text_array = [
+        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
+        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
+        menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255)),
+        menu_font.render("of a blob compared to others.", False, (0, 0, 255)),
+        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
+        menu_font.render("   to the almanac.", False, (0, 0, 255)),
+    ]
+
+    text_y = 530
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 30
+
+    text_box = menu_font.render(blob_array[selector_position[1]][selector_position[0]][1], False, (0, 0, 255))
+    text_rect = text_box.get_rect()
+    text_rect.center = (925, 700)
+    game_display.blit(text_box, text_rect)
+
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 23)
@@ -169,6 +291,7 @@ def draw_almanac_credits(game_display, settings):
         menu_font.render('Zion "Chumpatrol2" McLaughlin (Game Balancer, Bug Hunter)', False, (0, 0, 150)),
         menu_font.render('Yael "Chumpatrol3" McLaughlin (Concept Artist)', False, (0, 0, 150)),
         menu_font.render('NeoPhyte_TPK (Font Contributor, Bug Hunter)', False, (0, 0, 150)),
+        menu_font.render('BoingK (CPU Programmer)', False, (0, 0, 150)),
     ]
 
     text_y = 76
@@ -194,7 +317,7 @@ def draw_almanac_art(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -235,13 +358,12 @@ def draw_almanac_blobs(game_display, selector_position):
     global blob_cached
     global blob_cache
     if not blob_cached:
-        from resources.display_css import load_blobs
-        blob_cache = load_blobs(blob_cache, cwd + "\\resources\\images")
+        #from resources.display_css import load_blobs
+        directory = cwd + "\\resources\\images"
+        blob_cache = load_blobs(blob_cache, directory)
         temp_cache = []
         for row in blob_cache:
-            temp_cache = temp_cache + row[1:]
-        for row in blob_cache:
-            temp_cache = temp_cache + [row[0]]
+            temp_cache = temp_cache + row
         blob_cache = temp_cache
         blob_cached = True
         

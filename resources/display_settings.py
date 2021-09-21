@@ -35,7 +35,7 @@ def draw_settings_screen(game_display, settings, selector_position):
         game_display.blit(text_box, text_rect)
         text_y += 76
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
     game_display.blit(ball, (68, (76 * selector_position) + (0.5 * 76)))
 
@@ -85,6 +85,6 @@ def draw_rules_screen(screen_size, game_display, ruleset, selector_position, set
         game_display.blit(text_box, text_rect)
         text_y += screen_size[1]//10
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
     game_display.blit(ball, (screen_size[0]*(1/20), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))

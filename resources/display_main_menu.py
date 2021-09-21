@@ -16,7 +16,7 @@ def draw_main_menu(screen_size, game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\soccer_ball.png")
+    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
     game_display.blit(ball, (850, ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 
