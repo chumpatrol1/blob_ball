@@ -176,6 +176,28 @@ def species_to_stars(species):
             'special_ability_delay': 0,
             'special_ability_duration': 240,
         }
+    elif(species == "judge"):
+        blob_dict = {
+            'max_hp': 3,
+            'top_speed': 3,
+            'traction': 3,
+            'friction': 3,
+            'gravity': 3,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 3,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'c&d',
+            'special_ability_cost': 300,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 300,
+            'special_ability_delay': 0,
+            'special_ability_duration': 60,
+        }
 
     return blob_dict
 
@@ -183,7 +205,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale']
+    instant_abilities = ['boost', 'gale', 'c&d']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -201,6 +223,7 @@ def species_to_image(species):
         'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
         'lightning': cwd+"\\resources\\images\\blobs\\lightning_blob.png",
         'wind': cwd+"\\resources\\images\\blobs\\wind_blob.png",
+        'judge': cwd+"\\resources\\images\\blobs\\judge_blob.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
         "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
     }
@@ -217,6 +240,7 @@ def species_to_ability_icon(species):
         'rock': cwd+"\\resources\\images\\ability_icons\\spire.png",
         'lightning': cwd+"\\resources\\images\\ability_icons\\thunderbolt.png",
         'wind': cwd+"\\resources\\images\\ability_icons\\gale.png",
+        'judge': cwd+"\\resources\\images\\ability_icons\\cnd.png",
         "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
     }
     
@@ -378,6 +402,9 @@ class blob:
             'block': False,
             'boost': False,
         }
+        self.status_effects = {
+            "judged": 0,
+        }
     
     ground = 1200
     ceiling = 200
@@ -417,6 +444,8 @@ class blob:
                 self.used_ability = None
             elif(self.used_ability == "gale" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
                 self.used_ability = None
+            elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -425,6 +454,10 @@ class blob:
             self.special_ability_cooldown -= 1
             if(self.special_ability_cooldown == 0):
                 self.toggle_recharge_indicator('ability')
+
+        for effect in self.status_effects:
+            if(self.status_effects[effect]):
+                self.status_effects[effect] -= 1
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
@@ -546,6 +579,12 @@ class blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+        elif(self.special_ability == "c&d"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "c&d"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
  
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -638,6 +677,8 @@ class blob:
                     pass #self.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale"):
                     pass #self.x_speed -= 1
+        elif(self.used_ability == "c&d"):
+            blob.status_effects['judged'] = self.special_ability_duration
 
     def blob_ko(self):
         self.y_speed = 10
@@ -690,6 +731,15 @@ class blob:
         
         if(self.movement_lock > 0):
             pressed = []
+        if(self.status_effects['judged']):
+            if('kick' in pressed):
+                pressed.remove('kick')
+            if('block' in pressed):
+                pressed.remove('block')
+            if('boost' in pressed):
+                pressed.remove('boost')
+            if('ability' in pressed):
+                pressed.remove('ability')
 
             #HORIZONTAL MOVEMENT
         if(self.y_pos == blob.ground): #Applies traction if grounded
