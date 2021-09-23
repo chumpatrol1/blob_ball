@@ -18,7 +18,7 @@ ZIP the files together for release!
 import os
 from sys import argv
 #COMMENT THIS OUT WHEN MAKING THE EXE
-os.chdir(os.path.dirname(argv[0]))
+#os.chdir(os.path.dirname(argv[0]))
 
 cwd = os.getcwd()
 print("MAIN",cwd)
@@ -35,7 +35,7 @@ done = False
 
 game_stats = {
     #Stats about the state of the game
-    'original_version': 'v0.7.2a', #Version this file was created on
+    'original_version': 'v0.7.2b', #Version this file was created on
     'times_bb_started': 0, #Number of times Blob Ball was started up
     'time_open': 0, #Time in seconds.mm that the game has been open
     'time_in_game': 0, #Time in seconds.mm that was spent in an actual match
