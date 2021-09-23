@@ -444,7 +444,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
             
-    return selector_position, game_state
+    return selector_position, game_state, ruleset
 
 def settings_navigation(timer, settings, previous_screen, cwd):
     game_state = "settings"
@@ -491,4 +491,4 @@ def settings_navigation(timer, settings, previous_screen, cwd):
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
 
-    return selector_position, game_state
+    return selector_position, game_state, settings

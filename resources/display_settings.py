@@ -3,8 +3,6 @@ from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_particles as draw_ball_particles
 from math import ceil
 import pygame as pg
-from engine.handle_input import bind_input as bind_input
-from engine.handle_input import unbind_inputs as unbind_inputs
 cwd = getcwd()
 
 image_cache = {"initialized": False}
@@ -39,31 +37,16 @@ def draw_settings_screen(game_display, settings, selector_position):
     ball = pg.transform.scale(ball, (38, 38))
     game_display.blit(ball, (68, (76 * selector_position) + (0.5 * 76)))
 
-rebind_array = ['p1_up', 'p1_down', 'p1_left', 'p1_right', 'p1_ability', 'p1_kick', 'p1_block', 'p1_boost',
-'p2_up', 'p2_down', 'p2_left', 'p2_right', 'p2_ability', 'p2_kick', 'p2_block', 'p2_boost',
-    ]
-
-rebind_number = -1
-def draw_rebind_screen(game_display, settings):
+def draw_rebind_screen(game_display, settings, rebind_key):
     text_color = (0, 0, 255)
-    game_state = "rebind"
     draw_background(game_display, "rebind", settings)
-    global rebind_number
-    if(rebind_number == -1):
-        unbind_inputs()
-        rebind_number = 0
+    
     menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
-    menu_text = menu_font.render('REBIND ' + rebind_array[rebind_number], False, text_color)
+    menu_text = menu_font.render('REBIND ' + rebind_key, False, text_color)
     text_rect = menu_text.get_rect()
     text_rect.center = (300, 100)
-    if(bind_input(rebind_array[rebind_number])):
-        rebind_number += 1
-        if(rebind_number == 16):
-            game_state = "settings"
-            rebind_number = -1
 
     game_display.blit(menu_text, text_rect)
-    return [game_state]
     
 def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)

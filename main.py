@@ -15,6 +15,7 @@ ZIP the files together for release!
 '''CREATING AN INSTALLER'''
 #python setup.py bdist_msi
 
+from engine.gameplay import handle_gameplay
 import os
 from sys import argv
 #COMMENT THIS OUT WHEN MAKING THE EXE
@@ -24,12 +25,14 @@ cwd = os.getcwd()
 print("MAIN",cwd)
 
 import pygame as pg
+from engine.game_handler import update_game_state as ugs
 import resources.display_graphics as dg
 import sys
 import engine.handle_input
 from json import loads, dumps
 import time
 game_state = "main_menu"
+new_game_state = "main_menu"
 
 done = False
 
@@ -109,9 +112,11 @@ with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
 def handle_input():
     engine.handle_input.get_keypress()
 
-def display_graphics(game_state, cwd):
-    game_state = dg.handle_graphics(game_state, cwd)
-    return game_state
+def get_game_state(game_state, cwd):
+    return ugs(game_state, cwd)
+
+def display_graphics(game_state, cwd, info_getter):
+    dg.handle_graphics(game_state, cwd, info_getter)
 
 clock = pg.time.Clock()
 def run():
@@ -121,7 +126,9 @@ def run():
     global cwd
     clock.tick_busy_loop(60)
     handle_input()
-    game_state = display_graphics(game_state, cwd)
+    new_game_state, info_getter = get_game_state(game_state, cwd)
+    display_graphics(game_state, cwd, info_getter)
+    game_state = new_game_state
     for event in pg.event.get():
         if event.type == pg.QUIT:
             done = True
