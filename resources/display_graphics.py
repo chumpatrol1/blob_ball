@@ -11,6 +11,7 @@ from resources.display_main_menu import draw_main_menu
 from resources.display_css import draw_css
 from resources.display_gameplay import draw_gameplay as draw_gameplay
 from resources.display_gameplay import draw_win_screen as draw_win_screen
+from resources.display_gameplay import unload_image_cache as unload_image_cache
 from resources.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.display_settings import draw_rules_screen as draw_rules_screen
 from resources.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
@@ -115,6 +116,7 @@ def handle_graphics(game_state, main_cwd, info_getter):
         try:
             draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
         except:
+            unload_image_cache()
             print("Weird match end exception:", info_getter)
     elif(game_state == "casual_win"):
         game_stats = info_getter

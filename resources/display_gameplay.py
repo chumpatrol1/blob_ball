@@ -8,6 +8,11 @@ import pygame as pg
 cwd = getcwd()
 
 image_cache = {"initialized": False}
+
+def unload_image_cache():
+    global image_cache
+    image_cache = {"initialized": False}
+
 def draw_blob(screen_size, game_display, blob):
     global image_cache
 

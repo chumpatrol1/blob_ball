@@ -1,1 +1,1 @@
-{"version": "0.8.0a", "goal_limit": 5, "time_limit": 3600, "time_bonus": 600, "special_ability_charge_base": 1, "danger_zone_enabled": true}
+{"version": "0.8.0a", "goal_limit": 1, "time_limit": 1200, "time_bonus": 600, "special_ability_charge_base": 1, "danger_zone_enabled": true}
