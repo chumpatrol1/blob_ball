@@ -397,6 +397,8 @@ class blob:
             'time_grounded_seconds': 0,
         }
         self.recharge_indicators = {
+            'damage': False,
+            'damage_flash': False,
             'ability': False,
             'kick': False,
             'block': False,
@@ -432,6 +434,8 @@ class blob:
 
         for key in self.recharge_indicators:
             if(self.recharge_indicators[key]):
+                if(key == "damage_flash" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('damage')
                 self.toggle_recharge_indicator(key)
 
         if(self.special_ability_timer > 0):
@@ -622,44 +626,25 @@ class blob:
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
-                if(blob.block_timer == 0):
-                    if(not blob.kick_timer == 1):
-                        if(self.boost_timer > 0):
-                            blob.hp -= 3
-                            blob.info['damage_taken'] += 3
-                        else:
-                            blob.hp -= 2
-                            blob.info['damage_taken'] += 2
-                        if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
-                            #Take additional damage from kicks if you are hiding by your goal
-                            blob.hp -= 1
-                            blob.info['damage_taken'] += 1
-
-                        blob.damage_flash_timer = 60
-                    else:
-                        blob.clanked = 2
-                        blob.info['clanks'] += 1
-                else:
-                    blob.parried = 2
-                    blob.info['parries'] += 1
-
+                accumulated_damage = 2
+                if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
+                    accumulated_damage += 1
+                if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                    #Take additional damage from kicks if you are hiding by your goal
+                    accumulated_damage += 1
+                blob.take_damage(accumulated_damage)
+                    
     def check_ability_collision(self, blob, ball):
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
-                blob.hp -= 1
-                blob.info['damage_taken'] += 1
-                blob.damage_flash_timer = 60
-                blob.y_speed = -30 - (5 * (blob.gravity_stars - 1.05))
-                blob.movement_lock = 20
+                blob.take_damage(y_speed_mod = -30 - (5 * (blob.gravity_stars - 1.05)), movement_lock = 20)
             else:
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
-            blob.hp -= 1
-            blob.info['damage_taken'] += 1
-            blob.damage_flash_timer = 60
+            blob.take_damage()
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
@@ -667,18 +652,49 @@ class blob:
                     blob.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
                     blob.x_speed -= 1
-            '''elif blob.y_pos == blob.ground and not blob.block_timer:
-                if(self.player == 1 and self.used_ability == "gale"):
-                    blob.x_speed += 0.3
-                elif(self.player == 2 and self.used_ability == "gale"):
-                    blob.x_speed -= 0.3'''
-            if self.y_pos != self.ground and not self.block_timer: #Gale Affecting the self
-                if(self.player == 1 and self.used_ability == "gale"):
-                    pass #self.x_speed += 1
-                elif(self.player == 2 and self.used_ability == "gale"):
-                    pass #self.x_speed -= 1
+
         elif(self.used_ability == "c&d"):
             blob.status_effects['judged'] = self.special_ability_duration
+
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
+        damage_taken = False
+        def check_block():  # Returns true if the hit goes through
+            if(self.block_timer):  # Blocking?
+                self.parried = 2
+                self.info['parries'] += 1
+                return False
+            else:
+                return True
+
+        def check_clank(): # Returns true if the hit goes through
+            if(self.kick_timer == 1):  # Kicking?
+                self.clanked = 2
+                self.info['clanks'] += 1
+                return False
+            else:
+                return True
+                
+        if(unblockable and unclankable):
+            self.hp -= damage
+            damage_taken = True
+        elif(unclankable):
+            if check_block():
+                damage_taken = True
+        elif(unblockable):
+            if check_clank():
+                damage_taken = True
+        else:
+            if(check_block() and check_clank()):
+                damage_taken = True
+        
+        if(damage_taken):
+            self.hp -= damage
+            self.damage_flash_timer = damage_flash_timer
+            self.info['damage_taken'] += damage
+            self.movement_lock = movement_lock
+            self.y_speed = y_speed_mod
+            if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
+                self.toggle_recharge_indicator('damage_flash')
 
     def blob_ko(self):
         self.y_speed = 10

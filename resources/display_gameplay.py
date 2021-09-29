@@ -2,7 +2,7 @@ from os import getcwd
 from resources.background_handler import draw_background as draw_background
 from resources.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from resources.display_particles import clear_particle_memory as clear_particle_memory
-from resources.display_particles import draw_recharge_flash, draw_ui_particles
+from resources.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -134,6 +134,9 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
     text_rect.center = (4*screen_size[0]//5, screen_size[1]//9)
     game_display.blit(menu_text, text_rect)
 
+    if(p1_blob.recharge_indicators['damage']):
+        draw_damage_flash(10)
+
     if(p1_blob.status_effects['judged']):
         draw_judgement(game_display, p1_blob, p2_blob, ui_font, 90)
         draw_judgement(game_display, p1_blob, p2_blob, ui_font, 170)
@@ -164,6 +167,9 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         
         if(p1_blob.recharge_indicators['boost']):
             draw_recharge_flash(330)
+
+    if(p2_blob.recharge_indicators['damage']):
+        draw_damage_flash(966)
 
     if(p2_blob.status_effects['judged']):
         draw_judgement(game_display, p2_blob, p1_blob, ui_font, 1046)
