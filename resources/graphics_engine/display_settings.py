@@ -16,7 +16,7 @@ def draw_settings_screen(game_display, settings, selector_position):
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
     text_color = (0, 0, 255)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render("Remap Inputs", False, text_color),
         menu_font.render("HD Backgrounds: " + str(settings['hd_backgrounds']), False, text_color),
@@ -35,7 +35,7 @@ def draw_settings_screen(game_display, settings, selector_position):
         game_display.blit(text_box, text_rect)
         text_y += 76
 
-    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
     game_display.blit(ball, (68, (76 * selector_position) + (0.5 * 76)))
 
@@ -43,7 +43,7 @@ def draw_rebind_screen(game_display, settings, rebind_key):
     text_color = (0, 0, 255)
     draw_background(game_display, "rebind", settings)
     
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     menu_text = menu_font.render('REBIND ' + rebind_key, False, text_color)
     text_rect = menu_text.get_rect()
     text_rect.center = (300, 100)
@@ -52,7 +52,7 @@ def draw_rebind_screen(game_display, settings, rebind_key):
     
 def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", round(30*(screen_size[1]/768)))
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", round(30*(screen_size[1]/768)))
     text_color = (0, 0, 255)
     text_array = [
         menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, text_color),
@@ -70,6 +70,6 @@ def draw_rules_screen(screen_size, game_display, ruleset, selector_position, set
         game_display.blit(text_box, text_rect)
         text_y += screen_size[1]//10
 
-    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
     game_display.blit(ball, (screen_size[0]*(1/20), ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))

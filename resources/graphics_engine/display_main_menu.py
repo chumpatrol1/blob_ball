@@ -5,7 +5,7 @@ cwd = getcwd()
 
 def draw_main_menu(screen_size, game_display, selector_position, settings):
     draw_background(game_display, 'main_menu', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
     text_array = [
         menu_font.render('Play!', False, (0, 0, 150)),
         menu_font.render('Online', False, (0, 0, 150)),
@@ -16,7 +16,7 @@ def draw_main_menu(screen_size, game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
     game_display.blit(ball, (850, ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
 

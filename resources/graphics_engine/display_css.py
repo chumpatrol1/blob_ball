@@ -4,11 +4,11 @@ from os import getcwd
 cwd = getcwd()
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\back_arrow.png", "Back", ""], ["\\blobs\\quirkless_blob.png", "Quirkless Blob", "No Ability"], ["\\blobs\\fire_blob.png", "Fire Blob", "Fireball"], ["\\blobs\\ice_blob.png", "Ice Blob", "Snowball"], ["\\blobs\\water_blob.png", "Water Blob", "Geyser"], ["\\blobs\\rock_blob.png", "Rock Blob", "Spire"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["\\blobs\\wind_blob.png", "Wind Blob", "Gale"],],
-[["\\rules_icon.png", "Rules", ""], ["\\blobs\\judge_blob.png", "Judge Blob", "C&D"], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\gear_icon.png", "Settings", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\almanac_icon.png", "Almanac", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\cpu_icon.png", "Toggle CPU", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
+[["/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
 
 bic_cached = False
@@ -42,23 +42,23 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     global big_image_cache
     x = 0
     y = 0
-    directory = cwd + "\\resources\\images"
+    directory = cwd + "/resources/images"
     if not bic_cached:
         blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
 
-        font_cache['blob_name'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 40)
-        font_cache['blob_description'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
-        font_cache['ready_confirmation'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 55)
+        font_cache['blob_name'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
+        font_cache['blob_description'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+        font_cache['ready_confirmation'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 55)
         
-        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p1_token.png").convert_alpha(), (51, 51))
-        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p1_check.png").convert_alpha(), (51, 51))
-        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu1_token.png").convert_alpha(), (51, 51))
-        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu1_check.png").convert_alpha(), (51, 51))
+        token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p1_token.png").convert_alpha(), (51, 51))
+        token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p1_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu1_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu1_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu1_check.png").convert_alpha(), (51, 51))
 
-        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p2_token.png").convert_alpha(), (51, 51))
-        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\p2_check.png").convert_alpha(), (51, 51))
-        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu2_token.png").convert_alpha(), (51, 51))
-        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\css_tokens\\cpu2_check.png").convert_alpha(), (51, 51))
+        token_cache['p2_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p2_token.png").convert_alpha(), (51, 51))
+        token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p2_check.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_token.png").convert_alpha(), (51, 51))
+        token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_check.png").convert_alpha(), (51, 51))
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -118,7 +118,7 @@ def draw_css(screen_size, game_display, p1_selector_position, p2_selector_positi
     global cwd
     draw_background(game_display, "css", settings)
     css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings)
-    #back_arrow = pg.image.load(cwd + "\\resources\\images\\back_arrow.png")
+    #back_arrow = pg.image.load(cwd + "/resources/images/back_arrow.png")
     #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
     #game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
     if(not p1_selector_position[3]): #Are we a CPU?

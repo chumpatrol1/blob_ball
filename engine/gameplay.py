@@ -12,9 +12,9 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu)
-    p2_blob = engine.blobs.blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu)
-    ball = engine.ball.ball()
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu)
+    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu)
+    ball = engine.ball.Ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
         time_limit = "NO LIMIT"
@@ -237,14 +237,25 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             update_game_stats(game_info, p1_blob, p2_blob, ball)
             update_mu_chart(game_score, p1_blob, p2_blob)
 
-            game_score = [0, 0]
-            timer = 180
-            countdown = 0
-            time_limit = 3600
-            game_info['time'] = 0
-            initialized = False
-            p1_blob = None
-            p2_blob = None
-            ball = None
-            return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info)
+            return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, timer)
     return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit
+
+def clear_info_cache():
+    global game_score
+    global timer
+    global countdown
+    global time_limit
+    global game_info
+    global initialized
+    global p1_blob
+    global p2_blob
+    global ball
+    game_score = [0, 0]
+    timer = 180
+    countdown = 0
+    time_limit = 3600
+    game_info['time'] = 0
+    initialized = False
+    p1_blob = None
+    p2_blob = None
+    ball = None

@@ -266,14 +266,14 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
-        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\blobs\\special_blob.png"), (180, 99)).convert_alpha()
-        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\kick_icon.png"), (70, 70))
-        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\block_icon.png"), (70, 70))
-        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\boost_icon.png"), (70, 70))
-        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ui_icons\\heart_icon.png"), (70, 70))
-        image_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\ability_icons\\cnd.png"), (70, 70))
-        image_cache['menu_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
-        image_cache['ui_font'] = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 25)
+        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/kick_icon.png"), (70, 70))
+        image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/block_icon.png"), (70, 70))
+        image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/boost_icon.png"), (70, 70))
+        image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/heart_icon.png"), (70, 70))
+        image_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/cnd.png"), (70, 70))
+        image_cache['menu_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
+        image_cache['ui_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):
@@ -329,13 +329,18 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_timer(screen_size, game_display, timer)
 
 def draw_win_screen(screen_size, game_display, game_stats, settings):
+    # TODO: Move to own file?
     draw_background(game_display, "win_screen", settings)
     clear_particle_memory()
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", round(50*(screen_size[1]/768)))
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", round(50*(screen_size[1]/768)))
     if(game_stats == 3):
         menu_text = menu_font.render("TIE", False, (0, 0, 255))
     else:
-        menu_text = menu_font.render("WINNER: "+ str(game_stats), False, (0, 0, 255))
+        menu_text = menu_font.render("WINNER: "+ str(game_stats[0]), False, (0, 0, 255))
+
+    # TODO: P1 Box
+    # TODO: P2 Box
+    # TODO: General Stats Box
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, screen_size[1]//7)
     game_display.blit(menu_text, text_rect)

@@ -216,16 +216,16 @@ def ability_to_classification(ability):
 def species_to_image(species):
     global cwd
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
-        "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
-        "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
-        'water': cwd+"\\resources\\images\\blobs\\water_blob.png",
-        'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
-        'lightning': cwd+"\\resources\\images\\blobs\\lightning_blob.png",
-        'wind': cwd+"\\resources\\images\\blobs\\wind_blob.png",
-        'judge': cwd+"\\resources\\images\\blobs\\judge_blob.png",
-        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
-        "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
+        "quirkless": cwd+"/resources/images/blobs/quirkless_blob.png",
+        "fire": cwd+"/resources/images/blobs/fire_blob.png",
+        "ice": cwd+"/resources/images/blobs/ice_blob.png",
+        'water': cwd+"/resources/images/blobs/water_blob.png",
+        'rock': cwd+"/resources/images/blobs/rock_blob.png",
+        'lightning': cwd+"/resources/images/blobs/lightning_blob.png",
+        'wind': cwd+"/resources/images/blobs/wind_blob.png",
+        'judge': cwd+"/resources/images/blobs/judge_blob.png",
+        "random": cwd+"/resources/images/blobs/random_blob.png",
+        "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
     }
 
     return image_dict[species]
@@ -233,15 +233,15 @@ def species_to_image(species):
 def species_to_ability_icon(species):
     global cwd
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\ui_icons\\boost_icon.png",
-        "fire": cwd+"\\resources\\images\\ability_icons\\fireball.png",
-        "ice": cwd+"\\resources\\images\\ability_icons\\snowball.png",
-        'water': cwd+"\\resources\\images\\ability_icons\\geyser.png",
-        'rock': cwd+"\\resources\\images\\ability_icons\\spire.png",
-        'lightning': cwd+"\\resources\\images\\ability_icons\\thunderbolt.png",
-        'wind': cwd+"\\resources\\images\\ability_icons\\gale.png",
-        'judge': cwd+"\\resources\\images\\ability_icons\\cnd.png",
-        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
+        "quirkless": cwd+"/resources/images/ui_icons/boost_icon.png",
+        "fire": cwd+"/resources/images/ability_icons/fireball.png",
+        "ice": cwd+"/resources/images/ability_icons/snowball.png",
+        'water': cwd+"/resources/images/ability_icons/geyser.png",
+        'rock': cwd+"/resources/images/ability_icons/spire.png",
+        'lightning': cwd+"/resources/images/ability_icons/thunderbolt.png",
+        'wind': cwd+"/resources/images/ability_icons/gale.png",
+        'judge': cwd+"/resources/images/ability_icons/cnd.png",
+        "random": cwd+"/resources/images/blobs/random_blob.png",
     }
     
     return image_dict[species]
@@ -274,7 +274,7 @@ def player_to_controls(player):
 def create_visualization(number):
     return math.ceil(number/6)/10
 
-class blob:
+class Blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
     special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False):
         self.species = species
@@ -416,7 +416,7 @@ class blob:
             self.special_ability_charge = self.special_ability_charge_base * 5
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
-            if(self.y_pos < blob.ground):
+            if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
@@ -710,7 +710,7 @@ class blob:
         else:
             self.x_pos = 1600
             self.facing = 'left'
-        self.y_pos = blob.ground
+        self.y_pos = Blob.ground
         if(self.species == "quirkless" and self.boost_timer):
             self.special_ability_cooldown -= self.boost_timer
         self.boost_timer = 0
@@ -758,7 +758,7 @@ class blob:
                 pressed.remove('ability')
 
             #HORIZONTAL MOVEMENT
-        if(self.y_pos == blob.ground): #Applies traction if grounded
+        if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
                 if(self.x_pos <= 0): #Are we in danger of going off screen?
@@ -839,13 +839,13 @@ class blob:
             self.x_pos = 1700
         
         #VERTICAL MOVEMENT
-        if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
+        if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
             self.focus_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
         elif('down' in pressed):
-            if(self.y_pos < blob.ground): #If you are above ground and press down
+            if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
                 if(not self.focusing and not self.impact_land_frames):
@@ -856,7 +856,7 @@ class blob:
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
-        if(self.y_pos < blob.ground): #Applies gravity while airborne, respecting fast fall status.
+        if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
             self.info['time_airborne'] += 1
             self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
             if(self.fastfalling):
@@ -867,15 +867,15 @@ class blob:
             self.info['time_grounded'] += 1
             self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
         
-        if(self.fastfalling and self.y_pos == blob.ground): #If you land, cancel the fastfall.
+        if(self.fastfalling and self.y_pos == Blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
-        if(self.y_pos < blob.ceiling): #How did we get here?
-            self.y_pos = blob.ceiling
+        if(self.y_pos < Blob.ceiling): #How did we get here?
+            self.y_pos = Blob.ceiling
             self.y_speed = 0
-        if(self.y_pos > blob.ground): #Don't go under the floor!
+        if(self.y_pos > Blob.ground): #Don't go under the floor!
             self.y_speed = 0
-            self.y_pos = blob.ground
+            self.y_pos = Blob.ground
             self.impact_land_frames = 10
         
         #ABILITY

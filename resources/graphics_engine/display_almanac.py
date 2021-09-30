@@ -1,14 +1,14 @@
-from engine.blobs import blob
+from engine.blobs import Blob
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["\\blobs\\quirkless_blob.png", "Quirkless Blob", "quirkless"], ["\\blobs\\fire_blob.png", "Fire Blob", "fire"], ["\\blobs\\ice_blob.png", "Ice Blob", "ice"], ["\\blobs\\water_blob.png", "Water Blob", "water"], ["\\blobs\\rock_blob.png", "Rock Blob", "rock"], ["\\blobs\\lightning_blob.png", "Lightning Blob", "lightning"], ["\\blobs\\wind_blob.png", "Wind Blob", "wind"],],
-[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
-[["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""], ["\\blobs\\quirkless_blob.png", "", ""],],
+[["/blobs/quirkless_blob.png", "Quirkless Blob", "quirkless"], ["/blobs/fire_blob.png", "Fire Blob", "fire"], ["/blobs/ice_blob.png", "Ice Blob", "ice"], ["/blobs/water_blob.png", "Water Blob", "water"], ["/blobs/rock_blob.png", "Rock Blob", "rock"], ["/blobs/lightning_blob.png", "Lightning Blob", "lightning"], ["/blobs/wind_blob.png", "Wind Blob", "wind"],],
+[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
 
 bic_cached = False
@@ -29,7 +29,7 @@ cwd = getcwd()
 
 def draw_almanac_main(game_display, selector_position, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render('Blobs and Info', False, (0, 0, 150)),
         menu_font.render('Medals', False, (0, 0, 150)),
@@ -40,7 +40,7 @@ def draw_almanac_main(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -53,8 +53,8 @@ def draw_almanac_main(game_display, selector_position, settings):
 
 def draw_almanac_stats(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
-    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    tiny_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
     from json import loads
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
@@ -119,8 +119,8 @@ def draw_almanac_stats(game_display, settings):
 
 def draw_almanac_stats_2(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
-    tiny_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 20)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    tiny_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
     from json import loads
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
@@ -219,11 +219,11 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
     global blob_image_cache
     global ball
     global ball_state
-    directory = cwd + "\\resources\\images"
+    directory = cwd + "/resources/images"
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
         bic_cached = True
-        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
+        ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
 
     x = 0
     y = 0
@@ -237,12 +237,12 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
         y += 1
     if(selector_position[2] == 1 and ball_state == "deselected"):
         ball_state = "selected"
-        ball = ball = pg.transform.scale(pg.image.load(directory+"\\balls\\goal_ball.png"), (50, 50))
+        ball = ball = pg.transform.scale(pg.image.load(directory+"/balls/goal_ball.png"), (50, 50))
         load_mu_chart()
     if(selector_position[2] == 0 and ball_state == "selected"):
         ball_state = "deselected"
-        ball = pg.transform.scale(pg.image.load(directory+"\\balls\\soccer_ball.png"), (50, 50))
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+        ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     if(selector_position[2] == 1):
         mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][2])
         
@@ -283,7 +283,7 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'credits', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 23)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 23)
     text_array = [
         menu_font.render('Game Developers', False, (0, 0, 150)),
         menu_font.render('Elijah "Chumpatrol1" McLaughlin (Lead Programmer, Lead Designer)', False, (0, 0, 150)),
@@ -303,7 +303,7 @@ def draw_almanac_credits(game_display, settings):
 
 def draw_almanac_art(game_display, selector_position, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "\\resources\\fonts\\neuropol-x-free.regular.ttf", 30)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render('Backgrounds', False, (0, 0, 150)),
         menu_font.render('Blobs and Icons', False, (0, 0, 150)),
@@ -317,7 +317,7 @@ def draw_almanac_art(game_display, selector_position, settings):
     ]
 
 
-    ball = pg.image.load(cwd + "\\resources\\images\\balls\\soccer_ball.png")
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
 
@@ -359,7 +359,7 @@ def draw_almanac_blobs(game_display, selector_position):
     global blob_cache
     if not blob_cached:
         #from resources.display_css import load_blobs
-        directory = cwd + "\\resources\\images"
+        directory = cwd + "/resources/images"
         blob_cache = load_blobs(blob_cache, directory)
         temp_cache = []
         for row in blob_cache:

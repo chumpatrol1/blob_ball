@@ -70,21 +70,21 @@ def draw_blob_particles(game_display, ball, blob):
     global particle_memory
     if not particle_cache['initialized']:
         particle_cache['initialized'] = True
-        particle_cache['fire_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\fire_particle.png").convert_alpha(), (40, 40))
-        particle_cache['ice_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\ice_particle.png").convert_alpha(), (40, 40))
-        particle_cache['water_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\water_particle.png").convert_alpha(), (40, 40))
-        particle_cache['rock_glyph'] = pg.image.load(cwd + "\\resources\\images\\particles\\rock_glyph.png").convert_alpha()
-        particle_cache['rock_spire'] = pg.image.load(cwd + "\\resources\\images\\particles\\rock_spire.png").convert_alpha()
-        particle_cache['thunder_glyph'] = pg.image.load(cwd + "\\resources\\images\\particles\\thunder_glyph.png").convert_alpha()
-        particle_cache['thunder_bolt'] = pg.image.load(cwd + "\\resources\\images\\particles\\thunder_bolt.png").convert_alpha()
-        particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle.png").convert_alpha(), (20, 20))
-        particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_2.png").convert_alpha(), (20, 20))
-        particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\earth_particle_3.png").convert_alpha(), (20, 20))
-        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle.png").convert_alpha(), (30, 30))
-        particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_2.png").convert_alpha(), (30, 30))
-        particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\landing_particle_3.png").convert_alpha(), (30, 30))
-        particle_cache['recharge_flash'] = pg.image.load(cwd + "\\resources\\images\\particles\\recharge_flash.png").convert_alpha()
-        particle_cache['damage_flash'] = pg.image.load(cwd + "\\resources\\images\\particles\\damage_flash.png").convert_alpha()
+        particle_cache['fire_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/fire_particle.png").convert_alpha(), (40, 40))
+        particle_cache['ice_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/ice_particle.png").convert_alpha(), (40, 40))
+        particle_cache['water_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/water_particle.png").convert_alpha(), (40, 40))
+        particle_cache['rock_glyph'] = pg.image.load(cwd + "/resources/images/particles/rock_glyph.png").convert_alpha()
+        particle_cache['rock_spire'] = pg.image.load(cwd + "/resources/images/particles/rock_spire.png").convert_alpha()
+        particle_cache['thunder_glyph'] = pg.image.load(cwd + "/resources/images/particles/thunder_glyph.png").convert_alpha()
+        particle_cache['thunder_bolt'] = pg.image.load(cwd + "/resources/images/particles/thunder_bolt.png").convert_alpha()
+        particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle.png").convert_alpha(), (20, 20))
+        particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_2.png").convert_alpha(), (20, 20))
+        particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_3.png").convert_alpha(), (20, 20))
+        particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_2.png").convert_alpha(), (30, 30))
+        particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_3.png").convert_alpha(), (30, 30))
+        particle_cache['recharge_flash'] = pg.image.load(cwd + "/resources/images/particles/recharge_flash.png").convert_alpha()
+        particle_cache['damage_flash'] = pg.image.load(cwd + "/resources/images/particles/damage_flash.png").convert_alpha()
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
@@ -187,7 +187,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
 
 def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
     if not overlay_cache['initialized']:
-        particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "\\resources\\images\\particles\\thunder_particle.png").convert_alpha(), (40, 40))
+        particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/thunder_particle.png").convert_alpha(), (40, 40))
         overlay_cache['initialized'] = True
     
     for previous_location in ball.previous_locations:
