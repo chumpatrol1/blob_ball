@@ -160,4 +160,4 @@ def update_game_state(game_state, cwd):
             timer -= 1
         info_getter = engine.main_menu.credits_navigation(timer)
         game_state = info_getter[0]
-    return game_state, info_getter
+    return game_state, info_getter, "bb_main_theme"
