@@ -18,6 +18,8 @@ settings = {
     'hd_backgrounds': True,
     'hd_blobs': True,
     'smooth_scaling': True,
+    'music_volume': 10,
+    'sound_volume': 10,
 }
 
 try:
@@ -160,4 +162,4 @@ def update_game_state(game_state, cwd):
             timer -= 1
         info_getter = engine.main_menu.credits_navigation(timer)
         game_state = info_getter[0]
-    return game_state, info_getter, "bb_main_theme"
+    return game_state, info_getter, "bb_main_theme", settings, ruleset

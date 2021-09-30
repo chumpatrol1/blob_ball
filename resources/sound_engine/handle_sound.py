@@ -14,14 +14,14 @@ elapsed_time = 0
 
 # TODO: Make handle_bgm.py actually play the music? At least move this to a separate function
 
-def handle_sound(song_playing):
+def handle_sound(song_playing, settings):
     global saved_song
     global bgm_timer
     global start_time
     global bgm_class
-
     # Play BGM
     # Play SFX
+    pg.mixer.music.set_volume(settings['music_volume']/10)
     if(song_playing != saved_song) or not bgm_timer:
         saved_song = song_playing
         bgm_class = load_bgm(song_playing)

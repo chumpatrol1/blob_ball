@@ -23,7 +23,6 @@ from json import loads, dumps
 cwd = os.getcwd()
 pg.quit()
 os.environ['SDL_VIDEO_CENTERED'] = '1'
-print("GRAPHICS CWD: "+ cwd)
 
 x = 100
 y = 200

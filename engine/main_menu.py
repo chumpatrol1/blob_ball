@@ -462,9 +462,28 @@ def settings_navigation(timer, settings, previous_screen, cwd):
             selector_position += 1
 
     if('p1_left' in pressed or 'p2_left' in pressed):
-        pass
+        if(selector_position == 4):
+            if(settings['music_volume'] > 0):
+                settings['music_volume'] -= 1
+            else:
+                settings['music_volume'] = 10
+        elif(selector_position == 5):
+            if(settings['sound_volume'] > 0):
+                settings['sound_volume'] -= 1
+            else: 
+                settings['sound_volume'] = 10
+        
     elif('p1_right' in pressed or 'p2_right' in pressed):
-        pass
+        if(selector_position == 4):
+            if(settings['music_volume'] < 10):
+                settings['music_volume'] += 1
+            else:
+                settings['music_volume'] = 0
+        elif(selector_position == 5):
+            if(settings['sound_volume'] < 10):
+                settings['sound_volume'] += 1
+            else: 
+                settings['sound_volume'] = 0
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(settings) + 3):
@@ -477,6 +496,8 @@ def settings_navigation(timer, settings, previous_screen, cwd):
             settings['hd_backgrounds'] = True
             settings['hd_blobs'] = True
             settings['smooth_scaling'] = True
+            settings['music_volume'] = 10
+            settings['sound_volume'] = 10
         elif(selector_position == len(settings) + 1):
             reset_inputs()
         elif(selector_position == 0):

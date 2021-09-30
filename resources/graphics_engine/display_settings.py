@@ -22,6 +22,8 @@ def draw_settings_screen(game_display, settings, selector_position):
         menu_font.render("HD Backgrounds: " + str(settings['hd_backgrounds']), False, text_color),
         menu_font.render("HD Blobs: " + str(settings['hd_blobs']), False, text_color),
         menu_font.render("Smooth Scaling: " + str(settings['smooth_scaling']), False, text_color),
+        menu_font.render("Music Volume: " + str(settings['music_volume']), False, text_color),
+        menu_font.render("Sound Volume: " + str(settings['sound_volume']), False, text_color),
         menu_font.render("Default Controls", False, text_color),
         menu_font.render("Reset to Default", False, text_color),
         menu_font.render("<-- Back", False, text_color),

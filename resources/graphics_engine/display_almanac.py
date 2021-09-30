@@ -289,9 +289,9 @@ def draw_almanac_credits(game_display, settings):
         menu_font.render('Elijah "Chumpatrol1" McLaughlin (Lead Programmer, Lead Designer)', False, (0, 0, 150)),
         menu_font.render('Ellexium (Lead Artist, Programmer)', False, (0, 0, 150)),
         menu_font.render('Zion "Chumpatrol2" McLaughlin (Game Balancer, Bug Hunter)', False, (0, 0, 150)),
-        menu_font.render('Yael "Chumpatrol3" McLaughlin (Concept Artist)', False, (0, 0, 150)),
-        menu_font.render('NeoPhyte_TPK (Font Contributor, Bug Hunter)', False, (0, 0, 150)),
-        menu_font.render('BoingK (CPU Programmer)', False, (0, 0, 150)),
+        menu_font.render('Yael "Chumpatrol3" McLaughlin (Blob and Concept Artist)', False, (0, 0, 150)),
+        menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
+        menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
     ]
 
     text_y = 76

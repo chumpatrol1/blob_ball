@@ -89,13 +89,12 @@ except:
     try:
         with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
             statsdoc.write(dumps(game_stats))
-            print("Not OK!")
+            print("game_stats.txt written")
     except:
         os.mkdir(cwd+"/saves")
         print("Made new directory!")
         with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
             statsdoc.write(dumps(game_stats))
-            print("Not OK!")
 
 try:
     with open(cwd+'/saves/matchup_chart.txt', 'r') as statsdoc:
@@ -119,8 +118,8 @@ def get_game_state(game_state, cwd):
 def display_graphics(game_state, cwd, info_getter):
     dg.handle_graphics(game_state, cwd, info_getter)
 
-def handle_sound(game_state):
-    hs.handle_sound(game_state)
+def handle_sound(game_state, settings):
+    hs.handle_sound(game_state, settings)
 
 clock = pg.time.Clock()
 def run():
@@ -130,9 +129,9 @@ def run():
     global cwd
     clock.tick_busy_loop(60)
     handle_input()
-    new_game_state, info_getter, bgm_song = get_game_state(game_state, cwd)
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter)
-    handle_sound(bgm_song)
+    handle_sound(bgm_song, settings)
     game_state = new_game_state
     for event in pg.event.get():
         if event.type == pg.QUIT:
