@@ -96,7 +96,7 @@ def update_game_state(game_state, cwd):
             timer = 60
             game_stats = info_getter[6]
     elif(game_state == "casual_win"):
-        print(game_stats, timer)
+        #print(game_stats, timer)
         clear_info_cache()
         #TODO: engine.main_menu.handle_win_screen(game_stats)
         info_getter = game_stats

@@ -332,15 +332,25 @@ def draw_win_screen(screen_size, game_display, game_stats, settings):
     # TODO: Move to own file?
     draw_background(game_display, "win_screen", settings)
     clear_particle_memory()
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", round(50*(screen_size[1]/768)))
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
     if(game_stats == 3):
         menu_text = menu_font.render("TIE", False, (0, 0, 255))
     else:
         menu_text = menu_font.render("WINNER: "+ str(game_stats[0]), False, (0, 0, 255))
 
+    text_rect = menu_text.get_rect()
+    text_rect.center = (683, 60)
+    game_display.blit(menu_text, text_rect)
+
+    menu_text = menu_font.render("TIME TAKEN: "+ str(game_stats[5]), False, (0, 0, 255))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (683, 110)
+    game_display.blit(menu_text, text_rect)
+
+    menu_text = menu_font.render(f"SCORE: {game_stats[4][0]}-{game_stats[4][1]}", False, (0, 0, 255))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (683, 170)
+    game_display.blit(menu_text, text_rect)
     # TODO: P1 Box
     # TODO: P2 Box
     # TODO: General Stats Box
-    text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, screen_size[1]//7)
-    game_display.blit(menu_text, text_rect)
