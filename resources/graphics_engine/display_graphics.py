@@ -10,7 +10,7 @@ from resources.graphics_engine.background_handler import draw_background as draw
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from resources.graphics_engine.display_css import draw_css
 from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
-from resources.graphics_engine.display_gameplay import draw_win_screen as draw_win_screen
+from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
 from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
 from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.graphics_engine.display_settings import draw_rules_screen as draw_rules_screen
@@ -122,11 +122,7 @@ def handle_graphics(game_state, main_cwd, info_getter):
             unload_image_cache()
             print("Weird match end exception:", info_getter)
     elif(game_state == "casual_win"):
-        game_stats = info_getter
-        draw_win_screen(screen_size, game_surface, game_stats, settings)
-        timer -= 1
-        if(timer == 0):
-            return "css"
+        draw_win_screen(game_surface, info_getter, settings)
     elif(game_state == "rules"):
         selector_position = info_getter[0]
         game_state = info_getter[1]

@@ -180,7 +180,7 @@ def species_to_stars(species):
         blob_dict = {
             'max_hp': 3,
             'top_speed': 3,
-            'traction': 3,
+            'traction': 2,
             'friction': 3,
             'gravity': 3,
             'kick_cooldown_rate': 3,
@@ -191,10 +191,10 @@ def species_to_stars(species):
             'boost_duration': 3,
 
             'special_ability': 'c&d',
-            'special_ability_cost': 300,
+            'special_ability_cost': 510,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 300,
+            'special_ability_cooldown': 240,
             'special_ability_delay': 0,
             'special_ability_duration': 60,
         }

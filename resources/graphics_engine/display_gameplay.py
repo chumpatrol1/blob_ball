@@ -12,6 +12,8 @@ image_cache = {"initialized": False}
 def unload_image_cache():
     global image_cache
     image_cache = {"initialized": False}
+    image_cache['p1_ability_icon'] = None
+    image_cache['p2_ability_icon'] = None
 
 def draw_blob(screen_size, game_display, blob):
     global image_cache
@@ -327,30 +329,3 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_ui(screen_size, game_display, p1_blob, p2_blob)    
 
     draw_timer(screen_size, game_display, timer)
-
-def draw_win_screen(screen_size, game_display, game_stats, settings):
-    # TODO: Move to own file?
-    draw_background(game_display, "win_screen", settings)
-    clear_particle_memory()
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
-    if(game_stats == 3):
-        menu_text = menu_font.render("TIE", False, (0, 0, 255))
-    else:
-        menu_text = menu_font.render("WINNER: "+ str(game_stats[0]), False, (0, 0, 255))
-
-    text_rect = menu_text.get_rect()
-    text_rect.center = (683, 60)
-    game_display.blit(menu_text, text_rect)
-
-    menu_text = menu_font.render("TIME TAKEN: "+ str(game_stats[5]), False, (0, 0, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (683, 110)
-    game_display.blit(menu_text, text_rect)
-
-    menu_text = menu_font.render(f"SCORE: {game_stats[4][0]}-{game_stats[4][1]}", False, (0, 0, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (683, 170)
-    game_display.blit(menu_text, text_rect)
-    # TODO: P1 Box
-    # TODO: P2 Box
-    # TODO: General Stats Box

@@ -1,6 +1,8 @@
 from engine.gameplay import clear_info_cache
 import engine.main_menu
 import engine.rebind
+import engine.win_screen_handler
+import resources.graphics_engine.display_gameplay
 from os import getcwd
 from json import loads, dumps
 cwd = getcwd()
@@ -93,16 +95,13 @@ def update_game_state(game_state, cwd):
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu)
         game_state = info_getter[5]
         if(game_state == "casual_win"):
-            timer = 60
             game_stats = info_getter[6]
     elif(game_state == "casual_win"):
-        #print(game_stats, timer)
         clear_info_cache()
-        #TODO: engine.main_menu.handle_win_screen(game_stats)
-        info_getter = game_stats
-        timer -= 1
-        if(timer == 0):
-            game_state = "css"  
+        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats) 
+        if(game_state == "css"):
+            engine.win_screen_handler.reset_ready()
+            resources.graphics_engine.display_gameplay.unload_image_cache()
     elif(game_state == "rules"):
         if(timer > 0):
             timer -= 1

@@ -1,14 +1,8 @@
-import pygame as pg
-import sys
 import engine.handle_input
 from engine.handle_input import reset_inputs
 from json import dumps
 from os import getcwd
 cwd = getcwd()
-
-pg.init()
-clock = pg.time.Clock()
-clock.tick(60)
 
 selector_position = 0
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
