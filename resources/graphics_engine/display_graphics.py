@@ -85,7 +85,7 @@ game_stats = ()
 previous_screen = ""
 toggle_timer = 0
 full_screen = False
-def handle_graphics(game_state, main_cwd, info_getter):
+def handle_graphics(game_state, main_cwd, info_getter, settings):
     global real_screen_size
     global game_surface
     global game_display
@@ -189,7 +189,9 @@ def handle_graphics(game_state, main_cwd, info_getter):
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = event.w, event.h
         if(settings['smooth_scaling']):
+            print("SMOOTH")
             game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
         else:
+            print("ROUGH")
             game_display.blit(pg.transform.scale(game_surface, (display_width, display_height)), (0, 0))
     pg.display.flip()

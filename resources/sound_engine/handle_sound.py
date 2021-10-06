@@ -3,7 +3,6 @@ from resources.sound_engine.handle_bgm import load_bgm
 from time import time
 pg.init()
 pg.mixer.init()
-print("PYGAME SOUND:", pg.mixer.get_init())
 
 saved_song = ""
 bgm = None
