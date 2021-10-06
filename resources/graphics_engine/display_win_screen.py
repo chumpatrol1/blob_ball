@@ -6,6 +6,9 @@ cwd = getcwd()
 font_cache = {'initialized': False}
 image_cache = {'initialized': False}
 
+def unload_win_screen():
+    font_cache = {'initialized': False}
+    image_cache = {'initialized': False}
 
 def draw_info_box(game_display, player):
     menu_font = font_cache['info_box']

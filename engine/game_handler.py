@@ -3,6 +3,8 @@ import engine.main_menu
 import engine.rebind
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
+import resources.graphics_engine.display_win_screen
+import resources.graphics_engine.display_css
 from os import getcwd
 from json import loads, dumps
 cwd = getcwd()
@@ -71,6 +73,7 @@ def update_game_state(game_state, cwd):
         p2_selector_position = info_getter[1]
         game_state = info_getter[2]
         if(game_state == "casual_match"):
+            resources.graphics_engine.display_css.unload_css()
             if(p1_selector_position[3]):
                 p1_is_cpu = True
             else:
@@ -96,12 +99,13 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[5]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
+            clear_info_cache()
     elif(game_state == "casual_win"):
-        clear_info_cache()
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats) 
         if(game_state == "css"):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
+            resources.graphics_engine.display_win_screen.unload_win_screen()
     elif(game_state == "rules"):
         if(timer > 0):
             timer -= 1

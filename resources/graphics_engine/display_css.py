@@ -19,6 +19,18 @@ big_image_cache = []
 font_cache = {}
 token_cache = {}
 
+def unload_css():
+    global bic_cached
+    global blob_image_cache
+    global big_image_cache
+    global font_cache
+    global token_cache
+    bic_cached = False
+    blob_image_cache = []
+    big_image_cache = []
+    font_cache = {}
+    token_cache = {}
+
 def load_blobs(blob_image_cache, big_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])

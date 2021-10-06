@@ -727,6 +727,7 @@ class Blob:
         self.traction = self.base_traction
         self.impact_land_frames = 0
         self.movement_lock = 0
+        self.status_effects['judged'] = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
