@@ -49,37 +49,6 @@ p2_blob = []
 p1_is_cpu = False
 p2_is_cpu = False
 timer = 0
-game_version = '0.8.0a'
-ruleset = {
-    'version': game_version,
-    'goal_limit': 5,
-    'time_limit': 3600,
-    'time_bonus': 600,
-    'special_ability_charge_base': 1,
-    'danger_zone_enabled': True,
-}
-
-settings = {
-    'hd_backgrounds': True,
-    'hd_blobs': True,
-    'smooth_scaling': True,
-}
-
-try:
-    with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
-        ruleset = loads(rulesetdoc.readline())
-    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-        ruleset['version'] = game_version
-        rulesetdoc.write(dumps(ruleset))
-except:
-    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-        rulesetdoc.write(dumps(ruleset))
-try:
-    with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
-        settings = loads(settingsdoc.readline())
-except:
-    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
-        settingsdoc.write(dumps(settings))
 
 game_stats = ()
 previous_screen = ""
@@ -189,9 +158,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = event.w, event.h
         if(settings['smooth_scaling']):
-            print("SMOOTH")
             game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
         else:
-            print("ROUGH")
             game_display.blit(pg.transform.scale(game_surface, (display_width, display_height)), (0, 0))
     pg.display.flip()

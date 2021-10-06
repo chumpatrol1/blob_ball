@@ -82,7 +82,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
-    with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
+    with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def get_keypress():

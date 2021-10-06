@@ -76,7 +76,7 @@ def almanac_navigation(timer, previous_screen):
             else:
                 selector_position = 0
             
-        print("Selected position {}!".format(selector_position))
+        #print("Selected position {}!".format(selector_position))
     return selector_position, game_state
 
 def almanac_stats_navigation(timer):
@@ -165,7 +165,7 @@ def almanac_art_navigation(timer):
             selector_position = 0
             game_state = "almanac_art_blobs"
             
-        print("Selected position {}!".format(selector_position))
+        #print("Selected position {}!".format(selector_position))
     return selector_position, game_state
 
 def almanac_art_backgrounds_navigation(timer):
@@ -425,7 +425,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 selector_position = 3
             else:
                 selector_position = 0
-            print(previous_screen)
+            #print(previous_screen)
             game_state = previous_screen
         elif(selector_position == len(ruleset) - 1):
             ruleset['goal_limit'] = 5
