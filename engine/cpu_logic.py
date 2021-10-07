@@ -47,7 +47,6 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
     else:
         logic_memory = ['agressive']
     #Jump?
-    if (((blob.x_center - ball.x_center)>100) and (blob.player != 1)) or (((ball.x_center - blob.x_center)>100) and (blob.player == 1)) and (blob.y_center>ball.y_center):
     if (abs(blob.x_center - ball.x_center)<150) and (blob.y_center>ball.y_center):
         logic_memory.append('jump')
 
