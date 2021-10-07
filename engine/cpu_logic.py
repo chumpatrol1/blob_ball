@@ -48,7 +48,13 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
         logic_memory = ['agressive']
     #Jump?
     if (((blob.x_center - ball.x_center)>100) and (blob.player != 1)) or (((ball.x_center - blob.x_center)>100) and (blob.player == 1)) and (blob.y_center>ball.y_center):
+    if (abs(blob.x_center - ball.x_center)<150) and (blob.y_center>ball.y_center):
         logic_memory.append('jump')
+
+    #Kick?
+    if(blob.kick_cooldown == 0 and abs(blob.x_center - other_blob.x_center) <= 150):
+        if(random.randint(0, 50) == 0):
+            pressed.append('kick')
 
 
     #Logic for each strategy goes here
