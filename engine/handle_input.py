@@ -45,18 +45,22 @@ def unbind_inputs():
     for button in input_map:
         input_map[button] = 0
 
+temp_binding = []
+
 def bind_input(key_to_rebind):
     global input_map
-    
+    global temp_binding
     for event in pg.event.get():
-        if event.type == pg.KEYDOWN and not event.key in input_map.values() and not event.key in forbidden_keys:
+        if event.type == pg.KEYDOWN and not event.key in temp_binding and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
+            temp_binding.append(event.key)
             if(key_to_rebind == "p2_boost"):
+                temp_binding = []
                 with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
             return True
-        else:
-            return False
+    else:
+        return False
 
 def reset_inputs():
     global input_map
@@ -78,7 +82,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
-    with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
+    with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def get_keypress():

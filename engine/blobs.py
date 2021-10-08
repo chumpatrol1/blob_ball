@@ -176,6 +176,28 @@ def species_to_stars(species):
             'special_ability_delay': 0,
             'special_ability_duration': 240,
         }
+    elif(species == "judge"):
+        blob_dict = {
+            'max_hp': 3,
+            'top_speed': 3,
+            'traction': 2,
+            'friction': 3,
+            'gravity': 3,
+            'kick_cooldown_rate': 3,
+            'block_cooldown_rate': 3,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'c&d',
+            'special_ability_cost': 510,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 240,
+            'special_ability_delay': 0,
+            'special_ability_duration': 60,
+        }
 
     return blob_dict
 
@@ -183,7 +205,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale']
+    instant_abilities = ['boost', 'gale', 'c&d']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -194,15 +216,16 @@ def ability_to_classification(ability):
 def species_to_image(species):
     global cwd
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\blobs\\quirkless_blob.png",
-        "fire": cwd+"\\resources\\images\\blobs\\fire_blob.png",
-        "ice": cwd+"\\resources\\images\\blobs\\ice_blob.png",
-        'water': cwd+"\\resources\\images\\blobs\\water_blob.png",
-        'rock': cwd+"\\resources\\images\\blobs\\rock_blob.png",
-        'lightning': cwd+"\\resources\\images\\blobs\\lightning_blob.png",
-        'wind': cwd+"\\resources\\images\\blobs\\wind_blob.png",
-        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
-        "invisible": cwd+"\\resources\\images\\blobs\\invisible_blob.png"
+        "quirkless": cwd+"/resources/images/blobs/quirkless_blob.png",
+        "fire": cwd+"/resources/images/blobs/fire_blob.png",
+        "ice": cwd+"/resources/images/blobs/ice_blob.png",
+        'water': cwd+"/resources/images/blobs/water_blob.png",
+        'rock': cwd+"/resources/images/blobs/rock_blob.png",
+        'lightning': cwd+"/resources/images/blobs/lightning_blob.png",
+        'wind': cwd+"/resources/images/blobs/wind_blob.png",
+        'judge': cwd+"/resources/images/blobs/judge_blob.png",
+        "random": cwd+"/resources/images/blobs/random_blob.png",
+        "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
     }
 
     return image_dict[species]
@@ -210,14 +233,15 @@ def species_to_image(species):
 def species_to_ability_icon(species):
     global cwd
     image_dict = {
-        "quirkless": cwd+"\\resources\\images\\ui_icons\\boost_icon.png",
-        "fire": cwd+"\\resources\\images\\ability_icons\\fireball.png",
-        "ice": cwd+"\\resources\\images\\ability_icons\\snowball.png",
-        'water': cwd+"\\resources\\images\\ability_icons\\geyser.png",
-        'rock': cwd+"\\resources\\images\\ability_icons\\spire.png",
-        'lightning': cwd+"\\resources\\images\\ability_icons\\thunderbolt.png",
-        'wind': cwd+"\\resources\\images\\ability_icons\\gale.png",
-        "random": cwd+"\\resources\\images\\blobs\\random_blob.png",
+        "quirkless": cwd+"/resources/images/ui_icons/boost_icon.png",
+        "fire": cwd+"/resources/images/ability_icons/fireball.png",
+        "ice": cwd+"/resources/images/ability_icons/snowball.png",
+        'water': cwd+"/resources/images/ability_icons/geyser.png",
+        'rock': cwd+"/resources/images/ability_icons/spire.png",
+        'lightning': cwd+"/resources/images/ability_icons/thunderbolt.png",
+        'wind': cwd+"/resources/images/ability_icons/gale.png",
+        'judge': cwd+"/resources/images/ability_icons/cnd.png",
+        "random": cwd+"/resources/images/blobs/random_blob.png",
     }
     
     return image_dict[species]
@@ -250,7 +274,7 @@ def player_to_controls(player):
 def create_visualization(number):
     return math.ceil(number/6)/10
 
-class blob:
+class Blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
     special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False):
         self.species = species
@@ -373,10 +397,15 @@ class blob:
             'time_grounded_seconds': 0,
         }
         self.recharge_indicators = {
+            'damage': False,
+            'damage_flash': False,
             'ability': False,
             'kick': False,
             'block': False,
             'boost': False,
+        }
+        self.status_effects = {
+            "judged": 0,
         }
     
     ground = 1200
@@ -387,7 +416,7 @@ class blob:
             self.special_ability_charge = self.special_ability_charge_base * 5
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
-            if(self.y_pos < blob.ground):
+            if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
@@ -405,6 +434,8 @@ class blob:
 
         for key in self.recharge_indicators:
             if(self.recharge_indicators[key]):
+                if(key == "damage_flash" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('damage')
                 self.toggle_recharge_indicator(key)
 
         if(self.special_ability_timer > 0):
@@ -417,6 +448,8 @@ class blob:
                 self.used_ability = None
             elif(self.used_ability == "gale" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
                 self.used_ability = None
+            elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -425,6 +458,10 @@ class blob:
             self.special_ability_cooldown -= 1
             if(self.special_ability_cooldown == 0):
                 self.toggle_recharge_indicator('ability')
+
+        for effect in self.status_effects:
+            if(self.status_effects[effect]):
+                self.status_effects[effect] -= 1
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
@@ -546,6 +583,12 @@ class blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+        elif(self.special_ability == "c&d"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "c&d"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
  
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -583,44 +626,25 @@ class blob:
         #Used to see if a blob is getting kicked!
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
-                if(blob.block_timer == 0):
-                    if(not blob.kick_timer == 1):
-                        if(self.boost_timer > 0):
-                            blob.hp -= 3
-                            blob.info['damage_taken'] += 3
-                        else:
-                            blob.hp -= 2
-                            blob.info['damage_taken'] += 2
-                        if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
-                            #Take additional damage from kicks if you are hiding by your goal
-                            blob.hp -= 1
-                            blob.info['damage_taken'] += 1
-
-                        blob.damage_flash_timer = 60
-                    else:
-                        blob.clanked = 2
-                        blob.info['clanks'] += 1
-                else:
-                    blob.parried = 2
-                    blob.info['parries'] += 1
-
+                accumulated_damage = 2
+                if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
+                    accumulated_damage += 1
+                if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                    #Take additional damage from kicks if you are hiding by your goal
+                    accumulated_damage += 1
+                blob.take_damage(accumulated_damage)
+                    
     def check_ability_collision(self, blob, ball):
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
-                blob.hp -= 1
-                blob.info['damage_taken'] += 1
-                blob.damage_flash_timer = 60
-                blob.y_speed = -30 - (5 * (blob.gravity_stars - 1.05))
-                blob.movement_lock = 20
+                blob.take_damage(y_speed_mod = -30 - (5 * (blob.gravity_stars - 1.05)), movement_lock = 20)
             else:
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
         and blob.block_timer == 0):
-            blob.hp -= 1
-            blob.info['damage_taken'] += 1
-            blob.damage_flash_timer = 60
+            blob.take_damage()
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
@@ -628,16 +652,49 @@ class blob:
                     blob.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
                     blob.x_speed -= 1
-            '''elif blob.y_pos == blob.ground and not blob.block_timer:
-                if(self.player == 1 and self.used_ability == "gale"):
-                    blob.x_speed += 0.3
-                elif(self.player == 2 and self.used_ability == "gale"):
-                    blob.x_speed -= 0.3'''
-            if self.y_pos != self.ground and not self.block_timer: #Gale Affecting the self
-                if(self.player == 1 and self.used_ability == "gale"):
-                    pass #self.x_speed += 1
-                elif(self.player == 2 and self.used_ability == "gale"):
-                    pass #self.x_speed -= 1
+
+        elif(self.used_ability == "c&d"):
+            blob.status_effects['judged'] = self.special_ability_duration
+
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
+        damage_taken = False
+        def check_block():  # Returns true if the hit goes through
+            if(self.block_timer):  # Blocking?
+                self.parried = 2
+                self.info['parries'] += 1
+                return False
+            else:
+                return True
+
+        def check_clank(): # Returns true if the hit goes through
+            if(self.kick_timer == 1):  # Kicking?
+                self.clanked = 2
+                self.info['clanks'] += 1
+                return False
+            else:
+                return True
+                
+        if(unblockable and unclankable):
+            self.hp -= damage
+            damage_taken = True
+        elif(unclankable):
+            if check_block():
+                damage_taken = True
+        elif(unblockable):
+            if check_clank():
+                damage_taken = True
+        else:
+            if(check_block() and check_clank()):
+                damage_taken = True
+        
+        if(damage_taken):
+            self.hp -= damage
+            self.damage_flash_timer = damage_flash_timer
+            self.info['damage_taken'] += damage
+            self.movement_lock = movement_lock
+            self.y_speed = y_speed_mod
+            if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
+                self.toggle_recharge_indicator('damage_flash')
 
     def blob_ko(self):
         self.y_speed = 10
@@ -653,7 +710,7 @@ class blob:
         else:
             self.x_pos = 1600
             self.facing = 'left'
-        self.y_pos = blob.ground
+        self.y_pos = Blob.ground
         if(self.species == "quirkless" and self.boost_timer):
             self.special_ability_cooldown -= self.boost_timer
         self.boost_timer = 0
@@ -670,6 +727,7 @@ class blob:
         self.traction = self.base_traction
         self.impact_land_frames = 0
         self.movement_lock = 0
+        self.status_effects['judged'] = 0
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
@@ -690,9 +748,18 @@ class blob:
         
         if(self.movement_lock > 0):
             pressed = []
+        if(self.status_effects['judged']):
+            if('kick' in pressed):
+                pressed.remove('kick')
+            if('block' in pressed):
+                pressed.remove('block')
+            if('boost' in pressed):
+                pressed.remove('boost')
+            if('ability' in pressed):
+                pressed.remove('ability')
 
             #HORIZONTAL MOVEMENT
-        if(self.y_pos == blob.ground): #Applies traction if grounded
+        if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
                 if(self.x_pos <= 0): #Are we in danger of going off screen?
@@ -773,13 +840,13 @@ class blob:
             self.x_pos = 1700
         
         #VERTICAL MOVEMENT
-        if('up' in pressed and self.y_pos == blob.ground): #If you press jump while grounded, jump!
+        if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
             self.y_speed = -1 * self.jump_force
             self.focus_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
         elif('down' in pressed):
-            if(self.y_pos < blob.ground): #If you are above ground and press down
+            if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
                 if(not self.focusing and not self.impact_land_frames):
@@ -790,7 +857,7 @@ class blob:
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
-        if(self.y_pos < blob.ground): #Applies gravity while airborne, respecting fast fall status.
+        if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
             self.info['time_airborne'] += 1
             self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
             if(self.fastfalling):
@@ -801,15 +868,15 @@ class blob:
             self.info['time_grounded'] += 1
             self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
         
-        if(self.fastfalling and self.y_pos == blob.ground): #If you land, cancel the fastfall.
+        if(self.fastfalling and self.y_pos == Blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
-        if(self.y_pos < blob.ceiling): #How did we get here?
-            self.y_pos = blob.ceiling
+        if(self.y_pos < Blob.ceiling): #How did we get here?
+            self.y_pos = Blob.ceiling
             self.y_speed = 0
-        if(self.y_pos > blob.ground): #Don't go under the floor!
+        if(self.y_pos > Blob.ground): #Don't go under the floor!
             self.y_speed = 0
-            self.y_pos = blob.ground
+            self.y_pos = Blob.ground
             self.impact_land_frames = 10
         
         #ABILITY

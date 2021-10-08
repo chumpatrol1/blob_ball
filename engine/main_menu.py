@@ -1,14 +1,8 @@
-import pygame as pg
-import sys
 import engine.handle_input
 from engine.handle_input import reset_inputs
 from json import dumps
 from os import getcwd
 cwd = getcwd()
-
-pg.init()
-clock = pg.time.Clock()
-clock.tick(60)
 
 selector_position = 0
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
@@ -82,7 +76,7 @@ def almanac_navigation(timer, previous_screen):
             else:
                 selector_position = 0
             
-        print("Selected position {}!".format(selector_position))
+        #print("Selected position {}!".format(selector_position))
     return selector_position, game_state
 
 def almanac_stats_navigation(timer):
@@ -171,7 +165,7 @@ def almanac_art_navigation(timer):
             selector_position = 0
             game_state = "almanac_art_blobs"
             
-        print("Selected position {}!".format(selector_position))
+        #print("Selected position {}!".format(selector_position))
     return selector_position, game_state
 
 def almanac_art_backgrounds_navigation(timer):
@@ -223,7 +217,7 @@ def credits_navigation(timer):
 
 blob_list = [
     ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "wind",],
-    ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["rules", "judge", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["almanac", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -431,7 +425,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 selector_position = 3
             else:
                 selector_position = 0
-            print(previous_screen)
+            #print(previous_screen)
             game_state = previous_screen
         elif(selector_position == len(ruleset) - 1):
             ruleset['goal_limit'] = 5
@@ -444,7 +438,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
             
-    return selector_position, game_state
+    return selector_position, game_state, ruleset
 
 def settings_navigation(timer, settings, previous_screen, cwd):
     game_state = "settings"
@@ -462,9 +456,28 @@ def settings_navigation(timer, settings, previous_screen, cwd):
             selector_position += 1
 
     if('p1_left' in pressed or 'p2_left' in pressed):
-        pass
+        if(selector_position == 3):
+            if(settings['music_volume'] > 0):
+                settings['music_volume'] -= 1
+            else:
+                settings['music_volume'] = 10
+        elif(selector_position == 4):
+            if(settings['sound_volume'] > 0):
+                settings['sound_volume'] -= 1
+            else: 
+                settings['sound_volume'] = 10
+        
     elif('p1_right' in pressed or 'p2_right' in pressed):
-        pass
+        if(selector_position == 3):
+            if(settings['music_volume'] < 10):
+                settings['music_volume'] += 1
+            else:
+                settings['music_volume'] = 0
+        elif(selector_position == 4):
+            if(settings['sound_volume'] < 10):
+                settings['sound_volume'] += 1
+            else: 
+                settings['sound_volume'] = 0
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         if(selector_position == len(settings) + 3):
@@ -479,16 +492,16 @@ def settings_navigation(timer, settings, previous_screen, cwd):
             settings['smooth_scaling'] = True
         elif(selector_position == len(settings) + 1):
             reset_inputs()
-        elif(selector_position == 0):
+        elif(selector_position == 5):
             game_state = "rebind"
-        elif(selector_position == 1):
+        elif(selector_position == 0):
             settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
-        elif(selector_position == 2):
+        elif(selector_position == 1):
             settings['hd_blobs'] = not(settings['hd_blobs'])
-        elif(selector_position == 3):
+        elif(selector_position == 2):
             settings['smooth_scaling'] = not(settings['smooth_scaling'])
 
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
 
-    return selector_position, game_state
+    return selector_position, game_state, settings

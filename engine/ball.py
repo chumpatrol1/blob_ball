@@ -5,13 +5,13 @@ cwd = os.getcwd()
 
 def type_to_image(species):
     global cwd
-    ball_dir = cwd + "\\resources\\images\\balls\\"
+    ball_dir = cwd + "/resources/images/balls/"
     if(species == "soccer_ball"):
         image = ball_dir+"soccer_ball.png"
     elif(species == "p1_token"):
-        image = cwd+"\\resources\\images\\p1_token.png"
+        image = cwd+"/resources/images/p1_token.png"
     elif(species == "p2_token"):
-        image = cwd+"\\resources\\images\\p2_token.png"
+        image = cwd+"/resources/images/p2_token.png"
     elif(species == "kicked_ball"):
         image = ball_dir+"kicked_ball.png"
     elif(species == "blocked_ball"):
@@ -31,7 +31,7 @@ def lineFromPoints(P, Q, D, E):
         except:
             return 0
 
-class ball:
+class Ball:
     def __init__(self, species = "soccer_ball", x_pos = 902, y_pos = 900):
         self.species = species
         self.image = type_to_image(species)
@@ -254,7 +254,7 @@ class ball:
             self.y_speed *= (.95 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
             try:
-                geyser_power = math.sqrt(ball.ground - self.y_pos)/4-5
+                geyser_power = math.sqrt(Ball.ground - self.y_pos)/4-5
                 if(geyser_power < 0.8 and self.y_speed > -25):
                     self.y_speed += geyser_power
                     if(self.y_speed > 0):
@@ -267,7 +267,7 @@ class ball:
         elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay and self.y_pos >= 900):
             self.y_speed = -50
         elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay):
-            self.y_speed = ball.ground - self.y_pos
+            self.y_speed = Ball.ground - self.y_pos
         elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1 and self.x_speed < 15):
                 self.x_speed += 0.25
@@ -275,7 +275,7 @@ class ball:
                 self.x_speed -= 0.25
 
     def move(self, p1_blob, p2_blob):
-        ground = ball.ground
+        ground = Ball.ground
         left_wall = 0
         right_wall = 1805
         left_goal = 140
