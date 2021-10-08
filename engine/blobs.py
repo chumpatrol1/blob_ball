@@ -437,6 +437,8 @@ class Blob:
         }
         self.recharge_indicators = {
             'damage': False,
+            'heal': False,
+            'heal_flash': False,
             'damage_flash': False,
             'ability': False,
             'kick': False,
@@ -656,7 +658,7 @@ class Blob:
                     self.boost_cooldown_timer -= 60
                 else:
                     self.used_ability = "pill_boost"
-                    self.boost_timer += 120
+                    self.boost(boost_duration=120, boost_cooldown=0)
  
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -678,14 +680,20 @@ class Blob:
                 self.y_speed = 0
             self.info['block_count'] += 1
 
-    def boost(self):
+    def boost(self, boost_duration = None, boost_cooldown = None):
         if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
             self.special_ability_meter -= self.boost_cost #Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction
             self.friction = self.boost_friction
-            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
-            self.boost_cooldown_timer = self.boost_cooldown_max
+            if(boost_duration is None):
+                self.boost_timer += self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
+            else:
+                self.boost_timer += boost_duration
+            if(boost_cooldown is None):
+                self.boost_cooldown_timer += self.boost_cooldown_max
+            else:
+                self.boost_cooldown_timer += boost_cooldown
             self.info['boost_count'] += 1
             if(self.species == "quirkless"):
                 self.special_ability_cooldown = self.special_ability_cooldown_max
