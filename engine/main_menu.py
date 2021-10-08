@@ -217,7 +217,7 @@ def credits_navigation(timer):
 
 blob_list = [
     ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "wind",],
-    ["rules", "judge", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["rules", "judge", "doctor", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["almanac", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],

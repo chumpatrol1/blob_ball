@@ -1,7 +1,21 @@
 import math
 import os
+import random
 
 cwd = os.getcwd()
+
+# INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
+# Add the Blob's Stats to the species_to_stars function (see other blobs for a guide)
+# Classify that Blob's ability in ability_to_classification function (so it will show the cooldown)
+# Add that Blob's image in species_to_image (make sure that the image is in the resources/images/blobs folder)
+# Add that Blob's ability icon (make sure that the image is in the resources/images/ability_icons folder)
+# In the Blob class, navigate to the ability method to make sure that the ability can be activated.
+# Depending on the ability, check the cooldown method 
+# If the ability has the potential to impact another blob, update the check_ability_collision method
+# If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
+# In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
+# In engine/main_menu.py (should be moved to css.py lol) update blob_list to allow your blob to be selectable
+# In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 def species_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
@@ -198,6 +212,29 @@ def species_to_stars(species):
             'special_ability_delay': 0,
             'special_ability_duration': 60,
         }
+    elif(species == "doctor"):
+        blob_dict = {
+            'max_hp': 4,
+            'top_speed': 2,
+            'traction': 3,
+            'friction': 3,
+            'gravity': 4,
+            'kick_cooldown_rate': 1,
+            'block_cooldown_rate': 1,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 1,
+            'boost_duration': 1,
+
+            'special_ability': 'pill',
+            'special_ability_cost': 300,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 240,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
+        }
+
 
     return blob_dict
 
@@ -205,7 +242,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d']
+    instant_abilities = ['boost', 'gale', 'c&d', 'pill']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -224,6 +261,7 @@ def species_to_image(species):
         'lightning': cwd+"/resources/images/blobs/lightning_blob.png",
         'wind': cwd+"/resources/images/blobs/wind_blob.png",
         'judge': cwd+"/resources/images/blobs/judge_blob.png",
+        'doctor': cwd+"/resources/images/blobs/doctor_blob.png",
         "random": cwd+"/resources/images/blobs/random_blob.png",
         "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
     }
@@ -241,6 +279,7 @@ def species_to_ability_icon(species):
         'lightning': cwd+"/resources/images/ability_icons/thunderbolt.png",
         'wind': cwd+"/resources/images/ability_icons/gale.png",
         'judge': cwd+"/resources/images/ability_icons/cnd.png",
+        'doctor': cwd+"/resources/images/ability_icons/pill.png",
         "random": cwd+"/resources/images/blobs/random_blob.png",
     }
     
@@ -589,6 +628,35 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+        elif(self.special_ability == "pill"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                random_number = random.randint(0, 15)
+                if(0 <= random_number <= 7):
+                    self.used_ability = "pill_heal"
+                    if(self.hp == self.max_hp):
+                        if(0 <= random_number <= 3):
+                            self.used_ability = "pill_cooldown"
+                            self.special_ability_cooldown -= 60
+                            self.kick_cooldown -= 60
+                            self.block_cooldown -= 60
+                            self.boost_cooldown_timer -= 60
+                        else:
+                            self.used_ability = "pill_boost"
+                            self.boost_timer += 120
+                    else:
+                        self.hp += 1
+                elif(8 <= random_number <= 11):
+                    self.used_ability = "pill_cooldown"
+                    self.special_ability_cooldown -= 60
+                    self.kick_cooldown -= 60
+                    self.block_cooldown -= 60
+                    self.boost_cooldown_timer -= 60
+                else:
+                    self.used_ability = "pill_boost"
+                    self.boost_timer += 120
  
     def kick(self):
         if(self.kick_cooldown <= 0):

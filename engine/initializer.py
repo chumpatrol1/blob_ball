@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.8.0a'
+game_version = '0.9.0a'
 
 def initialize_game_stats(cwd):
     game_stat_dict = {
