@@ -276,7 +276,12 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/cnd.png"), (70, 70))
         image_cache['menu_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         image_cache['ui_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
-        
+
+    if(p1_blob.recharge_indicators['ability_swap_b']):
+        image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+
+    if(p2_blob.recharge_indicators['ability_swap_b']):
+        image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):
         image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))

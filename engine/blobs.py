@@ -441,6 +441,8 @@ class Blob:
             'heal_flash': False,
             'damage_flash': False,
             'ability': False,
+            'ability_swap_b': False,
+            'ability_swap': False,
             'kick': False,
             'block': False,
             'boost': False,
@@ -449,6 +451,16 @@ class Blob:
             "judged": 0,
             "pill": None,
         }
+
+        if(self.species == "doctor" or self.species == "joker"):
+            random_number = random.randint(0,1)
+            if(random_number):
+                self.status_effects['pill'] = 'pill_boost'
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
+            else:
+                self.status_effects['pill'] = 'pill_cooldown'
+                cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill'])
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
     
     ground = 1200
     ceiling = 200
@@ -478,6 +490,8 @@ class Blob:
             if(self.recharge_indicators[key]):
                 if(key == "damage_flash" and self.recharge_indicators[key]):
                     self.toggle_recharge_indicator('damage')
+                elif(key == "ability_swap" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('ability_swap_b')
                 self.toggle_recharge_indicator(key)
 
         if(self.special_ability_timer > 0):
@@ -503,7 +517,10 @@ class Blob:
 
         for effect in self.status_effects:
             if(self.status_effects[effect]):
-                self.status_effects[effect] -= 1
+                try:
+                    self.status_effects[effect] -= 1
+                except:
+                    pass # Typically pass for strings, like current pill
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
@@ -565,6 +582,10 @@ class Blob:
         self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
     
+    def update_ability_icon(self, icon):
+        self.ability_icon = icon
+        self.recharge_indicators['ability_swap'] = True
+
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
@@ -633,33 +654,38 @@ class Blob:
                 self.special_ability_meter -= self.special_ability_cost
         elif(self.special_ability == "pill"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                # Spend cost and activate cooldown
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                random_number = random.randint(0, 15)
-                if(0 <= random_number <= 7):
-                    self.used_ability = "pill_heal"
+
+                # Activate the correct effect based on self.status_effects['pill']
+                if(self.status_effects['pill'] == 'pill_heal'):
                     if(self.hp == self.max_hp):
-                        if(0 <= random_number <= 3):
-                            self.used_ability = "pill_cooldown"
-                            self.special_ability_cooldown -= 60
-                            self.kick_cooldown -= 60
-                            self.block_cooldown -= 60
-                            self.boost_cooldown_timer -= 60
-                        else:
-                            self.used_ability = "pill_boost"
-                            self.boost_timer += 120
+                        self.special_ability_cooldown -= 15
+                        self.kick_cooldown -= 15
+                        self.block_cooldown -= 15
+                        self.boost_cooldown_timer -= 15
                     else:
                         self.hp += 1
-                elif(8 <= random_number <= 11):
-                    self.used_ability = "pill_cooldown"
-                    self.special_ability_cooldown -= 60
-                    self.kick_cooldown -= 60
-                    self.block_cooldown -= 60
-                    self.boost_cooldown_timer -= 60
+                elif(self.status_effects['pill'] == 'pill_cooldown'):
+                    self.special_ability_cooldown -= 90
+                    self.kick_cooldown -= 90
+                    self.block_cooldown -= 90
+                    self.boost_cooldown_timer -= 90
                 else:
-                    self.used_ability = "pill_boost"
                     self.boost(boost_duration=120, boost_cooldown=0)
+
+                if(self.hp == self.max_hp):
+                    if(self.boost_cooldown_timer > 0):
+                        pill_list = ['pill_boost', 'pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
+                    else:
+                        pill_list = ['pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
+                else:
+                    pill_list = ['pill_heal', 'pill_cooldown', 'pill_boost']
+
+                self.status_effects['pill'] = random.choice(pill_list)
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
  
     def kick(self):
         if(self.kick_cooldown <= 0):
