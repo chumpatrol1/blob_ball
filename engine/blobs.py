@@ -208,7 +208,7 @@ def species_to_stars(species):
             'special_ability_cost': 510,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 240,
+            'special_ability_cooldown': 300,
             'special_ability_delay': 0,
             'special_ability_duration': 60,
         }
@@ -447,6 +447,7 @@ class Blob:
         }
         self.status_effects = {
             "judged": 0,
+            "pill": None,
         }
     
     ground = 1200
