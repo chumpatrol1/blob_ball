@@ -2,6 +2,7 @@ import engine.handle_input
 from engine.handle_input import reset_inputs
 from json import dumps
 from os import getcwd
+from resources.sound_engine.sfx_event import createSFXEvent
 cwd = getcwd()
 
 selector_position = 0
@@ -25,6 +26,7 @@ def menu_navigation(timer):
         else:
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         if(selector_position == 0): #Casual
             game_state = "css"
         elif(selector_position == 1):
