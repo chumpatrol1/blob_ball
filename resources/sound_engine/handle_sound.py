@@ -4,7 +4,7 @@ from resources.sound_engine.sfx_event import get_sound_events, clear_sound_event
 from time import time
 pg.init()
 pg.mixer.init()
-pg.mixer.set_num_channels(10)
+pg.mixer.set_num_channels(24)
 
 saved_song = ""
 bgm = None
@@ -41,11 +41,18 @@ def play_bgm(song_playing, settings):
             pg.mixer.music.play(-1)
 
 def play_sfx(settings):
+    channel = 1 # Channel starts at 1
     for sound_event in get_sound_events():
-        print(sound_event)
-        sound = pg.mixer.Sound(sound_event.return_file())
-        sound.set_volume(settings['sound_volume']/10)
-        pg.mixer.Channel(sound_event.return_channel()).play(sound)
+        try:
+            sound = pg.mixer.Sound(sound_event.return_file())
+            sound.set_volume(settings['sound_volume']/10)
+            while (pg.mixer.Channel(channel).get_busy()):
+                channel += 1
+            pg.mixer.Channel(channel).play(sound)
+            
+        except Exception as ex:
+            print("Handle Sound Error:", ex)
+            print(sound_event.__str__())
     clear_sound_events()    
 
 def handle_sound(song_playing, settings):

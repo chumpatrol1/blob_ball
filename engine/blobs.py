@@ -1,6 +1,7 @@
 import math
 import os
 import random
+from resources.sound_engine.sfx_event import createSFXEvent
 
 cwd = os.getcwd()
 
@@ -674,7 +675,7 @@ class Blob:
                     self.block_cooldown -= 90
                     self.boost_cooldown_timer -= 90
                 else:
-                    self.boost(boost_duration=120, boost_cooldown=0)
+                    self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0)
 
                 if(self.hp == self.max_hp):
                     if(self.boost_cooldown_timer > 0):
@@ -689,6 +690,7 @@ class Blob:
  
     def kick(self):
         if(self.kick_cooldown <= 0):
+            createSFXEvent('kick')
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
@@ -698,6 +700,7 @@ class Blob:
 
     def block(self):
         if(self.block_cooldown <= 0):
+            createSFXEvent('block')
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
@@ -707,9 +710,13 @@ class Blob:
                 self.y_speed = 0
             self.info['block_count'] += 1
 
-    def boost(self, boost_duration = None, boost_cooldown = None):
-        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
-            self.special_ability_meter -= self.boost_cost #Remove some SA meter
+    def boost(self, boost_cost = None, boost_duration = None, boost_cooldown = None):
+        if(boost_cost is None):
+            boost_cost = self.boost_cost
+
+        if(self.special_ability_meter >= boost_cost and self.boost_cooldown_timer <= 0):
+            createSFXEvent('boost')
+            self.special_ability_meter -= boost_cost # Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction
             self.friction = self.boost_friction
@@ -765,14 +772,17 @@ class Blob:
             if(self.block_timer):  # Blocking?
                 self.parried = 2
                 self.info['parries'] += 1
+                createSFXEvent('parry')
                 return False
             else:
+                
                 return True
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
                 self.clanked = 2
                 self.info['clanks'] += 1
+                createSFXEvent('clank')
                 return False
             else:
                 return True
@@ -796,6 +806,7 @@ class Blob:
             self.info['damage_taken'] += damage
             self.movement_lock = movement_lock
             self.y_speed = y_speed_mod
+            createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
 

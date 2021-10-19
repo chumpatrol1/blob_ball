@@ -52,7 +52,7 @@ def initialize_game_stats(cwd):
 
     try:
         with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-            game_stats = loads(statsdoc.readline())
+            game_stat_dict = loads(statsdoc.readline())
     except:
         try:
             with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
@@ -77,15 +77,23 @@ def initialize_ruleset(cwd):
         'danger_zone_enabled': True,
     }
 
+    def open_ruleset():
+        try:
+            with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
+                ruleset = loads(rulesetdoc.readline())
+            with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
+                ruleset['version'] = game_version
+                rulesetdoc.write(dumps(ruleset))
+            return ruleset
+        except:
+            with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
+                rulesetdoc.write(dumps(ruleset))
+            return ruleset
     try:
-        with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
-            ruleset = loads(rulesetdoc.readline())
-        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-            ruleset['version'] = game_version
-            rulesetdoc.write(dumps(ruleset))
+        ruleset = open_ruleset()
     except:
-        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-            rulesetdoc.write(dumps(ruleset))
+        os.mkdir(cwd+"/config")
+        ruleset = open_ruleset()
     return ruleset
 
 def load_matchup_chart(cwd):

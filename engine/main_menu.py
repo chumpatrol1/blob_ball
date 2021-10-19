@@ -60,6 +60,7 @@ def almanac_navigation(timer, previous_screen):
         else:
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         if(selector_position == 0): #Casual
             game_state = "almanac"
         elif(selector_position == 1):
@@ -85,6 +86,7 @@ def almanac_stats_navigation(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "almanac_stats"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         game_state = "almanac_stats_page_2"
     return [game_state]
 
@@ -92,6 +94,7 @@ def almanac_stats_navigation_2(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "almanac_stats_page_2"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         game_state = "almanac_stats_page_3"
         global p1_selector_position
         p1_selector_position = [3, 2, 0, 0]
@@ -131,6 +134,7 @@ def almanac_stats_navigation_3():
     if(almanac_mu_chart_selector[2] == 0):
         if('ability' in pressed):
             if(almanac_mu_chart_selector == [3, 2, 0]):
+                createSFXEvent('select')
                 game_state = "almanac"
             else:
                 almanac_mu_chart_selector[2] = 1
@@ -158,6 +162,7 @@ def almanac_art_navigation(timer):
         else:
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         if(selector_position == 5): #Casual
             game_state = "almanac"
             selector_position = 3
@@ -214,6 +219,7 @@ def credits_navigation(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "credits"
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         game_state = "almanac"
     return [game_state]
 
@@ -422,6 +428,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         if(selector_position == len(ruleset)):
             if(previous_screen == "main_menu"):
                 selector_position = 3
@@ -482,6 +489,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
                 settings['sound_volume'] = 0
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         if(selector_position == len(settings) + 3):
             if(previous_screen == "main_menu"):
                 selector_position = 4

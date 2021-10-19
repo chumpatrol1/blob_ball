@@ -16,9 +16,14 @@ ZIP the files together for release!
 #python setup.py bdist_msi
 
 from engine.gameplay import handle_gameplay
-from os import getcwd
+import os
+import sys
 
-cwd = getcwd()
+def get_script_path():
+    return os.path.dirname(os.path.realpath(sys.argv[0]))
+
+os.chdir(get_script_path())
+cwd = os.getcwd()
 print("MAIN",cwd)
 
 import pygame as pg
