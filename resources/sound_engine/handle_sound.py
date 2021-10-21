@@ -56,7 +56,7 @@ def play_sfx(settings):
     for sound_event in get_sound_events():
         try:
             sound = pg.mixer.Sound(sound_event.return_file())
-            sound.set_volume(settings['sound_volume']/10)
+            sound.set_volume(sound_event.return_volume_modifier() * settings['sound_volume']/10)
             while (pg.mixer.Channel(channel).get_busy()):
                 channel += 1
             pg.mixer.Channel(channel).play(sound)
