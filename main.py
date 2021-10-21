@@ -15,12 +15,11 @@ ZIP the files together for release!
 '''CREATING AN INSTALLER'''
 #python setup.py bdist_msi
 
-from engine.gameplay import handle_gameplay
 import os
 import sys
 
 def get_script_path():
-    return os.path.dirname(os.path.realpath(sys.argv[0]))
+    return os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(get_script_path())
 cwd = os.getcwd()
