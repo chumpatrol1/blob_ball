@@ -1,21 +1,29 @@
 from os import getcwd
+from random import randint
 cwd = getcwd()
 cwd = cwd + "/resources/sounds/sfx/"
 sound_events = []
 name_to_file = {
-    "select": "select.wav",
-    "kick": "kick.wav",
-    "block": "block.wav",
-    "boost": "boost.wav",
-    "parry": "parry.wav",
-    "clank": "clank.wav",
-    "hit": "hit.wav",
+    "select": ["select.wav"],
+    "kick": ["kick.wav"],
+    "block": ["block.wav"],
+    "boost": ["boost.wav"],
+    "parry": ["parry.wav"],
+    "clank": ["clank.wav"],
+    "hit": ["hit.wav"],
+    "ball_grass_bounce": ['ball_grass_bounce_1.wav', 'ball_grass_bounce_2.wav', 'ball_grass_bounce_3.wav'],
+    "ball_blob_bounce": ['ball_blob_bounce_1.wav', 'ball_blob_bounce_2.wav'],
+    "ball_metal_bounce": ['ball_metal_bounce_1.wav', 'ball_metal_bounce_2.wav', 'ball_metal_bounce_3.wav'],
 }
 
 def convert_name_to_file(name):
     file = ""
     if name in name_to_file:
-        file = cwd + name_to_file[name]
+        sfx_array = name_to_file[name]
+        random_track = randint(0, len(sfx_array) - 1)
+        file = sfx_array[random_track]
+    
+    file = cwd + file
     return file
 
 class SFXEvent():

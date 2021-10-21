@@ -22,17 +22,28 @@ def play_bgm(song_playing, settings):
     global bgm_class
     # Play BGM
     # Play SFX
-    pg.mixer.music.set_volume(settings['music_volume']/10)
-    if(song_playing != saved_song) or not bgm_timer:
-        saved_song = song_playing
-        bgm_class = load_bgm(song_playing)
-        bgm_timer = bgm_class.track_duration
-        start_time = time()
-        pg.mixer.music.load(bgm_class.track_file)
-        pg.mixer.music.play(-1)
+    try:
+        pg.mixer.music.set_volume((settings['music_volume']/10) * bgm_class.volume_modifier)
+    except:
+        pg.mixer.music.set_volume((settings['music_volume']/10))
+
+    try:
+        if(song_playing != saved_song) or not bgm_timer:
+            saved_song = song_playing
+            bgm_class = load_bgm(song_playing)
+            bgm_timer = bgm_class.track_duration
+            start_time = time()
+            pg.mixer.music.load(bgm_class.track_file)
+            if(bgm_class.restart_point is not None):
+                pg.mixer.music.play(-1)
+            else:
+                pg.mixer.music.play(0)
+    except Exception as ex:
+        print("handle_sound.py error:", ex, "\nAttempted to play", bgm_class.track_file)
     elapsed_time = time() - start_time
 
-    if elapsed_time >= bgm_timer:
+    if elapsed_time >= bgm_timer and bgm_class.restart_point is not None:
+        print("WHAT")
         start_time = time()
         try:
             pg.mixer.music.play(-1, start = bgm_class.restart_point)

@@ -60,6 +60,7 @@ def update_game_state(game_state, cwd):
     global ruleset
     global settings
     global game_stats
+    song_playing = "bb_main_theme"
     if(game_state == "main_menu"):
         if(timer > 0):
             timer -= 1
@@ -101,7 +102,8 @@ def update_game_state(game_state, cwd):
             game_stats = info_getter[6]
             clear_info_cache()
     elif(game_state == "casual_win"):
-        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats) 
+        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
+        song_playing = "bb_win_theme"
         if(game_state == "css"):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
@@ -169,4 +171,4 @@ def update_game_state(game_state, cwd):
             timer -= 1
         info_getter = engine.main_menu.credits_navigation(timer)
         game_state = info_getter[0]
-    return game_state, info_getter, "bb_main_theme", settings, ruleset
+    return game_state, info_getter, song_playing, settings, ruleset

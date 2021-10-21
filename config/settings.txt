@@ -1,1 +1,1 @@
-{"hd_backgrounds": true, "hd_blobs": true, "smooth_scaling": true, "music_volume": 0, "sound_volume": 4}
+{"hd_backgrounds": true, "hd_blobs": true, "smooth_scaling": true, "music_volume": 10, "sound_volume": 10}

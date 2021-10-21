@@ -1,6 +1,8 @@
 import math
 import os
 import pygame as pg
+
+from resources.sound_engine.sfx_event import createSFXEvent
 cwd = os.getcwd()
 
 def type_to_image(species):
@@ -112,6 +114,7 @@ class Ball:
                             self.info['blob_warp_collisions'] += 1
                         else:
                             self.info['blob_reflect_collisions'] += 1
+                            createSFXEvent('ball_blob_bounce')
 
             elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                 if(p1_vector.distance_to(ball_vector) < 80):
@@ -137,6 +140,7 @@ class Ball:
                     self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                     self.info['blob_standard_collisions'] += 1
+                    createSFXEvent('ball_blob_bounce')
                     p1_ball_nv = p1_vector - ball_vector
                     p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                     blob_kick_x_modifier = ((self.x_center - blob.x_center)/104) * ((8*blob_collision_distance/104) - 8)
@@ -318,11 +322,13 @@ class Ball:
             if(self.x_pos < left_goal):
                 side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
                 if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    createSFXEvent('ball_metal_bounce')
                     self.info['goal_collisions'] += 1
                     self.x_pos = left_goal + 1
                     if(self.x_speed < 0):
                         self.x_speed = self.x_speed * -0.5
                 elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    createSFXEvent('ball_metal_bounce')
                     self.info['goal_collisions'] += 1
                     self.y_pos = goal_bottom
                     if(self.y_speed < 0):
@@ -332,6 +338,7 @@ class Ball:
                     self.x_speed += 0.5
                     self.goal_grounded = True
                     if(self.y_speed >= 0):
+                        createSFXEvent('ball_metal_bounce')
                         self.info['goal_collisions'] += 1
                         self.y_speed = self.y_speed * -0.5
                         if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
@@ -345,11 +352,13 @@ class Ball:
             if(self.x_pos > right_goal):
                 side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
                 if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
+                    createSFXEvent('ball_metal_bounce')
                     self.info['goal_collisions'] += 1
                     self.x_pos = right_goal - 1
                     if(self.x_speed > 0):
                         self.x_speed = self.x_speed * -0.5
                 elif(self.y_pos - self.y_speed > goal_bottom > self.y_pos and self.y_speed < 0): #Hit bottom of goalpost
+                    createSFXEvent('ball_metal_bounce')
                     self.info['goal_collisions'] += 1
                     self.y_pos = goal_bottom
                     if(self.y_speed < 0):
@@ -359,6 +368,7 @@ class Ball:
                     self.x_speed -= 0.5
                     self.goal_grounded = True
                     if(self.y_speed >= 0):
+                        createSFXEvent('ball_metal_bounce')
                         self.info['goal_collisions'] += 1
                         self.y_speed = self.y_speed * -0.5
                         if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
@@ -373,12 +383,14 @@ class Ball:
 
         #Interacting with the walls
         if(self.x_pos < left_wall): #Hit side of the wall
+            createSFXEvent('ball_metal_bounce')
             self.info['wall_collisions'] += 1
             self.x_pos = left_wall
             if(self.x_speed < 0):
                 self.x_speed = self.x_speed * -0.5
 
         if(self.x_pos > right_wall):
+            createSFXEvent('ball_metal_bounce')
             self.info['wall_collisions'] += 1
             self.x_pos = right_wall
             if(self.x_speed > 0):
@@ -401,6 +413,7 @@ class Ball:
                 pass
             else:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
+                createSFXEvent('ball_grass_bounce')
                 self.info['floor_collisions'] += 1
                 if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                     for previous_location in self.previous_locations:
@@ -414,6 +427,7 @@ class Ball:
             self.y_pos = ground
             
         if(self.y_pos < ceiling): #Don't raze the roof!
+            createSFXEvent('ball_metal_bounce')
             self.info['ceiling_collisions'] += 1
             if(self.y_speed > -4):
                 self.y_speed = 0
