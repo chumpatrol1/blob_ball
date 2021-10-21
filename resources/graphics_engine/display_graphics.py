@@ -4,8 +4,6 @@ import ctypes
 
 from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
-import engine.main_menu
-import engine.gameplay
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from resources.graphics_engine.display_css import draw_css

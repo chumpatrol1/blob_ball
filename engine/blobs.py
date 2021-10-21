@@ -675,7 +675,7 @@ class Blob:
                     self.block_cooldown -= 90
                     self.boost_cooldown_timer -= 90
                 else:
-                    self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0)
+                    self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
 
                 if(self.hp == self.max_hp):
                     if(self.boost_cooldown_timer > 0):
@@ -710,11 +710,11 @@ class Blob:
                 self.y_speed = 0
             self.info['block_count'] += 1
 
-    def boost(self, boost_cost = None, boost_duration = None, boost_cooldown = None):
+    def boost(self, boost_cost = None, boost_duration = None, boost_cooldown = None, ignore_cooldown = None):
         if(boost_cost is None):
             boost_cost = self.boost_cost
 
-        if(self.special_ability_meter >= boost_cost and self.boost_cooldown_timer <= 0):
+        if(self.special_ability_meter >= boost_cost and (self.boost_cooldown_timer <= 0 or ignore_cooldown is not None)):
             createSFXEvent('boost')
             self.special_ability_meter -= boost_cost # Remove some SA meter
             self.top_speed = self.boost_top_speed
@@ -1030,3 +1030,5 @@ class Blob:
     def toggle_recharge_indicator(self, indicator):
         self.recharge_indicators[indicator] = not self.recharge_indicators[indicator]
     
+    def __str__(self):
+        return f"Player {self.player}: {self.species}."
