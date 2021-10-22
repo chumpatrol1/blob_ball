@@ -1,5 +1,9 @@
 from engine.gameplay import clear_info_cache
-import engine.main_menu
+import engine.menus.main_menu
+import engine.menus.css_menu
+import engine.menus.rules_menu
+import engine.menus.settings_menu
+import engine.menus.almanac_menu
 import engine.rebind
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
@@ -60,15 +64,16 @@ def update_game_state(game_state, cwd):
     global ruleset
     global settings
     global game_stats
+    song_playing = "bb_main_theme"
     if(game_state == "main_menu"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.menu_navigation(timer)
+        info_getter = engine.menus.main_menu.menu_navigation(timer)
         game_state = info_getter[1]
         if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
-        info_getter = engine.main_menu.css_handler()
+        info_getter = engine.menus.css_menu.css_handler()
         p1_selector_position = info_getter[0]
         p2_selector_position = info_getter[1]
         game_state = info_getter[2]
@@ -101,7 +106,8 @@ def update_game_state(game_state, cwd):
             game_stats = info_getter[6]
             clear_info_cache()
     elif(game_state == "casual_win"):
-        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats) 
+        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
+        song_playing = "bb_win_theme"
         if(game_state == "css"):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
@@ -109,12 +115,12 @@ def update_game_state(game_state, cwd):
     elif(game_state == "rules"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
+        info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
         game_state = info_getter[1]
     elif(game_state == "settings"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.settings_navigation(timer, settings, previous_screen, cwd)
+        info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
         game_state = info_getter[1]
     elif(game_state == "rebind"):
         info_getter = engine.rebind.handle_rebinding()
@@ -122,51 +128,51 @@ def update_game_state(game_state, cwd):
     elif(game_state == "almanac"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.almanac_navigation(timer, previous_screen)
+        info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)
         game_state = info_getter[1]
         if(game_state != "almanac"):
             timer = 10
     elif(game_state == "almanac_stats"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.almanac_stats_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_stats_navigation(timer)
         game_state = info_getter[0]
         if(game_state != "almanac_stats"):
             timer = 10
     elif(game_state == "almanac_stats_page_2"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.almanac_stats_navigation_2(timer)
+        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_2(timer)
         game_state = info_getter[0]
         if(game_state != "almanac_stats_page_2"):
             timer = 10
     elif(game_state == "almanac_stats_page_3"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.almanac_stats_navigation_3()
+        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
         game_state = info_getter[0]
         if(game_state != "almanac_stats_page_3"):
             timer = 10
     elif(game_state == "almanac_art"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.almanac_art_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_art_navigation(timer)
         game_state = info_getter[1]
         if(game_state != "almanac_art"):
             timer = 10
     elif(game_state == "almanac_art_backgrounds"):
-        info_getter = engine.main_menu.almanac_art_backgrounds_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_art_backgrounds_navigation(timer)
         game_state = info_getter[1]
         if(timer > 0):
             timer -= 1
     elif(game_state == "almanac_art_blobs"):
-        info_getter = engine.main_menu.almanac_art_blobs_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_art_blobs_navigation(timer)
         game_state = info_getter[1]
         if(timer > 0):
             timer -=1
     elif(game_state == "credits"):
         if(timer > 0):
             timer -= 1
-        info_getter = engine.main_menu.credits_navigation(timer)
+        info_getter = engine.menus.almanac_menu.credits_navigation(timer)
         game_state = info_getter[0]
-    return game_state, info_getter, "bb_main_theme", settings, ruleset
+    return game_state, info_getter, song_playing, settings, ruleset

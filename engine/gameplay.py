@@ -7,8 +7,12 @@ import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
 import engine.cpu_logic
-
+import random
+random_seed = None
 def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
+    global random_seed
+    random_seed = random.randint(-2147483648, 2147483647)
+    random.seed(random_seed)
     global goal_limit
     global time_limit
     global time_bonus
@@ -221,6 +225,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 game_info['avg_collisions_per_goal'] = 0
             with open('blob_ball_results.txt', 'a') as bbr:
                 bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
+                bbr.write("\n")
+                bbr.write("RANDOM SEED:" + str(random_seed))
                 bbr.write("\n")
                 bbr.write("RULESET: " + dumps(ruleset))
                 bbr.write("\n")

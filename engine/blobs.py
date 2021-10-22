@@ -1,7 +1,22 @@
 import math
 import os
+import random
+from resources.sound_engine.sfx_event import createSFXEvent
 
 cwd = os.getcwd()
+
+# INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
+# Add the Blob's Stats to the species_to_stars function (see other blobs for a guide)
+# Classify that Blob's ability in ability_to_classification function (so it will show the cooldown)
+# Add that Blob's image in species_to_image (make sure that the image is in the resources/images/blobs folder)
+# Add that Blob's ability icon (make sure that the image is in the resources/images/ability_icons folder)
+# In the Blob class, navigate to the ability method to make sure that the ability can be activated.
+# Depending on the ability, check the cooldown method 
+# If the ability has the potential to impact another blob, update the check_ability_collision method
+# If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
+# In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
+# In engine/main_menu.py (should be moved to css.py lol) update blob_list to allow your blob to be selectable
+# In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 def species_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
@@ -194,10 +209,33 @@ def species_to_stars(species):
             'special_ability_cost': 510,
             'special_ability_maintenance': 0,
             'special_ability_max': 1800,
-            'special_ability_cooldown': 240,
+            'special_ability_cooldown': 300,
             'special_ability_delay': 0,
             'special_ability_duration': 60,
         }
+    elif(species == "doctor"):
+        blob_dict = {
+            'max_hp': 4,
+            'top_speed': 2,
+            'traction': 3,
+            'friction': 3,
+            'gravity': 4,
+            'kick_cooldown_rate': 1,
+            'block_cooldown_rate': 1,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 1,
+            'boost_duration': 1,
+
+            'special_ability': 'pill',
+            'special_ability_cost': 300,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 240,
+            'special_ability_delay': 0,
+            'special_ability_duration': 0,
+        }
+
 
     return blob_dict
 
@@ -205,7 +243,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d']
+    instant_abilities = ['boost', 'gale', 'c&d', 'pill']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -224,6 +262,7 @@ def species_to_image(species):
         'lightning': cwd+"/resources/images/blobs/lightning_blob.png",
         'wind': cwd+"/resources/images/blobs/wind_blob.png",
         'judge': cwd+"/resources/images/blobs/judge_blob.png",
+        'doctor': cwd+"/resources/images/blobs/doctor_blob.png",
         "random": cwd+"/resources/images/blobs/random_blob.png",
         "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
     }
@@ -241,6 +280,7 @@ def species_to_ability_icon(species):
         'lightning': cwd+"/resources/images/ability_icons/thunderbolt.png",
         'wind': cwd+"/resources/images/ability_icons/gale.png",
         'judge': cwd+"/resources/images/ability_icons/cnd.png",
+        'doctor': cwd+"/resources/images/ability_icons/pill.png",
         "random": cwd+"/resources/images/blobs/random_blob.png",
     }
     
@@ -398,15 +438,30 @@ class Blob:
         }
         self.recharge_indicators = {
             'damage': False,
+            'heal': False,
+            'heal_flash': False,
             'damage_flash': False,
             'ability': False,
+            'ability_swap_b': False,
+            'ability_swap': False,
             'kick': False,
             'block': False,
             'boost': False,
         }
         self.status_effects = {
             "judged": 0,
+            "pill": None,
         }
+
+        if(self.species == "doctor" or self.species == "joker"):
+            random_number = random.randint(0,1)
+            if(random_number):
+                self.status_effects['pill'] = 'pill_boost'
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
+            else:
+                self.status_effects['pill'] = 'pill_cooldown'
+                cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill'])
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
     
     ground = 1200
     ceiling = 200
@@ -436,6 +491,8 @@ class Blob:
             if(self.recharge_indicators[key]):
                 if(key == "damage_flash" and self.recharge_indicators[key]):
                     self.toggle_recharge_indicator('damage')
+                elif(key == "ability_swap" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('ability_swap_b')
                 self.toggle_recharge_indicator(key)
 
         if(self.special_ability_timer > 0):
@@ -461,7 +518,10 @@ class Blob:
 
         for effect in self.status_effects:
             if(self.status_effects[effect]):
-                self.status_effects[effect] -= 1
+                try:
+                    self.status_effects[effect] -= 1
+                except:
+                    pass # Typically pass for strings, like current pill
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
@@ -523,6 +583,10 @@ class Blob:
         self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
     
+    def update_ability_icon(self, icon):
+        self.ability_icon = icon
+        self.recharge_indicators['ability_swap'] = True
+
     def ability(self):
         if(self.special_ability == 'boost'):
             self.boost()
@@ -589,9 +653,44 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+        elif(self.special_ability == "pill"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                # Spend cost and activate cooldown
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+
+                # Activate the correct effect based on self.status_effects['pill']
+                if(self.status_effects['pill'] == 'pill_heal'):
+                    if(self.hp == self.max_hp):
+                        self.special_ability_cooldown -= 15
+                        self.kick_cooldown -= 15
+                        self.block_cooldown -= 15
+                        self.boost_cooldown_timer -= 15
+                    else:
+                        self.hp += 1
+                elif(self.status_effects['pill'] == 'pill_cooldown'):
+                    self.special_ability_cooldown -= 90
+                    self.kick_cooldown -= 90
+                    self.block_cooldown -= 90
+                    self.boost_cooldown_timer -= 90
+                else:
+                    self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
+
+                if(self.hp == self.max_hp):
+                    if(self.boost_cooldown_timer > 0):
+                        pill_list = ['pill_boost', 'pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
+                    else:
+                        pill_list = ['pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
+                else:
+                    pill_list = ['pill_heal', 'pill_cooldown', 'pill_boost']
+
+                self.status_effects['pill'] = random.choice(pill_list)
+                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
  
     def kick(self):
         if(self.kick_cooldown <= 0):
+            createSFXEvent('kick')
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
@@ -601,6 +700,7 @@ class Blob:
 
     def block(self):
         if(self.block_cooldown <= 0):
+            createSFXEvent('block')
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
@@ -610,14 +710,24 @@ class Blob:
                 self.y_speed = 0
             self.info['block_count'] += 1
 
-    def boost(self):
-        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
-            self.special_ability_meter -= self.boost_cost #Remove some SA meter
+    def boost(self, boost_cost = None, boost_duration = None, boost_cooldown = None, ignore_cooldown = None):
+        if(boost_cost is None):
+            boost_cost = self.boost_cost
+
+        if(self.special_ability_meter >= boost_cost and (self.boost_cooldown_timer <= 0 or ignore_cooldown is not None)):
+            createSFXEvent('boost')
+            self.special_ability_meter -= boost_cost # Remove some SA meter
             self.top_speed = self.boost_top_speed
             self.traction = self.boost_traction
             self.friction = self.boost_friction
-            self.boost_timer = self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
-            self.boost_cooldown_timer = self.boost_cooldown_max
+            if(boost_duration is None):
+                self.boost_timer += self.boost_duration #Set the boost's timer to its maximum duration, about 5 seconds
+            else:
+                self.boost_timer += boost_duration
+            if(boost_cooldown is None):
+                self.boost_cooldown_timer += self.boost_cooldown_max
+            else:
+                self.boost_cooldown_timer += boost_cooldown
             self.info['boost_count'] += 1
             if(self.species == "quirkless"):
                 self.special_ability_cooldown = self.special_ability_cooldown_max
@@ -662,14 +772,17 @@ class Blob:
             if(self.block_timer):  # Blocking?
                 self.parried = 2
                 self.info['parries'] += 1
+                createSFXEvent('parry')
                 return False
             else:
+                
                 return True
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
                 self.clanked = 2
                 self.info['clanks'] += 1
+                createSFXEvent('clank')
                 return False
             else:
                 return True
@@ -693,6 +806,7 @@ class Blob:
             self.info['damage_taken'] += damage
             self.movement_lock = movement_lock
             self.y_speed = y_speed_mod
+            createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
 
@@ -916,3 +1030,5 @@ class Blob:
     def toggle_recharge_indicator(self, indicator):
         self.recharge_indicators[indicator] = not self.recharge_indicators[indicator]
     
+    def __str__(self):
+        return f"Player {self.player}: {self.species}."
