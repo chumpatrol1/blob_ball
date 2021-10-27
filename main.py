@@ -25,8 +25,9 @@ cwd = os.getcwd()
 print("MAIN",cwd)
 
 import pygame as pg
+from engine.initializer import initialize_game_stats, load_matchup_chart, check_existing_directory
+check_existing_directory(cwd)
 from engine.game_handler import update_game_state as ugs
-from engine.initializer import initialize_game_stats, load_matchup_chart
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
 import engine.handle_input
@@ -35,10 +36,10 @@ import time
 game_state = "main_menu"
 new_game_state = "main_menu"
 
-done = False
-
 game_stats = initialize_game_stats(cwd)
 load_matchup_chart(cwd)
+
+done = False
 
 with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1

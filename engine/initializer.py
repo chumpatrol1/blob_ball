@@ -120,3 +120,12 @@ def initialize_settings(cwd):
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
     return settings
+
+def check_existing_directory(cwd):
+    '''
+    Checks to see if the following folders exist. If they don't, create them!
+    '''
+    if not(os.path.isdir(cwd + '/config')): # Config folder
+        os.mkdir(cwd+'/config') 
+    if not(os.path.isdir(cwd + '/saves')): # Saves folder
+        os.mkdir(cwd+'/saves')
