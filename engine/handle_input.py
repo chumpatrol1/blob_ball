@@ -5,6 +5,8 @@ from json import loads, dumps
 
 from pygame.constants import K_KP_ENTER
 
+#print(tuple(filter(lambda x: x.startswith("K_"), pg.constants.__dict__.keys())))
+
 pg.init()
 #clock = pg.time.Clock()
 #clock.tick(120)
@@ -28,12 +30,27 @@ input_map = {
     'p2_boost': pg.K_PERIOD,
 }
 
+mapkey_names = {}
+def update_mapkey_names(input_list, key = None):
+    global mapkey_names
+    if(key is None):
+        for mapkey in input_list:
+            mapkey_names[mapkey] = pg.key.name(input_list[mapkey]).upper()
+    else:
+        mapkey_names[key] = pg.key.name(input_list[-1]).upper()
+
+def return_mapkey_names():
+    global mapkey_names
+    return mapkey_names
+
+update_mapkey_names(input_map)
+
 try:
-    controls = open(getcwd()+"\\config\\controls.txt", "r+")
+    controls = open(getcwd()+"/config/controls.txt", "r+")
 except:
-    with open(getcwd()+"\\config\\controls.txt", "w") as controls:
+    with open(getcwd()+"/config/controls.txt", "w") as controls:
         controls.write(dumps(input_map))
-    controls = open(getcwd()+"\\config\\controls.txt", "r+")
+    controls = open(getcwd()+"/config/controls.txt", "r+")
     
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
@@ -54,9 +71,11 @@ def bind_input(key_to_rebind):
         if event.type == pg.KEYDOWN and not event.key in temp_binding and not event.key in forbidden_keys:
             input_map[key_to_rebind] = event.key
             temp_binding.append(event.key)
+            update_mapkey_names(temp_binding, key=key_to_rebind)
             if(key_to_rebind == "p2_boost"):
                 temp_binding = []
                 with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
+                    
                     control_list.write(dumps(input_map))
             return True
     else:
@@ -82,6 +101,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
+    update_mapkey_names(input_map)
     with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
