@@ -491,6 +491,8 @@ class Blob:
             if(self.recharge_indicators[key]):
                 if(key == "damage_flash" and self.recharge_indicators[key]):
                     self.toggle_recharge_indicator('damage')
+                elif(key == "heal_flash" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('heal')
                 elif(key == "ability_swap" and self.recharge_indicators[key]):
                     self.toggle_recharge_indicator('ability_swap_b')
                 self.toggle_recharge_indicator(key)
@@ -515,6 +517,7 @@ class Blob:
             self.special_ability_cooldown -= 1
             if(self.special_ability_cooldown == 0):
                 self.toggle_recharge_indicator('ability')
+        
 
         for effect in self.status_effects:
             if(self.status_effects[effect]):
@@ -527,6 +530,7 @@ class Blob:
             self.kick_cooldown -= self.kick_cooldown_rate
             if(self.kick_cooldown == 0):
                 self.toggle_recharge_indicator('kick')
+
         if(self.kick_timer > 0):
             self.kick_timer -= 1
             if(self.kick_timer == 0):
@@ -542,6 +546,7 @@ class Blob:
             if(self.block_cooldown == 0):
                 self.toggle_recharge_indicator('block')
         
+        
         if(self.boost_timer > 0): #Reduces duration of active boost by 1
             self.boost_timer -= 1 
             if(self.boost_timer <= 0): #Once the boost ends, revert to normal
@@ -553,6 +558,7 @@ class Blob:
             if(self.boost_cooldown_timer == 0):
                 self.toggle_recharge_indicator('boost')
 
+       
         if(self.collision_timer > 0):
             self.collision_timer -=1 
         
@@ -583,6 +589,16 @@ class Blob:
         self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
     
+    def check_cooldown_completion(self, updatedAbility = True, updatedKick = True, updatedBlock = True, updatedBoost = True):
+        if(self.special_ability_cooldown <= 0 and updatedAbility):
+            self.toggle_recharge_indicator('ability', 2)
+        if(self.kick_cooldown <= 0 and updatedKick):
+            self.toggle_recharge_indicator('kick', 2)
+        if(self.block_cooldown <= 0 and updatedBlock):
+            self.toggle_recharge_indicator('block', 2)
+        if(self.boost_cooldown_timer <= 0 and updatedBoost):
+            self.toggle_recharge_indicator('boost', 2)
+
     def update_ability_icon(self, icon):
         self.ability_icon = icon
         self.recharge_indicators['ability_swap'] = True
@@ -663,17 +679,30 @@ class Blob:
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
                     if(self.hp == self.max_hp):
+                        sac = bool(self.special_ability_cooldown > 0)
+                        skc = bool(self.kick_cooldown > 0)
+                        slc = bool(self.block_cooldown > 0)
+                        sbc = bool(self.boost_cooldown_timer > 0)
                         self.special_ability_cooldown -= 15
                         self.kick_cooldown -= 15
                         self.block_cooldown -= 15
-                        self.boost_cooldown_timer -= 15
+                        if(self.boost_cooldown_timer > 0):
+                            self.boost_cooldown_timer -= 15
+                        self.check_cooldown_completion(sac, skc, slc, sbc)
                     else:
-                        self.hp += 1
+                        self.heal_hp(heal_amt = 1)
                 elif(self.status_effects['pill'] == 'pill_cooldown'):
+                    sac = bool(self.special_ability_cooldown > 0)
+                    skc = bool(self.kick_cooldown > 0)
+                    slc = bool(self.block_cooldown > 0)
+                    sbc = bool(self.boost_cooldown_timer > 0)
                     self.special_ability_cooldown -= 90
                     self.kick_cooldown -= 90
                     self.block_cooldown -= 90
-                    self.boost_cooldown_timer -= 90
+                    if(self.boost_cooldown_timer > 0):
+                        self.boost_cooldown_timer -= 90
+                    self.check_cooldown_completion(sac, skc, slc, sbc)
+
                 else:
                     self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
 
@@ -809,6 +838,17 @@ class Blob:
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
+
+    def heal_hp(self, heal_amt = 1, overheal = False):
+        if overheal:
+            self.hp += heal_amt
+            self.toggle_recharge_indicator('heal_flash')
+        else:
+            self.hp += heal_amt
+            if(self.hp > self.max_hp):
+                self.hp = self.max_hp
+            else:
+                self.toggle_recharge_indicator('heal_flash')
 
     def blob_ko(self):
         self.y_speed = 10
@@ -1027,8 +1067,15 @@ class Blob:
     def get_boost_cooldown_visuals(self):
         return self.boost_cooldown_percentage, self.boost_cooldown_visualization
 
-    def toggle_recharge_indicator(self, indicator):
-        self.recharge_indicators[indicator] = not self.recharge_indicators[indicator]
+    def toggle_recharge_indicator(self, indicator, set_indicator = 1):
+        indicator_state = self.recharge_indicators[indicator]
+        if indicator_state == 2:
+            indicator_state = 1
+        elif(indicator_state == 1):
+            indicator_state = 0
+        else:
+            indicator_state = set_indicator
+        self.recharge_indicators[indicator] = indicator_state
     
     def __str__(self):
         return f"Player {self.player}: {self.species}."
