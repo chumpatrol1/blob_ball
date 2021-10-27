@@ -65,6 +65,8 @@ def run(game_state):
     global clock
     global cwd
     clock.tick_busy_loop(60)
+    if(game_state == "rebind"):
+        clock.tick_busy_loop(5) # Manually reducing the frame rate because it ironically becomes faster to rebind
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings)

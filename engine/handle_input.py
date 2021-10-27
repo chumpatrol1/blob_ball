@@ -4,6 +4,7 @@ from os import getcwd
 from json import loads, dumps
 
 from pygame.constants import K_KP_ENTER
+from resources.sound_engine.sfx_event import createSFXEvent
 
 #print(tuple(filter(lambda x: x.startswith("K_"), pg.constants.__dict__.keys())))
 
@@ -43,8 +44,6 @@ def return_mapkey_names():
     global mapkey_names
     return mapkey_names
 
-update_mapkey_names(input_map)
-
 try:
     controls = open(getcwd()+"/config/controls.txt", "r+")
 except:
@@ -52,6 +51,7 @@ except:
         controls.write(dumps(input_map))
     controls = open(getcwd()+"/config/controls.txt", "r+")
     
+update_mapkey_names(input_map)
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
@@ -68,16 +68,23 @@ def bind_input(key_to_rebind):
     global input_map
     global temp_binding
     for event in pg.event.get():
-        if event.type == pg.KEYDOWN and not event.key in temp_binding and not event.key in forbidden_keys:
-            input_map[key_to_rebind] = event.key
-            temp_binding.append(event.key)
-            update_mapkey_names(temp_binding, key=key_to_rebind)
-            if(key_to_rebind == "p2_boost"):
-                temp_binding = []
-                with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
-                    
-                    control_list.write(dumps(input_map))
-            return True
+        if event.type == pg.KEYDOWN:
+            if(not event.key in temp_binding and not event.key in forbidden_keys):
+                input_map[key_to_rebind] = event.key
+                temp_binding.append(event.key)
+                update_mapkey_names(temp_binding, key=key_to_rebind)
+                if(key_to_rebind == "p2_boost"):
+                    temp_binding = []
+                    with open(getcwd()+"/config/controls.txt", "w") as control_list:
+                        
+                        control_list.write(dumps(input_map))
+                    createSFXEvent('chime_completion')
+                else:
+                    createSFXEvent('chime_progress')
+                return True
+            else:
+                createSFXEvent('chime_error')
+                return False
     else:
         return False
 

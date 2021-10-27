@@ -14,6 +14,9 @@ name_to_file = {
     "ball_grass_bounce": ['ball_grass_bounce_1.wav', 'ball_grass_bounce_2.wav', 'ball_grass_bounce_3.wav'],
     "ball_blob_bounce": ['ball_blob_bounce_1.wav', 'ball_blob_bounce_2.wav'],
     "ball_metal_bounce": ['ball_metal_bounce_1.wav', 'ball_metal_bounce_2.wav', 'ball_metal_bounce_3.wav'],
+    "chime_progress": ['chime_progress.wav'],
+    "chime_completion": ['chime_completion.wav'],
+    "chime_error": ['chime_error.wav'],
 }
 
 def convert_name_to_file(name):

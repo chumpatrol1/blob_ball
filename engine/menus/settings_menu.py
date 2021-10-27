@@ -30,6 +30,8 @@ def settings_navigation(timer, settings, previous_screen, cwd):
                 settings['sound_volume'] -= 1
             else: 
                 settings['sound_volume'] = 10
+            createSFXEvent('chime_progress')
+
         
     elif('p1_right' in pressed or 'p2_right' in pressed):
         if(selector_position == 3):
@@ -42,26 +44,33 @@ def settings_navigation(timer, settings, previous_screen, cwd):
                 settings['sound_volume'] += 1
             else: 
                 settings['sound_volume'] = 0
+            createSFXEvent('chime_progress')
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        createSFXEvent('select')
         if(selector_position == len(settings) + 3):
             selector_position = 0
             game_state = previous_screen
+            createSFXEvent('select')
         elif(selector_position == len(settings) + 2):
             settings['hd_backgrounds'] = True
             settings['hd_blobs'] = True
             settings['smooth_scaling'] = True
+            createSFXEvent('chime_completion')
         elif(selector_position == len(settings) + 1):
             engine.handle_input.reset_inputs()
+            createSFXEvent('chime_completion')
         elif(selector_position == 5):
             game_state = "rebind"
+            createSFXEvent('select')
         elif(selector_position == 0):
             settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
+            createSFXEvent('select')
         elif(selector_position == 1):
             settings['hd_blobs'] = not(settings['hd_blobs'])
+            createSFXEvent('select')
         elif(selector_position == 2):
             settings['smooth_scaling'] = not(settings['smooth_scaling'])
+            createSFXEvent('select')
 
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
