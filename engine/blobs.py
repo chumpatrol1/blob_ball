@@ -15,7 +15,7 @@ cwd = os.getcwd()
 # If the ability has the potential to impact another blob, update the check_ability_collision method
 # If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
 # In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
-# In engine/main_menu.py (should be moved to css.py lol) update blob_list to allow your blob to be selectable
+# In engine/menus/css_menu.py update blob_list to allow your blob to be selectable
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 def species_to_stars(species):
     '''
@@ -235,6 +235,28 @@ def species_to_stars(species):
             'special_ability_delay': 0,
             'special_ability_duration': 0,
         }
+    elif(species == "king"):
+        blob_dict = {
+            'max_hp': 3,
+            'top_speed': 1,
+            'traction': 1,
+            'friction': 1,
+            'gravity': 1,
+            'kick_cooldown_rate': 4,
+            'block_cooldown_rate': 4,
+
+            'boost_cost': 600,
+            'boost_cooldown_max': 3,
+            'boost_duration': 3,
+
+            'special_ability': 'tax',
+            'special_ability_cost': 600,
+            'special_ability_maintenance': 0,
+            'special_ability_max': 1800,
+            'special_ability_cooldown': 540,
+            'special_ability_delay': 0,
+            'special_ability_duration': 180,
+        }
 
 
     return blob_dict
@@ -243,7 +265,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d', 'pill']
+    instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -253,35 +275,40 @@ def ability_to_classification(ability):
 
 def species_to_image(species):
     global cwd
+    blob_cwd = cwd + '/resources/images/blobs/'
     image_dict = {
-        "quirkless": cwd+"/resources/images/blobs/quirkless_blob.png",
-        "fire": cwd+"/resources/images/blobs/fire_blob.png",
-        "ice": cwd+"/resources/images/blobs/ice_blob.png",
-        'water': cwd+"/resources/images/blobs/water_blob.png",
-        'rock': cwd+"/resources/images/blobs/rock_blob.png",
-        'lightning': cwd+"/resources/images/blobs/lightning_blob.png",
-        'wind': cwd+"/resources/images/blobs/wind_blob.png",
-        'judge': cwd+"/resources/images/blobs/judge_blob.png",
-        'doctor': cwd+"/resources/images/blobs/doctor_blob.png",
-        "random": cwd+"/resources/images/blobs/random_blob.png",
-        "invisible": cwd+"/resources/images/blobs/invisible_blob.png"
+        "quirkless": blob_cwd + "quirkless_blob.png",
+        "fire": blob_cwd + "fire_blob.png",
+        "ice": blob_cwd + "ice_blob.png",
+        'water': blob_cwd + "water_blob.png",
+        'rock': blob_cwd + "rock_blob.png",
+        'lightning': blob_cwd + "lightning_blob.png",
+        'wind': blob_cwd + "wind_blob.png",
+        'judge': blob_cwd + "judge_blob.png",
+        'doctor': blob_cwd + "doctor_blob.png",
+        'king': blob_cwd + 'king_blob.png',
+        "random": blob_cwd + "random_blob.png",
+        "invisible": blob_cwd + "invisible_blob.png"
     }
 
     return image_dict[species]
 
 def species_to_ability_icon(species):
     global cwd
+    icon_cwd = cwd + "/resources/images/ui_icons/"
+    ability_cwd = cwd + "/resources/images/ability_icons/"
     image_dict = {
-        "quirkless": cwd+"/resources/images/ui_icons/boost_icon.png",
-        "fire": cwd+"/resources/images/ability_icons/fireball.png",
-        "ice": cwd+"/resources/images/ability_icons/snowball.png",
-        'water': cwd+"/resources/images/ability_icons/geyser.png",
-        'rock': cwd+"/resources/images/ability_icons/spire.png",
-        'lightning': cwd+"/resources/images/ability_icons/thunderbolt.png",
-        'wind': cwd+"/resources/images/ability_icons/gale.png",
-        'judge': cwd+"/resources/images/ability_icons/cnd.png",
-        'doctor': cwd+"/resources/images/ability_icons/pill.png",
-        "random": cwd+"/resources/images/blobs/random_blob.png",
+        "quirkless": icon_cwd + "boost_icon.png",
+        "fire": ability_cwd + "fireball.png",
+        "ice": ability_cwd + "snowball.png",
+        'water': ability_cwd + "geyser.png",
+        'rock': ability_cwd + "spire.png",
+        'lightning': ability_cwd + "thunderbolt.png",
+        'wind': ability_cwd + "gale.png",
+        'judge': ability_cwd + "cnd.png",
+        'doctor': ability_cwd + "pill.png",
+        'king': icon_cwd + "boost_icon.png",
+        "random": icon_cwd + "boost_icon.png",
     }
     
     return image_dict[species]
@@ -451,6 +478,8 @@ class Blob:
         self.status_effects = {
             "judged": 0,
             "pill": None,
+            "taxing": 0,
+            "taxed": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -509,6 +538,8 @@ class Blob:
                 self.used_ability = None
             elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
+            elif(self.used_ability == "tax" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -523,6 +554,10 @@ class Blob:
             if(self.status_effects[effect]):
                 try:
                     self.status_effects[effect] -= 1
+                    if((effect == 'taxing' or effect == 'taxed') and self.status_effects[effect] == 1):
+                        if(effect == 'taxing'):
+                            createSFXEvent('chime_error')
+                        self.set_base_stats(self.stars)
                 except:
                     pass # Typically pass for strings, like current pill
 
@@ -716,7 +751,14 @@ class Blob:
 
                 self.status_effects['pill'] = random.choice(pill_list)
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
- 
+        elif(self.special_ability == "tax"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "tax"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                createSFXEvent('chime_progress')
+
     def kick(self):
         if(self.kick_cooldown <= 0):
             createSFXEvent('kick')
@@ -791,9 +833,21 @@ class Blob:
                     blob.x_speed += 1
                 elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
                     blob.x_speed -= 1
-
         elif(self.used_ability == "c&d"):
             blob.status_effects['judged'] = self.special_ability_duration
+        elif(self.used_ability == "tax"):
+            self.status_effects['taxing'] = self.special_ability_duration
+            blob.status_effects['taxed'] = self.special_ability_duration
+            self.set_base_stats(blob.return_stars())
+            blob.set_base_stats(self.return_stars())
+            if(blob.kick_cooldown < self.kick_cooldown):
+                self.kick_cooldown = (self.kick_cooldown + blob.kick_cooldown)//2
+            
+            if(blob.block_cooldown < self.block_cooldown):
+                self.block_cooldown = (self.block_cooldown + blob.block_cooldown)//2
+
+            if(blob.boost_cooldown_timer < self.boost_cooldown_timer):
+                self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
         damage_taken = False
@@ -882,6 +936,9 @@ class Blob:
         self.impact_land_frames = 0
         self.movement_lock = 0
         self.status_effects['judged'] = 0
+        self.status_effects['taxed'] = 0
+        self.status_effects['taxing'] = 0
+        self.set_base_stats(self.stars)
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
@@ -1050,6 +1107,25 @@ class Blob:
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
     
+    def set_base_stats(self, stars):
+        self.top_speed = 10+(1*stars['top_speed'])
+        self.base_top_speed = self.top_speed
+        self.traction = 0.2 + (stars['traction'] * 0.15) #Each star increases traction
+        self.friction = 0.2 + (stars['friction'] * 0.15) #Each star increases friction
+        self.base_traction = self.traction #Non-boosted
+        self.base_friction = self.friction #No boost
+        self.gravity_stars = round(.3 + (stars['gravity'] * .15), 3) #Each star increases gravity
+        self.gravity_mod = round(.3 + (stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
+        self.jump_force = 14.5 + (stars['gravity'] * 2) #Initial velocity is based off of gravity
+        self.boost_top_speed = 10+(1*stars['top_speed'] + 3) #This stat is increased by 3 stars
+        self.boost_traction = 0.2 + ((stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
+        self.boost_friction = 0.2 + ((stars['friction'] + 5) * 0.15)
+
+        if(self.boost_timer > 0):
+            self.top_speed = self.boost_top_speed
+            self.traction = self.boost_traction
+            self.friction = self.boost_friction
+
     #The following functions are for visualizations and timers
 
     def get_ability_visuals(self):
@@ -1079,3 +1155,6 @@ class Blob:
     
     def __str__(self):
         return f"Player {self.player}: {self.species}."
+
+    def return_stars(self):
+        return self.stars

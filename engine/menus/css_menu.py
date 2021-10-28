@@ -7,7 +7,7 @@ p2_blob = "quirkless"
 
 blob_list = [
     ["back", "quirkless", "fire", "ice", "water", "rock", "lightning", "wind",],
-    ["rules", "judge", "doctor", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["rules", "judge", "doctor", "king", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["almanac", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],

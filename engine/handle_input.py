@@ -50,12 +50,13 @@ except:
     with open(getcwd()+"/config/controls.txt", "w") as controls:
         controls.write(dumps(input_map))
     controls = open(getcwd()+"/config/controls.txt", "r+")
-    
-update_mapkey_names(input_map)
+
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
+
+update_mapkey_names(input_map)
 
 def unbind_inputs():
     global input_map
