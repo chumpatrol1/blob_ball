@@ -43,7 +43,6 @@ def play_bgm(song_playing, settings):
     elapsed_time = time() - start_time
 
     if elapsed_time >= bgm_timer and bgm_class.restart_point is not None:
-        print("WHAT")
         start_time = time()
         try:
             pg.mixer.music.play(-1, start = bgm_class.restart_point)
