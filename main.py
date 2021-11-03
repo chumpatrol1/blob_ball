@@ -33,8 +33,8 @@ import resources.sound_engine.handle_sound as hs
 import engine.handle_input
 from json import loads, dumps
 import time
-game_state = "main_menu"
-new_game_state = "main_menu"
+game_state = "control_splash"
+new_game_state = "control_splash"
 
 game_stats = initialize_game_stats(cwd)
 load_matchup_chart(cwd)

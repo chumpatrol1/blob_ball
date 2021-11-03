@@ -32,13 +32,35 @@ input_map = {
 }
 
 mapkey_names = {}
+override = {
+    '.': 'PERIOD',
+    ',': 'COMMA',
+    '/': 'FORWARDSLASH',
+    ';': 'SEMICOLON',
+    '\'': 'SINGLEQUOTE',
+    '\\': 'BACKSLASH',
+    '[': 'OPENBRACKET',
+    ']': 'CLOSEBRACKET',
+    '-': 'SUBTRACT',
+    '=': 'EQUALS',
+}
 def update_mapkey_names(input_list, key = None):
     global mapkey_names
+    global override
     if(key is None):
         for mapkey in input_list:
-            mapkey_names[mapkey] = pg.key.name(input_list[mapkey]).upper()
+            key_name = pg.key.name(input_list[mapkey]).upper()
+            if key_name in override:
+                mapkey_names[mapkey] = override[key_name]
+            else:
+                mapkey_names[mapkey] = key_name
+            
     else:
-        mapkey_names[key] = pg.key.name(input_list[-1]).upper()
+        key_name = pg.key.name(input_list[-1]).upper()
+        if key_name in override:
+            mapkey_names[key] = override[key_name]
+        else:
+            mapkey_names[key] = key_name
 
 def return_mapkey_names():
     global mapkey_names

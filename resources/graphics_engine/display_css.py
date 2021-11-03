@@ -97,6 +97,15 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     else:
         game_display.blit(p1_selected_blob, (136, 576))
 
+    if(p1_selector_position[3] == 0):
+        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
+    else:
+        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
+
+    text_rect = menu_text.get_rect()
+    text_rect.center = (75, 650)
+    game_display.blit(menu_text, text_rect)
+
     p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
@@ -108,6 +117,16 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         game_display.blit(p2_selected_blob, (1079, 576))
     else:
         game_display.blit(p2_selected_blob, (1024, 576))
+
+    if(p2_selector_position[3] == 0):
+        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
+    else:
+        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
+
+    text_rect = menu_text.get_rect()
+    text_rect.center = (1291, 650)
+    game_display.blit(menu_text, text_rect)
+
     menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (5*screen_size[0]//6, 11*screen_size[1]//12)

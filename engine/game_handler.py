@@ -65,7 +65,11 @@ def update_game_state(game_state, cwd):
     global settings
     global game_stats
     song_playing = "bb_main_theme"
-    if(game_state == "main_menu"):
+    if(game_state == "control_splash"):
+        info_getter, game_state = engine.menus.main_menu.splash_navigator()
+        if(game_state != "control_splash"):
+            timer = 10
+    elif(game_state == "main_menu"):
         if(timer > 0):
             timer -= 1
         info_getter = engine.menus.main_menu.menu_navigation(timer)
