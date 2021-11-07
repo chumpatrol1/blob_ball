@@ -9,6 +9,8 @@ Update the Changelog
 ZIP the files together for release!
 '''
 
+# COMMAND TO RUN THE GAME IN NOTEPAD ++: D:\Python\python.exe -i "$(FULL_CURRENT_PATH)"
+
 '''OPTIMIZING'''
 #python -m cProfile -o out.prof main.py
 #snakeviz out.prof
