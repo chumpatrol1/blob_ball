@@ -1002,7 +1002,7 @@ class Blob:
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
-                        if(not round(prev_speed) == -1*self.top_speed):
+                        if(round(prev_speed) == self.top_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce')
                         
@@ -1017,8 +1017,8 @@ class Blob:
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
-                        if(not round(prev_speed) == self.top_speed):
-                            self.info['wavebounces']
+                        if(round(prev_speed) == -1 * self.top_speed):
+                            self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
@@ -1041,7 +1041,11 @@ class Blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed -= self.friction #Accelerate based off of traction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
+                        if(round(prev_speed) == self.top_speed):
+                            self.info['wavebounces'] += 1
+                            createSFXEvent('wavebounce') 
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
@@ -1051,7 +1055,11 @@ class Blob:
                     if(abs(self.x_speed) < self.top_speed):
                         self.x_speed += self.friction #Accelerate based off of friction
                     else:
+                        prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
+                        if(round(prev_speed) == -1 * self.top_speed):
+                            self.info['wavebounces'] += 1
+                            createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.friction) > 0:
