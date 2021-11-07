@@ -1004,6 +1004,7 @@ class Blob:
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
                         if(not round(prev_speed) == -1*self.top_speed):
                             self.info['wavebounces'] += 1
+                            createSFXEvent('wavebounce')
                         
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 self.facing = 'right'
@@ -1017,7 +1018,8 @@ class Blob:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
                         if(not round(prev_speed) == self.top_speed):
-                            self.info['wavebounces'] += 1
+                            self.info['wavebounces']
+                            createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:
