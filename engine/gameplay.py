@@ -8,6 +8,7 @@ from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
 import engine.cpu_logic
 import random
+from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
 def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
     global random_seed
@@ -152,6 +153,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             p1_blob = ball.check_blob_collisions(p1_blob)
             p2_blob = ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
+                createSFXEvent('goal')
                 goal_scorer = 1
                 goal_scored = True
                 countdown = 60
@@ -159,6 +161,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 p2_blob.info['points_from_goals'] += 1
                 
             elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
+                createSFXEvent('goal')            
                 goal_scorer = 0
                 goal_scored = True
                 countdown = 60

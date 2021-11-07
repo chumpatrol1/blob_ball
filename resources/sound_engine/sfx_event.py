@@ -21,6 +21,7 @@ name_to_file = {
     'ice': ['ice_1.wav', 'ice_2.wav'],
     'water': ['water_1.wav', 'water_2.wav', 'water_3.wav'],
     'gale': ['gale.wav'],
+	'goal': ['goal.wav'],
 }
 
 def convert_name_to_file(name):
