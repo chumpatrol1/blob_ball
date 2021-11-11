@@ -1,15 +1,10 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from engine.unlocks import return_css_display, update_css_blobs
 import pygame as pg
 from os import getcwd
 cwd = getcwd()
 
-blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
-[["/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-]
+blob_array = return_css_display()
 
 bic_cached = False
 blob_image_cache = [
@@ -32,6 +27,7 @@ def unload_css():
     token_cache = {}
 
 def load_blobs(blob_image_cache, big_image_cache, directory):
+    blob_array = return_css_display()
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])
             big_image_cache.append([])
@@ -43,6 +39,15 @@ def load_blobs(blob_image_cache, big_image_cache, directory):
                     blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 51)))
                     big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 109)))
     return blob_image_cache, big_image_cache
+
+def force_load_blobs():
+    global blob_image_cache
+    global big_image_cache
+    global cwd
+    unload_css()
+    directory = cwd + "/resources/images"
+    load_blobs(blob_image_cache, big_image_cache, directory)
+    unload_css()
 
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
     '''

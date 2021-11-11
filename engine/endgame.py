@@ -1,6 +1,25 @@
 from json import loads, dumps
 from os import getcwd
+from engine.popup_event import createPopUpEvent
 cwd = getcwd()
+
+def attempt_unlocks(game_stats):
+    blob_unlock_requirements = {
+        3: "fire",
+        6: "ice",
+        9: "water",
+        12: "rock",
+        15: "lightning",
+        18: "wind",
+        23: "judge",
+        28: "doctor",
+        33: "king",
+    }
+    
+    for dict_key in blob_unlock_requirements:
+        if(game_stats['matches_played'] >= dict_key):
+            createPopUpEvent(blob_unlock_requirements[dict_key], 0)
+    
 
 def update_game_stats(game_info, p1_blob, p2_blob, ball):
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
@@ -38,6 +57,8 @@ def update_game_stats(game_info, p1_blob, p2_blob, ball):
         
         game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
         statsdoc.write(dumps(game_stats))
+
+        attempt_unlocks(game_stats)
 
 def update_mu_chart(game_score, p1_blob, p2_blob):
     try:

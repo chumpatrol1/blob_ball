@@ -836,6 +836,12 @@ class Blob:
                 blob.take_damage(accumulated_damage)
                     
     def check_ability_collision(self, blob, ball):
+        #Hit self with Lightning bolt
+        if(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
+        and ball.x_center - 175 <= self.x_center <= ball.x_center + 175):
+            self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
+
+
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):

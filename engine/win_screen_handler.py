@@ -1,4 +1,5 @@
 import engine.handle_input
+import engine.popup_event
 
 p1_ready = False
 p2_ready = False
@@ -39,6 +40,8 @@ def handle_win_screen(game_stats):
     
     if(p1_ready and p2_ready):
         game_state = "css"
+        if not (engine.popup_event.get_pop_up_events() == []):
+            game_state = "pop_up"
 
     flash = updateFlash()
 
