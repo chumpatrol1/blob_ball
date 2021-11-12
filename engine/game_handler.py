@@ -127,6 +127,7 @@ def update_game_state(game_state, cwd):
                 timer = 30
     elif(game_state == "pop_up"):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
+        song_playing = ""
         if(game_state != "pop_up"):
             update_css_blobs()
             resources.graphics_engine.display_css.force_load_blobs()

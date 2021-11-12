@@ -17,6 +17,7 @@ name_to_file = {
     "chime_progress": ['chime_progress.wav'],
     "chime_completion": ['chime_completion.wav'],
     "chime_error": ['chime_error.wav'],
+    "chime_milestone": ['chime_milestone.wav'],
     'fire': ['fire_1.wav', 'fire_2.wav', 'fire_3.wav'],
     'ice': ['ice_1.wav', 'ice_2.wav'],
     'water': ['water_1.wav', 'water_2.wav', 'water_3.wav'],

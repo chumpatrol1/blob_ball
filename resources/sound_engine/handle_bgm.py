@@ -17,6 +17,7 @@ class bgm:
         return "Track Name (Number): ({}) {}, Track Duration: {}, Restart Point: {}".format(self.track_number, self.track_name, self.track_duration, self.restart_point)
 
 bgm_list = {
+    "": [bgm(track_file = "", track_name="Silence", track_number = 0, track_duration = 1000, restart_point = 0, volume_modifier = 0)],
     "bb_main_theme": [bgm(track_file="Blob_Ball_Main_Theme.wav", track_name = "Blob Ball Main Theme", track_number=1, track_duration=133.5, restart_point=10, volume_modifier=1)],
     "bb_win_theme": [bgm(track_file="Blob_Ball_Win_Theme.wav", track_name = "Blob Ball Win Theme", track_number=2, track_duration=4, restart_point=None, volume_modifier=0.5)]
 }

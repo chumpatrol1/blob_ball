@@ -3,6 +3,7 @@ import engine.handle_input
 from engine.unlocks import return_css_selector
 from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
+from resources.sound_engine.sfx_event import createSFXEvent
 
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
@@ -164,5 +165,7 @@ def popup_handler(timer):
     if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed) and timer <= 0:
         pop_up_counter += 1
         set_timer(30)
+        if(pop_up_counter < len(get_pop_up_events())):
+            createSFXEvent("chime_milestone")
 
     return game_state, pop_up

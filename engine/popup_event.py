@@ -2,6 +2,7 @@
 
 from os import getcwd
 from time import time
+from engine.milestones import add_milestone
 from engine.popup_list import find_blob_unlock
 from engine.unlocks import unlock_blob
 
@@ -46,6 +47,7 @@ def createPopUpEvent(name, pop_up_type):
     global pop_up_events
     try:
         pop_up_events.append(PopUpEvent(name = name, pop_up_type = pop_up_type))
+        add_milestone(getcwd(), pop_up_events[-1])
     except ValueError:
         pass
     except Exception as ex:
