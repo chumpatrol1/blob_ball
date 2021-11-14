@@ -48,7 +48,8 @@ def createPopUpEvent(name, pop_up_type):
     try:
         pop_up_events.append(PopUpEvent(name = name, pop_up_type = pop_up_type))
         add_milestone(getcwd(), pop_up_events[-1])
-    except ValueError:
+        return True
+    except ValueError as ex:
         pass
     except Exception as ex:
         print(Exception)

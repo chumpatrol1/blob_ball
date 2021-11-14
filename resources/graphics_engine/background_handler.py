@@ -36,7 +36,6 @@ def load_background(game_screen, settings):
     elif(game_screen == "win_screen"):
         background_cache['background'] = pg.image.load(cwd + "win_screen.png")
     elif(game_screen == "rules"):
-        print("RULES")
         if(settings['hd_backgrounds']):
             background_cache['background'] = pg.image.load(cwd + "rules_background.png").convert()
         else:

@@ -124,7 +124,7 @@ def update_game_state(game_state, cwd):
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
             if(game_state == "pop_up"):
-                timer = 30
+                timer = 60
     elif(game_state == "pop_up"):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
@@ -143,35 +143,43 @@ def update_game_state(game_state, cwd):
     elif(game_state == "almanac"):
         info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)
         game_state = info_getter[1]
+        song_playing = "bb_credits_theme"
         if(game_state != "almanac"):
             timer = 10
     elif(game_state == "almanac_stats"):
         info_getter = engine.menus.almanac_menu.almanac_stats_navigation(timer)
         game_state = info_getter[0]
+        song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats"):
             timer = 10
     elif(game_state == "almanac_stats_page_2"):
         info_getter = engine.menus.almanac_menu.almanac_stats_navigation_2(timer)
         game_state = info_getter[0]
+        song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats_page_2"):
             timer = 10
     elif(game_state == "almanac_stats_page_3"):
         info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
         game_state = info_getter[0]
+        song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats_page_3"):
             timer = 10
     elif(game_state == "almanac_art"):
         info_getter = engine.menus.almanac_menu.almanac_art_navigation(timer)
         game_state = info_getter[1]
+        song_playing = "bb_credits_theme"
         if(game_state != "almanac_art"):
             timer = 10
     elif(game_state == "almanac_art_backgrounds"):
         info_getter = engine.menus.almanac_menu.almanac_art_backgrounds_navigation(timer)
         game_state = info_getter[1]
+        song_playing = "bb_credits_theme"
     elif(game_state == "almanac_art_blobs"):
         info_getter = engine.menus.almanac_menu.almanac_art_blobs_navigation(timer)
         game_state = info_getter[1]
+        song_playing = "bb_credits_theme"
     elif(game_state == "credits"):
         info_getter = engine.menus.almanac_menu.credits_navigation(timer)
         game_state = info_getter[0]
+        song_playing = "bb_credits_theme"
     return game_state, info_getter, song_playing, settings, ruleset

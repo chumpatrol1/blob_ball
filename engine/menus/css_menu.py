@@ -135,7 +135,7 @@ def css_handler():
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
-        print("Casual Match Started!")
+        #print("Casual Match Started!")
         game_state = "casual_match"
     
     if(game_state == "casual_match"):
@@ -164,7 +164,7 @@ def popup_handler(timer):
 
     if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed) and timer <= 0:
         pop_up_counter += 1
-        set_timer(30)
+        set_timer(60)
         if(pop_up_counter < len(get_pop_up_events())):
             createSFXEvent("chime_milestone")
 
