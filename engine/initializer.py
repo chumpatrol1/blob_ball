@@ -2,7 +2,16 @@
 import os
 from json import loads, dumps
 
-game_version = '0.9.0a'
+game_version = '0.10.0b'
+
+def check_folders(cwd):
+    if(not os.path.isdir(cwd+"/config")):
+        os.mkdir(cwd+"/config")
+        print("Created config folder")
+
+    if(not os.path.isdir(cwd+"/saves")):
+        os.mkdir(cwd+"/saves")
+        print("Created saves folder")
 
 def initialize_game_stats(cwd):
     game_stat_dict = {
@@ -54,15 +63,10 @@ def initialize_game_stats(cwd):
         with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stat_dict = loads(statsdoc.readline())
     except:
-        try:
-            with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-                statsdoc.write(dumps(game_stat_dict))
-                print("game_stats.txt written")
-        except:
-            os.mkdir(cwd+"/saves")
-            print("Made new directory!")
-            with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-                statsdoc.write(dumps(game_stat_dict))
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            statsdoc.write(dumps(game_stat_dict))
+            print("game_stats.txt written")
+
 
 
     return game_stat_dict
@@ -89,11 +93,8 @@ def initialize_ruleset(cwd):
             with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
                 rulesetdoc.write(dumps(ruleset))
             return ruleset
-    try:
-        ruleset = open_ruleset()
-    except:
-        os.mkdir(cwd+"/config")
-        ruleset = open_ruleset()
+
+    ruleset = open_ruleset()
     return ruleset
 
 def load_matchup_chart(cwd):
@@ -120,3 +121,12 @@ def initialize_settings(cwd):
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))
     return settings
+
+def check_existing_directory(cwd):
+    '''
+    Checks to see if the following folders exist. If they don't, create them!
+    '''
+    if not(os.path.isdir(cwd + '/config')): # Config folder
+        os.mkdir(cwd+'/config') 
+    if not(os.path.isdir(cwd + '/saves')): # Saves folder
+        os.mkdir(cwd+'/saves')

@@ -4,6 +4,9 @@ from os import getcwd
 from json import loads, dumps
 
 from pygame.constants import K_KP_ENTER
+from resources.sound_engine.sfx_event import createSFXEvent
+
+#print(tuple(filter(lambda x: x.startswith("K_"), pg.constants.__dict__.keys())))
 
 pg.init()
 #clock = pg.time.Clock()
@@ -28,17 +31,54 @@ input_map = {
     'p2_boost': pg.K_PERIOD,
 }
 
+mapkey_names = {}
+override = {
+    '.': 'PERIOD',
+    ',': 'COMMA',
+    '/': 'FORWARDSLASH',
+    ';': 'SEMICOLON',
+    '\'': 'SINGLEQUOTE',
+    '\\': 'BACKSLASH',
+    '[': 'OPENBRACKET',
+    ']': 'CLOSEBRACKET',
+    '-': 'SUBTRACT',
+    '=': 'EQUALS',
+}
+def update_mapkey_names(input_list, key = None):
+    global mapkey_names
+    global override
+    if(key is None):
+        for mapkey in input_list:
+            key_name = pg.key.name(input_list[mapkey]).upper()
+            if key_name in override:
+                mapkey_names[mapkey] = override[key_name]
+            else:
+                mapkey_names[mapkey] = key_name
+            
+    else:
+        key_name = pg.key.name(input_list[-1]).upper()
+        if key_name in override:
+            mapkey_names[key] = override[key_name]
+        else:
+            mapkey_names[key] = key_name
+
+def return_mapkey_names():
+    global mapkey_names
+    return mapkey_names
+
 try:
-    controls = open(getcwd()+"\\config\\controls.txt", "r+")
+    controls = open(getcwd()+"/config/controls.txt", "r+")
 except:
-    with open(getcwd()+"\\config\\controls.txt", "w") as controls:
+    with open(getcwd()+"/config/controls.txt", "w") as controls:
         controls.write(dumps(input_map))
-    controls = open(getcwd()+"\\config\\controls.txt", "r+")
-    
+    controls = open(getcwd()+"/config/controls.txt", "r+")
+
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
+
+update_mapkey_names(input_map)
 
 def unbind_inputs():
     global input_map
@@ -51,14 +91,23 @@ def bind_input(key_to_rebind):
     global input_map
     global temp_binding
     for event in pg.event.get():
-        if event.type == pg.KEYDOWN and not event.key in temp_binding and not event.key in forbidden_keys:
-            input_map[key_to_rebind] = event.key
-            temp_binding.append(event.key)
-            if(key_to_rebind == "p2_boost"):
-                temp_binding = []
-                with open(getcwd()+"\\config\\controls.txt", "w") as control_list:
-                    control_list.write(dumps(input_map))
-            return True
+        if event.type == pg.KEYDOWN:
+            if(not event.key in temp_binding and not event.key in forbidden_keys):
+                input_map[key_to_rebind] = event.key
+                temp_binding.append(event.key)
+                update_mapkey_names(temp_binding, key=key_to_rebind)
+                if(key_to_rebind == "p2_boost"):
+                    temp_binding = []
+                    with open(getcwd()+"/config/controls.txt", "w") as control_list:
+                        
+                        control_list.write(dumps(input_map))
+                    createSFXEvent('chime_completion')
+                else:
+                    createSFXEvent('chime_progress')
+                return True
+            else:
+                createSFXEvent('chime_error')
+                return False
     else:
         return False
 
@@ -82,6 +131,7 @@ def reset_inputs():
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
     }
+    update_mapkey_names(input_map)
     with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 

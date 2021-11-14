@@ -14,6 +14,8 @@ from resources.graphics_engine.display_settings import draw_rebind_screen, draw_
 from resources.graphics_engine.display_settings import draw_rules_screen as draw_rules_screen
 from resources.graphics_engine.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
+from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
+from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
 from engine.handle_input import toggle_fullscreen
 import math
 from json import loads, dumps
@@ -68,6 +70,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
 
     screen_size = (1366, 768)
     cwd = main_cwd
+    if(game_state == "control_splash"):
+        draw_splash_screen(game_surface, info_getter, settings)
     if(game_state == "main_menu"):
         selector_position = info_getter[0]
         draw_main_menu(screen_size, game_surface, selector_position, settings)
@@ -90,6 +94,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
             print("Weird match end exception:", info_getter)
     elif(game_state == "casual_win"):
         draw_win_screen(game_surface, info_getter, settings)
+    elif(game_state == "pop_up"):
+        draw_pop_up(game_surface, info_getter, settings)
     elif(game_state == "rules"):
         selector_position = info_getter[0]
         game_state = info_getter[1]

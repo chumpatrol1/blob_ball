@@ -14,6 +14,17 @@ name_to_file = {
     "ball_grass_bounce": ['ball_grass_bounce_1.wav', 'ball_grass_bounce_2.wav', 'ball_grass_bounce_3.wav'],
     "ball_blob_bounce": ['ball_blob_bounce_1.wav', 'ball_blob_bounce_2.wav'],
     "ball_metal_bounce": ['ball_metal_bounce_1.wav', 'ball_metal_bounce_2.wav', 'ball_metal_bounce_3.wav'],
+    "chime_progress": ['chime_progress.wav'],
+    "chime_completion": ['chime_completion.wav'],
+    "chime_error": ['chime_error.wav'],
+    "chime_milestone": ['chime_milestone.wav'],
+    'fire': ['fire_1.wav', 'fire_2.wav', 'fire_3.wav'],
+    'ice': ['ice_1.wav', 'ice_2.wav'],
+    'water': ['water_1.wav', 'water_2.wav', 'water_3.wav'],
+    'gale': ['gale.wav'],
+	'goal': ['goal.wav'],
+    'ball_spire_hit': ['ball_spire_hit.wav'],
+    'wavebounce': ['wavebounce.wav'],	
 }
 
 def convert_name_to_file(name):

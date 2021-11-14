@@ -23,21 +23,25 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['goal_limit'] -= 1
             else:
                 ruleset['goal_limit'] = 25
+            createSFXEvent('chime_progress')
         elif(selector_position == 1):
             if(ruleset['time_limit'] > 0):
                 ruleset['time_limit'] -= 600
             else:
                 ruleset['time_limit'] = 36000
+            createSFXEvent('chime_progress')
         elif(selector_position == 2):
             if(ruleset['time_bonus'] > 0):
                 ruleset['time_bonus'] -= 300
             else:
                 ruleset['time_bonus'] = 3600
+            createSFXEvent('chime_progress')
         elif(selector_position == 3):
             if(ruleset['special_ability_charge_base'] > 0):
                 ruleset['special_ability_charge_base'] -= 1
             else:
                 ruleset['special_ability_charge_base'] = 20
+            createSFXEvent('chime_progress')
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
@@ -46,36 +50,42 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
                 ruleset['goal_limit'] += 1
             else:
                 ruleset['goal_limit'] = 1
+            createSFXEvent('chime_progress')
         elif(selector_position == 1):
             if(ruleset['time_limit'] < 36000):
                 ruleset['time_limit'] += 600
             else:
                 ruleset['time_limit'] = 0
+            createSFXEvent('chime_progress')
         elif(selector_position == 2):
             if(ruleset['time_bonus'] < 3600):
                 ruleset['time_bonus'] += 300
             else:
                 ruleset['time_bonus'] = 0
+            createSFXEvent('chime_progress')
         elif(selector_position == 3):
             if(ruleset['special_ability_charge_base'] < 20):
                 ruleset['special_ability_charge_base'] += 1
             else:
                 ruleset['special_ability_charge_base'] = 0
+            createSFXEvent('chime_progress')
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        createSFXEvent('select')
         if(selector_position == len(ruleset)):
             selector_position = 0
             game_state = previous_screen
+            createSFXEvent('select')
         elif(selector_position == len(ruleset) - 1):
             ruleset['goal_limit'] = 5
             ruleset['time_limit'] = 3600
             ruleset['time_bonus'] = 600
             ruleset['special_ability_charge_base'] = 1
             ruleset['danger_zone_enabled'] = True
+            createSFXEvent('chime_completion')
         elif(selector_position == 4):
             ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
+            createSFXEvent('select')
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
             

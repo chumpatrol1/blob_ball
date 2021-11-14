@@ -35,20 +35,20 @@ def play_bgm(song_playing, settings):
             start_time = time()
             pg.mixer.music.load(bgm_class.track_file)
             if(bgm_class.restart_point is not None):
-                pg.mixer.music.play(-1)
+                pg.mixer.music.play(loops = -1, fade_ms = bgm_class.fade_in)
             else:
                 pg.mixer.music.play(0)
     except Exception as ex:
-        print("handle_sound.py error:", ex, "\nAttempted to play", bgm_class.track_file)
+        pass
+        #print("handle_sound.py error:", ex, "\nAttempted to play", bgm_class.track_file)
     elapsed_time = time() - start_time
 
     if elapsed_time >= bgm_timer and bgm_class.restart_point is not None:
-        print("WHAT")
         start_time = time()
         try:
             pg.mixer.music.play(-1, start = bgm_class.restart_point)
         except pg.error as message:
-            print("handle_sound.py error:", message)
+            #print("handle_sound.py error:", message)
             pg.mixer.music.play(-1)
 
 def play_sfx(settings):

@@ -5,10 +5,11 @@ from os import getcwd
 
 blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/blobs/quirkless_blob.png", "Quirkless Blob", "quirkless"], ["/blobs/fire_blob.png", "Fire Blob", "fire"], ["/blobs/ice_blob.png", "Ice Blob", "ice"], ["/blobs/water_blob.png", "Water Blob", "water"], ["/blobs/rock_blob.png", "Rock Blob", "rock"], ["/blobs/lightning_blob.png", "Lightning Blob", "lightning"], ["/blobs/wind_blob.png", "Wind Blob", "wind"],],
-[["/blobs/judge_blob.png", "Judge Blob", "judge"], ["/blobs/doctor_blob.png", "Doctor Blob", "doctor"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/blobs/judge_blob.png", "Judge Blob", "judge"], ["/blobs/doctor_blob.png", "Doctor Blob", "doctor"], ["/blobs/king_blob.png", "King Blob", "king"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/back_arrow.png", "", ""], ["/css_icons/almanac_icon.png", "", ""], ["/css_icons/rules_icon.png", "", ""], ["/css_icons/gear_icon.png", "", ""], ["/css_icons/cpu_icon.png", "", ""],],
 ]
 
 bic_cached = False
@@ -227,7 +228,7 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
 
     x = 0
     y = 0
-    for row in blob_image_cache: #Temporary, until we make more blobs
+    for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
         for icon in row:
             blob = blob_image_cache[y][x]
             blob = pg.transform.scale(blob, (122, 68))

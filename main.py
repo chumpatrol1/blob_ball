@@ -9,6 +9,8 @@ Update the Changelog
 ZIP the files together for release!
 '''
 
+# COMMAND TO RUN THE GAME IN NOTEPAD ++: D:\Python\python.exe -i "$(FULL_CURRENT_PATH)"
+
 '''OPTIMIZING'''
 #python -m cProfile -o out.prof main.py
 #snakeviz out.prof
@@ -16,6 +18,8 @@ ZIP the files together for release!
 #python setup.py bdist_msi
 
 import os
+
+from pygame.display import update
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -25,20 +29,26 @@ cwd = os.getcwd()
 print("MAIN",cwd)
 
 import pygame as pg
+from engine.initializer import check_folders, initialize_game_stats, load_matchup_chart, check_existing_directory
+check_existing_directory(cwd)
 from engine.game_handler import update_game_state as ugs
-from engine.initializer import initialize_game_stats, load_matchup_chart
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
 import engine.handle_input
 from json import loads, dumps
 import time
-game_state = "main_menu"
-new_game_state = "main_menu"
+from engine.unlocks import load_blob_unlocks, update_css_blobs
+game_state = "control_splash"
+new_game_state = "control_splash"
 
-done = False
-
+check_folders(cwd)
 game_stats = initialize_game_stats(cwd)
 load_matchup_chart(cwd)
+
+load_blob_unlocks(cwd)
+update_css_blobs()
+
+done = False
 
 with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
@@ -64,6 +74,8 @@ def run(game_state):
     global clock
     global cwd
     clock.tick_busy_loop(60)
+    if(game_state == "rebind"):
+        clock.tick_busy_loop(5) # Manually reducing the frame rate because it ironically becomes faster to rebind
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings)

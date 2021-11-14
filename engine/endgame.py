@@ -1,6 +1,28 @@
 from json import loads, dumps
 from os import getcwd
+from engine.popup_event import createPopUpEvent
 cwd = getcwd()
+
+def attempt_unlocks(game_stats):
+    blob_unlock_requirements = {
+        3: "fire",
+        6: "ice",
+        9: "water",
+        12: "rock",
+        15: "lightning",
+        18: "wind",
+        23: "judge",
+        28: "doctor",
+        33: "king",
+    }
+    
+    blobs_unlocked = 0
+    for dict_key in blob_unlock_requirements:
+        if(game_stats['matches_played'] >= dict_key):
+            if(createPopUpEvent(blob_unlock_requirements[dict_key], 0)):
+                blobs_unlocked += 1
+
+    return blobs_unlocked
 
 def update_game_stats(game_info, p1_blob, p2_blob, ball):
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
@@ -35,7 +57,9 @@ def update_game_stats(game_info, p1_blob, p2_blob, ball):
         game_stats['ball_ceiling_collisions'] = game_stats['ball_ceiling_collisions'] + ball.info['ceiling_collisions']
         game_stats['ball_wall_collisions'] = game_stats['ball_wall_collisions'] + ball.info['wall_collisions']
         
-        
+        game_stats['blobs_unlocked'] += attempt_unlocks(game_stats)
+
+
         game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
         statsdoc.write(dumps(game_stats))
 
@@ -94,4 +118,28 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
             else:
                 mu_chart[loser] = dict()
                 mu_chart[loser][winner] = [0, 0, 1]
+
+        if not('total' in mu_chart[loser]):
+            mu_chart[loser]['total'] = 0
+
+        if not('total' in mu_chart[winner]):
+            mu_chart[winner]['total'] = 0
+        mu_chart[loser]['total'] += 1
+        mu_chart[winner]['total'] += 1
         muchart.write(dumps(mu_chart))
+
+        most_played_character = ""
+        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+        most_played_character = game_stats['most_played_character']
+        
+        if(mu_chart[loser]['total'] > mu_chart[most_played_character]['total']):
+            most_played_character = loser
+
+        if(mu_chart[winner]['total'] > mu_chart[most_played_character]['total']):
+            most_played_character = winner
+
+        game_stats['most_played_character'] = most_played_character
+        
+        with open(cwd+"/saves/game_stats.txt", "w") as statsdoc:
+            statsdoc.write(dumps(game_stats))

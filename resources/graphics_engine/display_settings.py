@@ -1,6 +1,7 @@
 from os import getcwd
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_particles import draw_ball_particles as draw_ball_particles
+from engine.handle_input import return_mapkey_names
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -44,11 +45,47 @@ def draw_rebind_screen(game_display, settings, rebind_key):
     draw_background(game_display, "rebind", settings)
     
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
-    menu_text = menu_font.render('REBIND ' + rebind_key, False, text_color)
+    menu_text = menu_font.render('REBINDING: ' + rebind_key, False, text_color)
     text_rect = menu_text.get_rect()
-    text_rect.center = (300, 100)
+    text_rect.center = (450, 100)
 
     game_display.blit(menu_text, text_rect)
+
+    input_keys = return_mapkey_names()
+    text_array = []
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
+    for key in input_keys:
+        text_array.append(menu_font.render(key + ": " + str(input_keys[key]), False, text_color))
+
+    text_y = 152
+    for text_box in text_array[:len(text_array)//2]:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (68, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 76
+    text_y = 152
+    for text_box in text_array[len(text_array)//2:]:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (568, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 76
+
+    small_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 15)
+    text_array = [
+        small_font.render("Note: You may need to press", False, text_color),
+        small_font.render("press and hold to register the input", False, text_color),
+        small_font.render("the input. Forbidden keys include", False, text_color),
+        small_font.render("ESCAPE (Closes the game),", False, text_color),
+        small_font.render("CONTROL (Toggle Full Screen)", False, text_color),
+        small_font.render("ENTER (Navigates Menus)", False, text_color),
+    ]
+
+    text_y = 152
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (978, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 36
     
 def draw_rules_screen(screen_size, game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)
@@ -63,12 +100,12 @@ def draw_rules_screen(screen_size, game_display, ruleset, selector_position, set
         menu_font.render("Reset to Default", False, text_color),
         menu_font.render("<-- Back", False, text_color),
     ]
-    text_y = screen_size[1]//10
+    text_y = 76
     for text_box in text_array:
         text_rect = text_box.get_rect()
-        text_rect.topleft = (screen_size[0]//20, text_y)
+        text_rect.topleft = (68, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += screen_size[1]//10
+        text_y += 76
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (screen_size[1]//20, screen_size[1]//20))
