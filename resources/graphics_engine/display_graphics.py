@@ -13,6 +13,7 @@ from resources.graphics_engine.display_gameplay import unload_image_cache as unl
 from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
 from resources.graphics_engine.display_settings import draw_rules_screen as draw_rules_screen
 from resources.graphics_engine.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
+from resources.graphics_engine.display_medals_and_milestones import draw_medals_screen
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
 from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
@@ -111,6 +112,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "almanac"):
         selector_position = info_getter[0]
         draw_almanac_main(game_surface, selector_position, settings)
+    elif(game_state == "medals"):
+        draw_medals_screen(game_surface, info_getter, settings)
     elif(game_state == "almanac_stats"):
         draw_almanac_stats(game_surface, settings)
     elif(game_state == "almanac_stats_page_2"):

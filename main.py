@@ -37,7 +37,7 @@ import resources.sound_engine.handle_sound as hs
 import engine.handle_input
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_css_blobs
+from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medals
 game_state = "control_splash"
 new_game_state = "control_splash"
 
@@ -46,6 +46,7 @@ game_stats = initialize_game_stats(cwd)
 load_matchup_chart(cwd)
 
 load_blob_unlocks(cwd)
+load_medals(cwd)
 update_css_blobs()
 
 done = False

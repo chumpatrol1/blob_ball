@@ -8,6 +8,7 @@ import engine.menus.css_menu
 import engine.menus.rules_menu
 import engine.menus.settings_menu
 import engine.menus.almanac_menu
+import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.unlocks import update_css_blobs
 import engine.win_screen_handler
@@ -146,6 +147,9 @@ def update_game_state(game_state, cwd):
         song_playing = "bb_credits_theme"
         if(game_state != "almanac"):
             timer = 10
+    elif(game_state == "medals"):
+        game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+        song_playing = "bb_credits_theme"
     elif(game_state == "almanac_stats"):
         info_getter = engine.menus.almanac_menu.almanac_stats_navigation(timer)
         game_state = info_getter[0]
