@@ -90,8 +90,9 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         game_time = info_getter[6]
         try:
             draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
-        except:
+        except Exception as ex:
             unload_image_cache()
+            print(ex)
             print("Weird match end exception:", info_getter)
     elif(game_state == "casual_win"):
         draw_win_screen(game_surface, info_getter, settings)

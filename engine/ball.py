@@ -278,6 +278,12 @@ class Ball:
                 self.x_speed += 0.25
             elif(blob.player == 2 and self.x_speed > -15):
                 self.x_speed -= 0.25
+        elif(blob.used_ability == "stoplight"):
+            self.x_speed = 0
+            self.y_speed = 0
+            self.image = type_to_image("blocked_ball")
+            self.species = "blocked_ball"
+            self.special_timer = 30
 
     def move(self, p1_blob, p2_blob):
         ground = Ball.ground

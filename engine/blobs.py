@@ -2,6 +2,7 @@ import math
 import os
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
+from engine.blob_stats import species_to_stars
 
 cwd = os.getcwd()
 
@@ -17,255 +18,12 @@ cwd = os.getcwd()
 # In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
 # In engine/menus/css_menu.py update blob_list to allow your blob to be selectable
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
-def species_to_stars(species):
-    '''
-    max_hp: The most HP a blob has (the amount they start each round with)
-    top_speed: The fastest that a blob can naturally accelerate to in the ground/air
-    traction: The rate at which a blob accelerates on the ground, or the amount that they decelerate when no key is held
-    friction: The rate at which a blob accelerates in the air, or the amount that they decelerate when no key is held
-    jump_force: Affects the jump height of a blob (Gravity should not affect this)
-    gravity: Affects how long it takes for a blob to get back to the ground after jumping. 
-    kick_cooldown_rate: Affects how long it takes for a kick to cool down
-    block_cooldown_rate: Affects how long it takes for a block to cool down
-
-    boost_cost: Affects the cost of using a boost
-    boost_cooldown_rate: Affects how long it takes for a boost to cool down
-    boost_duration: The amount of time that a stat boost lasts
-
-    special_ability: The type of SA a blob has
-    special_ability_cost: The amount that using a special ability costs
-    speical_ability_max: The most special ability that can be stored at once
-    special_ability_cooldown: The time between special ability uses. 0 means that it can be held down.
-    '''
-    if(species == "quirkless"):
-        blob_dict = {
-            'max_hp': 3,
-            'top_speed': 4,
-            'traction': 4,
-            'friction': 4,
-            'gravity': 4,
-            'kick_cooldown_rate': 5,
-            'block_cooldown_rate': 5,
-
-            'boost_cost': 840,
-            'boost_cooldown_max': 5,
-            'boost_duration': 5,
-
-            'special_ability': 'boost',
-            'special_ability_cost': 840,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 510,
-            'special_ability_delay': 0,
-            'special_ability_duration': 0,
-        }
-    elif(species == "fire"):
-        blob_dict = {
-            'max_hp': 2,
-            'top_speed': 4,
-            'traction': 4,
-            'friction': 3,
-            'gravity': 1,
-            'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 4,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'fireball',
-            'special_ability_cost': 150,
-            'special_ability_maintenance': 12,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 2,
-            'special_ability_delay': 0,
-            'special_ability_duration': 0,
-        }
-    elif(species == "ice"):
-        blob_dict = {
-            'max_hp': 3,
-            'top_speed': 4,
-            'traction': 1,
-            'friction': 3,
-            'gravity': 4,
-            'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 5,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'snowball',
-            'special_ability_cost': 150,
-            'special_ability_maintenance': 15,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 2,
-            'special_ability_delay': 0,
-            'special_ability_duration': 0,
-        }
-    elif(species == "water"):
-        blob_dict = {
-            'max_hp': 2,
-            'top_speed': 4,
-            'traction': 4,
-            'friction': 2,
-            'gravity': 3,
-            'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 3,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'geyser',
-            'special_ability_cost': 100,
-            'special_ability_maintenance': 15,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 2,
-            'special_ability_delay': 0,
-            'special_ability_duration': 0,
-        }
-    elif(species == "rock"):
-        blob_dict = {
-            'max_hp': 5,
-            'top_speed': 1,
-            'traction': 5,
-            'friction': 1,
-            'gravity': 5,
-            'kick_cooldown_rate': 1,
-            'block_cooldown_rate': 2,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 4,
-
-            'special_ability': 'spire',
-            'special_ability_cost': 400,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 300,
-            'special_ability_delay': 45,
-            'special_ability_duration': 0,
-        }
-    elif(species == "lightning"):
-        blob_dict = {
-            'max_hp': 1,
-            'top_speed': 5,
-            'traction': 3,
-            'friction': 5,
-            'gravity': 5,
-            'kick_cooldown_rate': 2,
-            'block_cooldown_rate': 1,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'thunderbolt',
-            'special_ability_cost': 600,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 240,
-            'special_ability_delay': 30,
-            'special_ability_duration': 0,
-        }
-    elif(species == "wind"):
-        blob_dict = {
-            'max_hp': 1,
-            'top_speed': 5,
-            'traction': 2,
-            'friction': 5,
-            'gravity': 1,
-            'kick_cooldown_rate': 5,
-            'block_cooldown_rate': 1,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'gale',
-            'special_ability_cost': 900,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 720,
-            'special_ability_delay': 0,
-            'special_ability_duration': 240,
-        }
-    elif(species == "judge"):
-        blob_dict = {
-            'max_hp': 3,
-            'top_speed': 3,
-            'traction': 2,
-            'friction': 3,
-            'gravity': 3,
-            'kick_cooldown_rate': 3,
-            'block_cooldown_rate': 3,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'c&d',
-            'special_ability_cost': 510,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 300,
-            'special_ability_delay': 0,
-            'special_ability_duration': 60,
-        }
-    elif(species == "doctor"):
-        blob_dict = {
-            'max_hp': 4,
-            'top_speed': 2,
-            'traction': 3,
-            'friction': 3,
-            'gravity': 4,
-            'kick_cooldown_rate': 1,
-            'block_cooldown_rate': 1,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 1,
-            'boost_duration': 1,
-
-            'special_ability': 'pill',
-            'special_ability_cost': 300,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 240,
-            'special_ability_delay': 0,
-            'special_ability_duration': 0,
-        }
-    elif(species == "king"):
-        blob_dict = {
-            'max_hp': 3,
-            'top_speed': 1,
-            'traction': 1,
-            'friction': 1,
-            'gravity': 1,
-            'kick_cooldown_rate': 4,
-            'block_cooldown_rate': 4,
-
-            'boost_cost': 600,
-            'boost_cooldown_max': 3,
-            'boost_duration': 3,
-
-            'special_ability': 'tax',
-            'special_ability_cost': 600,
-            'special_ability_maintenance': 0,
-            'special_ability_max': 1800,
-            'special_ability_cooldown': 540,
-            'special_ability_delay': 0,
-            'special_ability_duration': 180,
-        }
-
-
-    return blob_dict
 
 def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax']
+    instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax', 'stoplight']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt']
@@ -287,6 +45,7 @@ def species_to_image(species):
         'judge': blob_cwd + "judge_blob.png",
         'doctor': blob_cwd + "doctor_blob.png",
         'king': blob_cwd + 'king_blob.png',
+        'cop': blob_cwd + 'cop_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -308,6 +67,7 @@ def species_to_ability_icon(species):
         'judge': ability_cwd + "cnd.png",
         'doctor': ability_cwd + "pill.png",
         'king': ability_cwd + "tax.png",
+        'cop': ability_cwd + "snowball.png",
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -550,6 +310,8 @@ class Blob:
                 self.used_ability = None
             elif(self.used_ability == "tax" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
+            elif(self.used_ability == "stoplight" and self.special_ability_timer == self.special_ability_cooldown_max -1):
+                self.used_ability = None
             
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -649,9 +411,14 @@ class Blob:
         self.recharge_indicators['ability_swap'] = True
 
     def ability(self):
-        if(self.special_ability == 'boost'):
+        if(self.special_ability == ""):
+            pass
+        else:
+            special_ability = self.special_ability
+
+        if(special_ability == 'boost'):
             self.boost()
-        elif(self.special_ability == 'fireball'):
+        elif(special_ability == 'fireball'):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
@@ -666,7 +433,7 @@ class Blob:
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0
                     createSFXEvent('fire')
-        elif(self.special_ability == 'snowball'):
+        elif(special_ability == 'snowball'):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
@@ -681,7 +448,7 @@ class Blob:
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0 # Reset holding timer
                     createSFXEvent('ice')
-        elif(self.special_ability == 'geyser'):
+        elif(special_ability == 'geyser'):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
                     #If we were holding down the button before
@@ -696,21 +463,21 @@ class Blob:
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0
                     createSFXEvent('water')
-        elif(self.special_ability == "spire"):
+        elif(special_ability == "spire"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Spire activation
                 self.used_ability = "spire_wait"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
-        elif(self.special_ability == "thunderbolt"):
+        elif(special_ability == "thunderbolt"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Thunderbolt activation
                 self.used_ability = 'thunderbolt_wait' #This is done for a technical reason, to prevent premature electrocution
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
-        elif(self.special_ability == "gale"):
+        elif(special_ability == "gale"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Gale activation
                 self.used_ability = "gale"
@@ -718,13 +485,13 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 createSFXEvent('gale')
-        elif(self.special_ability == "c&d"):
+        elif(special_ability == "c&d"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "c&d"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-        elif(self.special_ability == "pill"):
+        elif(special_ability == "pill"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 # Spend cost and activate cooldown
                 self.special_ability_cooldown = self.special_ability_cooldown_max
@@ -771,13 +538,21 @@ class Blob:
 
                 self.status_effects['pill'] = random.choice(pill_list)
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
-        elif(self.special_ability == "tax"):
+        elif(special_ability == "tax"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "tax"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 createSFXEvent('chime_progress')
+        elif(special_ability == "stoplight"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "stoplight"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                createSFXEvent('chime_progress')
+
 
     def kick(self):
         if(self.kick_cooldown <= 0):
@@ -874,6 +649,8 @@ class Blob:
 
             if(blob.boost_cooldown_timer < self.boost_cooldown_timer):
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2
+        elif(self.used_ability == "stoplight"):
+            blob.collision_timer = 30
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
         damage_taken = False
