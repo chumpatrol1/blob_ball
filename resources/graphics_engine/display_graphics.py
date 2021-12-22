@@ -10,8 +10,7 @@ from resources.graphics_engine.display_css import draw_css
 from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
 from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
 from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
-from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen as draw_settings_screen
-from resources.graphics_engine.display_settings import draw_rules_screen as draw_rules_screen
+from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
 from resources.graphics_engine.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
 from resources.graphics_engine.display_medals_and_milestones import draw_medals_screen
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
@@ -102,7 +101,9 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         selector_position = info_getter[0]
         game_state = info_getter[1]
         ruleset = info_getter[2]
-        draw_rules_screen(screen_size, game_surface, ruleset, selector_position, settings)
+        draw_rules_screen(game_surface, ruleset, selector_position, settings)
+    elif(game_state == "p1_mods" or game_state == "p2_mods"):
+        draw_pmods_screen(game_surface, info_getter, settings)
     elif(game_state == "settings"):
         selector_position = info_getter[0]
         game_state = info_getter[1]

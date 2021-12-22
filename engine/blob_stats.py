@@ -24,7 +24,7 @@ def create_dict(max_hp = 3, top_speed = 3, traction = 3, friction = 3, gravity =
         }
     return blob_dict
 
-def species_to_stars(species):
+def species_to_stars(species, stat_overrides):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
     top_speed: The fastest that a blob can naturally accelerate to in the ground/air
@@ -58,5 +58,12 @@ def species_to_stars(species):
         'cop': create_dict(4, 4, 4, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 510, 0, 1800, 600, 0, 0),
     }
 
+    blob_dict = full_dict[species]
+    for key in stat_overrides:
+        if stat_overrides[key] is not None:
+            if(key == "max_hp"):
+                blob_dict[key] = (stat_overrides[key] - 6)//2
+            else:
+                blob_dict[key] = stat_overrides[key]
 
-    return full_dict[species]
+    return blob_dict

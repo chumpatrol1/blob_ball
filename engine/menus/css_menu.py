@@ -135,7 +135,6 @@ def css_handler():
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
-        #print("Casual Match Started!")
         game_state = "casual_match"
     
     if(game_state == "casual_match"):

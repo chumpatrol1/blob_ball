@@ -3,6 +3,7 @@ def set_timer(frames):
     timer = frames
 
 from engine.gameplay import clear_info_cache
+from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
 import engine.menus.css_menu
 import engine.menus.rules_menu
@@ -16,42 +17,10 @@ import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
 import resources.graphics_engine.display_css
 from os import getcwd
-from json import loads, dumps
 cwd = getcwd()
 
-game_version = '0.8.0a'
-ruleset = {
-    'version': game_version,
-    'goal_limit': 5,
-    'time_limit': 3600,
-    'time_bonus': 600,
-    'special_ability_charge_base': 1,
-    'danger_zone_enabled': True,
-}
-
-settings = {
-    'hd_backgrounds': True,
-    'hd_blobs': True,
-    'smooth_scaling': True,
-    'music_volume': 10,
-    'sound_volume': 10,
-}
-
-try:
-    with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
-        ruleset = loads(rulesetdoc.readline())
-    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-        ruleset['version'] = game_version
-        rulesetdoc.write(dumps(ruleset))
-except:
-    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-        rulesetdoc.write(dumps(ruleset))
-try:
-    with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
-        settings = loads(settingsdoc.readline())
-except:
-    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
-        settingsdoc.write(dumps(settings))
+ruleset = initialize_ruleset(cwd)
+settings = initialize_settings(cwd)
 
 timer = 0
 previous_screen = ""
@@ -135,6 +104,9 @@ def update_game_state(game_state, cwd):
     elif(game_state == "rules"):
         info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
         game_state = info_getter[1]
+        ruleset = info_getter[2]
+    elif(game_state == "p1_mods" or game_state == "p2_mods"):
+        game_state, info_getter = engine.menus.rules_menu.player_mods_navigation(timer, ruleset, game_state, cwd)
     elif(game_state == "settings"):
         info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
         game_state = info_getter[1]

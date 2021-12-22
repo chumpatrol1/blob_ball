@@ -71,7 +71,26 @@ def initialize_game_stats(cwd):
 
     return game_stat_dict
 
-def initialize_ruleset(cwd):
+def load_default_ruleset():
+    player_mods = {
+        'max_hp': None,
+        'top_speed': None,
+        'traction': None,
+        'friction': None,
+        'gravity': None,
+        'kick_cooldown_rate': None,
+        'block_cooldown_rate': None,
+        'boost_cost': None,
+        'boost_cooldown_max': None,
+        'boost_duration': None,
+
+        'special_ability_cost': None,
+        'special_ability_maintenance': None,
+        'special_ability_max': None,
+        'special_ability_cooldown': None,
+        'special_ability_delay': None,
+        'special_ability_duration': None,
+    }
     ruleset = {
         'version': game_version,
         'goal_limit': 5,
@@ -79,12 +98,22 @@ def initialize_ruleset(cwd):
         'time_bonus': 600,
         'special_ability_charge_base': 1,
         'danger_zone_enabled': True,
+        'p1_modifiers': player_mods,
+        'p2_modifiers': player_mods,
     }
+    return ruleset
 
-    def open_ruleset():
+def initialize_ruleset(cwd):
+    ruleset = load_default_ruleset()
+
+    def open_ruleset(ruleset):
         try:
             with open(cwd+'/config/ruleset.txt', 'r') as rulesetdoc:
-                ruleset = loads(rulesetdoc.readline())
+                n_ruleset = loads(rulesetdoc.readline())
+                for key in ruleset:
+                    if not key in n_ruleset:
+                        n_ruleset[key] = ruleset[key]
+            ruleset = n_ruleset
             with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
                 ruleset['version'] = game_version
                 rulesetdoc.write(dumps(ruleset))
@@ -94,7 +123,7 @@ def initialize_ruleset(cwd):
                 rulesetdoc.write(dumps(ruleset))
             return ruleset
 
-    ruleset = open_ruleset()
+    ruleset = open_ruleset(ruleset)
     return ruleset
 
 def load_matchup_chart(cwd):
@@ -112,6 +141,8 @@ def initialize_settings(cwd):
     'hd_backgrounds': True,
     'hd_blobs': True,
     'smooth_scaling': True,
+    'music_volume': 10,
+    'sound_volume': 10,
     }
 
     try:

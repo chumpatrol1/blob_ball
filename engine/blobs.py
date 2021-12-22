@@ -103,7 +103,7 @@ def create_visualization(number):
 
 class Blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False):
+    special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False, stat_overrides = None):
         self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
@@ -114,7 +114,7 @@ class Blob:
         self.cpu_memory = []
         self.image = species_to_image(species)
         self.ability_icon = species_to_ability_icon(species)
-        self.stars = species_to_stars(species) #Gets many values for each blob
+        self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
         self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
@@ -551,6 +551,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+                self.block_cooldown += 60
                 createSFXEvent('chime_progress')
 
 
