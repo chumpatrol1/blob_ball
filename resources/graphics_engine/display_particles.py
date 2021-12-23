@@ -84,6 +84,7 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_2.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_3.png").convert_alpha(), (30, 30))
         particle_cache['recharge_flash'] = pg.image.load(cwd + "/resources/images/particles/recharge_flash.png").convert_alpha()
+        particle_cache['energy_flash'] = pg.image.load(cwd + "/resources/images/particles/energy_flash.png").convert_alpha()
         particle_cache['damage_flash'] = pg.image.load(cwd + "/resources/images/particles/damage_flash.png").convert_alpha()
         particle_cache['heal_flash'] = pg.image.load(cwd + "/resources/images/particles/heal_flash.png").convert_alpha()
         particle_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (30, 30))
@@ -133,6 +134,10 @@ def draw_heal_flash(flash_x):
 def draw_recharge_flash(flash_x):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+
+def draw_energy_flash(flash_x):
+    global particle_memory
+    ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = flash_x, y_pos = 75, fade = 15, ground_clip = True))
 
 def clear_particle_memory():
     global particle_memory

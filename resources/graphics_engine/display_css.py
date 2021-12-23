@@ -1,5 +1,5 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
-from engine.unlocks import return_css_display, update_css_blobs
+from engine.unlocks import load_blob_unlocks, return_css_display, update_css_blobs
 import pygame as pg
 from os import getcwd
 cwd = getcwd()
@@ -27,6 +27,8 @@ def unload_css():
     token_cache = {}
 
 def load_blobs(blob_image_cache, big_image_cache, directory):
+    load_blob_unlocks(cwd)
+    update_css_blobs()
     blob_array = return_css_display()
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])
@@ -46,7 +48,7 @@ def force_load_blobs():
     global cwd
     unload_css()
     directory = cwd + "/resources/images"
-    load_blobs(blob_image_cache, big_image_cache, directory)
+    blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
     unload_css()
 
 def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):

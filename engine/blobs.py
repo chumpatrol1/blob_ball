@@ -235,6 +235,7 @@ class Blob:
             'kick': False,
             'block': False,
             'boost': False,
+            'ability_energy': False,
         }
         self.status_effects = {
             "judged": 0,
@@ -274,6 +275,11 @@ class Blob:
             self.focus_lock -= 1
         if(self.special_ability_meter < self.special_ability_max):
             self.special_ability_meter += self.special_ability_charge
+
+            if(self.special_ability_cost + (self.special_ability_charge * 5) > self.special_ability_meter >= self.special_ability_cost and not self.recharge_indicators['ability_energy']\
+                and not (self.ability_classification == "held" and self.special_ability_timer > 0)):
+                self.toggle_recharge_indicator('ability_energy', 2)
+
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
 
@@ -544,6 +550,16 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+
+                skc = bool(self.kick_cooldown > 0)
+                slc = bool(self.block_cooldown > 0)
+                sbc = bool(self.boost_cooldown_timer > 0)
+                self.kick_cooldown -= 60
+                self.block_cooldown -= 60
+                if(self.boost_cooldown_timer > 0):
+                    self.boost_cooldown_timer -= 60
+                self.check_cooldown_completion(updatedKick=skc, updatedBlock=slc, updatedBoost=sbc)
+
                 createSFXEvent('chime_progress')
         elif(special_ability == "stoplight"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
@@ -642,14 +658,15 @@ class Blob:
             blob.status_effects['taxed'] = self.special_ability_duration
             self.set_base_stats(blob.return_stars())
             blob.set_base_stats(self.return_stars())
-            if(blob.kick_cooldown < self.kick_cooldown):
+            '''if(blob.kick_cooldown < self.kick_cooldown):
                 self.kick_cooldown = (self.kick_cooldown + blob.kick_cooldown)//2
             
             if(blob.block_cooldown < self.block_cooldown):
                 self.block_cooldown = (self.block_cooldown + blob.block_cooldown)//2
 
             if(blob.boost_cooldown_timer < self.boost_cooldown_timer):
-                self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2
+                self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
+
         elif(self.used_ability == "stoplight"):
             blob.collision_timer = 30
 

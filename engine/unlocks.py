@@ -1,4 +1,5 @@
 from json import loads, dumps
+from copy import deepcopy
 # The original selector
 css_selector_list = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -16,7 +17,7 @@ original_css_display_list = [ #Creates an array of arrays, which contains the im
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
 
-css_display_list = original_css_display_list.copy() #Creates an array of arrays, which contains the image to use, it's name, and special ability
+css_display_list = deepcopy(original_css_display_list) #Creates an array of arrays, which contains the image to use, it's name, and special ability
 
 
 css_location_dict = { # Stores every location to loop through. The key is a location, the value is cross checked with blob_unlock_dict
