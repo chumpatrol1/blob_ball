@@ -111,7 +111,7 @@ class Blob:
         else:
             self.danger_zone = 1475
         self.is_cpu = is_cpu
-        self.cpu_memory = []
+        self.cpu_memory = {'press_queue': [], 'game_state': '', 'current_play': ''}
         self.image = species_to_image(species)
         self.ability_icon = species_to_ability_icon(species)
         self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob

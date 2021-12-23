@@ -108,13 +108,13 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     else:
         if(timer == 0):
             if(p1_blob.is_cpu):
-                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic(p1_blob, p2_blob, ball, game_score, timer)
+                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p1_blob, p2_blob, ball, game_score, game_info['time'])
                 p1_blob.cpu_memory = cpu_memory
                 p1_blob.move(cpu_logic)
             else:
                 p1_blob.move(pressed)
             if(p2_blob.is_cpu):
-                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic(p2_blob, p1_blob, ball, game_score, timer)
+                cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p2_blob, p1_blob, ball, game_score, game_info['time'])
                 p2_blob.cpu_memory = cpu_memory
                 p2_blob.move(cpu_logic)
             else:
