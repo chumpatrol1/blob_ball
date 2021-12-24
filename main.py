@@ -71,10 +71,12 @@ def handle_sound(game_state, settings):
     hs.handle_sound(game_state, settings)
 
 clock = pg.time.Clock()
+escape_timer = 0
 def run(game_state):
     global done
     global clock
     global cwd
+    global escape_timer
     clock.tick_busy_loop(60)
     if(game_state == "rebind"):
         clock.tick_busy_loop(5) # Manually reducing the frame rate because it ironically becomes faster to rebind
@@ -87,8 +89,14 @@ def run(game_state):
         if event.type == pg.QUIT:
             done = True
     pressed =  pg.key.get_pressed()
-    if(pressed[pg.K_ESCAPE]):
-        done = True #Ends the game
+    if(pressed[pg.K_ESCAPE] and not escape_timer):
+        if(game_state == "casual_match"):
+            game_state = "css"
+            escape_timer = 30
+        else:
+            done = True #Ends the game
+    if(escape_timer):
+        escape_timer -= 1
     if(game_state == "quit"):
         done = True
         
