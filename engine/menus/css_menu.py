@@ -1,10 +1,12 @@
 from pygame.display import Info
 import engine.handle_input
-from engine.unlocks import return_css_selector
+from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector, update_css_blobs
 from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
+from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
 
+# X position, Y position, Confirmation, CPU/Human
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p1_blob = "quirkless"
@@ -135,7 +137,6 @@ def css_handler():
             p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
-        #print("Casual Match Started!")
         game_state = "casual_match"
     
     if(game_state == "casual_match"):
@@ -151,11 +152,13 @@ def css_handler():
 pop_up_counter = 0
 def popup_handler(timer):
     global pop_up_counter
+    global blob_list
     game_state = "pop_up"
     if(pop_up_counter >= len(get_pop_up_events())):
         pop_up_counter = 0
         last_info = get_pop_up_events()[-1].info
         clear_pop_up_events()
+        blob_list = return_css_selector()
         return "css", last_info
     
     pop_up = get_pop_up_events()[pop_up_counter].info

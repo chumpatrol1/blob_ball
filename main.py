@@ -29,7 +29,7 @@ cwd = os.getcwd()
 print("MAIN",cwd)
 
 import pygame as pg
-from engine.initializer import check_folders, initialize_game_stats, load_matchup_chart, check_existing_directory
+from engine.initializer import check_folders, initialize_ruleset, initialize_game_stats, load_matchup_chart, check_existing_directory
 check_existing_directory(cwd)
 from engine.game_handler import update_game_state as ugs
 import resources.graphics_engine.display_graphics as dg
@@ -37,15 +37,17 @@ import resources.sound_engine.handle_sound as hs
 import engine.handle_input
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_css_blobs
+from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medals
 game_state = "control_splash"
 new_game_state = "control_splash"
 
 check_folders(cwd)
 game_stats = initialize_game_stats(cwd)
+initialize_ruleset(cwd)
 load_matchup_chart(cwd)
 
 load_blob_unlocks(cwd)
+load_medals(cwd)
 update_css_blobs()
 
 done = False

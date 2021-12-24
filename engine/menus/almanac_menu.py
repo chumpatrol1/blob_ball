@@ -17,10 +17,12 @@ def almanac_navigation(timer, previous_screen):
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         createSFXEvent('select')
-        if(selector_position == 0): #Casual
+        if(selector_position == 0): #Blobs and Info
             game_state = "almanac"
         elif(selector_position == 1):
-            selector_position = 0
+            game_state = "medals"
+            #selector_position = 0
+            # Will be temporarily disabled
         elif(selector_position == 2):
             game_state = "almanac_stats"
         elif(selector_position == 3):

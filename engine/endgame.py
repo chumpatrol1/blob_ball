@@ -14,6 +14,7 @@ def attempt_unlocks(game_stats):
         23: "judge",
         28: "doctor",
         33: "king",
+        38: "cop",
     }
     
     blobs_unlocked = 0

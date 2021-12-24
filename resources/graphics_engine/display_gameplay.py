@@ -2,7 +2,7 @@ from os import getcwd
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from resources.graphics_engine.display_particles import clear_particle_memory as clear_particle_memory
-from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash
+from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash, draw_energy_flash
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -173,6 +173,9 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         if(p1_blob.recharge_indicators['boost']):
             draw_recharge_flash(330)
 
+    if(p1_blob.recharge_indicators['ability_energy']):
+        draw_energy_flash(10)
+
     if(p2_blob.recharge_indicators['damage']):
         draw_damage_flash(966)
     
@@ -211,6 +214,9 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
         if(p2_blob.recharge_indicators['boost']):
             draw_recharge_flash(1286)
         
+    if(p2_blob.recharge_indicators['ability_energy']):
+            draw_energy_flash(966)
+
     draw_ui_particles(game_display)
 
 def draw_timer(screen_size, game_display, timer):

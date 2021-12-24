@@ -7,7 +7,8 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'wind': ['wind_blob.png', "Wind Blob", "Press your ability button to/blow wind across the field./The wind pushes airborne foes and the ball!/Wind Blob also kicks quickly!"],
     'judge': ['judge_blob.png', "Judge Blob", "Cease and desist your foes,/preventing them from using their/kicks, blocks boosts or abilities!"],
     'doctor': ['doctor_blob.png', "Doctor Blob", "This blob eats a variety of pills!/The blue caffeine pill reduces all cooldowns./The yellow steroid pill boosts yourself./The green gelatin pill heals yourself."],
-    'king': ['king_blob.png', "King Blob", "Tax your foes, reducing/your owncooldowns and/swapping your speed stats!"],
+    'king': ['king_blob.png', "King Blob", "Tax your foes, reducing/your own cooldowns and/swapping your speed stats!"],
+    'cop': ['cop_blob.png', "Cop Blob", "Blow your whistle at the/ball to stop it completely,/and make it intangible to the enemy!"]
 }
 
 def find_blob_unlock(key):
