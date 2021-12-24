@@ -133,11 +133,13 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
         with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
         most_played_character = game_stats['most_played_character']
-        
-        if(mu_chart[loser]['total'] > mu_chart[most_played_character]['total']):
-            most_played_character = loser
+        if(most_played_character in mu_chart):
+            if(mu_chart[loser]['total'] > mu_chart[most_played_character]['total']):
+                most_played_character = loser
 
-        if(mu_chart[winner]['total'] > mu_chart[most_played_character]['total']):
+            if(mu_chart[winner]['total'] > mu_chart[most_played_character]['total']):
+                most_played_character = winner
+        else:
             most_played_character = winner
 
         game_stats['most_played_character'] = most_played_character
