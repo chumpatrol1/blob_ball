@@ -201,8 +201,8 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
     else:
         current_game_state = 'other'
 
-    if not  (timer%60):
-        print(logic_memory)
+    #if not  (timer%60):
+    #    print(logic_memory)
 
     # If the Game State is Different from the one in Memory, change your Play
     if(logic_memory['game_state'] != current_game_state):
@@ -232,6 +232,9 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         if(blob.kick_cooldown == 0 and 150 < abs(blob.x_center - ball.x_center) < 185\
             and (blob.y_center > ball.y_center) and random.randint(0, 10) == 0):
             pressed.append('kick')
+
+        if(blob.boost_cooldown_timer == 0 and blob.special_ability_meter >= blob.boost_cost and not random.randint(0, 5)):
+            pressed.append('boost')
     elif(logic_memory['current_play'] == 'opening_3'): # Run to the ball and guard it
         if(abs(blob.x_center - ball.x_center) > 300):
             pressed.append('toward')
@@ -269,6 +272,10 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
             elif(blob.player == 2 and blob.x_center > ball.x_center):
                 pressed.append('kick')
 
+        if(blob.boost_cooldown_timer == 0 and blob.special_ability_meter >= blob.boost_cost\
+             and not random.randint(0, 5) and not (self_position == 'away_dz' or self_position == self_position == 'away_mid')):
+            pressed.append('boost')
+
         
 
     # Convert to Player Specific Move Codes
@@ -276,22 +283,22 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         for i in range(len(pressed)):
             if(pressed[i] == 'toward'):
                 pressed[i] = 'right'
-                if(blob.facing == 'left' and random.randint(0, 2)):
+                if(blob.facing == 'left' and random.randint(0, 4) > 1):
                     pressed.append('p1_left')
             elif(pressed[i] == 'away'):
                 pressed[i] = 'left'
-                if(blob.facing == 'right' and random.randint(0, 2)):
+                if(blob.facing == 'right' and random.randint(0, 4) > 1):
                     pressed.append('p1_right')
             pressed[i] = "p1_" + pressed[i]
     else:
         for i in range(len(pressed)):
             if(pressed[i] == 'toward'):
                 pressed[i] = 'left'
-                if(blob.facing == 'right' and random.randint(0, 2)):
+                if(blob.facing == 'right' and random.randint(0, 4) > 1):
                     pressed.append('p2_right')
             elif(pressed[i] == 'away'):
                 pressed[i] = 'right'
-                if(blob.facing == 'left' and random.randint(0, 2)):
+                if(blob.facing == 'left' and random.randint(0, 4) > 1):
                     pressed.append('p2_left')
                 
             pressed[i] = "p2_" + pressed[i]

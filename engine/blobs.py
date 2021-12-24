@@ -67,7 +67,7 @@ def species_to_ability_icon(species):
         'judge': ability_cwd + "cnd.png",
         'doctor': ability_cwd + "pill.png",
         'king': ability_cwd + "tax.png",
-        'cop': ability_cwd + "snowball.png",
+        'cop': ability_cwd + "block_icon.png",
         "random": icon_cwd + "boost_icon.png",
     }
     

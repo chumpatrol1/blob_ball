@@ -104,6 +104,8 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     else:
         game_display.blit(p1_selected_blob, (136, 576))
 
+
+    #TODO: Change this text with bot symbol
     if(p1_selector_position[3] == 0):
         menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
     else:
