@@ -1,12 +1,12 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.9.0b**
+**v0.11.0b**
 
 **Features:**
 * Casual Matches!
-* 27 of the exact same blob!
-* 8 unique blobs!
+* 25 of the exact same blob!
+* 10 unique blobs!
 * Physics system that works 99.65% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
@@ -43,7 +43,6 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Doctor Blob
-* Nerfed Judge Blob slightly
-* Added a new track for the win screen
-* Added some SFX
+* Added Cop Blob
+* Buffed Ice and King Blob
+* New CPU Behaviors Added!
