@@ -2,6 +2,7 @@ from os import getcwd
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from math import ceil
 import pygame as pg
+import random
 from random import randint
 import resources.graphics_engine.dynamic_particle_handler as dpc
 cwd = getcwd()
@@ -77,6 +78,7 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['rock_spire'] = pg.image.load(cwd + "/resources/images/particles/rock_spire.png").convert_alpha()
         particle_cache['thunder_glyph'] = pg.image.load(cwd + "/resources/images/particles/thunder_glyph.png").convert_alpha()
         particle_cache['thunder_bolt'] = pg.image.load(cwd + "/resources/images/particles/thunder_bolt.png").convert_alpha()
+        particle_cache['thunder_bolt_2'] = pg.image.load(cwd + "/resources/images/particles/thunder_bolt_2.png").convert_alpha()
         particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_2.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_3.png").convert_alpha(), (20, 20))
@@ -186,14 +188,28 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255, fade = 0, lifetime = 1))
         
         elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown_max - p1_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 125, alpha = 255, fade = 7.25))
+            
+            bolt = (1, 2)
+            boltch = random.choice(bolt)
+
+            if boltch == 1:
+                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
+            elif boltch == 2:
+                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
 
     if(p2_blob.species == "lightning"):
         if(p2_blob.used_ability == "thunderbolt_wait"):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255, fade = 0, lifetime = 1))
         
         elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown_max - p2_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 125, alpha = 255, fade = 7.25))
+            
+            bolt = (1, 2)
+            boltch = random.choice(bolt)
+
+            if boltch == 1:
+                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
+            elif boltch == 2:
+                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
 
     ball_particle_memory = blit_and_update_particles(ball_particle_memory, game_display)
 
