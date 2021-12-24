@@ -1,5 +1,7 @@
 import random
 
+# Old CPU Logic. At the very least, this will be replaced with the "classic" beta logic playstyle
+# which includes kicking the ball and using boosts.
 def handle_logic(blob, other_blob, ball, game_score, timer):
     '''
     Blob is the CPU blob
@@ -80,7 +82,7 @@ def handle_logic(blob, other_blob, ball, game_score, timer):
 
     return pressed, logic_memory
 
-def find_position(blob):
+def find_position(blob): # Finds the position of the blob relative to their own goal
     if(blob.player == 1):
         if(blob.x_pos < 325):
             self_position = "home_dz"
@@ -105,7 +107,8 @@ def find_position(blob):
             self_position = "home_dz"
     return self_position
 
-def find_ball_loc(ball, blob):
+def find_ball_loc(ball, blob): # Finds the position of the ball relative to the blob.
+    # There might be some sort of bug, I don't know. I made this at 4AM.
     if(830 < ball.x_center < 1030):
         ball_position = "mid"
     else:
@@ -130,6 +133,8 @@ def find_ball_loc(ball, blob):
     return ball_position
 
 def check_if_winning(blob, game_score):
+    # Checks if this blob is winning.
+    # Not sure if we need to use this very much.
     if(blob.player == 1):
         if(game_score[0] > game_score[1]):
             winning = "winning"
@@ -173,8 +178,9 @@ def compile_openings(blob, other_blob):
         decision_array += ['opening_3', 'opening_3', 'opening_1']
     if(foe_expensive):
         decision_array += ['opening_2', 'opening_2', 'opening_1']
-    return decision_array
+    return decision_array # This is a combination of all valid openings we can play, one of which is chosen randomly
 
+# This is the current version of handle_logic, the one that is going to V0.11.0b
 def handle_logic_beta(blob, other_blob, ball, game_score, timer):
 
     pressed = []
@@ -187,6 +193,11 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
     '''
     for key in logic_memory['press_queue']:
         pressed.append(key)
+
+    # The first action we take is to check and update the current game state
+    # There are 3 right now, one for openings, one to continue openings, and other cases
+    # Based on the game state, we store the current play
+    # Based on the current play, we take action
 
     # Identify the Game State
     self_position = find_position(blob) # Position is relative to self
@@ -283,22 +294,22 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         for i in range(len(pressed)):
             if(pressed[i] == 'toward'):
                 pressed[i] = 'right'
-                if(blob.facing == 'left' and random.randint(0, 4) > 1):
+                if(blob.facing == 'left' and random.randint(0, 4) > 1): # Wavebounce suppression
                     pressed.append('p1_left')
             elif(pressed[i] == 'away'):
                 pressed[i] = 'left'
-                if(blob.facing == 'right' and random.randint(0, 4) > 1):
+                if(blob.facing == 'right' and random.randint(0, 4) > 1): # Wavebounce suppression
                     pressed.append('p1_right')
             pressed[i] = "p1_" + pressed[i]
     else:
         for i in range(len(pressed)):
             if(pressed[i] == 'toward'):
                 pressed[i] = 'left'
-                if(blob.facing == 'right' and random.randint(0, 4) > 1):
+                if(blob.facing == 'right' and random.randint(0, 4) > 1): # Wavebounce suppression
                     pressed.append('p2_right')
             elif(pressed[i] == 'away'):
                 pressed[i] = 'right'
-                if(blob.facing == 'left' and random.randint(0, 4) > 1):
+                if(blob.facing == 'left' and random.randint(0, 4) > 1): # Wavebounce suppression
                     pressed.append('p2_left')
                 
             pressed[i] = "p2_" + pressed[i]
