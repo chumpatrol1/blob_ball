@@ -92,6 +92,10 @@ def run(game_state):
     if(pressed[pg.K_ESCAPE] and not escape_timer):
         if(game_state == "casual_match"):
             game_state = "css"
+            from resources.graphics_engine.display_gameplay import unload_image_cache
+            from engine.gameplay import clear_info_cache
+            clear_info_cache()
+            unload_image_cache()
             escape_timer = 30
         else:
             done = True #Ends the game
