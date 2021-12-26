@@ -2,7 +2,7 @@ from os import getcwd
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles
 from resources.graphics_engine.display_particles import clear_particle_memory as clear_particle_memory
-from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash, draw_energy_flash
+from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash, draw_energy_flash, draw_block_flash, draw_boost_flash
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -157,13 +157,13 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
             draw_cooldown(game_display, p1_blob, ui_font, 170, p1_blob.get_kick_visuals())
             
         if(p1_blob.recharge_indicators['kick']):
-                draw_recharge_flash(170)
+                draw_damage_flash(170)
 
         if(p1_blob.block_cooldown_visualization > 0):
             draw_cooldown(game_display, p1_blob, ui_font, 250, p1_blob.get_block_visuals())
         
         if(p1_blob.recharge_indicators['block']):
-                draw_recharge_flash(250)
+                draw_block_flash(250)
 
         if(p1_blob.boost_timer_visualization > 0):
             draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_timer_visuals(), boost_active = True)
@@ -171,7 +171,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
             draw_cooldown(game_display, p1_blob, ui_font, 330, p1_blob.get_boost_cooldown_visuals())
         
         if(p1_blob.recharge_indicators['boost']):
-            draw_recharge_flash(330)
+            draw_boost_flash(330)
 
     if(p1_blob.recharge_indicators['ability_energy']):
         draw_energy_flash(10)
@@ -198,13 +198,13 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
             draw_cooldown(game_display, p2_blob, ui_font, 1126, p2_blob.get_kick_visuals())
 
         if(p2_blob.recharge_indicators['kick']):
-            draw_recharge_flash(1126)
+            draw_damage_flash(1126)
 
         if(p2_blob.block_cooldown_visualization > 0):
             draw_cooldown(game_display, p2_blob, ui_font, 1206, p2_blob.get_block_visuals())
 
         if(p2_blob.recharge_indicators['block']):
-            draw_recharge_flash(1206)
+            draw_block_flash(1206)
 
         if(p2_blob.boost_timer_visualization > 0):
             draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_timer_visuals(), boost_active = True)
@@ -212,7 +212,7 @@ def draw_ui(screen_size, game_display, p1_blob, p2_blob):
             draw_cooldown(game_display, p2_blob, ui_font, 1286, p2_blob.get_boost_cooldown_visuals())
 
         if(p2_blob.recharge_indicators['boost']):
-            draw_recharge_flash(1286)
+            draw_boost_flash(1286)
         
     if(p2_blob.recharge_indicators['ability_energy']):
             draw_energy_flash(966)
@@ -228,7 +228,7 @@ def draw_timer(screen_size, game_display, timer):
             text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
             game_display.blit(timer_text, text_rect)
 
-def draw_blob_special(blob, game_display):
+def draw_blob_special(blob, game_display): # Blob special appears when kicking, blocking, boosting or focusing
     
     if(blob.boost_timer):
         blob_special = image_cache['blob_special'].convert_alpha()
@@ -269,6 +269,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_background(game_display, "casual_match", settings)
     global cwd
     global image_cache
+    #TODO: Cause different things to be loaded with different blobs
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))

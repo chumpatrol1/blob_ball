@@ -42,6 +42,7 @@ class Ball:
         self.speed = 0
         self.x_speed_max = 50
         self.y_speed_max = 50
+        self.bounciness = 1
         self.x_pos = x_pos #Ball's position
         self.x_center = x_pos + 27
         self.y_center = y_pos + 38
@@ -52,6 +53,7 @@ class Ball:
         self.grounded = False #True if the ball is on the ground
         self.goal_grounded = False #True if the ball is rolling along the goal
         self.special_timer = 0 #Used when the ball is hit with a kick or block
+        self.blocked_timer = 0
         #Stores 10 afterimages
         self.previous_locations = []
         for i in range(10):
@@ -139,6 +141,8 @@ class Ball:
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
                     createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
+                    self.x_speed *= self.bounciness
+                    self.y_speed *= self.bounciness
                 elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                     self.info['blob_standard_collisions'] += 1
                     p1_ball_nv = p1_vector - ball_vector
@@ -151,8 +155,11 @@ class Ball:
                         #THIS CAUSES THE DRIBBLE GLITCH
                         self.x_pos += self.x_speed
                         self.y_pos += self.y_speed
+                    self.x_speed *= self.bounciness
+                    self.y_speed *= self.bounciness
                     
                     createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 + self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
+                
             else:
                 #Debug
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
@@ -187,67 +194,44 @@ class Ball:
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= self.y_center <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
-                        self.x_speed = 0
-                        self.y_speed = -0.9
-                        self.image = type_to_image("blocked_ball")
-                        self.species = "blocked_ball"
-                        self.special_timer = 30
-                        blob.collision_timer = collision_timer_duration
-                        other_blob.collision_timer = collision_timer_duration
-                        #Stops the ball completely
-                        if(blob.block_timer == blob.block_timer_max - 3):
-                            self.info['blocked'] += 1
+                        self.get_blocked(collision_timer_duration, blob, other_blob)
                 elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= ball_midpoint[1] <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
-                        #Teleport the ball to the midpoint
-                        self.x_speed = 0
-                        self.y_speed = -0.9
-                        self.image = type_to_image("blocked_ball")
-                        self.species = "blocked_ball"
-                        self.special_timer = 30
-                        blob.collision_timer = collision_timer_duration
-                        other_blob.collision_timer = collision_timer_duration
-                        #Stops the ball completely
-                        if(blob.block_timer == blob.block_timer_max - 3):
-                            self.info['blocked'] += 1
+                        self.get_blocked(collision_timer_duration, blob, other_blob)
             else:
                 #If the blob is facing right
                 if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
-                        self.x_speed = 0
-                        self.y_speed = -0.9
-                        self.image = type_to_image("blocked_ball")
-                        self.species = "blocked_ball"
-                        self.special_timer = 30
-                        blob.collision_timer = collision_timer_duration
-                        other_blob.collision_timer = collision_timer_duration
-                        #Stops the ball completely
-                        if(blob.block_timer == blob.block_timer_max - 3):
-                            self.info['blocked'] += 1
+                        self.get_blocked(collision_timer_duration, blob, other_blob)
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
-                        #If the ball is within the y values of the bounding box
-                        self.x_speed = 0
-                        self.y_speed = -0.9
-                        self.image = type_to_image("blocked_ball")
-                        self.species = "blocked_ball"
-                        self.special_timer = 30
-                        blob.collision_timer = collision_timer_duration
-                        other_blob.collision_timer = collision_timer_duration
-                        #Stops the ball completely
-                        if(blob.block_timer == blob.block_timer_max - 3):
-                            self.info['blocked'] += 1
+                        self.get_blocked(collision_timer_duration, blob, other_blob)
         return blob, other_blob
+
+    def get_blocked(self, collision_timer_duration, blob, other_blob):
+        #If the ball is within the y values of the bounding box
+        self.x_speed = 0
+        self.y_speed = 0
+        self.image = type_to_image("blocked_ball")
+        self.species = "blocked_ball"
+        self.special_timer = 30
+        blob.collision_timer = collision_timer_duration - 20
+        other_blob.collision_timer = collision_timer_duration
+        #Stops the ball completely
+        if(blob.block_timer == blob.block_timer_max - 3):
+            self.info['blocked'] += 1
+        self.bounciness = 0.1
+        self.blocked_timer = 20
 
     def check_blob_ability(self, blob):
         if(blob.used_ability == "fireball"):
@@ -285,7 +269,7 @@ class Ball:
             self.species = "blocked_ball"
             self.special_timer = 30
 
-    def move(self, p1_blob, p2_blob):
+    def move(self, p1_blob, p2_blob): # Also has cooldowns in it.
         ground = Ball.ground
         left_wall = 0
         right_wall = 1805
@@ -470,4 +454,8 @@ class Ball:
             if(self.special_timer == 0):
                 self.image = type_to_image('soccer_ball')
                 self.species = "soccer_ball"
+        if(self.blocked_timer > 0):
+            self.blocked_timer -= 1
+            if(self.blocked_timer == 0):
+                self.bounciness = 1
         

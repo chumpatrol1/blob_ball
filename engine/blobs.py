@@ -15,8 +15,11 @@ cwd = os.getcwd()
 # Depending on the ability, check the cooldown method 
 # If the ability has the potential to impact another blob, update the check_ability_collision method
 # If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
-# In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
-# In engine/menus/css_menu.py update blob_list to allow your blob to be selectable
+# In engine/unlocks.py, update css_selector_list and original_css_display_list to allow that blob to be selected
+# In engine/unlocks.py, update css_location_dict with the intended location of that blob
+# In engine/unlocks.py, update blob_unlock_dict
+# In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
+# In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 
 def ability_to_classification(ability):
@@ -26,7 +29,7 @@ def ability_to_classification(ability):
     instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax', 'stoplight']
     if(ability in instant_abilities):
         return "instant"
-    delayed_abilities = ['spire', 'thunderbolt']
+    delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
     if(ability in delayed_abilities):
         return "delayed"
     return "other"
@@ -46,6 +49,7 @@ def species_to_image(species):
         'doctor': blob_cwd + "doctor_blob.png",
         'king': blob_cwd + 'king_blob.png',
         'cop': blob_cwd + 'cop_blob.png',
+        'boxer': blob_cwd + 'boxer_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -68,6 +72,7 @@ def species_to_ability_icon(species):
         'doctor': ability_cwd + "pill.png",
         'king': ability_cwd + "tax.png",
         'cop': ability_cwd + "block_icon.png",
+        'boxer': ability_cwd + 'tax.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -133,6 +138,7 @@ class Blob:
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
         self.gravity_mod = round(.3 + (self.stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
         self.fastfalling = False
+        self.shorthopping = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
         self.kick_cooldown_rate = 1 #Each star reduces kick cooldown
@@ -569,6 +575,14 @@ class Blob:
                 self.special_ability_meter -= self.special_ability_cost
                 self.block_cooldown += 60
                 createSFXEvent('chime_progress')
+        elif(special_ability == "starpunch"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "starpunch"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                self.kick_cooldown += 60
+                createSFXEvent('chime_progress')
 
 
     def kick(self):
@@ -799,7 +813,10 @@ class Blob:
                     self.x_pos = 0
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed -= self.traction #Accelerate based off of traction
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.5 * self.traction # Turn around faster by holding left
+                        else:
+                            self.x_speed -= self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
@@ -814,7 +831,10 @@ class Blob:
                     self.x_pos = 1700
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed += self.traction #Accelerate based off of traction
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.5 * self.traction # Turn around faster by holding left
+                        else:
+                            self.x_speed += self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
@@ -840,7 +860,10 @@ class Blob:
                     self.x_pos = 0
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed -= self.friction #Accelerate based off of traction
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.5 * self.friction # Turn around faster by holding left
+                        else:
+                            self.x_speed -= self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
@@ -854,7 +877,10 @@ class Blob:
                     self.x_pos = 1700
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed += self.friction #Accelerate based off of friction
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.5 * self.friction # Turn around faster by holding left
+                        else:
+                            self.x_speed += self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
@@ -887,7 +913,12 @@ class Blob:
             self.focus_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
-        elif('down' in pressed):
+        elif('up' in pressed and self.y_speed < 0):
+            self.shorthopping = False
+        elif('up' not in pressed and self.y_speed < 0):
+            self.shorthopping = True
+        
+        if('down' in pressed):
             if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
@@ -902,16 +933,23 @@ class Blob:
         if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
             self.info['time_airborne'] += 1
             self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
-            if(self.fastfalling):
-                self.y_speed += self.gravity_mod
+            if(self.y_speed < 0):
+                if(self.shorthopping):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
             else:
-                self.y_speed += self.gravity_stars
+                if(self.fastfalling):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
         else:
             self.info['time_grounded'] += 1
             self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
         
         if(self.fastfalling and self.y_pos == Blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
+            self.shorthopping = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
         if(self.y_pos < Blob.ceiling): #How did we get here?
             self.y_pos = Blob.ceiling
