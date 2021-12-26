@@ -1,7 +1,7 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.11.0b**
+**v0.11.1b**
 
 **Features:**
 * Casual Matches!
@@ -46,3 +46,4 @@ Slime Soccer type game
 * Added Cop Blob
 * Buffed Ice and King Blob
 * New CPU Behaviors Added!
+* Fixed bugs that caused crashing, and updated ability icons for several blobs.
