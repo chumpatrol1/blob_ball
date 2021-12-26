@@ -20,8 +20,8 @@ def almanac_navigation(timer, previous_screen):
         if(selector_position == 0): #Blobs and Info
             game_state = "almanac"
         elif(selector_position == 1):
-            game_state = "medals"
-            #selector_position = 0
+            #game_state = "medals"
+            selector_position = 1
             # Will be temporarily disabled
         elif(selector_position == 2):
             game_state = "almanac_stats"
