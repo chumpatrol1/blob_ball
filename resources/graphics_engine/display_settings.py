@@ -144,7 +144,7 @@ def draw_pmods_screen(game_display, info_getter, settings):
     elif(page == 2):
         text_array = [
             menu_font.render("Kick Cooldown: " + str(ruleset[player]['kick_cooldown_rate']) + " Stars", False, text_color),
-            menu_font.render("Speed Value: " + str(ruleset[player]['block_cooldown_rate'])  + " Stars", False, text_color),
+            menu_font.render("Block Cooldown: " + str(ruleset[player]['block_cooldown_rate'])  + " Stars", False, text_color),
             menu_font.render("Ability Activation Cost: " + str(ruleset[player]['special_ability_cost'])  + " Energy", False, text_color),
             menu_font.render("Ability Maintenance Cost: " + str(ruleset[player]['special_ability_maintenance'])  + " Energy", False, text_color),
             menu_font.render("Maximum Stored Energy: " + str(ruleset[player]['special_ability_max'])  + " Energy", False, text_color),
