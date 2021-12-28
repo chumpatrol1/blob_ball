@@ -324,7 +324,11 @@ class Blob:
                 self.used_ability = None
             elif(self.used_ability == "stoplight" and self.special_ability_timer == self.special_ability_cooldown_max -1):
                 self.used_ability = None
-            
+            elif(self.used_ability == "starpunch_wait" and self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1)):
+                self.used_ability = "starpunch"
+            elif(self.used_ability == "starpunch"):
+                self.used_ability = None
+
             if(self.special_ability_timer == 0):
                 self.used_ability = None
         
@@ -577,7 +581,7 @@ class Blob:
                 createSFXEvent('chime_progress')
         elif(special_ability == "starpunch"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
-                self.used_ability = "starpunch"
+                self.used_ability = "starpunch_wait"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
@@ -683,30 +687,49 @@ class Blob:
 
         elif(self.used_ability == "stoplight"):
             blob.collision_timer = 30
+        
+        elif(self.used_ability == "starpunch"):
+            if(self.x_center - (1.5 * 200) <= blob.x_center <= self.x_center + (1.5 * 200)):
+                if(self.y_center - (1.1 * 200) <= blob.y_center <= self.y_center + 200):
+                    accumulated_damage = 3
+                    stun_amount = 30
+                    if(self.boost_timer):
+                        accumulated_damage += 1
+                    if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                        #Take additional damage from kicks if you are hiding by your goal
+                        accumulated_damage += 1
+                    
+                    if(blob.block_timer):
+                        accumulated_damage -= 2
+                        stun_amount = 0
 
-    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
+                    blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, movement_lock=stun_amount,)
+
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0,\
+        show_parry = True):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
-                self.parried = 2
-                self.info['parries'] += 1
-                createSFXEvent('parry')
-                return False
+                if(show_parry):
+                    self.parried = 2
+                    self.info['parries'] += 1
+                    createSFXEvent('parry')
+                return False # We failed the block check, don't take damage
             else:
                 
-                return True
+                return True # Return true if the block check passes
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
                 self.clanked = 2
                 self.info['clanks'] += 1
                 createSFXEvent('clank')
-                return False
+                return False # We failed the clank check, don't take damage
             else:
-                return True
+                return True # Return true if the clank check passes
                 
         if(unblockable and unclankable):
-            self.hp -= damage
+            check_block()
             damage_taken = True
         elif(unclankable):
             if check_block():

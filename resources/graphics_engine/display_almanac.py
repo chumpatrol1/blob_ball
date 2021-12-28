@@ -298,7 +298,7 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
     game_display.blit(text_box, text_rect)
 
 def draw_almanac_credits(game_display, settings):
-    draw_background(game_display, 'credits', settings)
+    draw_background(game_display, 'almanac', settings)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 23)
     text_array = [
         menu_font.render('Game Developers', False, (0, 0, 150)),

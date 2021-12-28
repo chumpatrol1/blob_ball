@@ -144,7 +144,7 @@ def almanac_art_backgrounds_navigation(timer):
             selector_position = 0
         else:
             selector_position += 1
-    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p1_kick' in pressed or 'p2_ability' in pressed or 'p2_kick' in pressed or 'return' in pressed):
         selector_position = 0
         game_state = "almanac_art"
 
@@ -164,7 +164,7 @@ def almanac_art_blobs_navigation(timer):
             selector_position = 0
         else:
             selector_position += 1
-    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p1_kick' in pressed or 'p2_ability' in pressed or 'p2_kick' in pressed or 'return' in pressed):
         selector_position = 0
         game_state = "almanac_art"
 
@@ -173,7 +173,7 @@ def almanac_art_blobs_navigation(timer):
 def credits_navigation(timer):
     pressed = engine.handle_input.menu_input()
     game_state = "credits"
-    if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+    if(not timer) and ('p1_ability' in pressed or 'p1_kick' in pressed or 'p2_ability' in pressed or 'p2_kick' in pressed or 'return' in pressed):
         createSFXEvent('select')
         game_state = "almanac"
     return [game_state]

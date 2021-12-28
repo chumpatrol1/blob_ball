@@ -57,7 +57,52 @@ def draw_landing_particles(blob):
     particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
     particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
 
-def draw_blob_particles(game_display, ball, blob):
+def create_blob_particles(blob, other_blob):
+    global particle_memory
+    def draw_gale(blob, other_blob):
+        random_number = randint(0,2)
+        if(random_number):
+            if(blob.player == 1):
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
+            elif(blob.player == 2):
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+    
+    def draw_starpunch_wait(blob, other_blob): #Bad location
+        particle_memory.append(dpc.Particle(image = particle_cache['star_glove'], x_pos = blob.x_center * (1000/1366) - 20, y_pos = blob.y_center * (382/768), alpha = 255, lifetime = 1))
+    
+    def draw_starpunch(blob, other_blob):
+        punch_x = other_blob.x_center
+        punch_y = other_blob.y_center
+        if(other_blob.x_center > blob.x_center + 180):
+            punch_x = blob.x_center + 180
+        elif(blob.x_center - 240 > other_blob.x_center):
+            punch_x = blob.x_center - 240
+
+        if(blob.y_center + 220 < other_blob.y_center):
+            punch_y = blob.y_center + 220
+        elif(blob.y_center - 200 > other_blob.y_center):
+            punch_y = blob.y_center - 200
+
+        x_midpoint = (punch_x + blob.x_center)/2
+        y_midpoint = (punch_y + blob.y_center)/2
+
+        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = blob.x_center * (1000/1366), y_pos = blob.y_center * 382/768, alpha = 255, lifetime = 60, fade = 10))
+        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = ((blob.x_center + x_midpoint)/2) * (1000/1366), y_pos = (blob.y_center + y_midpoint)/2 * 382/768, alpha = 255, lifetime = 60, fade = 10))
+        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = x_midpoint * (1000/1366), y_pos = y_midpoint * 382/768, alpha = 255, lifetime = 60, fade = 10))
+        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = (punch_x + x_midpoint)/2 * (1000/1366), y_pos = (punch_y + y_midpoint)/2 * 382/768, alpha = 255, lifetime = 60, fade = 10))
+        particle_memory.append(dpc.Particle(image = particle_cache['star_glove'], x_pos = punch_x * (1000/1366), y_pos = punch_y * 382/768, alpha = 255, lifetime = 60, fade = 10))
+        
+    used_ability_dict = {
+        'gale': draw_gale,
+        'starpunch_wait': draw_starpunch_wait,
+        'starpunch': draw_starpunch,
+    }
+
+    if blob.used_ability in used_ability_dict:
+        used_ability_dict[blob.used_ability](blob, other_blob)
+
+
+def draw_blob_particles(game_display, ball, blob, other_blob):
     '''HOW TO ADD TO THE PARTICLE CACHE
     COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
     ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
@@ -85,6 +130,8 @@ def draw_blob_particles(game_display, ball, blob):
         particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_2.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_3.png").convert_alpha(), (30, 30))
+        particle_cache['star_glove'] = pg.image.load(cwd + "/resources/images/particles/star_glove.png").convert_alpha()
+        particle_cache['spring_particle'] = pg.image.load(cwd + "/resources/images/particles/spring_particle.png").convert_alpha()
         particle_cache['recharge_flash'] = pg.image.load(cwd + "/resources/images/particles/recharge_flash.png").convert_alpha()
         particle_cache['energy_flash'] = pg.image.load(cwd + "/resources/images/particles/energy_flash.png").convert_alpha()
         particle_cache['damage_flash'] = pg.image.load(cwd + "/resources/images/particles/damage_flash.png").convert_alpha()
@@ -102,14 +149,7 @@ def draw_blob_particles(game_display, ball, blob):
         draw_landing_particles(blob)
         draw_landing_particles(blob)
         draw_landing_particles(blob)
-
-    if(blob.used_ability == "gale"):
-        random_number = randint(0,2)
-        if(random_number):
-            if(blob.player == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
-            elif(blob.player == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+        
     
     if(blob.parried):
         particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
@@ -124,6 +164,8 @@ def draw_blob_particles(game_display, ball, blob):
     
     if(blob.status_effects['judged'] % 5 == 0 and blob.status_effects['judged'] > 0):
         particle_memory.append(dpc.Particle(image = particle_cache['judgement'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
+    
+    create_blob_particles(blob, other_blob)
     #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 

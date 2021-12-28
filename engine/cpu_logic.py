@@ -225,7 +225,12 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
                 decision_array.append('opening_3')
             logic_memory['current_play'] = random.choice(decision_array) # Stay at your goal and focus energy
         elif(current_game_state == 'sub_offense'):
-            logic_memory['current_play'] = random.choice(compile_openings(blob, other_blob))
+            decision_array = compile_openings(blob, other_blob)
+            if(score_position == "winning"):
+                decision_array.append('opening_3')
+            else:
+                decision_array.append('opening_2')
+            logic_memory['current_play'] = random.choice(decision_array)
         else:
             logic_memory['current_play'] = "classic" # BoingK CPU Time!
         logic_memory['game_state'] = current_game_state
