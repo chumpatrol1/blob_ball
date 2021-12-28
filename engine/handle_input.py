@@ -262,6 +262,12 @@ def gameplay_input():
     pressed = get_keypress()
     return pressed
 
+def handle_mouse():
+    # What the mouse should give us:
+    # Get Pos returns 2 value tuple (X, Y)
+    # Get Pressed returns 3 value tuple (L, M, R)
+    return pg.mouse.get_pos(), pg.mouse.get_pressed()
+
 if "__name__" == "__main__":
     while True:
         get_keypress

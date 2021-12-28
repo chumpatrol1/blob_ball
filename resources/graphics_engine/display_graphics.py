@@ -16,6 +16,7 @@ from resources.graphics_engine.display_medals_and_milestones import draw_medals_
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
 from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
+from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
 import math
 from json import loads, dumps
@@ -64,7 +65,6 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     global p2_is_cpu
     global cwd
     global timer
-    global ruleset
     global game_stats
     global previous_screen
 
@@ -73,8 +73,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     if(game_state == "control_splash"):
         draw_splash_screen(game_surface, info_getter, settings)
     if(game_state == "main_menu"):
-        selector_position = info_getter[0]
-        draw_main_menu(screen_size, game_surface, selector_position, settings)
+        draw_main_menu(game_surface, info_getter, settings)
     elif(game_state == "css"):
         p1_selector_position = info_getter[0]
         p2_selector_position = info_getter[1]
@@ -134,6 +133,10 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_almanac_blobs(game_surface, selector_position)
     elif(game_state == "credits"):
         draw_almanac_credits(game_surface, settings)
+
+    # Draw Debug info
+    draw_debug(game_surface)
+
     global toggle_timer
     global full_screen
     global display_height, display_width

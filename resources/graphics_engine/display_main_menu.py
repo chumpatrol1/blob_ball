@@ -3,7 +3,9 @@ import pygame as pg
 from os import getcwd
 cwd = getcwd()
 
-def draw_main_menu(screen_size, game_display, selector_position, settings):
+def draw_main_menu(game_display, info_getter, settings):
+    selector_position = info_getter[0]
+    ruleset = info_getter[1]
     draw_background(game_display, 'main_menu', settings)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
     text_array = [
@@ -17,12 +19,18 @@ def draw_main_menu(screen_size, game_display, selector_position, settings):
 
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (screen_size[1]//10, screen_size[1]//10))
-    game_display.blit(ball, (850, ((screen_size[1]//10) * selector_position) + (0.5 * screen_size[1]//10)))
+    ball = pg.transform.scale(ball, (76, 76))
+    game_display.blit(ball, (850, (76 * selector_position) + 38))
 
-    text_y = screen_size[1]//10
+    text_y = 76
     for text_box in text_array:
         text_rect = text_box.get_rect()
-        text_rect.center = (screen_size[0]//2, text_y)
+        text_rect.center = (683, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += screen_size[1]//10
+        text_y += 76
+
+    # Version Number
+    text_box = menu_font.render(ruleset['version'], False, (0, 0, 150))
+    text_rect = text_box.get_rect()
+    text_rect.bottomright = (1366, 768)
+    game_display.blit(text_box, text_rect)

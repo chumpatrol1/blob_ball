@@ -33,7 +33,7 @@ def menu_navigation(timer):
         elif(selector_position == 5): #Quits the game
             game_state = "quit"
             
-    return selector_position, game_state
+    return game_state, [selector_position]
 
 
 splash_flash_timer = 60
@@ -41,7 +41,8 @@ def splash_navigator():
     global splash_flash_timer
     game_state = "control_splash"
     pressed = engine.handle_input.menu_input()
-    if('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
+    mouse = engine.handle_input.handle_mouse()
+    if('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed or mouse[1][0]):
         createSFXEvent('select')
         game_state = "main_menu"
     splash_flash_timer -= 1

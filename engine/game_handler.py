@@ -49,8 +49,8 @@ def update_game_state(game_state, cwd):
         if(game_state != "control_splash"):
             timer = 10
     elif(game_state == "main_menu"):
-        info_getter = engine.menus.main_menu.menu_navigation(timer)
-        game_state = info_getter[1]
+        game_state, info_getter = engine.menus.main_menu.menu_navigation(timer)
+        info_getter += [ruleset]
         if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
             previous_screen = "main_menu" 
     elif(game_state == "css"):

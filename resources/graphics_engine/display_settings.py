@@ -38,7 +38,7 @@ def draw_settings_screen(game_display, settings, selector_position):
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
-    game_display.blit(ball, (68, (76 * selector_position) + 38))
+    game_display.blit(ball, (10, 76 * (selector_position + 1)))
 
 def draw_rebind_screen(game_display, settings, rebind_key):
     text_color = (0, 0, 255)
@@ -111,7 +111,7 @@ def draw_rules_screen(game_display, ruleset, selector_position, settings):
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
-    game_display.blit(ball, (68, (76 * selector_position + 38)))
+    game_display.blit(ball, (10, (76 * (selector_position + 1))))
 
 def draw_pmods_screen(game_display, info_getter, settings):
     draw_background(game_display, "rules", settings)
@@ -164,4 +164,4 @@ def draw_pmods_screen(game_display, info_getter, settings):
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
-    game_display.blit(ball, (68, (76 * selector_position) + 38))
+    game_display.blit(ball, (10, 76 * (selector_position + 1)))

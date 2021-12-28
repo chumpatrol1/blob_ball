@@ -78,6 +78,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p2_check.png").convert_alpha(), (51, 51))
         token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_token.png").convert_alpha(), (51, 51))
         token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_check.png").convert_alpha(), (51, 51))
+        
+        token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (51, 51))
+        
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -106,14 +109,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
 
 
     #TODO: Change this text with bot symbol
-    if(p1_selector_position[3] == 0):
-        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
-    else:
-        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
+    if(p1_selector_position[3] == 1):
+        game_display.blit(token_cache['cpu_icon'], (75, 575))
 
-    text_rect = menu_text.get_rect()
-    text_rect.center = (75, 650)
-    game_display.blit(menu_text, text_rect)
 
     p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     p2_selected_blob = p2_selected_blob.convert_alpha()
@@ -127,14 +125,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     else:
         game_display.blit(p2_selected_blob, (1024, 576))
 
-    if(p2_selector_position[3] == 0):
-        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
-    else:
-        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
+    if(p2_selector_position[3] == 1):
+        game_display.blit(token_cache['cpu_icon'], (1225, 575))
 
-    text_rect = menu_text.get_rect()
-    text_rect.center = (1291, 650)
-    game_display.blit(menu_text, text_rect)
 
     menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
