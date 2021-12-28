@@ -2,11 +2,39 @@ import engine.handle_input
 from json import dumps
 from os import getcwd
 from resources.sound_engine.sfx_event import createSFXEvent
+from engine.button import Button
 cwd = getcwd()
 selector_position = 0
+
+buttons = [
+    Button(50, 100, 525, 825),
+    Button(125, 175, 525, 825),
+    Button(200, 250, 525, 825),
+    Button(275, 325, 525, 825),
+    Button(350, 400, 525, 825),
+    Button(425, 475, 525, 825),
+]
+
+def game_state_navigation(selector_position):
+    if(selector_position == 0): #Casual
+            game_state = "css"
+    elif(selector_position == 1):
+        selector_position = 0
+    elif(selector_position == 2):
+        game_state = "almanac"
+    elif(selector_position == 3):
+        game_state = "rules"
+    elif(selector_position == 4):
+        game_state = "settings"
+    elif(selector_position == 5): #Quits the game
+        game_state = "quit"
+
+    return game_state
+
 def menu_navigation(timer):
     game_state = "main_menu"
     pressed = engine.handle_input.menu_input()
+    mouse = engine.handle_input.handle_mouse()
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
@@ -20,18 +48,15 @@ def menu_navigation(timer):
             selector_position += 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         createSFXEvent('select')
-        if(selector_position == 0): #Casual
-            game_state = "css"
-        elif(selector_position == 1):
-            selector_position = 0
-        elif(selector_position == 2):
-            game_state = "almanac"
-        elif(selector_position == 3):
-            game_state = "rules"
-        elif(selector_position == 4):
-            game_state = "settings"
-        elif(selector_position == 5): #Quits the game
-            game_state = "quit"
+        game_state = game_state_navigation(selector_position)
+    for i in range(len(buttons)):
+        if(buttons[i].check_hover(mouse)):
+            if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
+                selector_position = i # Change the selector position
+
+            if(mouse[1][0]):
+                game_state = game_state_navigation(selector_position)
+        
             
     return game_state, [selector_position]
 
