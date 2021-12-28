@@ -106,17 +106,28 @@ def run(game_state):
         
     '''Runs the program'''
     return game_state
+try:
+    while not done:
+        game_state = run(game_state)
+    else:
+        print("All done!")
+        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+                game_stats = loads(statsdoc.readline())
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+                game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
+                statsdoc.write(dumps(game_stats))
+        pg.quit()
+        from sys import exit
+        exit()
+except Exception as ex:
+    import logging
+    logging.basicConfig(filename = cwd + "/crash_logs.log", level = logging.ERROR,\
+        format='%(process)d-%(levelname)s-%(message)s')
+    #Debug, Info, Warning, Error, Critical
+    logging.error(f"Game Crash at {time.asctime()}", exc_info=True)
+    
+    print("GAME CRASH! Please check crash_logs.log and send them to the Blob Ball Devs")
 
-while not done:
-    game_state = run(game_state)
-else:
-    print("All done!")
-    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-            game_stats = loads(statsdoc.readline())
-    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-            game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
-            statsdoc.write(dumps(game_stats))
     pg.quit()
     from sys import exit
     exit()
-        
