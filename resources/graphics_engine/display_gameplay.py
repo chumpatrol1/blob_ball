@@ -9,6 +9,9 @@ cwd = getcwd()
 
 image_cache = {"initialized": False}
 
+def return_image_cache():
+    return image_cache
+
 def unload_image_cache():
     global image_cache
     image_cache = {"initialized": False}

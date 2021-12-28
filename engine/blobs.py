@@ -320,9 +320,13 @@ class Blob:
                     createSFXEvent('gale')
             elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
+            elif(self.used_ability == "pill" and self.special_ability_timer == self.special_ability_cooldown_max - 2):
+                self.used_ability = None
             elif(self.used_ability == "tax" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
             elif(self.used_ability == "stoplight" and self.special_ability_timer == self.special_ability_cooldown_max -1):
+                self.used_ability = "stoplight_pfx"
+            elif(self.used_ability == "stoplight_pfx"):
                 self.used_ability = None
             elif(self.used_ability == "starpunch_wait" and self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1)):
                 self.used_ability = "starpunch"
@@ -513,6 +517,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+                self.used_ability = "pill"
 
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
@@ -689,8 +694,8 @@ class Blob:
             blob.collision_timer = 30
         
         elif(self.used_ability == "starpunch"):
-            if(self.x_center - (1.5 * 200) <= blob.x_center <= self.x_center + (1.5 * 200)):
-                if(self.y_center - (1.1 * 200) <= blob.y_center <= self.y_center + 200):
+            if(self.x_center - (1.5 * 250) <= blob.x_center <= self.x_center + (1.5 * 250)):
+                if(self.y_center - (1.1 * 250) <= blob.y_center <= self.y_center + 250):
                     accumulated_damage = 3
                     stun_amount = 30
                     if(self.boost_timer):
