@@ -54,7 +54,7 @@ def menu_navigation(timer):
             if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
                 selector_position = i # Change the selector position
 
-            if(mouse[1][0]):
+            if(mouse[1][0] or mouse[1][2]):
                 createSFXEvent('select')
                 game_state = game_state_navigation(selector_position)
         
@@ -68,7 +68,7 @@ def splash_navigator():
     game_state = "control_splash"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
-    if('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed or mouse[1][0]):
+    if('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed or mouse[1][0] or mouse[1][2]):
         createSFXEvent('select')
         game_state = "main_menu"
     splash_flash_timer -= 1

@@ -57,7 +57,7 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd):
         createSFXEvent('select')
 
     with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
-            settingsdoc.write(dumps(settings))
+        settingsdoc.write(dumps(settings))
 
     return game_state
     
@@ -99,6 +99,8 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd): 
         settings['smooth_scaling'] = True
         createSFXEvent('chime_completion')
     
+    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
+        settingsdoc.write(dumps(settings))
 
     return game_state
 
