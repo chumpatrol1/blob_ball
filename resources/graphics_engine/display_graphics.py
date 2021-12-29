@@ -2,6 +2,7 @@ import pygame as pg
 import os
 
 from pygame import image
+from pygame import display
 from pygame.constants import FULLSCREEN, RESIZABLE
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_main_menu import draw_main_menu
@@ -127,7 +128,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_almanac_credits(game_surface, settings)
 
     # Draw Debug info
-    draw_debug(game_surface)
+    #draw_debug(game_surface)
 
     global toggle_timer
     global full_screen
@@ -155,16 +156,32 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
 
 
     if(full_screen):
+        height_wrap = 0
+        if(game_state == "casual_match"):
+            height_wrap = -110 * real_screen_size[1]/768
+            new_wrap = 658 * real_screen_size[1]/768
         if(settings['smooth_scaling']):
-            game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+            game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, height_wrap))
+            if(game_state == "casual_match"):
+                game_display.blit(pg.transform.smoothscale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, new_wrap))
         else:
-            game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
+            game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, height_wrap))
+            if(game_state == "casual_match"):
+                game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, new_wrap))
     else:
+        height_wrap = 0
+        if(game_state == "casual_match"):
+            height_wrap = -110 * display_height/768
+            new_wrap = 658 * display_height/768
         for event in pg.event.get():
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = update_width_and_height(event.w, event.h)
         if(settings['smooth_scaling']):
-            game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
+            game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, height_wrap))
+            if(game_state == "casual_match"):
+                game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, new_wrap))
         else:
-            game_display.blit(pg.transform.scale(game_surface, (display_width, display_height)), (0, 0))
+            game_display.blit(pg.transform.scale(game_surface, (display_width, display_height)), (0, height_wrap))
+            if(game_state == "casual_match"):
+                game_display.blit(pg.transform.sscale(game_surface, (display_width, display_height)), (0, new_wrap))
     pg.display.flip()
