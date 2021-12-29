@@ -97,6 +97,9 @@ def run(game_state):
             clear_info_cache()
             unload_image_cache()
             escape_timer = 30
+        elif(game_state == "rebind"):
+            #game_state = "settings"
+            escape_timer = 30
         else:
             done = True #Ends the game
     if(escape_timer):

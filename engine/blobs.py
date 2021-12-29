@@ -842,7 +842,7 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < self.top_speed):
                         if(self.x_speed > 0):
-                            self.x_speed -= 1.5 * self.traction # Turn around faster by holding left
+                            self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
                         else:
                             self.x_speed -= self.traction # Accelerate based off of traction
                     else:
@@ -860,7 +860,7 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < self.top_speed):
                         if(self.x_speed < 0):
-                            self.x_speed += 1.5 * self.traction # Turn around faster by holding left
+                            self.x_speed += 1.2 * self.traction # Turn around faster by holding left
                         else:
                             self.x_speed += self.traction # Accelerate based off of traction
                     else:

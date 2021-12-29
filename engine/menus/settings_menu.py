@@ -17,7 +17,7 @@ settings_buttons = [
     Button(675, 740, 0, 600),
 ]
 
-def settings_selection(selector_position, settings, previous_screen, cwd):
+def settings_selection_right(selector_position, settings, previous_screen, cwd):
     game_state = "settings"
     if(selector_position == 3):
             if(settings['music_volume'] < 10):
@@ -60,6 +60,47 @@ def settings_selection(selector_position, settings, previous_screen, cwd):
             settingsdoc.write(dumps(settings))
 
     return game_state
+    
+def settings_selection_left(selector_position, settings, previous_screen, cwd): # Handles left arrow, right clicks
+    game_state = "settings"
+    if(selector_position == 3):
+        if(settings['music_volume'] > 0):
+            settings['music_volume'] -= 1
+        else:
+            settings['music_volume'] = 10
+    elif(selector_position == 4):
+        if(settings['sound_volume'] > 0):
+            settings['sound_volume'] -= 1
+        else: 
+            settings['sound_volume'] = 10
+        createSFXEvent('chime_progress')
+    elif(selector_position == 5):
+        game_state = "rebind"
+        createSFXEvent('select')
+    elif(selector_position == 0):
+        settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
+        createSFXEvent('select')
+    elif(selector_position == 1):
+        settings['hd_blobs'] = not(settings['hd_blobs'])
+        createSFXEvent('select')
+    elif(selector_position == 2):
+        settings['smooth_scaling'] = not(settings['smooth_scaling'])
+        createSFXEvent('select')
+    elif(selector_position == len(settings) + 1):
+        engine.handle_input.reset_inputs()
+        createSFXEvent('chime_completion')
+    elif(selector_position == len(settings) + 3):
+            selector_position = 0
+            game_state = previous_screen
+            createSFXEvent('select')
+    elif(selector_position == len(settings) + 2):
+        settings['hd_backgrounds'] = True
+        settings['hd_blobs'] = True
+        settings['smooth_scaling'] = True
+        createSFXEvent('chime_completion')
+    
+
+    return game_state
 
 def settings_navigation(timer, settings, previous_screen, cwd):
     pressed = engine.handle_input.menu_input()
@@ -78,24 +119,14 @@ def settings_navigation(timer, settings, previous_screen, cwd):
             selector_position += 1
 
     if('p1_left' in pressed or 'p2_left' in pressed):
-        if(selector_position == 3):
-            if(settings['music_volume'] > 0):
-                settings['music_volume'] -= 1
-            else:
-                settings['music_volume'] = 10
-        elif(selector_position == 4):
-            if(settings['sound_volume'] > 0):
-                settings['sound_volume'] -= 1
-            else: 
-                settings['sound_volume'] = 10
-            createSFXEvent('chime_progress')
+        game_state = settings_selection_left(selector_position, settings, previous_screen, cwd)
 
         
     elif('p1_right' in pressed or 'p2_right' in pressed):
-        game_state = settings_selection(selector_position, settings, previous_screen, cwd)
+        game_state = settings_selection_right(selector_position, settings, previous_screen, cwd)
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        game_state = settings_selection(selector_position, settings, previous_screen, cwd)
+        game_state = settings_selection_right(selector_position, settings, previous_screen, cwd)
 
     for i in range(len(settings_buttons)):
         if(settings_buttons[i].check_hover(mouse)):
@@ -103,6 +134,8 @@ def settings_navigation(timer, settings, previous_screen, cwd):
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
-                game_state = settings_selection(selector_position, settings, previous_screen, cwd)
+                game_state = settings_selection_right(selector_position, settings, previous_screen, cwd)
+            elif(mouse[1][2]):
+                game_state = settings_selection_left(selector_position, settings, previous_screen, cwd)
 
     return selector_position, game_state, settings

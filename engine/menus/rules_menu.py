@@ -2,11 +2,123 @@ import engine.handle_input
 from engine.initializer import load_default_ruleset
 from resources.sound_engine.sfx_event import createSFXEvent
 from json import dumps
+from engine.button import Button
+
 
 selector_position = 0
+rules_navigation_buttons = [
+    Button(65, 130, 0, 600),
+    Button(135, 200, 0, 600),
+    Button(205, 275, 0, 600),
+    Button(290, 360, 0, 600),
+    Button(365, 430, 0, 600),
+    Button(440, 505, 0, 600),
+    Button(515, 580, 0, 600),
+    Button(590, 670, 0, 600),
+    Button(675, 740, 0, 600),
+]
+
+# Left arrow, or right clicks
+def rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd):
+    game_state = "rules"
+    if(selector_position == 0):
+        if(ruleset['goal_limit'] > 1):
+            ruleset['goal_limit'] -= 1
+        else:
+            ruleset['goal_limit'] = 25
+        createSFXEvent('chime_progress')
+    elif(selector_position == 1):
+        if(ruleset['time_limit'] > 0):
+            ruleset['time_limit'] -= 600
+        else:
+            ruleset['time_limit'] = 36000
+        createSFXEvent('chime_progress')
+    elif(selector_position == 2):
+        if(ruleset['time_bonus'] > 0):
+            ruleset['time_bonus'] -= 300
+        else:
+            ruleset['time_bonus'] = 3600
+        createSFXEvent('chime_progress')
+    elif(selector_position == 3):
+        if(ruleset['special_ability_charge_base'] > 0):
+            ruleset['special_ability_charge_base'] -= 1
+        else:
+            ruleset['special_ability_charge_base'] = 20
+        createSFXEvent('chime_progress')
+    elif(selector_position == len(ruleset)):
+        selector_position = 0
+        game_state = previous_screen
+        createSFXEvent('select')
+    elif(selector_position == len(ruleset)-1):
+        ruleset = load_default_ruleset()
+        createSFXEvent('chime_completion')
+    elif(selector_position == 4):
+        ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
+        createSFXEvent('select')
+    elif(selector_position == 5):
+        game_state = 'p1_mods'
+        createSFXEvent('select')
+    elif(selector_position == 6):
+        game_state = 'p2_mods'
+        createSFXEvent('select')
+    
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
+        rulesetdoc.write(dumps(ruleset))
+    return game_state, ruleset
+
+# Right arrow, or left clicks
+def rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd):
+    game_state = "rules"
+    if(selector_position == 0):
+        if(ruleset['goal_limit'] < 25):
+            ruleset['goal_limit'] += 1
+        else:
+            ruleset['goal_limit'] = 1
+        createSFXEvent('chime_progress')
+    elif(selector_position == 1):
+        if(ruleset['time_limit'] < 36000):
+            ruleset['time_limit'] += 600
+        else:
+            ruleset['time_limit'] = 0
+        createSFXEvent('chime_progress')
+    elif(selector_position == 2):
+        if(ruleset['time_bonus'] < 3600):
+            ruleset['time_bonus'] += 300
+        else:
+            ruleset['time_bonus'] = 0
+        createSFXEvent('chime_progress')
+    elif(selector_position == 3):
+        if(ruleset['special_ability_charge_base'] < 20):
+            ruleset['special_ability_charge_base'] += 1
+        else:
+            ruleset['special_ability_charge_base'] = 0
+        createSFXEvent('chime_progress')
+
+    if(selector_position == len(ruleset)):
+        selector_position = 0
+        game_state = previous_screen
+        createSFXEvent('select')
+    elif(selector_position == len(ruleset)-1):
+        ruleset = load_default_ruleset()
+        createSFXEvent('chime_completion')
+    elif(selector_position == 4):
+        ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
+        createSFXEvent('select')
+    elif(selector_position == 5):
+        game_state = 'p1_mods'
+        createSFXEvent('select')
+    elif(selector_position == 6):
+        game_state = 'p2_mods'
+        createSFXEvent('select')
+
+    with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
+        rulesetdoc.write(dumps(ruleset))
+    return game_state, ruleset
+
 def rules_navigation(timer, ruleset, previous_screen, cwd):
     game_state = "rules"
     pressed = engine.handle_input.menu_input()
+    mouse = engine.handle_input.handle_mouse()
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
@@ -19,79 +131,23 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         else:
             selector_position += 1
     if('p1_left' in pressed or 'p2_left' in pressed):
-        if(selector_position == 0):
-            if(ruleset['goal_limit'] > 1):
-                ruleset['goal_limit'] -= 1
-            else:
-                ruleset['goal_limit'] = 25
-            createSFXEvent('chime_progress')
-        elif(selector_position == 1):
-            if(ruleset['time_limit'] > 0):
-                ruleset['time_limit'] -= 600
-            else:
-                ruleset['time_limit'] = 36000
-            createSFXEvent('chime_progress')
-        elif(selector_position == 2):
-            if(ruleset['time_bonus'] > 0):
-                ruleset['time_bonus'] -= 300
-            else:
-                ruleset['time_bonus'] = 3600
-            createSFXEvent('chime_progress')
-        elif(selector_position == 3):
-            if(ruleset['special_ability_charge_base'] > 0):
-                ruleset['special_ability_charge_base'] -= 1
-            else:
-                ruleset['special_ability_charge_base'] = 20
-            createSFXEvent('chime_progress')
-        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-            rulesetdoc.write(dumps(ruleset))
-    elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
-        if(selector_position == 0):
-            if(ruleset['goal_limit'] < 25):
-                ruleset['goal_limit'] += 1
-            else:
-                ruleset['goal_limit'] = 1
-            createSFXEvent('chime_progress')
-        elif(selector_position == 1):
-            if(ruleset['time_limit'] < 36000):
-                ruleset['time_limit'] += 600
-            else:
-                ruleset['time_limit'] = 0
-            createSFXEvent('chime_progress')
-        elif(selector_position == 2):
-            if(ruleset['time_bonus'] < 3600):
-                ruleset['time_bonus'] += 300
-            else:
-                ruleset['time_bonus'] = 0
-            createSFXEvent('chime_progress')
-        elif(selector_position == 3):
-            if(ruleset['special_ability_charge_base'] < 20):
-                ruleset['special_ability_charge_base'] += 1
-            else:
-                ruleset['special_ability_charge_base'] = 0
-            createSFXEvent('chime_progress')
-        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-            rulesetdoc.write(dumps(ruleset))
+        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd)
+    if('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
+        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        if(selector_position == len(ruleset)):
-            selector_position = 0
-            game_state = previous_screen
-            createSFXEvent('select')
-        elif(selector_position == len(ruleset)-1):
-            ruleset = load_default_ruleset()
-            createSFXEvent('chime_completion')
-        elif(selector_position == 4):
-            ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
-            createSFXEvent('select')
-        elif(selector_position == 5):
-            game_state = 'p1_mods'
-            createSFXEvent('select')
-        elif(selector_position == 6):
-            game_state = 'p2_mods'
-            createSFXEvent('select')
-        with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
-            rulesetdoc.write(dumps(ruleset))
+        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
             
+    for i in range(len(rules_navigation_buttons)):
+        if(rules_navigation_buttons[i].check_hover(mouse)):
+            if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
+                selector_position = i # Change the selector position
+
+            if(mouse[1][0]):
+                game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
+            elif(mouse[1][2]):
+                game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd)
+            
+
     return selector_position, game_state, ruleset
 
 p_selector_position = 0
