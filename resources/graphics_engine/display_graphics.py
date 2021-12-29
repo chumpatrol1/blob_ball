@@ -127,7 +127,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_almanac_credits(game_surface, settings)
 
     # Draw Debug info
-    #draw_debug(game_surface)
+    draw_debug(game_surface)
 
     global toggle_timer
     global full_screen

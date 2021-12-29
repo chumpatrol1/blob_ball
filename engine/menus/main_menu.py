@@ -55,6 +55,7 @@ def menu_navigation(timer):
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
+                createSFXEvent('select')
                 game_state = game_state_navigation(selector_position)
         
             

@@ -26,7 +26,6 @@ def update_mouse_wh(width, height):
     global mouse_dw
     mouse_dw = width
     mouse_dh = height
-    print(mouse_dw, mouse_dh)
 
 real_screen_size = initialize_screen_size()
 display_width = 1024

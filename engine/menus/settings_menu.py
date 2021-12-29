@@ -4,9 +4,67 @@ from json import dumps
 
 selector_position = 0
 
-def settings_navigation(timer, settings, previous_screen, cwd):
+from engine.button import Button
+settings_buttons = [
+    Button(65, 130, 0, 600),
+    Button(135, 200, 0, 600),
+    Button(205, 275, 0, 600),
+    Button(290, 360, 0, 600),
+    Button(365, 430, 0, 600),
+    Button(440, 505, 0, 600),
+    Button(515, 580, 0, 600),
+    Button(590, 670, 0, 600),
+    Button(675, 740, 0, 600),
+]
+
+def settings_selection(selector_position, settings, previous_screen, cwd):
     game_state = "settings"
+    if(selector_position == 3):
+            if(settings['music_volume'] < 10):
+                settings['music_volume'] += 1
+            else:
+                settings['music_volume'] = 0
+    elif(selector_position == 4):
+        if(settings['sound_volume'] < 10):
+            settings['sound_volume'] += 1
+        else: 
+            settings['sound_volume'] = 0
+        createSFXEvent('chime_progress')
+
+    if(selector_position == len(settings) + 3):
+            selector_position = 0
+            game_state = previous_screen
+            createSFXEvent('select')
+    elif(selector_position == len(settings) + 2):
+        settings['hd_backgrounds'] = True
+        settings['hd_blobs'] = True
+        settings['smooth_scaling'] = True
+        createSFXEvent('chime_completion')
+    elif(selector_position == len(settings) + 1):
+        engine.handle_input.reset_inputs()
+        createSFXEvent('chime_completion')
+    elif(selector_position == 5):
+        game_state = "rebind"
+        createSFXEvent('select')
+    elif(selector_position == 0):
+        settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
+        createSFXEvent('select')
+    elif(selector_position == 1):
+        settings['hd_blobs'] = not(settings['hd_blobs'])
+        createSFXEvent('select')
+    elif(selector_position == 2):
+        settings['smooth_scaling'] = not(settings['smooth_scaling'])
+        createSFXEvent('select')
+
+    with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
+            settingsdoc.write(dumps(settings))
+
+    return game_state
+
+def settings_navigation(timer, settings, previous_screen, cwd):
     pressed = engine.handle_input.menu_input()
+    mouse = engine.handle_input.handle_mouse()
+    game_state = "settings"
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
@@ -34,45 +92,17 @@ def settings_navigation(timer, settings, previous_screen, cwd):
 
         
     elif('p1_right' in pressed or 'p2_right' in pressed):
-        if(selector_position == 3):
-            if(settings['music_volume'] < 10):
-                settings['music_volume'] += 1
-            else:
-                settings['music_volume'] = 0
-        elif(selector_position == 4):
-            if(settings['sound_volume'] < 10):
-                settings['sound_volume'] += 1
-            else: 
-                settings['sound_volume'] = 0
-            createSFXEvent('chime_progress')
+        game_state = settings_selection(selector_position, settings, previous_screen, cwd)
 
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
-        if(selector_position == len(settings) + 3):
-            selector_position = 0
-            game_state = previous_screen
-            createSFXEvent('select')
-        elif(selector_position == len(settings) + 2):
-            settings['hd_backgrounds'] = True
-            settings['hd_blobs'] = True
-            settings['smooth_scaling'] = True
-            createSFXEvent('chime_completion')
-        elif(selector_position == len(settings) + 1):
-            engine.handle_input.reset_inputs()
-            createSFXEvent('chime_completion')
-        elif(selector_position == 5):
-            game_state = "rebind"
-            createSFXEvent('select')
-        elif(selector_position == 0):
-            settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
-            createSFXEvent('select')
-        elif(selector_position == 1):
-            settings['hd_blobs'] = not(settings['hd_blobs'])
-            createSFXEvent('select')
-        elif(selector_position == 2):
-            settings['smooth_scaling'] = not(settings['smooth_scaling'])
-            createSFXEvent('select')
+        game_state = settings_selection(selector_position, settings, previous_screen, cwd)
 
-        with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
-            settingsdoc.write(dumps(settings))
+    for i in range(len(settings_buttons)):
+        if(settings_buttons[i].check_hover(mouse)):
+            if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
+                selector_position = i # Change the selector position
+
+            if(mouse[1][0]):
+                game_state = settings_selection(selector_position, settings, previous_screen, cwd)
 
     return selector_position, game_state, settings
