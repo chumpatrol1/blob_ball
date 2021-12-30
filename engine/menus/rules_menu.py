@@ -194,7 +194,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
             
     for i in range(len(rules_navigation_buttons)):
         if(rules_navigation_buttons[i].check_hover(mouse)):
-            if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
+            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
@@ -208,8 +208,8 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
 p_selector_position = 0
 page = 1
 
-def player_mods_page_1_left(p_selector_position, ruleset, player):
-    if(p_selector_position == 0):
+def player_mods_page_1_left(p_selector_position, ruleset, player, limit = None):
+    def adjust_max_hp():
         pmod = ruleset[player]['max_hp']
         if(pmod is None):
             pmod = 20
@@ -220,7 +220,8 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
         else:
             pmod = None
         ruleset[player]['max_hp'] = pmod
-    elif(p_selector_position == 1):
+    
+    def adjust_top_speed():
         pmod = ruleset[player]['top_speed']
         if(pmod is None):
             pmod = 5
@@ -230,7 +231,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['top_speed'] = pmod
 
-    elif(p_selector_position == 2):
+    def adjust_traction():
         pmod = ruleset[player]['traction']
         if(pmod is None):
             pmod = 5
@@ -240,7 +241,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['traction'] = pmod
 
-    elif(p_selector_position == 3):
+    def adjust_friction():
         pmod = ruleset[player]['friction']
         if(pmod is None):
             pmod = 5
@@ -250,7 +251,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['friction'] = pmod
 
-    elif(p_selector_position == 4):
+    def adjust_gravity():
         pmod = ruleset[player]['gravity']
         if(pmod is None):
             pmod = 5
@@ -260,7 +261,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['gravity'] = pmod
 
-    elif(p_selector_position == 5):
+    def adjust_boost_cost():
         pmod = ruleset[player]['boost_cost']
         if(pmod is None):
             pmod = 1200
@@ -270,7 +271,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 120
         ruleset[player]['boost_cost'] = pmod
 
-    elif(p_selector_position == 6):
+    def adjust_boost_cooldown():
         pmod = ruleset[player]['boost_cooldown_max']
         if(pmod is None):
             pmod = 5
@@ -280,7 +281,7 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['boost_cooldown_max'] = pmod
 
-    elif(p_selector_position == 7):
+    def adjust_boost_duration():
         pmod = ruleset[player]['boost_duration']
         if(pmod is None):
             pmod = 5
@@ -290,8 +291,25 @@ def player_mods_page_1_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['boost_duration'] = pmod
 
-def player_mods_page_2_left(p_selector_position, ruleset, player):
-    if(p_selector_position == 0):
+    run_func = {
+        0: adjust_max_hp,
+        1: adjust_top_speed,
+        2: adjust_traction,
+        3: adjust_friction,
+        4: adjust_gravity,
+        5: adjust_boost_cost,
+        6: adjust_boost_cooldown,
+        7: adjust_boost_duration,
+    }        
+
+    if(limit is None or p_selector_position <= limit):
+        run_func[p_selector_position]()
+
+    if(p_selector_position < 8):
+        createSFXEvent('chime_progress')
+
+def player_mods_page_2_left(p_selector_position, ruleset, player, limit = None):
+    def adjust_kick_cooldown():
         pmod = ruleset[player]['kick_cooldown_rate']
         if(pmod is None):
             pmod = 5
@@ -300,7 +318,8 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
         else:
             pmod -= 1
         ruleset[player]['kick_cooldown_rate'] = pmod
-    elif(p_selector_position == 1):
+    
+    def adjust_block_cooldown():
         pmod = ruleset[player]['block_cooldown_rate']
         if(pmod is None):
             pmod = 5
@@ -310,7 +329,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['block_cooldown_rate'] = pmod
 
-    elif(p_selector_position == 2):
+    def adjust_ability_cost():
         pmod = ruleset[player]['special_ability_cost']
         if(pmod is None):
             pmod = 1200
@@ -320,7 +339,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 30
         ruleset[player]['special_ability_cost'] = pmod
 
-    elif(p_selector_position == 3):
+    def adjust_ability_maintenance():
         pmod = ruleset[player]['special_ability_maintenance']
         if(pmod is None):
             pmod = 30
@@ -330,7 +349,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 1
         ruleset[player]['special_ability_maintenance'] = pmod
 
-    elif(p_selector_position == 4):
+    def adjust_ability_max():
         pmod = ruleset[player]['special_ability_max']
         if(pmod is None):
             pmod = 2400
@@ -340,7 +359,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 120
         ruleset[player]['special_ability_max'] = pmod
 
-    elif(p_selector_position == 5):
+    def adjust_ability_cooldown():
         pmod = ruleset[player]['special_ability_cooldown']
         if(pmod is None):
             pmod = 900
@@ -352,7 +371,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 30
         ruleset[player]['special_ability_cooldown'] = pmod
 
-    elif(p_selector_position == 6):
+    def adjust_ability_delay():
         pmod = ruleset[player]['special_ability_delay']
         if(pmod is None):
             pmod = 60
@@ -362,7 +381,7 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 5
         ruleset[player]['special_ability_delay'] = pmod
 
-    elif(p_selector_position == 7):
+    def adjust_ability_duration():
         pmod = ruleset[player]['special_ability_duration']
         if(pmod is None):
             pmod = 300
@@ -372,11 +391,25 @@ def player_mods_page_2_left(p_selector_position, ruleset, player):
             pmod -= 30
         ruleset[player]['special_ability_duration'] = pmod
 
+    run_func = {
+        0: adjust_kick_cooldown,
+        1: adjust_block_cooldown,
+        2: adjust_ability_cost,
+        3: adjust_ability_maintenance,
+        4: adjust_ability_max,
+        5: adjust_ability_cooldown,
+        6: adjust_ability_delay,
+        7: adjust_ability_duration,
+    }        
+
+    if(limit is None or p_selector_position <= limit):
+        run_func[p_selector_position]()
+
     if(p_selector_position < 8):
         createSFXEvent('chime_progress')
 
-def player_mods_page_1_right(p_selector_position, ruleset, player):
-    if(p_selector_position == 0):
+def player_mods_page_1_right(p_selector_position, ruleset, player, limit = None):
+    def adjust_max_hp():
         pmod = ruleset[player]['max_hp']
         if(pmod is None):
             pmod = 1
@@ -388,7 +421,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod = None
         ruleset[player]['max_hp'] = pmod
 
-    elif(p_selector_position == 1):
+    def adjust_top_speed():
         pmod = ruleset[player]['top_speed']
         if(pmod is None):
             pmod = 1
@@ -398,7 +431,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['top_speed'] = pmod
 
-    elif(p_selector_position == 2):
+    def adjust_traction():
         pmod = ruleset[player]['traction']
         if(pmod is None):
             pmod = 1
@@ -408,7 +441,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['traction'] = pmod
 
-    elif(p_selector_position == 3):
+    def adjust_friction():
         pmod = ruleset[player]['friction']
         if(pmod is None):
             pmod = 1
@@ -418,7 +451,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['friction'] = pmod
 
-    elif(p_selector_position == 4):
+    def adjust_gravity():
         pmod = ruleset[player]['gravity']
         if(pmod is None):
             pmod = 1
@@ -428,7 +461,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['gravity'] = pmod
 
-    elif(p_selector_position == 5):
+    def adjust_boost_cost():
         pmod = ruleset[player]['boost_cost']
         if(pmod is None):
             pmod = 120
@@ -438,7 +471,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 120
         ruleset[player]['boost_cost'] = pmod
 
-    elif(p_selector_position == 6):
+    def adjust_boost_cooldown():
         pmod = ruleset[player]['boost_cooldown_max']
         if(pmod is None):
             pmod = 1
@@ -448,7 +481,7 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['boost_cooldown_max'] = pmod
 
-    elif(p_selector_position == 7):
+    def adjust_boost_duration():
         pmod = ruleset[player]['boost_duration']
         if(pmod is None):
             pmod = 1
@@ -458,8 +491,25 @@ def player_mods_page_1_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['boost_duration'] = pmod
 
-def player_mods_page_2_right(p_selector_position, ruleset, player):
-    if(p_selector_position == 0):
+    run_func = {
+        0: adjust_max_hp,
+        1: adjust_top_speed,
+        2: adjust_traction,
+        3: adjust_friction,
+        4: adjust_gravity,
+        5: adjust_boost_cost,
+        6: adjust_boost_cooldown,
+        7: adjust_boost_duration,
+    }        
+
+    if(limit is None or p_selector_position <= limit):
+        run_func[p_selector_position]()
+
+    if(p_selector_position < 8):
+        createSFXEvent('chime_progress')
+
+def player_mods_page_2_right(p_selector_position, ruleset, player, limit = None):
+    def adjust_kick_cooldown():
         pmod = ruleset[player]['kick_cooldown_rate']
         if(pmod is None):
             pmod = 1
@@ -468,7 +518,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
         else:
             pmod += 1
         ruleset[player]['kick_cooldown_rate'] = pmod
-    elif(p_selector_position == 1):
+    def adjust_block_cooldown():
         pmod = ruleset[player]['block_cooldown_rate']
         if(pmod is None):
             pmod = 1
@@ -478,7 +528,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['block_cooldown_rate'] = pmod
 
-    elif(p_selector_position == 2):
+    def adjust_ability_cost():
         pmod = ruleset[player]['special_ability_cost']
         if(pmod is None):
             pmod = 30
@@ -488,7 +538,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 30
         ruleset[player]['special_ability_cost'] = pmod
 
-    elif(p_selector_position == 3):
+    def adjust_ability_maintenance():
         pmod = ruleset[player]['special_ability_maintenance']
         if(pmod is None):
             pmod = 0
@@ -498,7 +548,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 1
         ruleset[player]['special_ability_maintenance'] = pmod
 
-    elif(p_selector_position == 4):
+    def adjust_ability_max():
         pmod = ruleset[player]['special_ability_max']
         if(pmod is None):
             pmod = 1200
@@ -508,7 +558,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 120
         ruleset[player]['special_ability_max'] = pmod
 
-    elif(p_selector_position == 5):
+    def adjust_ability_cooldown():
         pmod = ruleset[player]['special_ability_cooldown']
         if(pmod is None):
             pmod = 2
@@ -520,7 +570,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 30
         ruleset[player]['special_ability_cooldown'] = pmod
 
-    elif(p_selector_position == 6):
+    def adjust_ability_delay():
         pmod = ruleset[player]['special_ability_delay']
         if(pmod is None):
             pmod = 5
@@ -530,7 +580,7 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 5
         ruleset[player]['special_ability_delay'] = pmod
 
-    elif(p_selector_position == 7):
+    def adjust_ability_duration():
         pmod = ruleset[player]['special_ability_duration']
         if(pmod is None):
             pmod = 30
@@ -540,9 +590,25 @@ def player_mods_page_2_right(p_selector_position, ruleset, player):
             pmod += 30
         ruleset[player]['special_ability_duration'] = pmod
     
+    run_func = {
+        0: adjust_kick_cooldown,
+        1: adjust_block_cooldown,
+        2: adjust_ability_cost,
+        3: adjust_ability_maintenance,
+        4: adjust_ability_max,
+        5: adjust_ability_cooldown,
+        6: adjust_ability_delay,
+        7: adjust_ability_duration,
+    }        
+
+    if(limit is None or p_selector_position <= limit):
+        run_func[p_selector_position]()
+
     if(p_selector_position < 8):
         createSFXEvent('chime_progress')
 
+    if(p_selector_position < 8):
+        createSFXEvent('chime_progress')
 
 def player_mods_navigation(timer, ruleset, game_state, cwd):
     pressed = engine.handle_input.menu_input()
@@ -567,18 +633,18 @@ def player_mods_navigation(timer, ruleset, game_state, cwd):
             p_selector_position += 1
     if('p1_left' in pressed or 'p2_left' in pressed):
         if(page == 1):
-            player_mods_page_1_left(p_selector_position, ruleset, player)
+            player_mods_page_1_left(p_selector_position, ruleset, player, limit = 7)
         elif(page == 2):
-            player_mods_page_2_left(p_selector_position, ruleset, player)
+            player_mods_page_2_left(p_selector_position, ruleset, player, limit = 7)
 
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
 
     elif('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
         if(page == 1):
-            player_mods_page_1_right(p_selector_position, ruleset, player)
+            player_mods_page_1_right(p_selector_position, ruleset, player, limit = 7)
         elif(page == 2):
-            player_mods_page_2_right(p_selector_position, ruleset, player)
+            player_mods_page_2_right(p_selector_position, ruleset, player, limit = 7)
         
         with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
             rulesetdoc.write(dumps(ruleset))
@@ -592,5 +658,40 @@ def player_mods_navigation(timer, ruleset, game_state, cwd):
                 page = 1
                 game_state = "rules"
             createSFXEvent('select')
+        else:
+            if(page == 1):
+                player_mods_page_1_right(p_selector_position, ruleset, player, limit = 7)
+            elif(page == 2):
+                player_mods_page_2_right(p_selector_position, ruleset, player, limit = 7)
 
+    for i in range(len(rules_navigation_buttons)):
+        if(rules_navigation_buttons[i].check_hover(mouse)):
+            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+                p_selector_position = i # Change the selector position
+
+            if(mouse[1][0]):
+                if(p_selector_position == 8):
+                    page = (not (page - 1)) + 1
+                    if(page == 1):
+                        game_state = "rules"
+                    createSFXEvent('select')
+                else:
+                    if(page == 1):
+                        player_mods_page_1_right(p_selector_position, ruleset, player, limit = 7)
+                    elif(page == 2):
+                        player_mods_page_2_right(p_selector_position, ruleset, player, limit = 7)
+            elif(mouse[1][2]):
+                if(p_selector_position == 8):
+                    page = (not (page - 1)) + 1
+                    if(page == 1):
+                        game_state = "rules"
+                    createSFXEvent('select')
+                else:
+                    if(p_selector_position == 8):
+                        page = (not (page - 1)) + 1
+                    else:
+                        if(page == 1):
+                            player_mods_page_1_left(p_selector_position, ruleset, player, limit = 7)
+                        elif(page == 2):
+                            player_mods_page_2_left(p_selector_position, ruleset, player, limit = 7)
     return game_state, [p_selector_position, ruleset, player, page]

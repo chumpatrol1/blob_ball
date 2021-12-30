@@ -183,7 +183,7 @@ def settings_navigation(timer, settings, previous_screen, cwd):
 
     for i in range(len(settings_buttons)):
         if(settings_buttons[i].check_hover(mouse)):
-            if(mouse[2][0] or mouse[2][1]): # Did we move the mouse?
+            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
