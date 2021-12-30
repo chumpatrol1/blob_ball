@@ -16,20 +16,18 @@ buttons = [
 ]
 
 def game_state_navigation(selector_position):
-    if(selector_position == 0): #Casual
-            game_state = "css"
-    elif(selector_position == 1):
-        selector_position = 0
-    elif(selector_position == 2):
-        game_state = "almanac"
-    elif(selector_position == 3):
-        game_state = "rules"
-    elif(selector_position == 4):
-        game_state = "settings"
-    elif(selector_position == 5): #Quits the game
-        game_state = "quit"
+    
+    game_state = {
+        0: "css",
+        1: "main_menu",
+        2: "almanac",
+        3: "rules",
+        4: "settings",
+        5: "quit,"
+    }
+    
 
-    return game_state
+    return game_state[selector_position]
 
 def menu_navigation(timer):
     game_state = "main_menu"

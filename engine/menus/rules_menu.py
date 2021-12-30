@@ -19,97 +19,152 @@ rules_navigation_buttons = [
 ]
 
 # Left arrow, or right clicks
-def rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd):
+def rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = None):
     game_state = "rules"
-    if(selector_position == 0):
+
+    def update_goal_limit():
         if(ruleset['goal_limit'] > 1):
             ruleset['goal_limit'] -= 1
         else:
             ruleset['goal_limit'] = 25
         createSFXEvent('chime_progress')
-    elif(selector_position == 1):
+
+    def update_time_limit():
         if(ruleset['time_limit'] > 0):
             ruleset['time_limit'] -= 600
         else:
             ruleset['time_limit'] = 36000
         createSFXEvent('chime_progress')
-    elif(selector_position == 2):
+
+    def update_time_bonus():
         if(ruleset['time_bonus'] > 0):
             ruleset['time_bonus'] -= 300
         else:
             ruleset['time_bonus'] = 3600
         createSFXEvent('chime_progress')
-    elif(selector_position == 3):
+    
+    def update_charge_rate():
         if(ruleset['special_ability_charge_base'] > 0):
             ruleset['special_ability_charge_base'] -= 1
         else:
             ruleset['special_ability_charge_base'] = 20
         createSFXEvent('chime_progress')
-    elif(selector_position == len(ruleset)):
+    
+    def go_back():
+        global selector_position
+        nonlocal game_state
         selector_position = 0
         game_state = previous_screen
         createSFXEvent('select')
-    elif(selector_position == len(ruleset)-1):
+
+    def reload_ruleset():
+        nonlocal ruleset
         ruleset = load_default_ruleset()
         createSFXEvent('chime_completion')
-    elif(selector_position == 4):
+    def toggle_dz():
         ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
         createSFXEvent('select')
-    elif(selector_position == 5):
+
+    def goto_p1_mods():
+        nonlocal game_state
         game_state = 'p1_mods'
         createSFXEvent('select')
-    elif(selector_position == 6):
+    
+    def goto_p2_mods():
+        nonlocal game_state
         game_state = 'p2_mods'
         createSFXEvent('select')
+
+    run_func = {
+        0: update_goal_limit,
+        1: update_time_limit,
+        2: update_time_bonus,
+        3: update_charge_rate,
+        4: toggle_dz,
+        5: goto_p1_mods,
+        6: goto_p2_mods,
+        7: reload_ruleset,
+        8: go_back,
+    }
+
+    if(limit is None or selector_position <= limit):
+        run_func[selector_position]()
     
     with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         rulesetdoc.write(dumps(ruleset))
     return game_state, ruleset
 
 # Right arrow, or left clicks
-def rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd):
+def rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = None):
     game_state = "rules"
-    if(selector_position == 0):
+
+    def update_goal_limit():
         if(ruleset['goal_limit'] < 25):
             ruleset['goal_limit'] += 1
         else:
             ruleset['goal_limit'] = 1
         createSFXEvent('chime_progress')
-    elif(selector_position == 1):
+
+    def update_time_limit():
         if(ruleset['time_limit'] < 36000):
             ruleset['time_limit'] += 600
         else:
             ruleset['time_limit'] = 0
         createSFXEvent('chime_progress')
-    elif(selector_position == 2):
+
+    def update_time_bonus():
         if(ruleset['time_bonus'] < 3600):
             ruleset['time_bonus'] += 300
         else:
             ruleset['time_bonus'] = 0
         createSFXEvent('chime_progress')
-    elif(selector_position == 3):
+    
+    def update_charge_rate():
         if(ruleset['special_ability_charge_base'] < 20):
             ruleset['special_ability_charge_base'] += 1
         else:
             ruleset['special_ability_charge_base'] = 0
         createSFXEvent('chime_progress')
-
-    if(selector_position == len(ruleset)):
+    
+    def go_back():
+        global selector_position
+        nonlocal game_state
         selector_position = 0
         game_state = previous_screen
         createSFXEvent('select')
-    elif(selector_position == len(ruleset)-1):
+
+    def reload_ruleset():
+        nonlocal ruleset
         ruleset = load_default_ruleset()
         createSFXEvent('chime_completion')
-    elif(selector_position == 4):
+    def toggle_dz():
         ruleset['danger_zone_enabled'] = not(ruleset['danger_zone_enabled'])
         createSFXEvent('select')
-    elif(selector_position == 5):
+
+    def goto_p1_mods():
+        nonlocal game_state
         game_state = 'p1_mods'
         createSFXEvent('select')
-    elif(selector_position == 6):
+    
+    def goto_p2_mods():
+        nonlocal game_state
         game_state = 'p2_mods'
         createSFXEvent('select')
+
+    run_func = {
+        0: update_goal_limit,
+        1: update_time_limit,
+        2: update_time_bonus,
+        3: update_charge_rate,
+        4: toggle_dz,
+        5: goto_p1_mods,
+        6: goto_p2_mods,
+        7: reload_ruleset,
+        8: go_back,
+    }
+
+    if(limit is None or selector_position <= limit):
+        run_func[selector_position]()
 
     with open(cwd+'/config/ruleset.txt', 'w') as rulesetdoc:
         rulesetdoc.write(dumps(ruleset))
@@ -131,9 +186,9 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         else:
             selector_position += 1
     if('p1_left' in pressed or 'p2_left' in pressed):
-        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd)
+        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = 4)
     if('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
-        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
+        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = 4)
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
             
