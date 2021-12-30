@@ -147,7 +147,7 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         len(settings) + 2: reset_settings,
         len(settings) + 1: reset_inputs,
     }        
-    if(limit is None or limit <= selector_position):
+    if(limit is None or selector_position <= limit):
         run_func[selector_position]()
     
     with open(cwd+'/config/settings.txt', 'w') as settingsdoc:

@@ -127,7 +127,8 @@ except Exception as ex:
     logging.basicConfig(filename = cwd + "/crash_logs.log", level = logging.ERROR,\
         format='%(process)d-%(levelname)s-%(message)s')
     #Debug, Info, Warning, Error, Critical
-    logging.error(f"Game Crash at {time.asctime()}", exc_info=True)
+    from engine.initializer import return_game_version
+    logging.error(f"Game Crash at {time.asctime()} (Version {return_game_version()})", exc_info=True)
     
     print("GAME CRASH! Please check crash_logs.log and send them to the Blob Ball Devs")
 
