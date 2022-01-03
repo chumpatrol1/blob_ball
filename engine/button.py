@@ -6,7 +6,7 @@ class Button:
         self.right = right
     
     def check_hover(self, mouse):
-        if(mouse[0][0] >= self.left and mouse[0][0] <= self.right\
-            and mouse[0][1] >= self.top and mouse[0][1] <= self.bottom):
+        if(mouse[0][0] >= self.left and mouse[0][0] < self.right\
+            and mouse[0][1] >= self.top and mouse[0][1] < self.bottom):
             return True
         return False

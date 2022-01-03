@@ -5,6 +5,18 @@ from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
+from engine.button import Button
+
+p1_css_menu_buttons = [
+]
+p2_css_menu_buttons = [
+]
+for i in range(8): # 8 columns
+    for j in range(5): # 5 rows
+        p1_css_menu_buttons.append(Button(50+100*j, 150+100*j, 136 + i*136, 204 + i*136)) # Left half of slot is for P1
+        p2_css_menu_buttons.append(Button(50+100*j, 150+100*j, 204 + i*136, 272 + i*136)) # Right half of slot is for P2
+        
+
 
 # X position, Y position, Confirmation, CPU/Human
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
@@ -17,6 +29,11 @@ blob_list = return_css_selector()
 def css_navigation(player, selector, timer, other_selector):
     pressed_conversions = engine.handle_input.player_to_controls(player)
     pressed_buttons = engine.handle_input.css_input()
+    if(player == 1):
+        mouse = engine.handle_input.handle_mouse(False)
+    else:
+        mouse = engine.handle_input.handle_mouse()
+
     pressed = []
     for button in pressed_buttons:
         if(button in pressed_conversions):
@@ -69,6 +86,39 @@ def css_navigation(player, selector, timer, other_selector):
     elif(selector[2] >= 1 and other_selector[2] >= 1):
         if('ability' in pressed):
             selector[2] = 2
+
+    if(player == 1):
+        css_menu_buttons = p1_css_menu_buttons
+    else:
+        css_menu_buttons = p2_css_menu_buttons
+
+    for i in range(len(css_menu_buttons)):
+        if(css_menu_buttons[i].check_hover(mouse)):
+            if(mouse[2] or mouse[1][0] or mouse[1][2]) and selector[2] == 0: # Did we move the mouse?
+                
+                selector[0] = i//5 # Change the selector position
+                selector[1] = i%5
+
+            if(mouse[1][0]):
+                # Functionality:
+                # both unselected: set to select
+                # me select, other unselect: nothing
+                # me unselect, other select: set to select
+                # both select: both confirm
+                if(selector[2] >= 1 and other_selector[2] >= 1):
+                    selector[2] = 2
+                    other_selector[2] = 2
+                else:
+                    selector[2] = 1
+                    
+    
+                
+            elif(mouse[1][2]):
+                selector[2] = 0
+                other_selector[2] = 0
+                
+
+
 
     return selector, timer, other_selector
     
@@ -147,6 +197,7 @@ def css_handler():
         p1_timer -= 1
     if(p2_timer > 0):
         p2_timer -= 1
+
     return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
 
 pop_up_counter = 0
@@ -164,8 +215,9 @@ def popup_handler(timer):
     pop_up = get_pop_up_events()[pop_up_counter].info
     
     pressed = engine.handle_input.get_keypress()
+    mouse = engine.handle_input.handle_mouse()
 
-    if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed) and timer <= 0:
+    if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed or mouse[1][0] or mouse[1][2]) and timer <= 0:
         pop_up_counter += 1
         set_timer(60)
         if(pop_up_counter < len(get_pop_up_events())):

@@ -49,7 +49,7 @@ def menu_navigation(timer):
         game_state = game_state_navigation(selector_position)
     for i in range(len(buttons)):
         if(buttons[i].check_hover(mouse)):
-            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+            if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 selector_position = i # Change the selector position
 
             if(mouse[1][0] or mouse[1][2]):

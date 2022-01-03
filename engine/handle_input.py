@@ -264,11 +264,13 @@ def gameplay_input():
     return pressed
 
 was_pressed = [0, 0, 0]
-def handle_mouse():
+prev_coords = [0, 0]
+def handle_mouse(update = True):
     # What the mouse should give us:
     # Get Pos returns 2 value tuple (X, Y)
     # Get Pressed returns 3 value tuple (L, M, R)
     global was_pressed
+    global prev_coords
     screen_size = return_mouse_wh()
     mouse_pos = list(pg.mouse.get_pos())
     mouse_pos[0] = mouse_pos[0] * (1366/screen_size[0])
@@ -279,10 +281,16 @@ def handle_mouse():
     for i in range(len(was_pressed)): # This whole thing is a fancy mouse key up function
         if(was_pressed[i] and not get_pressed[i]):
             return_pressed[i] = was_pressed[i]
+    
+    moved_mouse = True
+    if(prev_coords == mouse_pos):
+        moved_mouse = False
 
-    was_pressed = get_pressed
+    if(update):
+        was_pressed = get_pressed
+        prev_coords = mouse_pos
 
-    return mouse_pos, return_pressed, pg.mouse.get_rel()
+    return mouse_pos, return_pressed, moved_mouse
 
 if "__name__" == "__main__":
     while True:

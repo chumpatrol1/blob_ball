@@ -194,7 +194,7 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
             
     for i in range(len(rules_navigation_buttons)):
         if(rules_navigation_buttons[i].check_hover(mouse)):
-            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+            if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
@@ -666,7 +666,7 @@ def player_mods_navigation(timer, ruleset, game_state, cwd):
 
     for i in range(len(rules_navigation_buttons)):
         if(rules_navigation_buttons[i].check_hover(mouse)):
-            if(mouse[2][0] or mouse[2][1] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+            if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 p_selector_position = i # Change the selector position
 
             if(mouse[1][0]):
