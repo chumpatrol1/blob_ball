@@ -21,12 +21,14 @@ for i in range(8): # 8 columns
 # X position, Y position, Confirmation, CPU/Human
 p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p1_ghost_position = None
+p2_ghost_position = None
 p1_blob = "quirkless"
 p2_blob = "quirkless"
 
 blob_list = return_css_selector()
 
-def css_navigation(player, selector, timer, other_selector):
+def css_navigation(player, selector, timer, other_selector, ghost_selector):
     pressed_conversions = engine.handle_input.player_to_controls(player)
     pressed_buttons = engine.handle_input.css_input()
     if(player == 1):
@@ -96,8 +98,7 @@ def css_navigation(player, selector, timer, other_selector):
         if(css_menu_buttons[i].check_hover(mouse)):
             if(mouse[2] or mouse[1][0] or mouse[1][2]) and selector[2] == 0: # Did we move the mouse?
                 
-                selector[0] = i//5 # Change the selector position
-                selector[1] = i%5
+                ghost_selector = [i//5, i%5] # Change the selector position
 
             if(mouse[1][0]):
                 # Functionality:
@@ -108,10 +109,10 @@ def css_navigation(player, selector, timer, other_selector):
                 if(selector[2] >= 1 and other_selector[2] >= 1):
                     selector[2] = 2
                     other_selector[2] = 2
-                else:
+                elif(not selector[2]):
+                    selector[0] = i//5
+                    selector[1] = i%5
                     selector[2] = 1
-                    
-    
                 
             elif(mouse[1][2]):
                 selector[2] = 0
@@ -120,20 +121,22 @@ def css_navigation(player, selector, timer, other_selector):
 
 
 
-    return selector, timer, other_selector
+    return selector, timer, other_selector, ghost_selector
     
 p1_timer = 0
 p2_timer = 0
 def css_handler():
     global p1_selector_position
     global p2_selector_position
+    global p1_ghost_position
+    global p2_ghost_position
     global p1_blob
     global p2_blob
     global p1_timer
     global p2_timer
     game_state = "css"
-    p1_selector_position, p1_timer, p2_selector_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position)
-    p2_selector_position, p2_timer, p1_selector_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position)
+    p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position)
+    p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position)
     
     if(p1_selector_position[2] == 1):
         if(p1_selector_position[0] == 0):
@@ -188,17 +191,17 @@ def css_handler():
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         game_state = "casual_match"
-    
-    if(game_state == "casual_match"):
         p1_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
         p2_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
+        p1_ghost_position = None
+        p2_ghost_position = None
 
     if(p1_timer > 0):
         p1_timer -= 1
     if(p2_timer > 0):
         p2_timer -= 1
 
-    return p1_selector_position, p2_selector_position, game_state, p1_blob, p2_blob
+    return game_state, [p1_selector_position, p2_selector_position, p1_blob, p2_blob, p1_ghost_position, p2_ghost_position]
 
 pop_up_counter = 0
 def popup_handler(timer):

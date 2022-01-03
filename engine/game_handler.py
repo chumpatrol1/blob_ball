@@ -54,10 +54,9 @@ def update_game_state(game_state, cwd):
         if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
-        info_getter = engine.menus.css_menu.css_handler()
+        game_state, info_getter = engine.menus.css_menu.css_handler()
         p1_selector_position = info_getter[0]
         p2_selector_position = info_getter[1]
-        game_state = info_getter[2]
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
             if(p1_selector_position[3]):
@@ -68,10 +67,10 @@ def update_game_state(game_state, cwd):
                 p2_is_cpu = True
             else:
                 p2_is_cpu = False
-            p1_selector_position[2] = 0
-            p2_selector_position[2] = 0
-            p1_blob = info_getter[3]
-            p2_blob = info_getter[4]
+            p1_selector_position[3] = 0
+            p2_selector_position[3] = 0
+            p1_blob = info_getter[2]
+            p2_blob = info_getter[3]
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
             previous_screen = "css"

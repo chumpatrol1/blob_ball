@@ -67,9 +67,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     if(game_state == "main_menu"):
         draw_main_menu(game_surface, info_getter, settings)
     elif(game_state == "css"):
-        p1_selector_position = info_getter[0]
-        p2_selector_position = info_getter[1]
-        draw_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
+        draw_css(game_surface, info_getter, settings)
     elif(game_state == "casual_match"):
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
