@@ -157,3 +157,6 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
     return game_state, info_getter, song_playing, settings, ruleset
+
+def return_blobs():
+    return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

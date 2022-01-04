@@ -190,7 +190,7 @@ def draw_css(game_display, info_getter, settings):
 
 
     if(p1_selector_position[2] >= 1 and p2_selector_position[2] >= 1):
-        pg.draw.rect(game_display, (255, 255, 0), (0, 1366*(2/5), 1366, 153))
+        pg.draw.rect(game_display, (255, 255, 0), (0, 768*(2/5), 1366, 153))
         menu_font = font_cache['ready_confirmation']
         menu_text = menu_font.render('CONFIRM READY WITH "ABILITY"', False, (50, 50, 255))
         text_rect = menu_text.get_rect()

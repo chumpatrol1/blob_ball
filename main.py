@@ -106,7 +106,6 @@ def run(game_state):
         escape_timer -= 1
     if(game_state == "quit"):
         done = True
-        
     '''Runs the program'''
     return game_state
 try:
@@ -128,8 +127,16 @@ except Exception as ex:
         format='%(process)d-%(levelname)s-%(message)s')
     #Debug, Info, Warning, Error, Critical
     from engine.initializer import return_game_version
+    from engine.game_handler import return_blobs
     logging.error(f"Game Crash at {time.asctime()} (Version {return_game_version()})", exc_info=True)
-    
+    with open(cwd + "/crash_logs.log", 'a') as crash_logs:
+        crash_logs.write("Game State: " + game_state + "\n")
+        blob_info = return_blobs()
+        crash_logs.write("P1 Blob: " + str(blob_info[0]) + ", is CPU: " + str(bool(blob_info[2])) + "\n")
+        crash_logs.write("P2_Blob: " + str(blob_info[1]) + ", is CPU: " + str(bool(blob_info[3])) + "\n")
+        crash_logs.write("\n")
+        crash_logs.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+        crash_logs.write("\n")
     print("GAME CRASH! Please check crash_logs.log and send them to the Blob Ball Devs")
 
     pg.quit()
