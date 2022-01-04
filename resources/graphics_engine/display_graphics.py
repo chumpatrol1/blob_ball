@@ -5,16 +5,7 @@ from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_main_menu import draw_main_menu
-from resources.graphics_engine.display_css import draw_css
-from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
-from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
-from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
-from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
-from resources.graphics_engine.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
-from resources.graphics_engine.display_medals_and_milestones import draw_medals_screen
-from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
-from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
 from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
 
@@ -66,63 +57,6 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_splash_screen(game_surface, info_getter, settings)
     if(game_state == "main_menu"):
         draw_main_menu(game_surface, info_getter, settings)
-    elif(game_state == "css"):
-        draw_css(game_surface, info_getter, settings)
-    elif(game_state == "casual_match"):
-        p1_blob = info_getter[0]
-        p2_blob = info_getter[1]
-        ball = info_getter[2]
-        game_score = info_getter[3]
-        timer = info_getter[4]
-        game_state = info_getter[5]
-        game_time = info_getter[6]
-        try:
-            draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
-        except Exception as ex:
-            unload_image_cache()
-            print(ex)
-            print("Weird match end exception:", info_getter)
-    elif(game_state == "casual_win"):
-        draw_win_screen(game_surface, info_getter, settings)
-    elif(game_state == "pop_up"):
-        draw_pop_up(game_surface, info_getter, settings)
-    elif(game_state == "rules"):
-        selector_position = info_getter[0]
-        game_state = info_getter[1]
-        ruleset = info_getter[2]
-        draw_rules_screen(game_surface, ruleset, selector_position, settings)
-    elif(game_state == "p1_mods" or game_state == "p2_mods"):
-        draw_pmods_screen(game_surface, info_getter, settings)
-    elif(game_state == "settings"):
-        selector_position = info_getter[0]
-        game_state = info_getter[1]
-        the_settings = info_getter[2]
-        draw_settings_screen(game_surface, the_settings, selector_position)
-    elif(game_state == "rebind"):
-        draw_rebind_screen(game_surface, settings, info_getter[1])
-    elif(game_state == "almanac"):
-        selector_position = info_getter[0]
-        draw_almanac_main(game_surface, selector_position, settings)
-    elif(game_state == "medals"):
-        draw_medals_screen(game_surface, info_getter, settings)
-    elif(game_state == "almanac_stats"):
-        draw_almanac_stats(game_surface, settings)
-    elif(game_state == "almanac_stats_page_2"):
-        draw_almanac_stats_2(game_surface, settings)
-    elif(game_state == "almanac_stats_page_3"):
-        draw_almanac_stats_3(game_surface, settings, info_getter)
-    elif(game_state == "almanac_art"):
-        selector_position = info_getter[0]
-        draw_almanac_art(game_surface, selector_position, settings)
-    elif(game_state == "almanac_art_backgrounds"):
-        selector_position = info_getter[0]
-        draw_almanac_backgrounds(game_surface, selector_position)
-    elif(game_state == "almanac_art_blobs"):
-        selector_position = info_getter[0]
-        draw_almanac_blobs(game_surface, selector_position)
-    elif(game_state == "credits"):
-        draw_almanac_credits(game_surface, settings)
-
     # Draw Debug info (really laggily)
     #draw_debug(game_surface)
 

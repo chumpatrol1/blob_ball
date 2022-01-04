@@ -2,19 +2,26 @@ from resources.graphics_engine.background_handler import draw_background as draw
 import pygame as pg
 from os import getcwd
 cwd = getcwd()
+from pathlib import Path
 
+p = Path('./resources/fonts/neuropol-x-free.regular.ttf')
+print(str(p))
+
+pg.init()
 menu_asset_cache = {
 'ball': pg.transform.scale(pg.image.load(cwd + "/resources/images/balls/soccer_ball.png"), (76, 76)),
-'initialized': False,
+'font': pg.font.Font(str(p), 40),
+'initialized': True,
 }
+
 
 def draw_main_menu(game_display, info_getter, settings):    
     if not menu_asset_cache['initialized']:
         menu_asset_cache['font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
         menu_asset_cache['initialized'] = True
 
-
     menu_font = menu_asset_cache['font']
+    print(type(menu_font))
     text_array = [
         menu_font.render('Play!', False, (0, 0, 150)),
         menu_font.render('Online', False, (0, 0, 150)),

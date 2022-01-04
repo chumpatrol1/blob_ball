@@ -37,7 +37,6 @@ import resources.sound_engine.handle_sound as hs
 import engine.handle_input
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medals
 game_state = "control_splash"
 new_game_state = "control_splash"
 
@@ -45,10 +44,6 @@ check_folders(cwd)
 game_stats = initialize_game_stats(cwd)
 initialize_ruleset(cwd)
 load_matchup_chart(cwd)
-
-load_blob_unlocks(cwd)
-load_medals(cwd)
-update_css_blobs()
 
 done = False
 
@@ -78,9 +73,6 @@ def run(game_state):
     global cwd
     global escape_timer
     clock.tick_busy_loop(60)
-    if(game_state == "rebind"):
-        clock.tick_busy_loop(3) # Manually reducing the frame rate because it ironically becomes faster to rebind
-    handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings)
     handle_sound(bgm_song, settings)
@@ -92,10 +84,6 @@ def run(game_state):
     if(pressed[pg.K_ESCAPE] and not escape_timer):
         if(game_state == "casual_match"):
             game_state = "css"
-            from resources.graphics_engine.display_gameplay import unload_image_cache
-            from engine.gameplay import clear_info_cache
-            clear_info_cache()
-            unload_image_cache()
             escape_timer = 30
         elif(game_state == "rebind"):
             #game_state = "settings"
