@@ -1,5 +1,5 @@
 class Button:
-    def __init__(self, top = 0, bottom = 10, left = 10, right = 10):
+    def __init__(self, top = 0, bottom = 10, left = 0, right = 10):
         self.top = top
         self.bottom = bottom
         self.left = left

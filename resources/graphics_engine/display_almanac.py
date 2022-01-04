@@ -228,18 +228,23 @@ def read_mu_chart(blob):
             for j in range(7):
                 mu_percent_array[-1].append("-")
     return mu_percent_array
-
-def draw_almanac_stats_3(game_display, settings, selector_position):
+ghost = None
+def draw_almanac_stats_3(game_display, settings, info_getter):
     draw_background(game_display, 'almanac_stats', settings)
     global bic_cached
     global blob_image_cache
     global ball
     global ball_state
+    global ghost
+    selector_position = info_getter[0]
+    ghost_position = info_getter[1]
     directory = cwd + "/resources/images"
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
         bic_cached = True
         ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
+        ghost = ball.convert_alpha()
+        ghost.set_alpha(200)
 
     x = 0
     y = 0
@@ -274,6 +279,8 @@ def draw_almanac_stats_3(game_display, settings, selector_position):
             text_y += 100
             text_x = 170
     game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
+    if(ghost_position is not None and ghost_position != selector_position[:2]):
+        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
     text_array = [

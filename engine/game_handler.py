@@ -134,8 +134,7 @@ def update_game_state(game_state, cwd):
         if(game_state != "almanac_stats_page_2"):
             timer = 10
     elif(game_state == "almanac_stats_page_3"):
-        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
-        game_state = info_getter[0]
+        game_state, info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
         song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats_page_3"):
             timer = 10

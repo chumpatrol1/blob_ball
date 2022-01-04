@@ -110,8 +110,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "almanac_stats_page_2"):
         draw_almanac_stats_2(game_surface, settings)
     elif(game_state == "almanac_stats_page_3"):
-        selector_position = info_getter[1]
-        draw_almanac_stats_3(game_surface, settings, selector_position)
+        draw_almanac_stats_3(game_surface, settings, info_getter)
     elif(game_state == "almanac_art"):
         selector_position = info_getter[0]
         draw_almanac_art(game_surface, selector_position, settings)
