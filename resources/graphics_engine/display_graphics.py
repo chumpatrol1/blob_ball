@@ -123,8 +123,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "credits"):
         draw_almanac_credits(game_surface, settings)
 
-    # Draw Debug info
-    draw_debug(game_surface)
+    # Draw Debug info (really laggily)
+    #draw_debug(game_surface)
 
     global toggle_timer
     global full_screen

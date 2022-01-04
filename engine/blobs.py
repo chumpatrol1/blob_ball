@@ -248,6 +248,7 @@ class Blob:
             "pill": None,
             "taxing": 0,
             "taxed": 0,
+            "stunned": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -311,7 +312,7 @@ class Blob:
                 self.used_ability = "spire"
             elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
-            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - 180):
+            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
                 self.used_ability = None
             elif(self.used_ability == "gale"): 
                 if (self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
@@ -660,7 +661,7 @@ class Blob:
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
-                blob.take_damage(y_speed_mod = -30 - (5 * (blob.gravity_stars - 1.05)), movement_lock = 20)
+                blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
             else:
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
@@ -708,9 +709,9 @@ class Blob:
                         accumulated_damage -= 2
                         stun_amount = 0
 
-                    blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, movement_lock=stun_amount,)
+                    blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
 
-    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0,\
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
@@ -750,7 +751,7 @@ class Blob:
             self.hp -= damage
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
-            self.movement_lock = movement_lock
+            self.status_effects['stunned'] = stun_amount
             self.y_speed = y_speed_mod
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
@@ -801,6 +802,7 @@ class Blob:
         self.status_effects['judged'] = 0
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0
+        self.status_effects['stunned'] = 0
         self.set_base_stats(self.stars)
         
     def move(self, pressed_buttons):
@@ -820,7 +822,7 @@ class Blob:
                 else:
                     pressed.append(pressed_conversions[button])
         
-        if(self.movement_lock > 0):
+        if(self.movement_lock > 0 or self.status_effects['stunned']):
             pressed = []
         if(self.status_effects['judged']):
             if('kick' in pressed):

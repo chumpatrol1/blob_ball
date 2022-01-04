@@ -250,7 +250,6 @@ class Ball:
                 else:
                     self.y_speed -= 0.8
             except Exception as exception:
-                print(exception)
                 self.y_speed -= 5
         elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay and self.y_pos >= 900):
             createSFXEvent('ball_spire_hit')

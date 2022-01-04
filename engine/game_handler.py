@@ -67,8 +67,8 @@ def update_game_state(game_state, cwd):
                 p2_is_cpu = True
             else:
                 p2_is_cpu = False
-            p1_selector_position[3] = 0
-            p2_selector_position[3] = 0
+            p1_selector_position[2] = 0
+            p2_selector_position[2] = 0
             p1_blob = info_getter[2]
             p2_blob = info_getter[3]
         elif(game_state == "rules" or game_state == "settings"):
