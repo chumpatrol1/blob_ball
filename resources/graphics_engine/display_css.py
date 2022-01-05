@@ -83,6 +83,12 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position):
         token_cache['p1_ghost'].set_alpha(200)
         token_cache['p2_ghost'] = token_cache['p2_ball'].convert_alpha()
         token_cache['p2_ghost'].set_alpha(200)
+
+        token_cache['cpu1_ghost'] = token_cache['cpu1_ball'].convert_alpha()
+        token_cache['cpu1_ghost'].set_alpha(200)
+        token_cache['cpu2_ghost'] = token_cache['cpu2_ball'].convert_alpha()
+        token_cache['cpu2_ghost'].set_alpha(200)
+
         token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (51, 51))
         
         bic_cached = True
@@ -184,9 +190,15 @@ def draw_css(game_display, info_getter, settings):
     game_display.blit(p1_ball, ((136 * (p1_selector_position[0] + 1) + 1366*(1/135)), 100 * (p1_selector_position[1] + 1) - 25))
     game_display.blit(p2_ball, ((136 * (p2_selector_position[0] + 1) + 1366*(8/135)), 100 * (p2_selector_position[1] + 1) - 25))
     if(p1_ghost_position is not None and not p1_selector_position[2]):
-        game_display.blit(token_cache['p1_ghost'], ((136 * (p1_ghost_position[0] + 1) + 1366*(1/135)), 100 * (p1_ghost_position[1] + 1) - 25))
+        ghost = 'p1_ghost'
+        if(p1_selector_position[3]):
+            ghost = 'cpu1_ghost'
+        game_display.blit(token_cache[ghost], ((136 * (p1_ghost_position[0] + 1) + 1366*(1/135)), 100 * (p1_ghost_position[1] + 1) - 25))
     if(p2_ghost_position is not None and not p2_selector_position[2]):
-        game_display.blit(token_cache['p2_ghost'], ((136 * (p2_ghost_position[0] + 1) + 1366*(8/135)), 100 * (p2_ghost_position[1] + 1) - 25))
+        ghost = 'p2_ghost'
+        if(p2_selector_position[3]):
+            ghost = 'cpu2_ghost'
+        game_display.blit(token_cache[ghost], ((136 * (p2_ghost_position[0] + 1) + 1366*(8/135)), 100 * (p2_ghost_position[1] + 1) - 25))
 
 
     if(p1_selector_position[2] >= 1 and p2_selector_position[2] >= 1):

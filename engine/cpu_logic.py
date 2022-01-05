@@ -165,6 +165,7 @@ def compile_openings(blob, other_blob):
     self_expensive = bool(blob.special_ability_cost >= 600)
     foe_fast = bool(other_blob.top_speed > 13 and other_blob.top_speed > blob.top_speed)
     foe_expensive = bool(other_blob.special_ability_cost >= 600)
+    foe_low_hp = bool(other_blob.hp < 6)
     # You want to play 2 if you are fast and your ability is inexpensive
     # You want to play 1 if you are slow and your ability is expensive
     # You want to play 3 if you are fast and your ability is expensive
@@ -178,6 +179,8 @@ def compile_openings(blob, other_blob):
         decision_array += ['opening_3', 'opening_3', 'opening_1']
     if(foe_expensive):
         decision_array += ['opening_2', 'opening_2', 'opening_1']
+    if(foe_low_hp):
+        decision_array += ['opening_4', 'opening_4', 'opening_4']
     return decision_array # This is a combination of all valid openings we can play, one of which is chosen randomly
 
 # This is the current version of handle_logic, the one that is going to V0.11.0b
@@ -244,7 +247,7 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         pressed.append('toward')
         if (abs(blob.x_center - ball.x_center)<150) and (blob.y_center - 125 > ball.y_center):
             pressed.append('up')
-
+    
         if(blob.kick_cooldown == 0 and 150 < abs(blob.x_center - ball.x_center) < 185\
             and (blob.y_center > ball.y_center) and random.randint(0, 10) == 0):
             pressed.append('kick')
@@ -263,6 +266,13 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
                     pressed.append('block')
             else:
                 pressed.append('down')
+    elif(logic_memory['current_play'] == 'opening_4'):
+        pressed.append('toward')
+        if(blob.kick_cooldown == 0 and 150 > abs(blob.x_center - other_blob.x_center)\
+            and random.randint(0, 5) == 0):
+            pressed.append('kick')
+            logic_memory['current_play'] = 'classic'
+        
     elif(logic_memory['current_play'] == 'classic'): # BoingK Time!
         if ((blob.x_center < ball.x_center+60) and (blob.player != 1)) or ((blob.x_center > ball.x_center-60) and (blob.player == 1)):
             pressed.append('away')
@@ -281,12 +291,24 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         if (abs(blob.x_center - ball.x_center)<150) and (blob.y_center - 125>ball.y_center):
             pressed.append('up')
         
+        kick_chance = 10 # Smaller is better
+        if(other_blob.hp < 6): # Almost dead? Finish him!
+            kick_chance -= 1
+        if(other_blob.player == 1 and other_blob.x_pos <= blob.danger_zone) or (other_blob.player == 2 and other_blob.x_pos >= blob.danger_zone):
+            kick_chance -= 1 # Enemy in danger zone? Finish him!
+        if(blob.boost_timer): # Boosting? Finish him!
+            kick_chance -= 2
+
         if(blob.kick_cooldown == 0 and 150 < abs(blob.x_center - ball.x_center) < 185\
             and (blob.y_center > ball.y_center) and random.randint(0, 10) == 0):
             if(blob.player == 1 and blob.x_center < ball.x_center):
                 pressed.append('kick')
             elif(blob.player == 2 and blob.x_center > ball.x_center):
                 pressed.append('kick')
+
+        if(blob.kick_cooldown == 0 and 150 > abs(blob.x_center - other_blob.x_center)\
+            and random.randint(0, kick_chance) == 0):
+            pressed.append('kick')
 
         if(blob.boost_cooldown_timer == 0 and blob.special_ability_meter >= blob.boost_cost\
              and not random.randint(0, 5) and not (self_position == 'away_dz' or self_position == self_position == 'away_mid')):

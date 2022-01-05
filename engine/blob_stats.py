@@ -56,7 +56,7 @@ def species_to_stars(species, stat_overrides):
         'doctor': create_dict(4, 2, 3, 3, 4, 1, 1, 600, 1, 1, 'pill', 300, 0, 1800, 240, 0, 0),
         'king': create_dict(3, 1, 1, 1, 1, 4, 4, 600, 3, 3, 'tax', 600, 0, 1800, 540, 0, 180),
         'cop': create_dict(3, 4, 4, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 750, 0, 1800, 900, 0, 0),
-        'boxer': create_dict(4, 2, 5, 2, 2, 1, 4, 600, 4, 2, 'starpunch', 750, 0, 1800, 810, 20, 0),
+        'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 810, 20, 0),
     }
 
     blob_dict = full_dict[species]
