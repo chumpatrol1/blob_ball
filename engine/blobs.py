@@ -72,7 +72,7 @@ def species_to_ability_icon(species):
         'doctor': ability_cwd + "pill.png",
         'king': ability_cwd + "tax.png",
         'cop': ability_cwd + "block_icon.png",
-        'boxer': ability_cwd + 'tax.png',
+        'boxer': ability_cwd + 'starpunch.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -696,7 +696,7 @@ class Blob:
         
         elif(self.used_ability == "starpunch"):
             if(self.x_center - (1.5 * 250) <= blob.x_center <= self.x_center + (1.5 * 250)):
-                if(self.y_center - (1.1 * 250) <= blob.y_center <= self.y_center + 250):
+                if(self.y_center - (1.1 * 300) <= blob.y_center <= self.y_center + 300):
                     accumulated_damage = 3
                     stun_amount = 30
                     if(self.boost_timer):

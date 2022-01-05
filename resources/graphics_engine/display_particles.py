@@ -78,10 +78,10 @@ def create_blob_particles(blob, other_blob):
         elif(blob.x_center - 315 > other_blob.x_center):
             punch_x = blob.x_center - 315
 
-        if(blob.y_center + 270 < other_blob.y_center):
-            punch_y = blob.y_center + 270
-        elif(blob.y_center - 250 > other_blob.y_center):
-            punch_y = blob.y_center - 250
+        if(blob.y_center + 330 < other_blob.y_center):
+            punch_y = blob.y_center + 330
+        elif(blob.y_center - 300 > other_blob.y_center):
+            punch_y = blob.y_center - 300
 
         x_midpoint = (punch_x + blob.x_center)/2
         y_midpoint = (punch_y + blob.y_center)/2

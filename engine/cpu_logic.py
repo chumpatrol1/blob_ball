@@ -183,6 +183,17 @@ def compile_openings(blob, other_blob):
         decision_array += ['opening_4', 'opening_4', 'opening_4']
     return decision_array # This is a combination of all valid openings we can play, one of which is chosen randomly
 
+def block_attacks(blob, other_blob, pressed):
+    if(blob.block_cooldown == 0 and 150 > abs(blob.x_center - other_blob.x_center)\
+        and other_blob.kick_cooldown == 0 and \
+        random.randint(0, 35 - (blob.hp + (5 * int(blob.player == 1 and blob.x_pos <= blob.danger_zone) \
+        + (5 * int(bool(other_blob.boost_timer)))))) == 0): # More likely to block if in danger or enemy boosting
+        pressed.append('block') # More likely to block the lower hp we have
+
+    if((other_blob.used_ability == "spire_wait" or other_blob.used_ability == "thunderbolt_wait" or other_blob.used_ability == "starpunch_wait") and random.randint(0, 40 - (other_blob.special_ability_cooldown_max - other_blob.special_ability_timer)) == 0):
+        pressed.append('block')
+
+
 # This is the current version of handle_logic, the one that is going to V0.11.0b
 def handle_logic_beta(blob, other_blob, ball, game_score, timer):
 
@@ -243,6 +254,7 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         pressed.append('down')
         if(blob.special_ability_meter > 0.8 * blob.special_ability_max):
             logic_memory['current_play'] = random.choice(['opening_2', 'opening_3'])
+        block_attacks(blob, other_blob, pressed)
     elif(logic_memory['current_play'] == 'opening_2'): # Rush the ball!
         pressed.append('toward')
         if (abs(blob.x_center - ball.x_center)<150) and (blob.y_center - 125 > ball.y_center):
@@ -294,7 +306,7 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         kick_chance = 10 # Smaller is better
         if(other_blob.hp < 6): # Almost dead? Finish him!
             kick_chance -= 1
-        if(other_blob.player == 1 and other_blob.x_pos <= blob.danger_zone) or (other_blob.player == 2 and other_blob.x_pos >= blob.danger_zone):
+        if(other_blob.player == 1 and other_blob.x_pos <= other_blob.danger_zone) or (other_blob.player == 2 and other_blob.x_pos >= other_blob.danger_zone):
             kick_chance -= 1 # Enemy in danger zone? Finish him!
         if(blob.boost_timer): # Boosting? Finish him!
             kick_chance -= 2
@@ -309,6 +321,8 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
         if(blob.kick_cooldown == 0 and 150 > abs(blob.x_center - other_blob.x_center)\
             and random.randint(0, kick_chance) == 0):
             pressed.append('kick')
+
+        block_attacks(blob, other_blob, pressed)
 
         if(blob.boost_cooldown_timer == 0 and blob.special_ability_meter >= blob.boost_cost\
              and not random.randint(0, 5) and not (self_position == 'away_dz' or self_position == self_position == 'away_mid')):
