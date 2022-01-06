@@ -23,10 +23,10 @@ cwd = os.getcwd()
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser']
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax', 'stoplight']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -308,17 +308,19 @@ class Blob:
                 createSFXEvent('ice')
             elif(self.holding_timer % 12 == 11 and self.used_ability == "geyser"):
                 createSFXEvent('water')
+            elif(self.holding_timer % 60 == 59 and self.used_ability == "gale"):
+                createSFXEvent('gale')
             if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
                 self.used_ability = "spire"
             elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
             elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
                 self.used_ability = None
-            elif(self.used_ability == "gale"): 
+                '''elif(self.used_ability == "gale"): # Move me back later i guess!
                 if (self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
                     self.used_ability = None
                 elif (self.special_ability_cooldown_max - self.special_ability_timer) % 60 == 0:
-                    createSFXEvent('gale')
+                    createSFXEvent('gale')'''
             elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
             elif(self.used_ability == "pill" and self.special_ability_timer == self.special_ability_cooldown_max - 2):
@@ -499,13 +501,20 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(special_ability == "gale"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
-                #Gale activation
-                self.used_ability = "gale"
-                self.special_ability_cooldown = self.special_ability_cooldown_max
-                self.special_ability_timer = self.special_ability_cooldown
-                self.special_ability_meter -= self.special_ability_cost
-                createSFXEvent('gale')
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "gale"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                    self.holding_timer += 1
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "gale"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                    self.holding_timer = 0
+                    createSFXEvent('gale')
         elif(special_ability == "c&d"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "c&d"
@@ -671,10 +680,10 @@ class Blob:
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
-                if(self.player == 1 and self.used_ability == "gale" and blob.x_speed < 5): #Airborne
-                    blob.x_speed += 1
-                elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
-                    blob.x_speed -= 1
+                if(self.player == 1 and self.used_ability == "gale"): #Airborne
+                    blob.x_pos += 7
+                elif(self.player == 2 and self.used_ability == "gale"):
+                    blob.x_pos -= 7
         elif(self.used_ability == "c&d"):
             blob.status_effects['judged'] = self.special_ability_duration
         elif(self.used_ability == "tax"):

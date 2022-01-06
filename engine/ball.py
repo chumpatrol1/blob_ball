@@ -258,9 +258,9 @@ class Ball:
             self.y_speed = Ball.ground - self.y_pos
         elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1 and self.x_speed < 15):
-                self.x_speed += 0.25
+                self.x_speed += 0.35
             elif(blob.player == 2 and self.x_speed > -15):
-                self.x_speed -= 0.25
+                self.x_speed -= 0.35
         elif(blob.used_ability == "stoplight"):
             self.x_speed = 0
             self.y_speed = 0
