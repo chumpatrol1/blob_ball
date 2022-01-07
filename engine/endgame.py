@@ -105,9 +105,9 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
                 else:
                     mu_chart[loser][winner] = [0, 1, 0]
                 if(not 'losses' in mu_chart[loser]):
-                    mu_chart[winner]['losses'] = 1
+                    mu_chart[loser]['losses'] = 1
                 else:
-                    mu_chart[winner]['losses'] += 1
+                    mu_chart[loser]['losses'] += 1
             else:
                 mu_chart[loser] = dict()
                 mu_chart[loser][winner] = [0, 1, 0]

@@ -51,7 +51,7 @@ def species_to_stars(species, stat_overrides):
         'water': create_dict(2, 4, 4, 2, 3, 3, 3, 600, 3, 3, 'geyser', 100, 15, 1800, 2, 0, 0),
         'rock': create_dict(5, 1, 5, 1, 5, 1, 2, 600, 3, 4, 'spire', 400, 0, 1800, 300, 30, 0),
         'lightning': create_dict(1, 5, 3, 5, 5, 2, 1, 600, 3, 3, 'thunderbolt', 600, 0, 1800, 360, 10, 120),
-        'wind': create_dict(1, 5, 2, 5, 1, 5, 1, 600, 3, 3, 'gale', 150, 12, 1800, 2, 0, 0),
+        'wind': create_dict(1, 5, 2, 5, 1, 5, 1, 600, 3, 3, 'gale', 120, 12, 1800, 2, 0, 0),
         'judge': create_dict(3, 3, 2, 3, 3, 3, 3, 600, 3, 3, 'c&d', 510, 0, 1800, 300, 0, 60),
         'doctor': create_dict(4, 2, 3, 3, 4, 1, 1, 600, 1, 1, 'pill', 300, 0, 1800, 240, 0, 0),
         'king': create_dict(3, 1, 1, 1, 1, 4, 4, 600, 5, 5, 'tax', 600, 0, 1800, 540, 0, 180),

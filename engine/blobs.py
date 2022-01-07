@@ -672,10 +672,10 @@ class Blob:
             if(blob.block_timer == 0):
                 blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
             else:
+                blob.take_damage(damage=0)
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
-        and blob.block_timer == 0):
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             blob.take_damage()
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
