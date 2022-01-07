@@ -89,37 +89,57 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
                 if loser in mu_chart[winner]: #Has this MU been played before?
                     mu_chart[winner][loser][0] += 1
                 else:
-                    mu_chart[winner][loser] = [1, 0, 0]
+                    mu_chart[winner][loser] = [1, 0, 0] # Format is W/L/T
+                if(not 'wins' in mu_chart[winner]):
+                    mu_chart[winner]['wins'] = 1
+                else:
+                    mu_chart[winner]['wins'] += 1
             else:
                 mu_chart[winner] = dict()
                 mu_chart[winner][loser] = [1, 0, 0]
+                mu_chart[winner]['wins'] = 1
 
             if loser in mu_chart: #Entry for the winner
                 if winner in mu_chart[loser]: #Has this MU been played before?
                     mu_chart[loser][winner][1] += 1
                 else:
                     mu_chart[loser][winner] = [0, 1, 0]
+                if(not 'losses' in mu_chart[loser]):
+                    mu_chart[winner]['losses'] = 1
+                else:
+                    mu_chart[winner]['losses'] += 1
             else:
                 mu_chart[loser] = dict()
                 mu_chart[loser][winner] = [0, 1, 0]
+                mu_chart[loser]['losses'] = 1
         else:
             if winner in mu_chart: #Entry for the winner
                 if loser in mu_chart[winner]: #Has this MU been played before?
                     mu_chart[winner][loser][2] += 1
                 else:
                     mu_chart[winner][loser] = [0, 0, 1]
+                if 'ties' not in mu_chart[winner]:
+                    mu_chart[winner]['ties'] = 1
+                else:
+                    mu_chart[winner]['ties'] += 1
             else:
                 mu_chart[winner] = dict()
                 mu_chart[winner][loser] = [0, 0, 1]
+                mu_chart[winner]['ties'] = 1
 
             if loser in mu_chart: #Entry for the winner
                 if winner in mu_chart[loser]: #Has this MU been played before?
                     mu_chart[loser][winner][2] += 1
                 else:
                     mu_chart[loser][winner] = [0, 0, 1]
+                if 'ties' not in mu_chart[loser]:
+                    mu_chart[winner]['ties'] = 1
+                else:
+                    mu_chart[winner]['ties'] += 1
             else:
                 mu_chart[loser] = dict()
                 mu_chart[loser][winner] = [0, 0, 1]
+                mu_chart[loser]['ties'] = 1
 
         if not('total' in mu_chart[loser]):
             mu_chart[loser]['total'] = 0
@@ -128,6 +148,7 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
             mu_chart[winner]['total'] = 0
         mu_chart[loser]['total'] += 1
         mu_chart[winner]['total'] += 1
+
         muchart.write(dumps(mu_chart))
 
         most_played_character = ""
