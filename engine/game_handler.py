@@ -156,6 +156,8 @@ def update_game_state(game_state, cwd):
         info_getter = engine.menus.almanac_menu.credits_navigation(timer)
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
+    elif(game_state == "quit"):
+        info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset
 
 def return_blobs():
