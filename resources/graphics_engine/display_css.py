@@ -51,7 +51,7 @@ def force_load_blobs():
     blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
     unload_css()
 
-def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
+def css_blobs(game_display, p1_selector_position, p2_selector_position):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
@@ -78,6 +78,19 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
         token_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p2_check.png").convert_alpha(), (51, 51))
         token_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_token.png").convert_alpha(), (51, 51))
         token_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_check.png").convert_alpha(), (51, 51))
+        
+        token_cache['p1_ghost'] = token_cache['p1_ball'].convert_alpha()
+        token_cache['p1_ghost'].set_alpha(200)
+        token_cache['p2_ghost'] = token_cache['p2_ball'].convert_alpha()
+        token_cache['p2_ghost'].set_alpha(200)
+
+        token_cache['cpu1_ghost'] = token_cache['cpu1_ball'].convert_alpha()
+        token_cache['cpu1_ghost'].set_alpha(200)
+        token_cache['cpu2_ghost'] = token_cache['cpu2_ball'].convert_alpha()
+        token_cache['cpu2_ghost'].set_alpha(200)
+
+        token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (51, 51))
+        
         bic_cached = True
             
     for row in blob_image_cache: #Temporary, until we make more blobs
@@ -86,9 +99,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
             x += 1
             blob = blob_image_cache[y-1][x-1]
             if(x == 1):
-                game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(45/768))))
+                game_display.blit(blob, (1366*(x/10)+(1366*(20/1366)), 768*(y * (100/768)) - (768*(45/768))))
             else:
-                game_display.blit(blob, (screen_size[0]*(x/10)+(screen_size[0]*(20/1366)), screen_size[1]*(y * (100/768)) - (screen_size[1]*(20/768))))
+                game_display.blit(blob, (1366*(x/10)+(1366*(20/1366)), 768*(y * (100/768)) - (768*(20/768))))
         x = 0
     
     p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
@@ -104,16 +117,9 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     else:
         game_display.blit(p1_selected_blob, (136, 576))
 
+    if(p1_selector_position[3] == 1):
+        game_display.blit(token_cache['cpu_icon'], (75, 575))
 
-    #TODO: Change this text with bot symbol
-    if(p1_selector_position[3] == 0):
-        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
-    else:
-        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
-
-    text_rect = menu_text.get_rect()
-    text_rect.center = (75, 650)
-    game_display.blit(menu_text, text_rect)
 
     p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     p2_selected_blob = p2_selected_blob.convert_alpha()
@@ -127,40 +133,38 @@ def css_blobs(screen_size, game_display, p1_selector_position, p2_selector_posit
     else:
         game_display.blit(p2_selected_blob, (1024, 576))
 
-    if(p2_selector_position[3] == 0):
-        menu_text = font_cache['blob_description'].render('Human', False, (50, 50, 255))
-    else:
-        menu_text = font_cache['blob_description'].render('CPU', False, (50, 50, 255))
+    if(p2_selector_position[3] == 1):
+        game_display.blit(token_cache['cpu_icon'], (1225, 575))
 
-    text_rect = menu_text.get_rect()
-    text_rect.center = (1291, 650)
-    game_display.blit(menu_text, text_rect)
 
     menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
-    text_rect.center = (5*screen_size[0]//6, 11*screen_size[1]//12)
+    text_rect.center = (5*1366//6, 11*768//12)
     game_display.blit(menu_text, text_rect)
     menu_text = font_cache['blob_name'].render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//6, 11*screen_size[1]//12)
+    text_rect.center = (1366//6, 11*768//12)
     game_display.blit(menu_text, text_rect)
 
     menu_text = font_cache['blob_description'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][2]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
-    text_rect.center = (5*screen_size[0]//6, 24*screen_size[1]//25)
+    text_rect.center = (5*1366//6, 24*768//25)
     game_display.blit(menu_text, text_rect)
     menu_text = font_cache['blob_description'].render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//6, 24*screen_size[1]//25)
+    text_rect.center = (1366//6, 24*768//25)
     game_display.blit(menu_text, text_rect)
 
-def draw_css(screen_size, game_display, p1_selector_position, p2_selector_position, settings):
+def draw_css(game_display, info_getter, settings):
     global cwd
+    p1_selector_position = info_getter[0]
+    p2_selector_position = info_getter[1]
+    p1_ghost_position = info_getter[4]
+    p2_ghost_position = info_getter[5]
+
     draw_background(game_display, "css", settings)
-    css_blobs(screen_size, game_display, p1_selector_position, p2_selector_position, settings)
-    #back_arrow = pg.image.load(cwd + "/resources/images/back_arrow.png")
-    #back_arrow = pg.transform.scale(back_arrow, (screen_size[1]//15, screen_size[1]//15))
-    #game_display.blit(back_arrow, (screen_size[0]*(1/8), screen_size[1]//10))
+    css_blobs(game_display, p1_selector_position, p2_selector_position)
+
     if(not p1_selector_position[3]): #Are we a CPU?
         if(p1_selector_position[2] == 0):
             p1_ball = token_cache['p1_ball']
@@ -183,17 +187,28 @@ def draw_css(screen_size, game_display, p1_selector_position, p2_selector_positi
         else:
             p2_ball = token_cache['cpu2_selected']
 
-    game_display.blit(p1_ball, ((screen_size[0]//10 * (p1_selector_position[0] + 1) + screen_size[0]*(1/135)), (screen_size[1]*(100/768)) * (p1_selector_position[1] + 1) - (screen_size[1] * (25/768))))
-    game_display.blit(p2_ball, ((screen_size[0]//10 * (p2_selector_position[0] + 1) + screen_size[0]*(8/135)), (screen_size[1]*(100/768)) * (p2_selector_position[1] + 1) - (screen_size[1] * (25/768))))
+    game_display.blit(p1_ball, ((136 * (p1_selector_position[0] + 1) + 1366*(1/135)), 100 * (p1_selector_position[1] + 1) - 25))
+    game_display.blit(p2_ball, ((136 * (p2_selector_position[0] + 1) + 1366*(8/135)), 100 * (p2_selector_position[1] + 1) - 25))
+    if(p1_ghost_position is not None and not p1_selector_position[2]):
+        ghost = 'p1_ghost'
+        if(p1_selector_position[3]):
+            ghost = 'cpu1_ghost'
+        game_display.blit(token_cache[ghost], ((136 * (p1_ghost_position[0] + 1) + 1366*(1/135)), 100 * (p1_ghost_position[1] + 1) - 25))
+    if(p2_ghost_position is not None and not p2_selector_position[2]):
+        ghost = 'p2_ghost'
+        if(p2_selector_position[3]):
+            ghost = 'cpu2_ghost'
+        game_display.blit(token_cache[ghost], ((136 * (p2_ghost_position[0] + 1) + 1366*(8/135)), 100 * (p2_ghost_position[1] + 1) - 25))
+
 
     if(p1_selector_position[2] >= 1 and p2_selector_position[2] >= 1):
-        pg.draw.rect(game_display, (255, 255, 0), (0, screen_size[1]*(2/5), screen_size[0], screen_size[1]/5))
+        pg.draw.rect(game_display, (255, 255, 0), (0, 768*(2/5), 1366, 153))
         menu_font = font_cache['ready_confirmation']
         menu_text = menu_font.render('CONFIRM READY WITH "ABILITY"', False, (50, 50, 255))
         text_rect = menu_text.get_rect()
-        text_rect.center = (screen_size[0]//2, screen_size[1]//2)
+        text_rect.center = (683, 384)
         game_display.blit(menu_text, text_rect)
         if(p1_selector_position[2] == 2):
-            game_display.blit(p1_ball, ((screen_size[0]*(1/10), screen_size[1]*(2/5))))
+            game_display.blit(p1_ball, ((1366*(1/10), 768*(2/5))))
         if(p2_selector_position[2] == 2):
-            game_display.blit(p2_ball, ((screen_size[0]*(9/10), screen_size[1]*(2/5))))
+            game_display.blit(p2_ball, ((1366*(9/10), 768*(2/5))))

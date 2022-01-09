@@ -49,15 +49,14 @@ def update_game_state(game_state, cwd):
         if(game_state != "control_splash"):
             timer = 10
     elif(game_state == "main_menu"):
-        info_getter = engine.menus.main_menu.menu_navigation(timer)
-        game_state = info_getter[1]
+        game_state, info_getter = engine.menus.main_menu.menu_navigation(timer)
+        info_getter += [ruleset]
         if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
-        info_getter = engine.menus.css_menu.css_handler()
+        game_state, info_getter = engine.menus.css_menu.css_handler()
         p1_selector_position = info_getter[0]
         p2_selector_position = info_getter[1]
-        game_state = info_getter[2]
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
             if(p1_selector_position[3]):
@@ -70,8 +69,8 @@ def update_game_state(game_state, cwd):
                 p2_is_cpu = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
-            p1_blob = info_getter[3]
-            p2_blob = info_getter[4]
+            p1_blob = info_getter[2]
+            p2_blob = info_getter[3]
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
             previous_screen = "css"
@@ -135,8 +134,7 @@ def update_game_state(game_state, cwd):
         if(game_state != "almanac_stats_page_2"):
             timer = 10
     elif(game_state == "almanac_stats_page_3"):
-        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
-        game_state = info_getter[0]
+        game_state, info_getter = engine.menus.almanac_menu.almanac_stats_navigation_3()
         song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats_page_3"):
             timer = 10
@@ -158,4 +156,9 @@ def update_game_state(game_state, cwd):
         info_getter = engine.menus.almanac_menu.credits_navigation(timer)
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
+    elif(game_state == "quit"):
+        info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset
+
+def return_blobs():
+    return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

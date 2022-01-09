@@ -1,6 +1,5 @@
 import pygame as pg
 import os
-import ctypes
 
 from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
@@ -16,9 +15,10 @@ from resources.graphics_engine.display_medals_and_milestones import draw_medals_
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
 from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
+from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
-import math
-from json import loads, dumps
+
+from resources.graphics_engine.handle_screen_size import initialize_screen_size, return_real_screen_size, return_width_and_height, update_mouse_wh, update_width_and_height
 
 cwd = os.getcwd()
 pg.quit()
@@ -29,15 +29,7 @@ y = 200
 os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
 pg.init()
 
-try:
-    user32 = ctypes.windll.user32
-    real_screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-except:
-    print("Real Screen Size Exception")
-    real_screen_size = (960, 540)
-
-display_width = 1024
-display_height = 576
+display_width, display_height = return_width_and_height()
 
 pg.display.set_caption('Blob Ball')
 game_display = pg.display.set_mode((display_width, display_height)) # The canvas
@@ -54,8 +46,9 @@ game_stats = ()
 previous_screen = ""
 toggle_timer = 0
 full_screen = False
+
 def handle_graphics(game_state, main_cwd, info_getter, settings):
-    global real_screen_size
+    real_screen_size = return_real_screen_size()
     global game_surface
     global game_display
     global p1_blob
@@ -64,7 +57,6 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     global p2_is_cpu
     global cwd
     global timer
-    global ruleset
     global game_stats
     global previous_screen
 
@@ -73,12 +65,9 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     if(game_state == "control_splash"):
         draw_splash_screen(game_surface, info_getter, settings)
     if(game_state == "main_menu"):
-        selector_position = info_getter[0]
-        draw_main_menu(screen_size, game_surface, selector_position, settings)
+        draw_main_menu(game_surface, info_getter, settings)
     elif(game_state == "css"):
-        p1_selector_position = info_getter[0]
-        p2_selector_position = info_getter[1]
-        draw_css(screen_size, game_surface, p1_selector_position, p2_selector_position, settings)
+        draw_css(game_surface, info_getter, settings)
     elif(game_state == "casual_match"):
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
@@ -121,8 +110,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "almanac_stats_page_2"):
         draw_almanac_stats_2(game_surface, settings)
     elif(game_state == "almanac_stats_page_3"):
-        selector_position = info_getter[1]
-        draw_almanac_stats_3(game_surface, settings, selector_position)
+        draw_almanac_stats_3(game_surface, settings, info_getter)
     elif(game_state == "almanac_art"):
         selector_position = info_getter[0]
         draw_almanac_art(game_surface, selector_position, settings)
@@ -134,9 +122,13 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_almanac_blobs(game_surface, selector_position)
     elif(game_state == "credits"):
         draw_almanac_credits(game_surface, settings)
+
+    # Draw Debug info (really laggily)
+    #draw_debug(game_surface)
+
     global toggle_timer
     global full_screen
-    global display_height, display_width
+    display_width, display_height = return_width_and_height()
     if(toggle_timer > 0):
         toggle_timer -= 1
     else:
@@ -147,11 +139,13 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
                 pg.display.init()
                 pg.display.set_caption('Blob Ball')
                 game_display = pg.display.set_mode((display_width, display_height))
+                update_mouse_wh(display_width, display_height)
                 full_screen = False
             else: 
                 game_display = pg.display.set_mode(real_screen_size, FULLSCREEN)
-                display_width = 1024
-                display_height = 576
+                update_width_and_height(1024, 576)
+                update_mouse_wh(*real_screen_size)
+                display_width, display_height = return_width_and_height()
                 full_screen = True
             
             toggle_timer = 10
@@ -165,7 +159,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     else:
         for event in pg.event.get():
             if(event.type == pg.VIDEORESIZE):
-                display_width, display_height = event.w, event.h
+                display_width, display_height = update_width_and_height(event.w, event.h)
         if(settings['smooth_scaling']):
             game_display.blit(pg.transform.smoothscale(game_surface, (display_width, display_height)), (0, 0))
         else:

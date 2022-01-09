@@ -23,6 +23,7 @@ def handle_win_screen(game_stats):
     global p1_ready
     global p2_ready
     pressed = engine.handle_input.menu_input()
+    mouse = engine.handle_input.handle_mouse()
     game_state = "casual_win"
 
     if('p1_ability' in pressed):
@@ -35,9 +36,12 @@ def handle_win_screen(game_stats):
     if('p2_kick' in pressed):
         p2_ready = False
 
-    if('return' in pressed):
+    if('return' in pressed or mouse[1][0]):
         p1_ready = True
         p2_ready = True
+    elif(mouse[1][2]):
+        p1_ready = False
+        p2_ready = False
     
     if(p1_ready and p2_ready):
         game_state = "css"

@@ -79,15 +79,16 @@ def run(game_state):
     global escape_timer
     clock.tick_busy_loop(60)
     if(game_state == "rebind"):
-        clock.tick_busy_loop(5) # Manually reducing the frame rate because it ironically becomes faster to rebind
+        clock.tick_busy_loop(10) # Manually reducing the frame rate because it ironically becomes faster to rebind
+    else:
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                done = True
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings)
     handle_sound(bgm_song, settings)
     game_state = new_game_state
-    for event in pg.event.get():
-        if event.type == pg.QUIT:
-            done = True
     pressed =  pg.key.get_pressed()
     if(pressed[pg.K_ESCAPE] and not escape_timer):
         if(game_state == "casual_match"):
@@ -97,26 +98,48 @@ def run(game_state):
             clear_info_cache()
             unload_image_cache()
             escape_timer = 30
+        elif(game_state == "rebind"):
+            #game_state = "settings"
+            escape_timer = 30
         else:
             done = True #Ends the game
     if(escape_timer):
         escape_timer -= 1
     if(game_state == "quit"):
         done = True
-        
     '''Runs the program'''
     return game_state
+try:
+    while not done:
+        game_state = run(game_state)
+    else:
+        print("All done!")
+        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+                game_stats = loads(statsdoc.readline())
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+                game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
+                statsdoc.write(dumps(game_stats))
+        pg.quit()
+        from sys import exit
+        exit()
+except Exception as ex:
+    import logging
+    logging.basicConfig(filename = cwd + "/crash_logs.log", level = logging.ERROR,\
+        format='%(process)d-%(levelname)s-%(message)s')
+    #Debug, Info, Warning, Error, Critical
+    from engine.initializer import return_game_version
+    from engine.game_handler import return_blobs
+    logging.error(f"Game Crash at {time.asctime()} (Version {return_game_version()})", exc_info=True)
+    with open(cwd + "/crash_logs.log", 'a') as crash_logs:
+        crash_logs.write("Game State: " + game_state + "\n")
+        blob_info = return_blobs()
+        crash_logs.write("P1 Blob: " + str(blob_info[0]) + ", is CPU: " + str(bool(blob_info[2])) + "\n")
+        crash_logs.write("P2_Blob: " + str(blob_info[1]) + ", is CPU: " + str(bool(blob_info[3])) + "\n")
+        crash_logs.write("\n")
+        crash_logs.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
+        crash_logs.write("\n")
+    print("GAME CRASH! Please check crash_logs.log and send them to the Blob Ball Devs")
 
-while not done:
-    game_state = run(game_state)
-else:
-    print("All done!")
-    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-            game_stats = loads(statsdoc.readline())
-    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
-            game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
-            statsdoc.write(dumps(game_stats))
     pg.quit()
     from sys import exit
     exit()
-        

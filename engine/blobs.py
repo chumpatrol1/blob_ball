@@ -15,18 +15,21 @@ cwd = os.getcwd()
 # Depending on the ability, check the cooldown method 
 # If the ability has the potential to impact another blob, update the check_ability_collision method
 # If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
-# In resources/graphics_engine/display_css.py, update the Blob Array to show your blob.
-# In engine/menus/css_menu.py update blob_list to allow your blob to be selectable
+# In engine/unlocks.py, update css_selector_list and original_css_display_list to allow that blob to be selected
+# In engine/unlocks.py, update css_location_dict with the intended location of that blob
+# In engine/unlocks.py, update blob_unlock_dict
+# In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
+# In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser']
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'gale', 'c&d', 'pill', 'tax', 'stoplight']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight']
     if(ability in instant_abilities):
         return "instant"
-    delayed_abilities = ['spire', 'thunderbolt']
+    delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
     if(ability in delayed_abilities):
         return "delayed"
     return "other"
@@ -46,6 +49,7 @@ def species_to_image(species):
         'doctor': blob_cwd + "doctor_blob.png",
         'king': blob_cwd + 'king_blob.png',
         'cop': blob_cwd + 'cop_blob.png',
+        'boxer': blob_cwd + 'boxer_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -68,6 +72,7 @@ def species_to_ability_icon(species):
         'doctor': ability_cwd + "pill.png",
         'king': ability_cwd + "tax.png",
         'cop': ability_cwd + "block_icon.png",
+        'boxer': ability_cwd + 'starpunch.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -133,6 +138,7 @@ class Blob:
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
         self.gravity_mod = round(.3 + (self.stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
         self.fastfalling = False
+        self.shorthopping = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
         self.kick_cooldown_rate = 1 #Each star reduces kick cooldown
@@ -242,6 +248,7 @@ class Blob:
             "pill": None,
             "taxing": 0,
             "taxed": 0,
+            "stunned": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -301,24 +308,34 @@ class Blob:
                 createSFXEvent('ice')
             elif(self.holding_timer % 12 == 11 and self.used_ability == "geyser"):
                 createSFXEvent('water')
+            elif(self.holding_timer % 60 == 59 and self.used_ability == "gale"):
+                createSFXEvent('gale')
             if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
                 self.used_ability = "spire"
             elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
-            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - 180):
+            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
                 self.used_ability = None
-            elif(self.used_ability == "gale"): 
+                '''elif(self.used_ability == "gale"): # Move me back later i guess!
                 if (self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
                     self.used_ability = None
                 elif (self.special_ability_cooldown_max - self.special_ability_timer) % 60 == 0:
-                    createSFXEvent('gale')
+                    createSFXEvent('gale')'''
             elif(self.used_ability == "c&d" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = None
+            elif(self.used_ability == "pill" and self.special_ability_timer == self.special_ability_cooldown_max - 2):
                 self.used_ability = None
             elif(self.used_ability == "tax" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
             elif(self.used_ability == "stoplight" and self.special_ability_timer == self.special_ability_cooldown_max -1):
+                self.used_ability = "stoplight_pfx"
+            elif(self.used_ability == "stoplight_pfx"):
                 self.used_ability = None
-            
+            elif(self.used_ability == "starpunch_wait" and self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1)):
+                self.used_ability = "starpunch"
+            elif(self.used_ability == "starpunch"):
+                self.used_ability = None
+
             if(self.special_ability_timer == 0):
                 self.used_ability = None
         
@@ -484,13 +501,20 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
         elif(special_ability == "gale"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
-                #Gale activation
-                self.used_ability = "gale"
-                self.special_ability_cooldown = self.special_ability_cooldown_max
-                self.special_ability_timer = self.special_ability_cooldown
-                self.special_ability_meter -= self.special_ability_cost
-                createSFXEvent('gale')
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "gale"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                    self.holding_timer += 1
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "gale"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                    self.holding_timer = 0
+                    createSFXEvent('gale')
         elif(special_ability == "c&d"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "c&d"
@@ -503,6 +527,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+                self.used_ability = "pill"
 
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
@@ -568,6 +593,14 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.block_cooldown += 60
+                createSFXEvent('chime_progress')
+        elif(special_ability == "starpunch"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "starpunch_wait"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                self.kick_cooldown += 60
                 createSFXEvent('chime_progress')
 
 
@@ -637,20 +670,20 @@ class Blob:
         if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
-                blob.take_damage(y_speed_mod = -30 - (5 * (blob.gravity_stars - 1.05)), movement_lock = 20)
+                blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
             else:
+                blob.take_damage(damage=0)
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150
-        and blob.block_timer == 0):
+        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             blob.take_damage()
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
-                if(self.player == 1 and self.used_ability == "gale" and blob.x_speed < 5): #Airborne
-                    blob.x_speed += 1
-                elif(self.player == 2 and self.used_ability == "gale" and blob.x_speed > -5):
-                    blob.x_speed -= 1
+                if(self.player == 1 and self.used_ability == "gale"): #Airborne
+                    blob.x_pos += 7
+                elif(self.player == 2 and self.used_ability == "gale"):
+                    blob.x_pos -= 7
         elif(self.used_ability == "c&d"):
             blob.status_effects['judged'] = self.special_ability_duration
         elif(self.used_ability == "tax"):
@@ -669,30 +702,49 @@ class Blob:
 
         elif(self.used_ability == "stoplight"):
             blob.collision_timer = 30
+        
+        elif(self.used_ability == "starpunch"):
+            if(self.x_center - (1.5 * 250) <= blob.x_center <= self.x_center + (1.5 * 250)):
+                if(self.y_center - (1.1 * 300) <= blob.y_center <= self.y_center + 300):
+                    accumulated_damage = 3
+                    stun_amount = 30
+                    if(self.boost_timer):
+                        accumulated_damage += 1
+                    if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                        #Take additional damage from kicks if you are hiding by your goal
+                        accumulated_damage += 1
+                    
+                    if(blob.block_timer):
+                        accumulated_damage -= 2
+                        stun_amount = 0
 
-    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, movement_lock = 0):
+                    blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
+
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
+        show_parry = True):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
-                self.parried = 2
-                self.info['parries'] += 1
-                createSFXEvent('parry')
-                return False
+                if(show_parry):
+                    self.parried = 2
+                    self.info['parries'] += 1
+                    createSFXEvent('parry')
+                return False # We failed the block check, don't take damage
             else:
                 
-                return True
+                return True # Return true if the block check passes
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
                 self.clanked = 2
                 self.info['clanks'] += 1
                 createSFXEvent('clank')
-                return False
+                return False # We failed the clank check, don't take damage
             else:
-                return True
+                return True # Return true if the clank check passes
                 
         if(unblockable and unclankable):
-            self.hp -= damage
+            check_block()
             damage_taken = True
         elif(unclankable):
             if check_block():
@@ -708,7 +760,7 @@ class Blob:
             self.hp -= damage
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
-            self.movement_lock = movement_lock
+            self.status_effects['stunned'] = stun_amount
             self.y_speed = y_speed_mod
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
@@ -759,6 +811,7 @@ class Blob:
         self.status_effects['judged'] = 0
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0
+        self.status_effects['stunned'] = 0
         self.set_base_stats(self.stars)
         
     def move(self, pressed_buttons):
@@ -778,7 +831,7 @@ class Blob:
                 else:
                     pressed.append(pressed_conversions[button])
         
-        if(self.movement_lock > 0):
+        if(self.movement_lock > 0 or self.status_effects['stunned']):
             pressed = []
         if(self.status_effects['judged']):
             if('kick' in pressed):
@@ -799,7 +852,10 @@ class Blob:
                     self.x_pos = 0
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed -= self.traction #Accelerate based off of traction
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
+                        else:
+                            self.x_speed -= self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
@@ -814,7 +870,10 @@ class Blob:
                     self.x_pos = 1700
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed += self.traction #Accelerate based off of traction
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.2 * self.traction # Turn around faster by holding left
+                        else:
+                            self.x_speed += self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
@@ -840,7 +899,10 @@ class Blob:
                     self.x_pos = 0
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed -= self.friction #Accelerate based off of traction
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.5 * self.friction # Turn around faster by holding left
+                        else:
+                            self.x_speed -= self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*self.top_speed #If at max speed, maintain it
@@ -854,7 +916,10 @@ class Blob:
                     self.x_pos = 1700
                 else:
                     if(abs(self.x_speed) < self.top_speed):
-                        self.x_speed += self.friction #Accelerate based off of friction
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.5 * self.friction # Turn around faster by holding left
+                        else:
+                            self.x_speed += self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = self.top_speed #If at max speed, maintain it
@@ -887,7 +952,12 @@ class Blob:
             self.focus_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
-        elif('down' in pressed):
+        elif('up' in pressed and self.y_speed < 0):
+            self.shorthopping = False
+        elif('up' not in pressed and self.y_speed < 0):
+            self.shorthopping = True
+        
+        if('down' in pressed):
             if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
@@ -902,16 +972,23 @@ class Blob:
         if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
             self.info['time_airborne'] += 1
             self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
-            if(self.fastfalling):
-                self.y_speed += self.gravity_mod
+            if(self.y_speed < 0):
+                if(self.shorthopping):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
             else:
-                self.y_speed += self.gravity_stars
+                if(self.fastfalling):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
         else:
             self.info['time_grounded'] += 1
             self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
         
         if(self.fastfalling and self.y_pos == Blob.ground): #If you land, cancel the fastfall.
             self.fastfalling = False
+            self.shorthopping = False
         self.y_pos += self.y_speed #This ensures that we are always adjusting our position
         if(self.y_pos < Blob.ceiling): #How did we get here?
             self.y_pos = Blob.ceiling

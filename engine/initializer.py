@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.11.1b'
+game_version = '0.12.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -161,3 +161,6 @@ def check_existing_directory(cwd):
         os.mkdir(cwd+'/config') 
     if not(os.path.isdir(cwd + '/saves')): # Saves folder
         os.mkdir(cwd+'/saves')
+
+def return_game_version():
+    return game_version
