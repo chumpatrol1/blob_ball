@@ -5,8 +5,8 @@ Slime Soccer type game
 
 **Features:**
 * Casual Matches!
-* 25 of the exact same blob!
-* 10 unique blobs!
+* 24 of the exact same blob!
+* 11 unique blobs!
 * Physics system that works 99.65% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
@@ -43,7 +43,7 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Cop Blob
-* Buffed Ice and King Blob
+* Added Boxer Blob
+* Buffed Rock, Lightning, Wind and King Blobs
 * New CPU Behaviors Added!
-* Fixed bugs that caused crashing, and updated ability icons for several blobs.
+* Added Mouse Controls
