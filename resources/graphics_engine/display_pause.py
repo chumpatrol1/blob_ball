@@ -1,4 +1,3 @@
-import pygame as pg
 snapshot = None
 def capture_gameplay(game_surface):
     global snapshot
