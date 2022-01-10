@@ -48,7 +48,7 @@ load_matchup_chart(cwd)
 
 load_blob_unlocks(cwd)
 load_medals(cwd)
-update_css_blobs()
+update_css_blobs(cwd)
 
 done = False
 

@@ -91,11 +91,18 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-def update_css_blobs():
+unlock_milestones = [0, 3, 6, 9, 12, 15, 18, 23, 28, 33, 38, 43, 48, 53, 60, 67, 74, 81, 88,\
+    95, 105, 115, 125, 135, 145, 155, 165, 180, 195, 210, 225, 240, 255, 270]
+
+def update_css_blobs(cwd):
     global blob_unlock_dict
     global css_selector_list
     global css_display_list
 
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+
+    unlock_slot = 0
     for y in range(0, 5):
         for x in range(1, 8):
             location = (x, y)
@@ -104,7 +111,8 @@ def update_css_blobs():
                 css_selector_list[y][x] = blob_id
                 css_display_list[y][x] = original_css_display_list[y][x]
             else:
-                css_display_list[y][x] = ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"]
+                css_display_list[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+            unlock_slot += 1
 
 def unlock_blob(blob, cwd):
     global blob_unlock_dict

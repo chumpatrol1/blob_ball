@@ -98,7 +98,7 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
         if(game_state != "pop_up"):
-            update_css_blobs()
+            update_css_blobs(cwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):
         info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)

@@ -10,8 +10,8 @@ def draw_splash_screen(game_display, info_getter, settings):
 
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
     text_color = (0, 0, 255)
-    if(info_getter[0] > 30):
-        menu_text = menu_font.render('Press SELECT', False, text_color)
+    if(info_getter[0] > 15):
+        menu_text = menu_font.render('Press SELECT/Click Anywhere to Continue...Press CTRL for Fullscreen', False, text_color)
         menu_rect = menu_text.get_rect()
         menu_rect.center = (683, 50)
         game_display.blit(menu_text, menu_rect)

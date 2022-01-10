@@ -28,7 +28,7 @@ def unload_css():
 
 def load_blobs(blob_image_cache, big_image_cache, directory):
     load_blob_unlocks(cwd)
-    update_css_blobs()
+    update_css_blobs(cwd)
     blob_array = return_css_display()
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])

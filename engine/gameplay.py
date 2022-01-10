@@ -77,6 +77,7 @@ def score_goal(winner, goal_limit):
 
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
     pressed = engine.handle_input.gameplay_input()
+        
     global initialized
     global p1_blob
     global p2_blob
