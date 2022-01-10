@@ -13,6 +13,10 @@ def check_folders(cwd):
         os.mkdir(cwd+"/saves")
         print("Created saves folder")
 
+    if(not os.path.isdir(cwd+"/screenshots")):
+        os.mkdir(cwd+"/screenshots")
+        print("Created screenshots folder")
+
 def initialize_game_stats(cwd):
     game_stat_dict = {
     #Stats about the state of the game

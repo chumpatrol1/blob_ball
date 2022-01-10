@@ -75,7 +75,7 @@ def score_goal(winner, goal_limit):
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer):
     pressed = engine.handle_input.gameplay_input()
         
     global initialized
@@ -94,7 +94,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global time_limit
     
     game_state = "casual_match"
-    if('escape' in pressed):
+    if('escape' in pressed and not pause_timer):
         game_state = "pause"
 
     def blob_ko(blob):

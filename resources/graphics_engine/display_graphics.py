@@ -7,7 +7,7 @@ from resources.graphics_engine.background_handler import draw_background as draw
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from resources.graphics_engine.display_css import draw_css
 from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
-from resources.graphics_engine.display_pause import capture_gameplay, draw_pause_background
+from resources.graphics_engine.display_pause import capture_gameplay, draw_pause_background, draw_pause_screen
 from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
 from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
 from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
@@ -77,15 +77,13 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         timer = info_getter[4]
         game_state = info_getter[5]
         game_time = info_getter[6]
-        try:
-            draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
-            capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
-        except Exception as ex:
-            unload_image_cache()
-            print(ex)
-            print("Weird match end exception:", info_getter)
+
+        draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+        capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
+        
     elif(game_state == "pause"):
         draw_pause_background(game_surface)
+        draw_pause_screen(game_surface, info_getter, settings)
     elif(game_state == "casual_win"):
         draw_win_screen(game_surface, info_getter, settings)
     elif(game_state == "pop_up"):

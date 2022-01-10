@@ -91,7 +91,7 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
 
     def adjust_music():
         if(settings['music_volume'] > 0):
-                settings['music_volume'] -= 1
+            settings['music_volume'] -= 1
         else:
             settings['music_volume'] = 10
 

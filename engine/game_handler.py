@@ -3,6 +3,7 @@ def set_timer(frames):
     timer = frames
 
 from engine.gameplay import clear_info_cache
+import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
 import engine.menus.css_menu
@@ -80,15 +81,22 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, timer)
         game_state = info_getter[5]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
             clear_info_cache()
         elif(game_state == "pause"):
-            game_stats = info_getter
+            timer = 10
     elif(game_state == "pause"):
-        info_getter = game_stats
+        game_state, info_getter = engine.menus.pause_menu.handle_pause_menu(timer, settings)
+        if(game_state == 'css'):
+            from resources.graphics_engine.display_gameplay import unload_image_cache
+            from engine.gameplay import clear_info_cache
+            clear_info_cache()
+            unload_image_cache()
+        elif(game_state == 'casual_match'):
+            timer = 10
     elif(game_state == "casual_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
         song_playing = "bb_win_theme"

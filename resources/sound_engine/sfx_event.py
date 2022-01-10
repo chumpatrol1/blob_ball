@@ -24,7 +24,8 @@ name_to_file = {
     'gale': ['gale.wav'],
 	'goal': ['goal.wav'],
     'ball_spire_hit': ['ball_spire_hit.wav'],
-    'wavebounce': ['wavebounce.wav'],	
+    'wavebounce': ['wavebounce.wav'],
+    'camera': ['camera.wav'],
 }
 
 def convert_name_to_file(name):

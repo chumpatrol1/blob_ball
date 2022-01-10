@@ -3,6 +3,8 @@ import pygame as pg
 from os import getcwd
 cwd = getcwd()
 
+ball = pg.transform.scale(pg.image.load(cwd + "/resources/images/balls/soccer_ball.png"), (76, 76))
+
 def draw_main_menu(game_display, info_getter, settings):
     selector_position = info_getter[0]
     ruleset = info_getter[1]
@@ -17,9 +19,6 @@ def draw_main_menu(game_display, info_getter, settings):
         menu_font.render('Quit', False, (0, 0, 150))
     ]
 
-
-    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (76, 76))
     game_display.blit(ball, (850, (76 * selector_position) + 38))
 
     text_y = 76

@@ -18,7 +18,7 @@ def unload_image_cache():
     image_cache['p1_ability_icon'] = None
     image_cache['p2_ability_icon'] = None
 
-def draw_blob(screen_size, game_display, blob):
+def draw_blob(game_display, blob):
     global image_cache
 
 def draw_ball(game_display, ball):
@@ -300,19 +300,19 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):
-        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_clone'] = p1_blob.image
 
     if(p1_blob.facing == "right"):
-        game_display.blit(pg.transform.flip(image_cache['p1_blob'], True, False), ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
+        game_display.blit(pg.transform.flip(image_cache['p1_blob'], True, False), (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
     else:
-        game_display.blit(image_cache['p1_blob'], ((screen_size[0]/1366)*p1_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p1_blob.y_pos*(400/768))))
+        game_display.blit(image_cache['p1_blob'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
 
     draw_blob_special(p1_blob, game_display)
     draw_blob_particles(game_display, ball, p1_blob, p2_blob)
     
     if not (p2_blob.image == image_cache['p2_blob_clone']):
-        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (round(screen_size[0]*(120/1366)), round(screen_size[1]*(66/768))))
+        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_darkened'] = False
 
@@ -322,9 +322,9 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
             image_cache['p2_darkened'] = True
 
     if(p2_blob.facing == "right"):
-        game_display.blit(pg.transform.flip(image_cache['p2_blob'], True, False), ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
+        game_display.blit(pg.transform.flip(image_cache['p2_blob'], True, False), (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
     else:
-        game_display.blit(image_cache['p2_blob'], ((screen_size[0]/1366)*p2_blob.x_pos*(1000/1366), (screen_size[1]/768)*(p2_blob.y_pos*(400/768))))
+        game_display.blit(image_cache['p2_blob'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
 
     draw_blob_special(p2_blob, game_display)
 
