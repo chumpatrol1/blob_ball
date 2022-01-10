@@ -79,6 +79,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         game_time = info_getter[6]
         try:
             draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+            capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
         except Exception as ex:
             unload_image_cache()
             print(ex)
