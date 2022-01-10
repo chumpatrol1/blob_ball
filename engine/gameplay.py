@@ -94,6 +94,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global time_limit
     
     game_state = "casual_match"
+    if('escape' in pressed):
+        game_state = "pause"
 
     def blob_ko(blob):
         blob.blob_ko()

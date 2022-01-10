@@ -174,6 +174,8 @@ def get_keypress():
         pressed_array.append('p2_boost')
     if(pressed[pg.K_RETURN]):
         pressed_array.append('return')
+    if(pressed[pg.K_ESCAPE]):
+        pressed_array.append('escape')
     return pressed_array
 
 def merge_inputs(pressed):

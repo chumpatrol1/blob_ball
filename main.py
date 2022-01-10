@@ -91,12 +91,12 @@ def run(game_state):
     game_state = new_game_state
     pressed =  pg.key.get_pressed()
     if(pressed[pg.K_ESCAPE] and not escape_timer):
-        if(game_state == "casual_match"):
-            game_state = "css"
-            from resources.graphics_engine.display_gameplay import unload_image_cache
+        if(game_state == "casual_match" or game_state == "pause"):
+            #game_state = "pause"
+            '''from resources.graphics_engine.display_gameplay import unload_image_cache
             from engine.gameplay import clear_info_cache
             clear_info_cache()
-            unload_image_cache()
+            unload_image_cache()'''
             escape_timer = 30
         elif(game_state == "rebind"):
             #game_state = "settings"

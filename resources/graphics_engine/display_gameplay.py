@@ -21,12 +21,12 @@ def unload_image_cache():
 def draw_blob(screen_size, game_display, blob):
     global image_cache
 
-def draw_ball(screen_size, game_display, ball):
+def draw_ball(game_display, ball):
     global image_cache
     if not (ball.image == image_cache['ball_clone']):
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-    game_display.blit(image_cache['ball'], ((screen_size[0]/1366)*ball.x_pos * (1000/1366), (screen_size[1]/768) * ball.y_pos * (400/768)))
+    game_display.blit(image_cache['ball'], (ball.x_pos * (1000/1366),  ball.y_pos * (400/768)))
 
 cooldown_species = ['instant', 'delayed']
 

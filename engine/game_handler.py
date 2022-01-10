@@ -85,6 +85,10 @@ def update_game_state(game_state, cwd):
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
             clear_info_cache()
+        elif(game_state == "pause"):
+            game_stats = info_getter
+    elif(game_state == "pause"):
+        info_getter = game_stats
     elif(game_state == "casual_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
         song_playing = "bb_win_theme"
