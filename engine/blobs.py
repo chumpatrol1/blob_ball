@@ -1,4 +1,3 @@
-from _typeshed import Self
 import math
 import os
 import random
@@ -266,14 +265,6 @@ class Blob:
     ground = 1200
     ceiling = 200
 
-    def return_inc_weight(self):
-        global max_hp
-        global hp
-        if(round((self.max_hp - self.hp) / 5) <= 2):
-            return round((self.max_hp - self.hp) / 5)
-        else:
-            return 2
-
     def cooldown(self): #Reduces timers
         if(self.focusing):
             self.special_ability_charge = self.special_ability_charge_base * 5
@@ -443,7 +434,7 @@ class Blob:
         self.ability_icon = icon
         self.recharge_indicators['ability_swap'] = True
 
-    def ability(self, return_inc_weight):
+    def ability(self):
         if(self.special_ability == ""):
             pass
         else:
@@ -577,9 +568,16 @@ class Blob:
                 self.status_effects['pill'] = current_pill
                 print("CHOSEN", current_pill)
 
+                def return_inc_weight():
+                    print(round((self.max_hp - self.hp) / 5))
+                    if(round((self.max_hp - self.hp) / 5) <= 2):
+                        return round((self.max_hp - self.hp) / 5)
+                    else:
+                        return 2
+
                 if(self.hp <= self.max_hp):
-                    self.status_effects['pill_weights']['pill_heal'] += return_inc_weight # Prioritize healing
-                    self.status_effects['pill_weights'][current_pill] -= return_inc_weight
+                    self.status_effects['pill_weights']['pill_heal'] += return_inc_weight() # Prioritize healing
+                    self.status_effects['pill_weights'][current_pill] -= return_inc_weight()
                 else:
                     for pill in self.status_effects['pill_weights']:
                         self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
