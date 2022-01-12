@@ -229,7 +229,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
             except:
                 game_info['avg_collisions_per_goal'] = 0
-            '''
+            
             with open('blob_ball_results.txt', 'a') as bbr:
                 bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
                 bbr.write("\n")
@@ -246,7 +246,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 bbr.write("BALL: " + dumps(ball.info))
                 bbr.write("\n")
                 bbr.write("\n")
-            '''
+            
             update_game_stats(game_info, p1_blob, p2_blob, ball)
             update_mu_chart(game_score, p1_blob, p2_blob)
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])

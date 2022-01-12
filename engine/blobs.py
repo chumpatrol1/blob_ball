@@ -246,6 +246,7 @@ class Blob:
         self.status_effects = {
             "judged": 0,
             "pill": None,
+            "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
             "taxing": 0,
             "taxed": 0,
             "stunned": 0,
@@ -559,15 +560,24 @@ class Blob:
                 else:
                     self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
 
-                if(self.hp == self.max_hp):
-                    if(self.boost_cooldown_timer > 0):
-                        pill_list = ['pill_boost', 'pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
-                    else:
-                        pill_list = ['pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
+                
+                pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
+                pill_weights = [0 if x <= 0 else x for x in self.status_effects['pill_weights'].values()]
+                print("PRE", self.status_effects['pill_weights'])
+                current_pill = random.choices(pill_list, weights = pill_weights)[0]
+                self.status_effects['pill'] = current_pill
+                print("CHOSEN", current_pill)
+                
+                if(self.hp <= self.max_hp//2):
+                    self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
+                    self.status_effects['pill_weights'][current_pill] -= 2
                 else:
-                    pill_list = ['pill_heal', 'pill_cooldown', 'pill_boost']
+                    for pill in self.status_effects['pill_weights']:
+                        self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
+                    self.status_effects['pill_weights'][current_pill] -= 3 # Effectively subtracting 2
+                print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-                self.status_effects['pill'] = random.choice(pill_list)
+
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
         elif(special_ability == "tax"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):

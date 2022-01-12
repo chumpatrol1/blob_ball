@@ -92,7 +92,6 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.pause_menu.handle_pause_menu(timer, settings)
         if(game_state == 'css'):
             from resources.graphics_engine.display_gameplay import unload_image_cache
-            from engine.gameplay import clear_info_cache
             clear_info_cache()
             unload_image_cache()
         elif(game_state == 'casual_match'):

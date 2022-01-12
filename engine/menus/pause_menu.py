@@ -3,8 +3,18 @@ from json import dumps
 from engine.menus.main_menu import game_state_navigation
 from resources.sound_engine.sfx_event import createSFXEvent
 from os import getcwd
+from engine.button import Button
 selector_position = 0
 cwd = getcwd()
+
+pause_buttons = [
+    Button(125, 200, 525, 825),
+    Button(200, 275, 525, 825),
+    Button(275, 350, 525, 825),
+    Button(350, 425, 525, 825),
+    Button(425, 500, 525, 825),
+]
+
 
 def pause_menu_selection(selector_position, game_state, settings, left_mode = False):
 
@@ -85,11 +95,21 @@ def handle_pause_menu(timer, settings):
     if(not timer and 'escape' in pressed):
         game_state = 'casual_match'
     elif('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed or 'p1_right' in pressed or 'p2_right' in pressed):
-        game_state = pause_menu_selection(selector_position, game_state, settings)
+        game_state = pause_menu_selection(selector_position, game_state, settings,)
     elif('p1_kick' in pressed or 'p2_kick' in pressed or 'p1_left' in pressed or 'p2_left' in pressed):
         game_state = pause_menu_selection(selector_position, game_state, settings, left_mode=True)
 
     if(game_state != 'pause'):
         selector_position = 0
+
+    for i in range(len(pause_buttons)):
+        if(pause_buttons[i].check_hover(mouse)):
+            if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+                selector_position = i # Change the selector position
+
+            if(mouse[1][0]):
+                game_state = pause_menu_selection(selector_position, game_state, settings,)
+            elif(mouse[1][2]):
+                game_state = pause_menu_selection(selector_position, game_state, settings,left_mode=True)
 
     return game_state, [selector_position]
