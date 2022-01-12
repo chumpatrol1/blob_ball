@@ -24,7 +24,7 @@ def game_state_navigation(selector_position):
         2: "almanac",
         3: "rules",
         4: "settings",
-        5: "quit,",
+        5: "quit",
         6: "medals",
     }
     

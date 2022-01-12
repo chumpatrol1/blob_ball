@@ -19,8 +19,6 @@ ZIP the files together for release!
 
 import os
 
-from pygame.display import update
-
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
 
