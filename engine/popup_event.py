@@ -3,8 +3,8 @@
 from os import getcwd
 from time import time
 from engine.milestones import add_milestone
-from engine.popup_list import find_blob_unlock
-from engine.unlocks import unlock_blob
+from engine.popup_list import find_blob_unlock, find_medal_unlock
+from engine.unlocks import unlock_blob, unlock_medal
 
 pop_up_events = []
 
@@ -17,6 +17,8 @@ pop_up_events = []
 def find_pop_up_list(pop_up_type):
     if(pop_up_type == 0):
         return find_blob_unlock
+    elif(pop_up_type == 1):
+        return find_medal_unlock
 
 # Start by loading in dictionaries for each unlock type
 # Compare each dictionary to something hardcoded - if it's missing a flag add it in
@@ -25,6 +27,7 @@ class PopUpEvent():
     def __init__(self, name = None, pop_up_type = None):
         # Valid pop_up_types:
         # 0 is blob unlock
+        # 1 is medal unlock
         self.name = name
         self.pop_up_type = pop_up_type
         self.is_valid_pop_up = False
@@ -37,6 +40,11 @@ class PopUpEvent():
         if(self.pop_up_type == 0):
             try:
                 unlock_blob(self.name, getcwd())
+            except ValueError:
+                raise ValueError("Already Unlocked!")
+        elif(self.pop_up_type == 1):
+            try:
+                unlock_medal(self.name, getcwd())
             except ValueError:
                 raise ValueError("Already Unlocked!")
 

@@ -1,6 +1,6 @@
 from pygame.display import Info
 import engine.handle_input
-from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector, update_css_blobs
+from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs
 from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_css import force_load_blobs
@@ -26,7 +26,7 @@ p2_ghost_position = None
 p1_blob = "quirkless"
 p2_blob = "quirkless"
 
-blob_list = return_css_selector()
+blob_list = return_css_selector_blobs()
 
 def css_navigation(player, selector, timer, other_selector, ghost_selector, other_ghost):
     pressed_conversions = engine.handle_input.player_to_controls(player)
@@ -223,7 +223,7 @@ def popup_handler(timer):
         pop_up_counter = 0
         last_info = get_pop_up_events()[-1].info
         clear_pop_up_events()
-        blob_list = return_css_selector()
+        blob_list = return_css_selector_blobs()
         return "css", last_info
     
     pop_up = get_pop_up_events()[pop_up_counter].info

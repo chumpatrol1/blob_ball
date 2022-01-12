@@ -12,7 +12,7 @@ import engine.menus.settings_menu
 import engine.menus.almanac_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
-from engine.unlocks import update_css_blobs
+from engine.unlocks import update_css_blobs, update_css_medals
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen

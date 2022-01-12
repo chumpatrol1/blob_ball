@@ -13,6 +13,7 @@ buttons = [
     Button(275, 325, 525, 825),
     Button(350, 400, 525, 825),
     Button(425, 475, 525, 825),
+    Button(500, 550, 525, 825),
 ]
 
 def game_state_navigation(selector_position):
@@ -23,7 +24,8 @@ def game_state_navigation(selector_position):
         2: "almanac",
         3: "rules",
         4: "settings",
-        5: "quit,"
+        5: "quit,",
+        6: "medals",
     }
     
 
@@ -36,11 +38,11 @@ def menu_navigation(timer):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = 5
+            selector_position = 6
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == 5:
+        if selector_position == 6:
             selector_position = 0
         else:
             selector_position += 1
