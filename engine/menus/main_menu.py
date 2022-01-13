@@ -7,13 +7,14 @@ cwd = getcwd()
 selector_position = 0
 
 buttons = [
-    Button(50, 100, 525, 825),
-    Button(125, 175, 525, 825),
-    Button(200, 250, 525, 825),
-    Button(275, 325, 525, 825),
-    Button(350, 400, 525, 825),
-    Button(425, 475, 525, 825),
-    Button(500, 550, 525, 825),
+    Button(50, 125, 525, 825),
+    Button(125, 200, 525, 825),
+    Button(200, 275, 525, 825),
+    Button(275, 350, 525, 825),
+    Button(350, 425, 525, 825),
+    Button(425, 500, 525, 825),
+    Button(500, 575, 525, 825),
+    Button(575, 650, 525, 825),
 ]
 
 def game_state_navigation(selector_position):
@@ -24,8 +25,9 @@ def game_state_navigation(selector_position):
         2: "almanac",
         3: "rules",
         4: "settings",
-        5: "quit",
-        6: "medals",
+        5: "medals",
+        6: "tutorial",
+        7: "quit",
     }
     
 
