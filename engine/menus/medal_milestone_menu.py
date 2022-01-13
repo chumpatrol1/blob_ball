@@ -12,8 +12,8 @@ xpos = 0
 ypos = 0
 conf = 0
 
-# X position, Y position, confirmation
-selector_position = (xpos, ypos, conf)
+# X position, Y position
+selector_position = (xpos, ypos)
 medal_list = return_css_selector_medals
 
 def medal_navigation(timer):
@@ -35,15 +35,15 @@ def medal_navigation(timer):
         else:
             ypos += 1
     if('p1_right' in pressed or 'p2_right' in pressed):
-        if xpos == 0:
-            xpos = 7
-        else:
-            xpos -= 1
-    elif('p1_left' in pressed or 'p2_left' in pressed):
         if xpos == 7:
             xpos = 0
         else:
             xpos += 1
+    elif('p1_left' in pressed or 'p2_left' in pressed):
+        if xpos == 0:
+            xpos = 7
+        else:
+            xpos -= 1
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         createSFXEvent('select')
         medal_selected = game_state_navigation(selector_position)
