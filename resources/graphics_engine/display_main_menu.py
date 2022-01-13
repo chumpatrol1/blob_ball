@@ -16,6 +16,8 @@ def draw_main_menu(game_display, info_getter, settings):
         menu_font.render('Almanac', False, (0, 0, 150)),
         menu_font.render('Rules', False, (0, 0, 150)),
         menu_font.render('Settings', False, (0, 0, 150)),
+        menu_font.render('Medals', False, (0, 0, 150)),
+        menu_font.render('Tutorial', False, (0, 0, 150)),
         menu_font.render('Quit', False, (0, 0, 150))
     ]
 

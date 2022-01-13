@@ -340,6 +340,9 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
+                    if(goal_top < self.y_pos < goal_top):
+                        self.y_pos = goal_top - self.gravity
+                
 
                 if(self.x_pos > right_goal):
                     side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
@@ -362,7 +365,8 @@ class Ball:
                         if(self.y_speed >= 0):
                             self.info['goal_collisions'] += 1
                             self.y_speed = self.y_speed * -0.5
-                            createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
+                            if(self.y_speed >= 2):
+                                createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
                             if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                                 for previous_location in self.previous_locations:
                                     if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
@@ -370,8 +374,10 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
-            else:
-                self.goal_grounded = False
+                    if(goal_top < self.y_pos < goal_top):
+                        self.y_pos = goal_top - self.gravity
+                else:
+                    self.goal_grounded = False
 
         #Interacting with the walls
         def interact_with_walls():

@@ -91,10 +91,27 @@ def draw_rules_screen(game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_color = (0, 0, 255)
+
+    time_limit_seconds = str((ruleset['time_limit']%3600)//60)
+    if(len(time_limit_seconds) == 1):
+        time_limit_seconds = "0" + time_limit_seconds
+
+    time_limit_text = f"{ruleset['time_limit']//3600}:{time_limit_seconds}"
+    if(ruleset['time_limit'] == 0):
+        time_limit_text = "No Limit"
+
+    time_bonus_seconds = str((ruleset['time_bonus']%3600)//60)
+    if(len(time_bonus_seconds) == 1):
+        time_bonus_seconds = "0" + time_bonus_seconds
+
+    time_bonus_text = f"{ruleset['time_bonus']//3660}:{time_bonus_seconds}"
+    if(ruleset['time_bonus'] == 0):
+        time_bonus_text = "No Bonus"
+
     text_array = [
         menu_font.render("Goal Limit: " + str(ruleset['goal_limit']), False, text_color),
-        menu_font.render("Time Limit: " + str(ruleset['time_limit']), False, text_color),
-        menu_font.render("Time Bonus: " + str(ruleset['time_bonus']), False, text_color),
+        menu_font.render("Time Limit: " + time_limit_text, False, text_color),
+        menu_font.render("Time Bonus: " + time_bonus_text, False, text_color),
         menu_font.render("NRG Charge Rate: " + str(ruleset['special_ability_charge_base']), False, text_color),
         menu_font.render("Danger Zone Enabled: " + str(ruleset['danger_zone_enabled']), False, text_color),
         menu_font.render("P1 Stat Modifiers", False, text_color),
