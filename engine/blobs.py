@@ -562,11 +562,12 @@ class Blob:
 
                 
                 pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
-                pill_weights = [2 if x <= 2 else x for x in self.status_effects['pill_weights'].values()]
+                pill_weights = [0 if x <= 0 else x for x in self.status_effects['pill_weights'].values()]
                 print("PRE", self.status_effects['pill_weights'])
                 current_pill = random.choices(pill_list, weights = pill_weights)[0]
                 self.status_effects['pill'] = current_pill
                 print("CHOSEN", current_pill)
+<<<<<<< HEAD
 
                 def return_inc_weight():
                     print(round((self.max_hp - self.hp) / 5))
@@ -578,6 +579,12 @@ class Blob:
                 if(self.hp <= self.max_hp):
                     self.status_effects['pill_weights']['pill_heal'] += return_inc_weight() # Prioritize healing
                     self.status_effects['pill_weights'][current_pill] -= return_inc_weight()
+=======
+                
+                if(self.hp <= self.max_hp//2):
+                    self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
+                    self.status_effects['pill_weights'][current_pill] -= 2
+>>>>>>> parent of 5b28844 (Incrementing Health Pill Chance.)
                 else:
                     for pill in self.status_effects['pill_weights']:
                         self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
