@@ -234,6 +234,9 @@ class Ball:
         self.blocked_timer = 20
 
     def check_blob_ability(self, blob):
+        if(blob.used_ability == "mirror"):
+            self.x_speed = self.x_speed - self.x_speed * 2
+            self.y_speed = self.y_speed - self.y_speed * 2
         if(blob.used_ability == "fireball"):
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))

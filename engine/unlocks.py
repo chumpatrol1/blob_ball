@@ -11,7 +11,7 @@ css_selector_list_blobs = [
 
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
-[["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Mirror"], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
@@ -33,7 +33,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (3, 1): "king",
     (4, 1): "cop",
     (5, 1): "boxer",
-    (6, 1): "quirkless",
+    (6, 1): "mirror",
     (7, 1): "quirkless",
     (1, 2): "quirkless",
     (2, 2): "quirkless",
@@ -71,10 +71,10 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "king": False,
     "cop": False,
     "boxer": False,
+    "mirror": False,
 }
 
 if_blob_shadow = { # Used later where it checks if the blob is on these coordinates, making them shadows of themselves
-    (6, 1),
     (7, 1),
     (1, 2),
     (2, 2),
@@ -312,10 +312,10 @@ def update_css_medals():
                 css_selector_list_medals[y][x] = medal_id
                 css_display_list_medals[y][x] = original_css_display_list_blobs[y][x]
             else:
-                if location in if_medal_shadow:
-                    css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
-                else:
-                    css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
+                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
+            
+            if location in if_medal_shadow:
+                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
 
 def return_medal_unlocks():
     global medal_unlock_dict

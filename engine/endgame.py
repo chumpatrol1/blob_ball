@@ -16,6 +16,7 @@ def attempt_unlocks(game_stats):
         33: "king",
         38: "cop",
         43: "boxer",
+        48: "mirror",
     }
     
     blobs_unlocked = 0

@@ -3,7 +3,6 @@ import os
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.blob_stats import species_to_stars
-
 cwd = os.getcwd()
 
 # INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
@@ -18,6 +17,7 @@ cwd = os.getcwd()
 # In engine/unlocks.py, update css_selector_list and original_css_display_list to allow that blob to be selected
 # In engine/unlocks.py, update css_location_dict with the intended location of that blob
 # In engine/unlocks.py, update blob_unlock_dict
+# In engine/unlocks.py, update if_shadow_list to remove the coordinate of the new blob
 # In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
@@ -26,7 +26,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -50,6 +50,7 @@ def species_to_image(species):
         'king': blob_cwd + 'king_blob.png',
         'cop': blob_cwd + 'cop_blob.png',
         'boxer': blob_cwd + 'boxer_blob.png',
+        'mirror': blob_cwd + 'mirror_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -73,6 +74,7 @@ def species_to_ability_icon(species):
         'king': ability_cwd + "tax.png",
         'cop': ability_cwd + "block_icon.png",
         'boxer': ability_cwd + 'starpunch.png',
+        'mirror': ability_cwd + 'mirror.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -336,6 +338,8 @@ class Blob:
                 self.used_ability = "starpunch"
             elif(self.used_ability == "starpunch"):
                 self.used_ability = None
+            elif(self.used_ability == "mirror" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = None
 
             if(self.special_ability_timer == 0):
                 self.used_ability = None
@@ -567,7 +571,7 @@ class Blob:
                 current_pill = random.choices(pill_list, weights = pill_weights)[0]
                 self.status_effects['pill'] = current_pill
                 print("CHOSEN", current_pill)
-                
+
                 if(self.hp <= self.max_hp//2):
                     self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
                     self.status_effects['pill_weights'][current_pill] -= 2
@@ -611,6 +615,15 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.kick_cooldown += 60
+                createSFXEvent('chime_progress')
+        elif(special_ability == "mirror"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "mirror"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                self.kick_cooldown -= 20
+                self.block_cooldown -= 20
                 createSFXEvent('chime_progress')
 
 
