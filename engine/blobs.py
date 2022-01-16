@@ -17,7 +17,6 @@ cwd = os.getcwd()
 # In engine/unlocks.py, update css_selector_list and original_css_display_list to allow that blob to be selected
 # In engine/unlocks.py, update css_location_dict with the intended location of that blob
 # In engine/unlocks.py, update blob_unlock_dict
-# In engine/unlocks.py, update if_shadow_list to remove the coordinate of the new blob
 # In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.

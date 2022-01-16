@@ -34,28 +34,28 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (4, 1): "cop",
     (5, 1): "boxer",
     (6, 1): "mirror",
-    (7, 1): "quirkless",
-    (1, 2): "quirkless",
-    (2, 2): "quirkless",
-    (3, 2): "quirkless",
-    (4, 2): "quirkless",
-    (5, 2): "quirkless",
-    (6, 2): "quirkless",
-    (7, 2): "quirkless",
-    (1, 3): "quirkless",
-    (2, 3): "quirkless",
-    (3, 3): "quirkless",
-    (4, 3): "quirkless",
-    (5, 3): "quirkless",
-    (6, 3): "quirkless",
-    (7, 3): "quirkless",
-    (1, 4): "quirkless",
-    (2, 4): "quirkless",
-    (3, 4): "quirkless",
-    (4, 4): "quirkless",
-    (5, 4): "quirkless",
-    (6, 4): "quirkless",
-    (7, 4): "quirkless",
+    (7, 1): "coming_soon",
+    (1, 2): "coming_soon",
+    (2, 2): "coming_soon",
+    (3, 2): "coming_soon",
+    (4, 2): "coming_soon",
+    (5, 2): "coming_soon",
+    (6, 2): "coming_soon",
+    (7, 2): "coming_soon",
+    (1, 3): "coming_soon",
+    (2, 3): "coming_soon",
+    (3, 3): "coming_soon",
+    (4, 3): "coming_soon",
+    (5, 3): "coming_soon",
+    (6, 3): "coming_soon",
+    (7, 3): "coming_soon",
+    (1, 4): "coming_soon",
+    (2, 4): "coming_soon",
+    (3, 4): "coming_soon",
+    (4, 4): "coming_soon",
+    (5, 4): "coming_soon",
+    (6, 4): "coming_soon",
+    (7, 4): "coming_soon",
 }
 
 blob_unlock_dict = { # Whether a given blob has been unlocked or not
@@ -73,35 +73,6 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "boxer": False,
     "mirror": False,
 }
-
-if_blob_shadow = { # Used later where it checks if the blob is on these coordinates, making them shadows of themselves
-    (7, 1),
-    (1, 2),
-    (2, 2),
-    (3, 2),
-    (4, 2),
-    (5, 2),
-    (6, 2),
-    (7, 2),
-    (1, 3),
-    (2, 3),
-    (3, 3),
-    (4, 3),
-    (5, 3),
-    (6, 3),
-    (7, 3),
-    (1, 4),
-    (2, 4),
-    (3, 4),
-    (4, 4),
-    (5, 4),
-    (6, 4),
-    (7, 4),
-}
-
-def return_blob_shadow_list(cwd):
-    global if_blob_shadow
-    return if_blob_shadow
 
 def load_blob_unlocks(cwd):
     global blob_unlock_dict
@@ -136,15 +107,17 @@ def update_css_blobs(cwd):
     for y in range(0, 5):
         for x in range(1, 8):
             location = (x, y)
-            if location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
+            if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":
+                css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
+            elif location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
                 blob_id = css_location_dict_blobs[location]
                 css_selector_list_blobs[y][x] = blob_id
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
                 css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
-                unlock_slot += 1
-            if location in if_blob_shadow:
-                css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
+            unlock_slot += 1
+            #if location in if_blob_shadow:
+                #css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "Bug", "Coming soon!"]
 
 def unlock_blob(blob, cwd):
     global blob_unlock_dict
