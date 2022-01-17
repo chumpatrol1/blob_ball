@@ -104,6 +104,7 @@ def load_default_ruleset():
         'danger_zone_enabled': True,
         'p1_modifiers': player_mods,
         'p2_modifiers': player_mods,
+        'hp_regen': 0,
     }
     return ruleset
 

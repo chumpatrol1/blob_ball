@@ -1,0 +1,19 @@
+9812-ERROR-Game Crash at Sun Jan 16 21:56:11 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 86, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 63, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 84, in update_game_state
+    info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, timer)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\gameplay.py", line 216, in handle_gameplay
+    reset_round()
+TypeError: reset_round() missing 1 required positional argument: 'ruleset'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: quirkless, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

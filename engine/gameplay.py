@@ -49,19 +49,19 @@ game_info = {
         'avg_collisions_per_goal': 0,
         }
 
-def reset_round():
+def reset_round(ruleset):
     global p1_blob
     global p2_blob
     global ball
     global p1_ko
     global p2_ko
-    p1_blob.reset(1)
-    p2_blob.reset(2)
+    p1_blob.reset(ruleset)
+    p2_blob.reset(ruleset)
     ball.reset()
     p1_ko = False
     p2_ko = False
 
-def score_goal(winner, goal_limit):
+def score_goal(winner, goal_limit, ruleset):
     global timer
     global time_limit
     global time_bonus
@@ -71,7 +71,7 @@ def score_goal(winner, goal_limit):
     timer = 60
     if(game_score[winner] >= goal_limit):
         return "casual_win", (winner + 1)
-    reset_round()
+    #reset_round(ruleset)
     return "casual_match", 0
     
 
@@ -187,17 +187,17 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(p1_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(1, goal_limit)
+                    game_state, winner_info = score_goal(1, goal_limit, ruleset)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
-                    reset_round()
+                    reset_round(ruleset)
             if(p2_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(0, goal_limit)
+                    game_state, winner_info = score_goal(0, goal_limit, ruleset)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
-                    reset_round()
+                    reset_round(ruleset)
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
@@ -210,10 +210,10 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 p2_blob.used_ability = ""
                 countdown -= 1
                 if(countdown == 0):
-                    game_state, winner_info = score_goal(goal_scorer, goal_limit)
+                    game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset)
                     goal_scored = False
                     goal_scorer = None
-                    reset_round()
+                    reset_round(ruleset)
             timer -= 1
 
         if(game_state == "casual_win"):

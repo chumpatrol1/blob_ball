@@ -114,6 +114,7 @@ def draw_rules_screen(game_display, ruleset, selector_position, settings):
         menu_font.render("Time Bonus: " + time_bonus_text, False, text_color),
         menu_font.render("NRG Charge Rate: " + str(ruleset['special_ability_charge_base']), False, text_color),
         menu_font.render("Danger Zone Enabled: " + str(ruleset['danger_zone_enabled']), False, text_color),
+        menu_font.render("HP Regeneration: " + str(ruleset['hp_regen']), False, text_color),
         menu_font.render("P1 Stat Modifiers", False, text_color),
         menu_font.render("P2 Stat Modifiers", False, text_color),
         menu_font.render("Reset to Default", False, text_color),
@@ -124,11 +125,11 @@ def draw_rules_screen(game_display, ruleset, selector_position, settings):
         text_rect = text_box.get_rect()
         text_rect.topleft = (68, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += 76
+        text_y += 66
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
-    game_display.blit(ball, (10, (76 * (selector_position + 1))))
+    game_display.blit(ball, (10, 76 + (66 * selector_position)))
 
 def draw_pmods_screen(game_display, info_getter, settings):
     draw_background(game_display, "rules", settings)

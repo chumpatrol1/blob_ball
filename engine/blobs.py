@@ -805,10 +805,10 @@ class Blob:
         if(self.y_pos < 2000):
             self.y_pos += self.y_speed
 
-    def reset(self, player):
+    def reset(self, ruleset):
         self.x_speed = 0
         self.y_speed = 0
-        if(player == 1):
+        if(self.player == 1):
             self.x_pos = 100
             self.facing = 'right'
         else:
@@ -836,6 +836,7 @@ class Blob:
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
         self.set_base_stats(self.stars)
+        self.heal_hp(heal_amt=ruleset['hp_regen'])
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)
