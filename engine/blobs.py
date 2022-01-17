@@ -836,7 +836,7 @@ class Blob:
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
         self.set_base_stats(self.stars)
-        self.heal_hp(heal_amt=ruleset['hp_regen'])
+        #self.heal_hp(heal_amt=ruleset['hp_regen'])
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)

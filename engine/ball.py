@@ -91,7 +91,7 @@ class Ball:
         ball_vector = pg.math.Vector2(self.x_center, self.y_center)
         p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
         
-        if(blob.collision_timer == 0):
+        if(not blob.collision_timer) or (blob.kick_timer and self.bounciness > 0.1):
             if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass

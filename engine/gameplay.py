@@ -182,7 +182,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                         winner_info = 3
                     game_state = "casual_win"
             game_info['time'] += 1
-
+            
         else:
             if(p1_ko):
                 blob_ko(p1_blob)
@@ -215,6 +215,9 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                     goal_scorer = None
                     reset_round(ruleset)
             timer -= 1
+            if timer == 0:
+                p1_blob.heal_hp(ruleset['hp_regen'])
+                p2_blob.heal_hp(ruleset['hp_regen'])
 
         if(game_state == "casual_win"):
             game_info["game_score"] = game_score
