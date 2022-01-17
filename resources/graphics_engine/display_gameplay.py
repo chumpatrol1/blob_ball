@@ -267,9 +267,9 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
         game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
-
+    gameplay_surface = pg.Surface((1366, 768))
     #TODO: Simplify and remove
-    draw_background(game_display, "casual_match", settings)
+    draw_background(gameplay_surface, "casual_match", settings)
     global cwd
     global image_cache
     #TODO: Cause different things to be loaded with different blobs
@@ -304,12 +304,12 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p1_blob_clone'] = p1_blob.image
 
     if(p1_blob.facing == "right"):
-        game_display.blit(pg.transform.flip(image_cache['p1_blob'], True, False), (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+        gameplay_surface.blit(pg.transform.flip(image_cache['p1_blob'], True, False), (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
     else:
-        game_display.blit(image_cache['p1_blob'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+        gameplay_surface.blit(image_cache['p1_blob'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
 
-    draw_blob_special(p1_blob, game_display)
-    draw_blob_particles(game_display, ball, p1_blob, p2_blob)
+    draw_blob_special(p1_blob, gameplay_surface)
+    draw_blob_particles(gameplay_surface, ball, p1_blob, p2_blob)
     
     if not (p2_blob.image == image_cache['p2_blob_clone']):
         image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
@@ -322,33 +322,39 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
             image_cache['p2_darkened'] = True
 
     if(p2_blob.facing == "right"):
-        game_display.blit(pg.transform.flip(image_cache['p2_blob'], True, False), (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+        gameplay_surface.blit(pg.transform.flip(image_cache['p2_blob'], True, False), (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
     else:
-        game_display.blit(image_cache['p2_blob'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+        gameplay_surface.blit(image_cache['p2_blob'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
 
-    draw_blob_special(p2_blob, game_display)
+    draw_blob_special(p2_blob, gameplay_surface)
 
 
-    draw_blob_particles(game_display, ball, p2_blob, p1_blob) # Why is it like this again?
+    draw_blob_particles(gameplay_surface, ball, p2_blob, p1_blob) # Why is it like this again?
 
     #fade_out = 200
-    draw_ball_particles(game_display, ball, p1_blob, p2_blob)
-    draw_ball(game_display, ball)
-    draw_ball_overlay(game_display, ball, p1_blob, p2_blob)
+    draw_ball_particles(gameplay_surface, ball, p1_blob, p2_blob)
+    draw_ball(gameplay_surface, ball)
+    draw_ball_overlay(gameplay_surface, ball, p1_blob, p2_blob)
 
     menu_font = image_cache['menu_font']
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (200, 230, 200))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
-    game_display.blit(menu_text, text_rect)
+    gameplay_surface.blit(menu_text, text_rect)
     try:
         menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (200, 230, 200))
     except:
         menu_text = menu_font.render("NO TIME LIMIT", False, (0, 0, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//14)
-    game_display.blit(menu_text, text_rect)
+    gameplay_surface.blit(menu_text, text_rect)
     
-    draw_ui(screen_size, game_display, p1_blob, p2_blob)    
+    draw_ui(screen_size, gameplay_surface, p1_blob, p2_blob)    
 
-    draw_timer(screen_size, game_display, timer)
+    draw_timer(screen_size, gameplay_surface, timer)
+
+    if settings['ui_mode']:
+        game_display.blit(gameplay_surface, (0, 0))
+    else:
+        game_display.blit(gameplay_surface, (0, 0), area = (0, 112, 1366, 657))
+        game_display.blit(gameplay_surface, (0, 656), area = (0, 0, 1366, 112))

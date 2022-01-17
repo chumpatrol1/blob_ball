@@ -148,11 +148,16 @@ def initialize_settings(cwd):
     'smooth_scaling': True,
     'music_volume': 10,
     'sound_volume': 10,
+    'ui_mode': True, # True if shown on top, False is shown on bottom
     }
 
     try:
         with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
-            settings = loads(settingsdoc.readline())
+            n_settings = loads(settingsdoc.readline())
+            for key in settings:
+                if not key in n_settings:
+                    n_settings[key] = settings[key]
+            settings = n_settings
     except:
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))

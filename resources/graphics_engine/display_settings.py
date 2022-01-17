@@ -17,10 +17,13 @@ def draw_settings_screen(game_display, settings, selector_position):
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
     text_color = (0, 0, 255)
+
+    ui_mode_text = "Top" if settings['ui_mode'] else "Bottom"
+
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_array = [
         menu_font.render("HD Backgrounds: " + str(settings['hd_backgrounds']), False, text_color),
-        menu_font.render("HD Blobs: " + str(settings['hd_blobs']), False, text_color),
+        menu_font.render("UI Mode: " + ui_mode_text, False, text_color),
         menu_font.render("Smooth Scaling: " + str(settings['smooth_scaling']), False, text_color),
         menu_font.render("Music Volume: " + str(settings['music_volume']), False, text_color),
         menu_font.render("Sound Volume: " + str(settings['sound_volume']), False, text_color),

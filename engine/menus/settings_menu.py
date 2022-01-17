@@ -7,14 +7,14 @@ selector_position = 0
 from engine.button import Button
 settings_buttons = [
     Button(65, 130, 0, 600),
-    Button(135, 200, 0, 600),
-    Button(205, 275, 0, 600),
-    Button(290, 360, 0, 600),
-    Button(365, 430, 0, 600),
-    Button(440, 505, 0, 600),
-    Button(515, 580, 0, 600),
-    Button(590, 670, 0, 600),
-    Button(675, 740, 0, 600),
+    Button(130, 200, 0, 600),
+    Button(200, 275, 0, 600),
+    Button(275, 360, 0, 600),
+    Button(360, 430, 0, 600),
+    Button(430, 505, 0, 600),
+    Button(505, 580, 0, 600),
+    Button(580, 670, 0, 600),
+    Button(670, 740, 0, 600),
 ]
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
@@ -67,16 +67,20 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         settings['smooth_scaling'] = not(settings['smooth_scaling'])
         createSFXEvent('select')
 
+    def toggle_ui_mode():
+        settings['ui_mode'] = not settings['ui_mode']
+        createSFXEvent('select')
+
     run_func = {
         0: toggle_background,
-        1: toggle_hd_blobs,
+        1: toggle_ui_mode,
         2: toggle_scaling,
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings) + 3: go_back,
-        len(settings) + 2: reset_settings,
-        len(settings) + 1: reset_inputs,
+        len(settings) + 2: go_back,
+        len(settings) + 1: reset_settings,
+        len(settings): reset_inputs,
     }        
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
@@ -136,16 +140,20 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         settings['smooth_scaling'] = not(settings['smooth_scaling'])
         createSFXEvent('select')
 
+    def toggle_ui_mode():
+        settings['ui_mode'] = not settings['ui_mode']
+        createSFXEvent('select')
+
     run_func = {
         0: toggle_background,
-        1: toggle_hd_blobs,
+        1: toggle_ui_mode,
         2: toggle_scaling,
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings) + 3: go_back,
-        len(settings) + 2: reset_settings,
-        len(settings) + 1: reset_inputs,
+        len(settings): go_back,
+        len(settings): reset_settings,
+        len(settings): reset_inputs,
     }        
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
@@ -162,11 +170,11 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = len(settings) + 3
+            selector_position = len(settings) + 2
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == len(settings) + 3:
+        if selector_position == len(settings) + 2:
             selector_position = 0
         else:
             selector_position += 1
