@@ -57,3 +57,138 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+17196-ERROR-Game Crash at Mon Jan 17 12:50:45 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 66, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 104, in handle_graphics
+    draw_rebind_screen(game_surface, settings, info_getter[1])
+IndexError: list index out of range
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8780-ERROR-Game Crash at Mon Jan 17 12:51:23 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 66, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 104, in handle_graphics
+    draw_rebind_screen(game_surface, settings, info_getter)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_settings.py", line 51, in draw_rebind_screen
+    menu_text = menu_font.render('REBINDING: ' + rebind_key, False, text_color)
+TypeError: can only concatenate str (not "list") to str
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+11344-ERROR-Game Crash at Mon Jan 17 13:01:51 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 66, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 104, in handle_graphics
+    draw_rebind_screen(game_surface, settings, info_getter)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_settings.py", line 65, in draw_rebind_screen
+    text_array.insert(len(text_array//2), menu_font.render("Rebind P2", False, text_color))
+TypeError: unsupported operand type(s) for //: 'list' and 'int'
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14440-ERROR-Game Crash at Mon Jan 17 13:30:42 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 86, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 63, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 124, in update_game_state
+    game_state, info_getter = engine.rebind.rebind_menu()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\rebind.py", line 57, in rebind_menu
+    return game_state, [rebind_key, selector_position]
+UnboundLocalError: local variable 'selector_position' referenced before assignment
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2528-ERROR-Game Crash at Mon Jan 17 13:31:08 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 107, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 86, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 63, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 124, in update_game_state
+    game_state, info_getter = engine.rebind.rebind_menu()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\rebind.py", line 58, in rebind_menu
+    return game_state, [rebind_key, selector_position]
+UnboundLocalError: local variable 'selector_position' referenced before assignment
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13968-ERROR-Game Crash at Mon Jan 17 14:15:49 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 124, in update_game_state
+    game_state, info_getter = engine.rebind.rebind_menu()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\rebind.py", line 76, in rebind_menu
+    game_state, rebind_key = handle_rebinding()
+TypeError: handle_rebinding() missing 1 required positional argument: 'rebind_start'
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10888-ERROR-Game Crash at Mon Jan 17 14:38:46 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 124, in update_game_state
+    game_state, info_getter = engine.rebind.rebind_menu()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\rebind.py", line 76, in rebind_menu
+    rebind_key = handle_rebinding()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\rebind.py", line 27, in handle_rebinding
+    if(bind_input(rebind_array[rebind_number])):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\handle_input.py", line 104, in bind_input
+    for event in get_events:
+TypeError: 'function' object is not iterable
+Game State: rebind
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -19,6 +19,8 @@ ZIP the files together for release!
 
 import os
 
+from engine.get_events import update_events
+
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
 
@@ -75,13 +77,12 @@ def run(game_state):
     global clock
     global cwd
     global escape_timer
+    events = update_events()
     clock.tick_busy_loop(60)
-    if(game_state == "rebind"):
-        clock.tick_busy_loop(10) # Manually reducing the frame rate because it ironically becomes faster to rebind
-    else:
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                done = True
+
+    for event in events:
+        if event.type == pg.QUIT:
+            done = True
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings)

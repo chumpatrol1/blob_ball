@@ -43,14 +43,35 @@ def draw_settings_screen(game_display, settings, selector_position):
     ball = pg.transform.scale(ball, (38, 38))
     game_display.blit(ball, (10, 76 * (selector_position + 1)))
 
-def draw_rebind_screen(game_display, settings, rebind_key):
+rebind_key_to_position = {
+    'p1_up': 1,
+    'p1_down': 2,
+    'p1_left': 3,
+    'p1_right': 4,
+    'p1_ability': 5,
+    'p1_kick': 6,
+    'p1_block': 7,
+    'p1_boost': 8, 
+    'p2_up': 11,
+    'p2_down': 12,
+    'p2_left': 13,
+    'p2_right': 14,
+    'p2_ability': 15,
+    'p2_kick': 16,
+    'p2_block': 17,
+    'p2_boost': 18, 
+}
+
+def draw_rebind_screen(game_display, settings, info_getter):
     text_color = (0, 0, 255)
     draw_background(game_display, "rebind", settings)
+    rebind_key = info_getter[0]
+    selector_position = info_getter[1]
     
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     menu_text = menu_font.render('REBINDING: ' + rebind_key, False, text_color)
     text_rect = menu_text.get_rect()
-    text_rect.center = (450, 100)
+    text_rect.center = (450, 50)
 
     game_display.blit(menu_text, text_rect)
 
@@ -60,18 +81,23 @@ def draw_rebind_screen(game_display, settings, rebind_key):
     for key in input_keys:
         text_array.append(menu_font.render(key + ": " + str(input_keys[key]), False, text_color))
 
+    text_array.insert(len(text_array)//2, menu_font.render("Rebind P2", False, text_color))
+    text_array.insert(len(text_array)//2, menu_font.render("Rebind All", False, text_color))
+    text_array.insert(0, menu_font.render("Rebind P1", False, text_color))
+    text_array.append(menu_font.render("Back", False, text_color))
+
     text_y = 152
     for text_box in text_array[:len(text_array)//2]:
         text_rect = text_box.get_rect()
         text_rect.topleft = (68, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += 76
+        text_y += 60
     text_y = 152
     for text_box in text_array[len(text_array)//2:]:
         text_rect = text_box.get_rect()
         text_rect.topleft = (568, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += 76
+        text_y += 60
 
     small_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 15)
     text_array = [
@@ -89,6 +115,18 @@ def draw_rebind_screen(game_display, settings, rebind_key):
         text_rect.topleft = (978, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 36
+    if(rebind_key == "Click to Rebind!"):
+        ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
+    else:
+        ball = pg.image.load(cwd + "/resources/images/balls/goal_ball.png")
+    ball = pg.transform.scale(ball, (38, 38))
+    if not(rebind_key == "Click to Rebind!"):
+        selector_position = rebind_key_to_position[rebind_key]
+    
+    selector_x = 500 * (selector_position//10)
+    selector_y = 150 + 60 * (selector_position%10)
+
+    game_display.blit(ball, (selector_x, selector_y))
     
 def draw_rules_screen(game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)

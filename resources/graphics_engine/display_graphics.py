@@ -19,6 +19,8 @@ from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
 from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
 
+from engine.get_events import get_events
+
 from resources.graphics_engine.handle_screen_size import initialize_screen_size, return_real_screen_size, return_width_and_height, update_mouse_wh, update_width_and_height
 
 cwd = os.getcwd()
@@ -101,7 +103,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         the_settings = info_getter[2]
         draw_settings_screen(game_surface, the_settings, selector_position)
     elif(game_state == "rebind"):
-        draw_rebind_screen(game_surface, settings, info_getter[1])
+        draw_rebind_screen(game_surface, settings, info_getter)
     elif(game_state == "almanac"):
         selector_position = info_getter[0]
         draw_almanac_main(game_surface, selector_position, settings)
@@ -126,7 +128,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_almanac_credits(game_surface, settings)
 
     # Draw Debug info (really laggily)
-    #draw_debug(game_surface)
+    draw_debug(game_surface)
 
     global toggle_timer
     global full_screen
@@ -159,7 +161,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         else:
             game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
     else:
-        for event in pg.event.get():
+        for event in get_events():
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = update_width_and_height(event.w, event.h)
         if(settings['smooth_scaling']):

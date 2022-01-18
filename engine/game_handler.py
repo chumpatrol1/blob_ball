@@ -121,8 +121,8 @@ def update_game_state(game_state, cwd):
         info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
         game_state = info_getter[1]
     elif(game_state == "rebind"):
-        info_getter = engine.rebind.handle_rebinding()
-        game_state = info_getter[0]
+        game_state, info_getter = engine.rebind.rebind_menu()
+        
     elif(game_state == "almanac"):
         info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)
         game_state = info_getter[1]
