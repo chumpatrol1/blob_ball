@@ -26,7 +26,10 @@ def draw_ball(game_display, ball):
     if not (ball.image == image_cache['ball_clone']):
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-    game_display.blit(image_cache['ball'], (ball.x_pos * (1000/1366),  ball.y_pos * (400/768)))
+    y_pos = ball.y_pos
+    if(ball.y_pos < 210):
+        y_pos = 210
+    game_display.blit(image_cache['ball'], (ball.x_pos * (1000/1366),  y_pos * (400/768)))
 
 cooldown_species = ['instant', 'delayed']
 
@@ -354,7 +357,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_timer(screen_size, gameplay_surface, timer)
 
     if settings['ui_mode']:
-        game_display.blit(gameplay_surface, (0, 0))
+        game_display.blit(gameplay_surface, (0, 0)) # Default drawing
     else:
-        game_display.blit(gameplay_surface, (0, 0), area = (0, 112, 1366, 657))
-        game_display.blit(gameplay_surface, (0, 656), area = (0, 0, 1366, 112))
+        game_display.blit(gameplay_surface, (0, 0), area = (0, 112, 1366, 670)) # The field
+        game_display.blit(gameplay_surface, (0, 656), area = (0, 0, 1366, 112)) # The UI
+        game_display.blit(gameplay_surface, (0, 766), area = (0, 70, 1366, 73)) # UI Padding at the Bottom

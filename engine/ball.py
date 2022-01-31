@@ -178,6 +178,7 @@ class Ball:
                     self.x_speed = 0
                     blob.collision_timer = 0
                     self.info['blob_warp_collisions'] += 1
+        self.check_ceiling_collisions()
         return blob
 
     def check_block_collisions(self, blob, other_blob):
@@ -216,6 +217,7 @@ class Ball:
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
                         self.get_blocked(collision_timer_duration, blob, other_blob)
+        self.check_ceiling_collisions()
         return blob, other_blob
 
     def get_blocked(self, collision_timer_duration, blob, other_blob):
@@ -270,6 +272,17 @@ class Ball:
             self.image = type_to_image("blocked_ball")
             self.species = "blocked_ball"
             self.special_timer = 30
+
+    def check_ceiling_collisions(self):
+        ceiling = 210
+        if(self.y_pos < ceiling): #Don't raze the roof!
+            self.info['ceiling_collisions'] += 1
+            if(self.y_speed > -4):
+                self.y_speed = 0
+            else:
+                self.y_speed = math.floor(self.y_speed * -0.3) #Reduces bounciness over time
+            createSFXEvent('ball_metal_bounce', volume_modifier=(math.sqrt(abs(self.y_speed/self.y_speed_max))))
+            self.y_pos = ceiling
 
     def move(self, p1_blob, p2_blob): # Also has cooldowns in it.
         ground = Ball.ground
@@ -435,16 +448,8 @@ class Ball:
                 
                  #Reduces bounciness over time
             self.y_pos = ground
-        def check_ceiling_collisions():
-            if(self.y_pos < ceiling): #Don't raze the roof!
-                self.info['ceiling_collisions'] += 1
-                if(self.y_speed > -4):
-                    self.y_speed = 0
-                else:
-                    self.y_speed = math.floor(self.y_speed * -0.3) #Reduces bounciness over time
-                createSFXEvent('ball_metal_bounce', volume_modifier=(math.sqrt(abs(self.y_speed/self.y_speed_max))))
-                self.y_pos = ceiling
-        check_ceiling_collisions()
+        
+        self.check_ceiling_collisions()
 
         def apply_y_speed_limits():
             if(self.y_speed > self.y_speed_max):
