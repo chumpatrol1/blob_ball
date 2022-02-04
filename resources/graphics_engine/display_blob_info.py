@@ -29,6 +29,11 @@ def load_blobs(blob_image_cache, directory):
 
 def draw_blob_selector(game_display, info_getter, settings):
     global bic_cached
+    global blob_image_cache
+    global ball
+    global ball_state
+    selector_position = info_getter[0]
+    ghost_position = info_getter[1]
     directory = cwd + "/resources/images"
     if not bic_cached:
         blob_image_cache = load_blobs(blob_image_cache, directory)
@@ -96,10 +101,4 @@ def draw_blob_selector(game_display, info_getter, settings):
 
 def draw_blob_info(game_display, info_getter, settings):
     draw_background(game_display, 'green_background', settings)
-
-    global blob_image_cache
-    global ball
-    global ball_state
-    global ghost
-    selector_position = info_getter[0]
-    ghost_position = info_getter[1]
+    draw_blob_info(game_display, info_getter, settings)
