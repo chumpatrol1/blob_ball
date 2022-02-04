@@ -4,6 +4,7 @@ import os
 from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from resources.graphics_engine.display_blob_info import draw_blob_info
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from resources.graphics_engine.display_css import draw_css
 from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
@@ -107,6 +108,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "almanac"):
         selector_position = info_getter[0]
         draw_almanac_main(game_surface, selector_position, settings)
+    elif(game_state == "blob_info"):
+        draw_blob_info(game_surface, info_getter, settings)
     elif(game_state == "medals"):
         draw_medals_screen(game_surface, info_getter, settings)
     elif(game_state == "almanac_stats"):

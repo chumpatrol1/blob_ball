@@ -29,10 +29,10 @@ def almanac_navigation(timer, previous_screen):
     def update_gamestate():
         global selector_position
         createSFXEvent('select')
-        if(selector_position == 0): #Blobs and Info
-            game_state = "almanac"
+        if(selector_position == 0): #Blobs
+            game_state = "blob_info"
         elif(selector_position == 1):
-            #game_state = "medals"
+            #game_state = "medals"... may not be medals for long
             game_state = "almanac"
             selector_position = 1
             # Will be temporarily disabled
