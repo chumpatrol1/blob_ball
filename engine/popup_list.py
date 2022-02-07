@@ -1,4 +1,5 @@
 blob_unlock_popups = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
+    'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing Ability instead uses/your boost cooldown!"],
     'fire': ["fire_blob.png", "Fire Blob", "Press and hold your ability/button to speed the ball up!"],
     'ice': ["ice_blob.png", "Ice Blob", "Press and hold your ability/button to slow the ball down!"],
     'water': ['water_blob.png', "Water Blob", "Press and hold your ability/button to push the ball up!"],
@@ -10,6 +11,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'king': ['king_blob.png', "King Blob", "Tax your foes, reducing/your own cooldowns and/swapping your speed stats!"],
     'cop': ['cop_blob.png', "Cop Blob", "Blow your whistle at the/ball to stop it completely,/and make it intangible to the enemy!"],
     'boxer': ['boxer_blob.png', "Boxer Blob", "Unleash a mighty punch/at your enemy to do/heavy damage and stun them!/Blocking won't help much."],
+    'mirror': ['mirror_blob.png', "Mirror Blob", "BLOB DESCRIPTION HERE"]
 }
 
 def find_blob_unlock(key):

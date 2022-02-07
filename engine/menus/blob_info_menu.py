@@ -1,5 +1,6 @@
 from engine.button import Button
 from resources.sound_engine.sfx_event import createSFXEvent
+from resources.graphics_engine.display_blob_info import load_individual_blob
 import engine.handle_input
 selector_position = [3, 2, 0]
 selector_ghost = None
@@ -42,7 +43,9 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
                 createSFXEvent('select')
                 game_state = "almanac"
             else:
+                load_individual_blob(selector_position)
                 selector_position[2] = 1
+                
     if(selector_position[2] == 1 and 
     ('up' in pressed or 'down' in pressed or 'left' in pressed or 'right' in pressed)):
         selector_position[2] = 0
@@ -67,6 +70,8 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
                     game_state = "almanac"
                     selector_ghost = None
                     selector_position[2] = 0
+                else:
+                    load_individual_blob(selector_position)
                 
             elif(mouse[1][2]):
                 selector_position[2] = 0

@@ -1,4 +1,7 @@
 from resources.graphics_engine.background_handler import draw_background
+from resources.graphics_engine.display_almanac import load_mu_chart
+from engine.popup_list import find_blob_unlock
+from engine.blob_stats import species_to_stars
 import pygame as pg
 from os import getcwd
 
@@ -21,12 +24,44 @@ ghost = None
 ball_state = 'deselected'
 mu_chart = None
 
-def load_blobs(blob_image_cache, directory):
+def load_blobs(blob_image_cache, directory): # TODO: Add mini cache with minified blobs
     for row in blob_array: #Temporary, until we make more blobs
         blob_image_cache.append([])
         for icon in row:
             blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
     return blob_image_cache
+
+
+# TODO: Create a load blob info cache function accessible by blob_info_menu
+# It should load: Matchup Chart info (at least for this blob), 
+# the Blob Popup (which we can grab from popup_list.py),
+# Blob Hard Stats (Speed, Traction, Friction etc.)
+# Tips (I'll probably make a tip_list.py file)
+# Alternate costume images (if they have any... we'll work on those in a future update)
+selected_blob = None
+selected_blob_image = None
+selected_blob_matchups = None
+selected_blob_description = None
+selected_blob_stars = None
+selected_blob_tips = None
+selected_blob_costumes = None
+def load_individual_blob(selector_position):
+    # Done based off of the selector position - this function only gets called by blob_info_menu.py
+    global selected_blob
+    global selected_blob_image
+    global selected_blob_matchups
+    global selected_blob_description
+    global selected_blob_stars
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+    if(selected_blob[1] == ''):
+        selector_position = [0, 0, 1]
+        selected_blob = blob_array[selector_position[1]][selector_position[0]]
+    selected_blob_image = pg.image.load(cwd + "/resources/images" + selected_blob[0])
+    selected_blob_matchups = load_mu_chart()[selected_blob[2]]
+    selected_blob_description = find_blob_unlock(selected_blob[2])[2]
+    selected_blob_stars = species_to_stars(selected_blob[2], {})
+    #print(selected_blob_stars)
+    
 
 def draw_blob_selector(game_display, info_getter, settings):
     global bic_cached
@@ -101,6 +136,94 @@ def draw_blob_selector(game_display, info_getter, settings):
     text_rect.center = (925, 700)
     game_display.blit(text_box, text_rect)
 
+def blob_page_1(game_display):
+    global selected_blob
+    global selected_blob_image
+    global selected_blob_matchups
+    global selected_blob_description
+    # Draw the blob itself and print its name on screen
+    game_display.blit(selected_blob_image, (583, 200))
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 60)
+    text_color = (0, 0, 255)
+    text_array = [
+        menu_font.render(selected_blob[1], False, text_color),
+    ]
+    text_y = 100
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+    # Print Wins, Losses and Ties
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    text_color = (0, 0, 255)
+    wlt = []
+    for i in ['wins', 'losses', 'ties']:
+        if i in selected_blob_matchups:
+            wlt.append(str(selected_blob_matchups[i]))
+        else:
+            wlt.append("0")
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
+    text_array = [
+        menu_font.render(wlt[0] +"W-" + wlt[1] + "L-" + wlt[2] + "T", False, text_color),
+    ]
+    text_y = 350
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+    # Print the Blob Popup Description
+    small_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
+    text_array = []
+    try:
+        for i in selected_blob_description.split("/"):
+            text_array.append(small_font.render(i, False, text_color))
+    except:
+        pass
+
+    text_y = 525
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 50
+
+    # Print Basic Blob Stats
+
+    speed_star = {
+        1: 'Sluggish',
+        2: 'Slow',
+        3: 'Average',
+        4: 'Fast',
+        5: 'Hasty',
+    }
+
+    gravity_star = {
+        1: 'Feather',
+        2: 'Light',
+        3: 'Average',
+        4: 'Heavy',
+        5: 'Extreme',
+    }
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    text_array = [
+        menu_font.render("HP: " + str(selected_blob_stars['max_hp']), False, text_color),
+        menu_font.render("Speed: " + speed_star[selected_blob_stars['top_speed']], False, text_color),
+        menu_font.render("Gravity: " + gravity_star[selected_blob_stars['gravity']], False, text_color),
+    ]
+    text_y = 100
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+def blob_page_2(game_display):
+    pass
+
 def draw_blob_page(game_display, info_getter, settings):
     blob_tab = info_getter[2]
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
@@ -121,8 +244,22 @@ def draw_blob_page(game_display, info_getter, settings):
         text_y += 66
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (38, 38))
+    ball = pg.transform.scale(ball, (38, 38)) # TODO: please stop loading this every frame
     game_display.blit(ball, (1000, 76 + (66 * blob_tab)))
+
+    page_directory = {
+        0: blob_page_1,
+        1: blob_page_2,
+        2: blob_page_2,
+        3: blob_page_2,
+        4: blob_page_2,
+        5: blob_page_2,
+        6: blob_page_2,
+    }
+
+    page_directory[blob_tab](game_display)
+
+
 
 def draw_blob_info(game_display, info_getter, settings):
     draw_background(game_display, 'green_background', settings)
