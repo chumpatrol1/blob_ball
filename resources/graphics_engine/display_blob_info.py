@@ -17,6 +17,7 @@ blob_array = [ #Creates an array of arrays, which contains the image to use, it'
 ] # TODO: Do something about this redundancy
 
 ball = None
+ghost = None
 ball_state = 'deselected'
 mu_chart = None
 
@@ -31,6 +32,7 @@ def draw_blob_selector(game_display, info_getter, settings):
     global bic_cached
     global blob_image_cache
     global ball
+    global ghost
     global ball_state
     selector_position = info_getter[0]
     ghost_position = info_getter[1]
@@ -99,6 +101,33 @@ def draw_blob_selector(game_display, info_getter, settings):
     text_rect.center = (925, 700)
     game_display.blit(text_box, text_rect)
 
+def draw_blob_page(game_display, info_getter, settings):
+    blob_tab = info_getter[2]
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    text_color = (0, 0, 255)
+    text_array = [
+        menu_font.render("Overview", False, text_color),
+        menu_font.render("Blob Stats", False, text_color),
+        menu_font.render("Matchups", False, text_color),
+        menu_font.render("Costumes", False, text_color),
+        menu_font.render("Tips", False, text_color),
+        menu_font.render("Back", False, text_color),
+    ]
+    text_y = 76
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (1068, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
+    ball = pg.transform.scale(ball, (38, 38))
+    game_display.blit(ball, (1000, 76 + (66 * blob_tab)))
+
 def draw_blob_info(game_display, info_getter, settings):
     draw_background(game_display, 'green_background', settings)
-    draw_blob_info(game_display, info_getter, settings)
+    selector_position = info_getter[0]
+    if not selector_position[2]:
+        draw_blob_selector(game_display, info_getter, settings)
+    else:
+        draw_blob_page(game_display, info_getter, settings)
