@@ -2,6 +2,7 @@ from resources.graphics_engine.background_handler import draw_background
 from resources.graphics_engine.display_almanac import load_mu_chart
 from engine.popup_list import find_blob_unlock
 from engine.blob_stats import species_to_stars
+from engine.blob_tips import return_selected_blob_tips
 import pygame as pg
 from os import getcwd
 
@@ -52,6 +53,7 @@ def load_individual_blob(selector_position):
     global selected_blob_matchups
     global selected_blob_description
     global selected_blob_stars
+    global selected_blob_tips
     selected_blob = blob_array[selector_position[1]][selector_position[0]]
     if(selected_blob[1] == ''):
         selector_position = [0, 0, 1]
@@ -60,6 +62,7 @@ def load_individual_blob(selector_position):
     selected_blob_matchups = load_mu_chart()[selected_blob[2]]
     selected_blob_description = find_blob_unlock(selected_blob[2])[2]
     selected_blob_stars = species_to_stars(selected_blob[2], {})
+    selected_blob_tips = return_selected_blob_tips(selected_blob[2])
     #print(selected_blob_stars)
     
 
@@ -118,8 +121,8 @@ def draw_blob_selector(game_display, info_getter, settings):
     text_array = [
         menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
         menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
-        menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255)),
-        menu_font.render("of a blob compared to others.", False, (0, 0, 255)),
+        menu_font.render("Ability/Select to view the info,", False, (0, 0, 255)),
+        menu_font.render("stats, and tips and more of a blob.", False, (0, 0, 255)),
         menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
         menu_font.render("   to the almanac.", False, (0, 0, 255)),
     ]
@@ -192,6 +195,13 @@ def blob_page_1(game_display):
         text_y += 50
 
     # Print Basic Blob Stats
+    hp_star = {
+        1: "Frail",
+        2: "Weak",
+        3: "Average",
+        4: "Sturdy",
+        5: "Tanky"
+    }
 
     speed_star = {
         1: 'Sluggish',
@@ -210,7 +220,7 @@ def blob_page_1(game_display):
     }
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_array = [
-        menu_font.render("HP: " + str(selected_blob_stars['max_hp']), False, text_color),
+        menu_font.render("HP: " + str(hp_star[selected_blob_stars['max_hp']]), False, text_color),
         menu_font.render("Speed: " + speed_star[selected_blob_stars['top_speed']], False, text_color),
         menu_font.render("Gravity: " + gravity_star[selected_blob_stars['gravity']], False, text_color),
     ]
@@ -222,7 +232,76 @@ def blob_page_1(game_display):
         text_y += 66
 
 def blob_page_2(game_display):
+    text_color = (0, 0, 255)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    text_array = [
+        menu_font.render("HP: " + str(selected_blob_stars['max_hp']) + "*", False, text_color),
+        menu_font.render("Speed: " + str(selected_blob_stars['top_speed']) + "*", False, text_color),
+        menu_font.render("Ground Traction: " + str(selected_blob_stars['traction']) + "*", False, text_color),
+        menu_font.render("Air Friction: " + str(selected_blob_stars['friction']) + "*", False, text_color),
+        menu_font.render("Gravity: " + str(selected_blob_stars['gravity']) + "*", False, text_color),
+        menu_font.render("SA Cost: " + str(selected_blob_stars['special_ability_cost']), False, text_color),
+        menu_font.render("SA Maintenance: " + str(selected_blob_stars['special_ability_maintenance']), False, text_color),
+    ]
+    text_y = 100
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+    text_array = [
+        menu_font.render("Kick CD: " + str(selected_blob_stars['kick_cooldown_rate']) + "*", False, text_color),
+        menu_font.render("Block CD: " + str(selected_blob_stars['block_cooldown_rate']) + "*", False, text_color),
+        menu_font.render("Boost Cost: " + str(selected_blob_stars['boost_cost']), False, text_color),
+        menu_font.render("Boost CD: " + str(selected_blob_stars['boost_cooldown_max']) + "*", False, text_color),
+        menu_font.render("Boost Duration: " + str(selected_blob_stars['boost_duration']) + "*", False, text_color),
+        menu_font.render("SA Delay: " + str(selected_blob_stars['special_ability_delay']), False, text_color),
+        menu_font.render("SA CD: " + str(selected_blob_stars['special_ability_cooldown']), False, text_color),
+    ]
+    text_y = 100
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (550, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+    text_array = [
+        menu_font.render("Some blob stats are measured in stars (*),", False, text_color),
+        menu_font.render("which range from 1 to 5", False, text_color),
+    ]
+    text_y = 628
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+def blob_page_3(game_display):
     pass
+
+def blob_page_4(game_display):
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    text_color = (0, 0, 255)
+    text_array = [
+        menu_font.render("Costumes Coming Soon!", False, text_color),
+    ]
+    text_y = 76
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (400, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 66
+
+def blob_page_5(game_display):
+    global selected_blob_tips
+
+    text_y = 100
+    for text_box in selected_blob_tips:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (50, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 36
 
 def draw_blob_page(game_display, info_getter, settings):
     blob_tab = info_getter[2]
@@ -251,10 +330,9 @@ def draw_blob_page(game_display, info_getter, settings):
         0: blob_page_1,
         1: blob_page_2,
         2: blob_page_2,
-        3: blob_page_2,
-        4: blob_page_2,
-        5: blob_page_2,
-        6: blob_page_2,
+        3: blob_page_4,
+        4: blob_page_5,
+        5: blob_page_5,
     }
 
     page_directory[blob_tab](game_display)
