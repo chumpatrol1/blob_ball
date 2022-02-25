@@ -3,8 +3,12 @@ from resources.sound_engine.handle_bgm import load_bgm
 from resources.sound_engine.sfx_event import get_sound_events, clear_sound_events
 from time import time
 pg.init()
-pg.mixer.init()
-pg.mixer.set_num_channels(24)
+try:
+    pg.mixer.init()
+    pg.mixer.set_num_channels(24)
+except Exception as ex:
+    print("Music Initialization Failed")
+    print(ex)
 
 saved_song = ""
 bgm = None
@@ -67,5 +71,8 @@ def play_sfx(settings):
     clear_sound_events()
 
 def handle_sound(song_playing, settings):
-    play_bgm(song_playing, settings)
-    play_sfx(settings)
+    try:
+        play_bgm(song_playing, settings)
+        play_sfx(settings)
+    except:
+        pass

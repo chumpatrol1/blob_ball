@@ -6,7 +6,6 @@ cwd = getcwd()
 
 debug_dict = {
     'initialized': False,
-    
 }
 
 def draw_debug(game_display):

@@ -790,15 +790,16 @@ class Blob:
                 self.toggle_recharge_indicator('damage_flash')
 
     def heal_hp(self, heal_amt = 1, overheal = False):
-        if overheal:
-            self.hp += heal_amt
-            self.toggle_recharge_indicator('heal_flash')
-        else:
-            self.hp += heal_amt
-            if(self.hp > self.max_hp):
-                self.hp = self.max_hp
-            else:
+        if(heal_amt > 0):
+            if overheal:
+                self.hp += heal_amt
                 self.toggle_recharge_indicator('heal_flash')
+            else:
+                self.hp += heal_amt
+                if(self.hp >= self.max_hp):
+                    self.hp = self.max_hp
+                else:
+                    self.toggle_recharge_indicator('heal_flash')
 
     def blob_ko(self):
         self.y_speed = 10

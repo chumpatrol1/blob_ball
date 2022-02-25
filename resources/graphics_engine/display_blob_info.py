@@ -284,7 +284,7 @@ def blob_page_4(game_display):
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_color = (0, 0, 255)
     text_array = [
-        menu_font.render("Costumes Coming Soon!", False, text_color),
+        menu_font.render("Coming Soon!", False, text_color),
     ]
     text_y = 76
     for text_box in text_array:
@@ -329,7 +329,7 @@ def draw_blob_page(game_display, info_getter, settings):
     page_directory = {
         0: blob_page_1,
         1: blob_page_2,
-        2: blob_page_2,
+        2: blob_page_4,
         3: blob_page_4,
         4: blob_page_5,
         5: blob_page_5,

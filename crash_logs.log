@@ -192,3 +192,333 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+14820-ERROR-Game Crash at Mon Jan 24 15:08:03 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 38, in draw_blob_info
+    selector_position = info_getter[0]
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16532-ERROR-Game Crash at Mon Jan 24 15:12:11 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 39, in draw_blob_info
+    ghost_position = info_getter[1]
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15368-ERROR-Game Crash at Mon Jan 31 10:54:39 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 85, in general_navigation
+    info_getter = [selector_position, selector_ghost]
+UnboundLocalError: local variable 'selector_ghost' referenced before assignment
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10260-ERROR-Game Crash at Wed Feb  2 21:39:22 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 124, in general_navigation
+    blob_info_navigation(pressed, mouse)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 86, in blob_info_navigation
+    blob_tab += 1
+TypeError: can only concatenate str (not "int") to str
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7744-ERROR-Game Crash at Mon Feb  7 07:12:38 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 129, in draw_blob_info
+    draw_blob_info(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 129, in draw_blob_info
+    draw_blob_info(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 129, in draw_blob_info
+    draw_blob_info(game_display, info_getter, settings)
+  [Previous line repeated 991 more times]
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 126, in draw_blob_info
+    draw_background(game_display, 'green_background', settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\background_handler.py", line 62, in draw_background
+    if not (game_screen == previous_game_screen):
+RecursionError: maximum recursion depth exceeded in comparison
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15080-ERROR-Game Crash at Mon Feb  7 07:17:13 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 129, in draw_blob_info
+    draw_blob_selector(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 78, in draw_blob_selector
+    game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
+UnboundLocalError: local variable 'ghost' referenced before assignment
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17828-ERROR-Game Crash at Mon Feb  7 10:46:49 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 126, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 46, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 52, in load_individual_blob
+    selected_blob_image = pg.image.load(selected_blob[0])
+FileNotFoundError: No such file or directory.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2816-ERROR-Game Crash at Mon Feb  7 10:47:34 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 126, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 74, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 52, in load_individual_blob
+    selected_blob_image = pg.image.load(cwd + selected_blob[0])
+FileNotFoundError: No such file or directory.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12984-ERROR-Game Crash at Mon Feb  7 11:33:07 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 126, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 74, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 59, in load_individual_blob
+    selected_blob_description = find_blob_unlock(selected_blob[2])[2]
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12244-ERROR-Game Crash at Mon Feb  7 11:46:25 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 134, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 126, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\blob_info_menu.py", line 74, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 62, in load_individual_blob
+    selected_blob_stars = species_to_stars(selected_blob[2])
+TypeError: species_to_stars() missing 1 required positional argument: 'stat_overrides'
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17444-ERROR-Game Crash at Mon Feb  7 11:59:32 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 270, in draw_blob_info
+    draw_blob_page(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 260, in draw_blob_page
+    page_directory[blob_tab](game_display)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 213, in blob_page_1
+    menu_font.render("HP: " + str(selected_blob_matchups['max_hp']), False, text_color),
+KeyError: 'max_hp'
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1332-ERROR-Game Crash at Mon Feb 14 08:09:44 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 315, in draw_blob_info
+    draw_blob_page(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 305, in draw_blob_page
+    page_directory[blob_tab](game_display)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 228, in blob_page_2
+    menu_font.render("HP: " + str(selected_blob_stars['max_hp'] + "*"), False, text_color),
+TypeError: unsupported operand type(s) for +: 'int' and 'str'
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9500-ERROR-Game Crash at Mon Feb 14 12:31:50 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 88, in run
+    display_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 68, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_graphics.py", line 112, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 331, in draw_blob_info
+    draw_blob_page(game_display, info_getter, settings)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 321, in draw_blob_page
+    page_directory[blob_tab](game_display)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\resources\graphics_engine\display_blob_info.py", line 282, in blob_page_5
+    for text_box in selected_blob_tips:
+TypeError: 'NoneType' object is not iterable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16308-ERROR-Game Crash at Mon Feb 14 14:02:06 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 136, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\medal_milestone_menu.py", line 49, in medal_navigation
+    medal_selected = game_state_navigation(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\main_menu.py", line 34, in game_state_navigation
+    return game_state[selector_position]
+KeyError: (0, 0)
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14028-ERROR-Game Crash at Mon Feb 14 14:02:16 2022 (Version 0.13.0a)
+Traceback (most recent call last):
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 108, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\game_handler.py", line 136, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\medal_milestone_menu.py", line 49, in medal_navigation
+    medal_selected = game_state_navigation(selector_position)
+  File "c:\Users\Elijah McLaughlin\Desktop\Python Projects\Blob_Ball\blob_ball\engine\menus\main_menu.py", line 34, in game_state_navigation
+    return game_state[selector_position]
+KeyError: (0, 0)
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

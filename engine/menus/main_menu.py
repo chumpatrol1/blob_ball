@@ -40,11 +40,11 @@ def menu_navigation(timer):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = 6
+            selector_position = 7
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == 6:
+        if selector_position == 7:
             selector_position = 0
         else:
             selector_position += 1

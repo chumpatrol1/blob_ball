@@ -203,9 +203,9 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         else:
             selector_position += 1
     if('p1_left' in pressed or 'p2_left' in pressed):
-        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = 4)
+        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = 5)
     if('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
-        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = 4)
+        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = 5)
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
             
