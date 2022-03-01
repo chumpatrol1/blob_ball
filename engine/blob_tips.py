@@ -131,7 +131,15 @@ boxer_tips = [
 ]
 
 mirror_tips = [
-    
+    tip_font.render("#1: Blocking the ball as the ability is", False, text_color),
+    tip_font.render("used can completely negate it", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: If used at the right time, Mirror", False, text_color),
+    tip_font.render("may net you a goal", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Mirror Blob shatters easily,", False, text_color),
+    tip_font.render("try not to encounter an offensive Blob", False, text_color),
+    tip_font.render("like Boxer Blob!", False, text_color),
 ]
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
