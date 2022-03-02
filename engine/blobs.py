@@ -313,9 +313,11 @@ class Blob:
             elif(self.holding_timer % 60 == 59 and self.used_ability == "gale"):
                 createSFXEvent('gale')
             if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
+                createSFXEvent('spire')
                 self.used_ability = "spire"
             elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
+                createSFXEvent('electricity')
             elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
                 self.used_ability = None
                 '''elif(self.used_ability == "gale"): # Move me back later i guess!
@@ -606,7 +608,7 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.block_cooldown += 60
-                createSFXEvent('chime_progress')
+                createSFXEvent('whistle')
         elif(special_ability == "starpunch"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "starpunch_wait"
