@@ -3,6 +3,7 @@ import engine.handle_input
 from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs
 from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
+from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
@@ -147,6 +148,7 @@ def css_handler():
     
     if(p1_selector_position[2] == 1):
         if(p1_selector_position[0] == 0):
+            unload_almanac_static_text()
             if(p1_selector_position[1] == 0):
                 game_state = "main_menu"
                 p1_selector_position = [4, 2, 0, 0]
@@ -163,6 +165,7 @@ def css_handler():
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 3):
                 game_state = "almanac"
+                load_almanac_static_text()
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p1_selector_position[1] == 4):

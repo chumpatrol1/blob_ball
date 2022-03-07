@@ -10,8 +10,62 @@ bic_cached = False
 blob_image_cache = [
 ]
 ball = None
+ball_76 = None
 ball_state = 'deselected'
 mu_chart = None
+
+font_cache = {}
+static_text = {}
+
+def load_almanac_static_text():
+    font_cache['default_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    font_cache['tiny_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    font_cache['credits'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 23)
+    menu_font = font_cache['default_font']
+    static_text['almanac_main'] = [
+        menu_font.render('Blobs and Info', False, (0, 0, 150)),
+        menu_font.render('Medals', False, (0, 0, 150)),
+        menu_font.render('Game Statistics', False, (0, 0, 150)),
+        menu_font.render('Art', False, (0, 0, 150)),
+        menu_font.render('Credits', False, (0, 0, 150)),
+        menu_font.render('Back', False, (0, 0, 150))
+    ]
+    static_text['mu_chart'] = [
+        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
+        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
+        menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255)),
+        menu_font.render("of a blob compared to others.", False, (0, 0, 255)),
+        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
+        menu_font.render("   to the almanac.", False, (0, 0, 255)),
+    ]
+    menu_font = font_cache['credits']
+    static_text['credits'] = [
+        menu_font.render('Game Developers', False, (0, 0, 150)),
+        menu_font.render('Elijah "Chumpatrol1" McLaughlin (Lead Programmer, Lead Designer)', False, (0, 0, 150)),
+        menu_font.render('Ellexium (Lead Artist, Programmer)', False, (0, 0, 150)),
+        menu_font.render('Zion "Chumpatrol2" McLaughlin (Game Balancer, Bug Hunter)', False, (0, 0, 150)),
+        menu_font.render('Yael "Chumpatrol3" McLaughlin (Blob and Concept Artist)', False, (0, 0, 150)),
+        menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
+        menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
+    ]
+    static_text['almanac_art'] = [
+        menu_font.render('Backgrounds', False, (0, 0, 150)),
+        menu_font.render('Blobs and Icons', False, (0, 0, 150)),
+        menu_font.render('Fan Creations', False, (0, 0, 150)),
+        menu_font.render('Sound Test', False, (0, 0, 150)),
+        menu_font.render('Music Test', False, (0, 0, 150)),
+        menu_font.render('Back', False, (0, 0, 150)),
+        menu_font.render('Navigate Art Menus with Left and Right', False, (0, 0, 150)),
+        menu_font.render('Go back with "Ability" or "Kick"', False, (0, 0, 150)),
+        menu_font.render('Sound Menus Unavailable', False, (0, 0, 150)),
+    ]
+
+def unload_almanac_static_text():
+    global font_cache
+    global static_text
+    font_cache = {}
+    static_text = {}
+
 
 def load_blobs(blob_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
@@ -23,21 +77,14 @@ def load_blobs(blob_image_cache, directory):
 cwd = getcwd()
 
 def draw_almanac_main(game_display, selector_position, settings):
+    global ball_76
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
-    text_array = [
-        menu_font.render('Blobs and Info', False, (0, 0, 150)),
-        menu_font.render('Medals', False, (0, 0, 150)),
-        menu_font.render('Game Statistics', False, (0, 0, 150)),
-        menu_font.render('Art', False, (0, 0, 150)),
-        menu_font.render('Credits', False, (0, 0, 150)),
-        menu_font.render('Back', False, (0, 0, 150))
-    ]
+    text_array = static_text['almanac_main']
 
-
-    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (76, 76))
-    game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
+    if(ball_76 is None):
+        ball_76 = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
+        ball_76 = pg.transform.scale(ball_76, (76, 76))
+    game_display.blit(ball_76, (875, ((76 * selector_position) + (0.5 * 76))))
 
     text_y = 76
     for text_box in text_array:
@@ -63,14 +110,14 @@ def create_time_string(time):
 
 def draw_almanac_stats(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
-    tiny_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    tiny_font = menu_font = font_cache['tiny_font']
     from json import loads
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
     text_array = [
         menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
     ]
+    # TODO: Can I cache these?
     general_text = [
         tiny_font.render('General Statistics', False, (0, 0, 150)),
         tiny_font.render('Time In Match: ' + create_time_string(game_stats['time_in_game']), False, (0, 0, 150)),
@@ -129,14 +176,14 @@ def draw_almanac_stats(game_display, settings):
 
 def draw_almanac_stats_2(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
-    tiny_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    menu_font = tiny_font = font_cache['tiny_font']
     from json import loads
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
     text_array = [
         menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
     ]
+    # TODO: Can I cache these?
     general_text = [
         tiny_font.render('General Statistics', False, (0, 0, 150)),
         tiny_font.render('Times Game Started: ' + str(game_stats['times_bb_started']), False, (0, 0, 150)),
@@ -252,7 +299,7 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
         y += 1
     if(selector_position[2] == 1 and ball_state == "deselected"):
         ball_state = "selected"
-        ball = ball = pg.transform.scale(pg.image.load(directory+"/balls/goal_ball.png"), (50, 50))
+        ball = pg.transform.scale(pg.image.load(directory+"/balls/goal_ball.png"), (50, 50))
         load_mu_chart()
     if(selector_position[2] == 0 and ball_state == "selected"):
         ball_state = "deselected"
@@ -277,14 +324,7 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
         game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
-    text_array = [
-        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
-        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
-        menu_font.render("Ability/Select to view the winrate", False, (0, 0, 255)),
-        menu_font.render("of a blob compared to others.", False, (0, 0, 255)),
-        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
-        menu_font.render("   to the almanac.", False, (0, 0, 255)),
-    ]
+    text_array = static_text['mu_chart']
 
     text_y = 530
     for text_box in text_array:
@@ -300,16 +340,8 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
 
 def draw_almanac_credits(game_display, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 23)
-    text_array = [
-        menu_font.render('Game Developers', False, (0, 0, 150)),
-        menu_font.render('Elijah "Chumpatrol1" McLaughlin (Lead Programmer, Lead Designer)', False, (0, 0, 150)),
-        menu_font.render('Ellexium (Lead Artist, Programmer)', False, (0, 0, 150)),
-        menu_font.render('Zion "Chumpatrol2" McLaughlin (Game Balancer, Bug Hunter)', False, (0, 0, 150)),
-        menu_font.render('Yael "Chumpatrol3" McLaughlin (Blob and Concept Artist)', False, (0, 0, 150)),
-        menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
-        menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
-    ]
+    
+    text_array = static_text['credits']
 
     text_y = 76
     for text_box in text_array:
@@ -320,23 +352,11 @@ def draw_almanac_credits(game_display, settings):
 
 def draw_almanac_art(game_display, selector_position, settings):
     draw_background(game_display, 'almanac', settings)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
-    text_array = [
-        menu_font.render('Backgrounds', False, (0, 0, 150)),
-        menu_font.render('Blobs and Icons', False, (0, 0, 150)),
-        menu_font.render('Fan Creations', False, (0, 0, 150)),
-        menu_font.render('Sound Test', False, (0, 0, 150)),
-        menu_font.render('Music Test', False, (0, 0, 150)),
-        menu_font.render('Back', False, (0, 0, 150)),
-        menu_font.render('Navigate Art Menus with Left and Right', False, (0, 0, 150)),
-        menu_font.render('Go back with "Ability" or "Kick"', False, (0, 0, 150)),
-        menu_font.render('Sound Menus Unavailable', False, (0, 0, 150)),
-    ]
+    text_array = static_text['almanac_art']
 
 
-    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (76, 76))
-    game_display.blit(ball, (875, ((76 * selector_position) + (0.5 * 76))))
+    global ball_76
+    game_display.blit(ball_76, (875, ((76 * selector_position) + (0.5 * 76))))
 
     text_y = 76
     for text_box in text_array:

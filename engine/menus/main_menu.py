@@ -1,6 +1,7 @@
 import engine.handle_input
 from json import dumps
 from os import getcwd
+from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
 cwd = getcwd()
@@ -59,8 +60,13 @@ def menu_navigation(timer):
             if(mouse[1][0] or mouse[1][2]):
                 createSFXEvent('select')
                 game_state = game_state_navigation(selector_position)
-        
-            
+
+
+    if(game_state == 'almanac'):
+        load_almanac_static_text()
+    else:
+        unload_almanac_static_text()  
+    
     return game_state, [selector_position]
 
 

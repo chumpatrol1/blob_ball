@@ -8,12 +8,18 @@ import pygame as pg
 from os import getcwd
 
 cwd = getcwd()
+
+# These will store the blob array, fonts and static texts
 bic_cached = False
 blob_image_cache = [
 ]
+font_cache = {}
+static_text = {}
 
+# Loads in the blob array based on the almanac's blob array
 blob_array = load_almanac_blob_array()
 
+# assorted image placeholders
 ball = None
 ghost = None
 info_ball = None
@@ -43,7 +49,8 @@ selected_blob_stars = None
 selected_blob_tips = None
 selected_blob_costumes = None
 def load_individual_blob(selector_position):
-    # Done based off of the selector position - this function only gets called by blob_info_menu.py
+    '''Done based off of the selector position 
+    This function only gets called by blob_info_menu.py'''
     global selected_blob
     global selected_blob_image
     global selected_blob_matchups
@@ -63,6 +70,10 @@ def load_individual_blob(selector_position):
     
 
 def draw_blob_selector(game_display, info_getter, settings):
+    '''
+    Draws the blob selector screen
+    Also loads in images and fonts when opening this page for the first time
+    '''
     global bic_cached
     global blob_image_cache
     global ball
@@ -86,6 +97,40 @@ def draw_blob_selector(game_display, info_getter, settings):
         info_ghost = info_ball.convert_alpha()
         info_ghost.set_alpha(200)
 
+        # Load in fonts
+        font_cache['css_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+        font_cache['big_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
+        font_cache['wlt_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
+        
+        # Load in static text
+        text_color = (0, 0, 255)
+        menu_font = font_cache['css_font']
+        static_text['selector_instructions'] = [
+        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
+        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
+        menu_font.render("Ability/Select to view the info,", False, (0, 0, 255)),
+        menu_font.render("stats, and tips and more of a blob.", False, (0, 0, 255)),
+        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
+        menu_font.render("   to the almanac.", False, (0, 0, 255)),
+    ]
+        static_text['blob_star_description'] = [
+        menu_font.render("Some blob stats are measured in stars (*),", False, text_color),
+        menu_font.render("which range from 1 to 5", False, text_color),
+    ]        
+        static_text['coming_soon'] = [
+        menu_font.render("Coming Soon!", False, text_color),
+    ]
+        static_text['blob_info_sidebar'] = [
+        menu_font.render("Overview", False, text_color),
+        menu_font.render("Blob Stats", False, text_color),
+        menu_font.render("Matchups", False, text_color),
+        menu_font.render("Costumes", False, text_color),
+        menu_font.render("Tips", False, text_color),
+        menu_font.render("Back", False, text_color),
+    ]
+
+
+    menu_font = font_cache['css_font']
     x = 0
     y = 0
     for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
@@ -98,11 +143,11 @@ def draw_blob_selector(game_display, info_getter, settings):
         y += 1
     if(selector_position[2] == 1 and ball_state == "deselected"):
         ball_state = "selected"
-        ball = ball = pg.transform.scale(pg.image.load(directory+"/balls/goal_ball.png"), (50, 50))
+        #ball = pg.transform.scale(pg.image.load(directory+"/balls/goal_ball.png"), (50, 50))
     if(selector_position[2] == 0 and ball_state == "selected"):
         ball_state = "deselected"
-        ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+        #ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
+    
     if(selector_position[2] == 1):
         mu_chart_text = "Gucci my baby" # You have been replaced, Cloud Strife
         
@@ -122,14 +167,7 @@ def draw_blob_selector(game_display, info_getter, settings):
         game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
-    text_array = [
-        menu_font.render("INSTRUCTIONS: Use movement keys", False, (0, 0, 255)),
-        menu_font.render("to navigate the screen. Press", False, (0, 0, 255)),
-        menu_font.render("Ability/Select to view the info,", False, (0, 0, 255)),
-        menu_font.render("stats, and tips and more of a blob.", False, (0, 0, 255)),
-        menu_font.render("Select the middlemost blob to return", False, (0, 0, 255)),
-        menu_font.render("   to the almanac.", False, (0, 0, 255)),
-    ]
+    text_array = static_text['selector_instructions']
 
     text_y = 530
     for text_box in text_array:
@@ -144,13 +182,17 @@ def draw_blob_selector(game_display, info_getter, settings):
     game_display.blit(text_box, text_rect)
 
 def blob_page_1(game_display):
+    '''
+    Displays a blob's overview. This includes an image, basic WLT, and core stats
+    It also gives the blob description that you see upon unlock
+    '''
     global selected_blob
     global selected_blob_image
     global selected_blob_matchups
     global selected_blob_description
     # Draw the blob itself and print its name on screen
     game_display.blit(selected_blob_image, (583, 200))
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 60)
+    menu_font = font_cache["big_font"]
     text_color = (0, 0, 255)
     text_array = [
         menu_font.render(selected_blob[1], False, text_color),
@@ -163,7 +205,7 @@ def blob_page_1(game_display):
         text_y += 66
 
     # Print Wins, Losses and Ties
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    menu_font = font_cache['css_font']
     text_color = (0, 0, 255)
     wlt = []
     for i in ['wins', 'losses', 'ties']:
@@ -171,7 +213,7 @@ def blob_page_1(game_display):
             wlt.append(str(selected_blob_matchups[i]))
         else:
             wlt.append("0")
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
+    menu_font = font_cache['wlt_font']
     text_array = [
         menu_font.render(wlt[0] +"W-" + wlt[1] + "L-" + wlt[2] + "T", False, text_color),
     ]
@@ -222,7 +264,7 @@ def blob_page_1(game_display):
         4: 'Heavy',
         5: 'Extreme',
     }
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    menu_font = font_cache['css_font']
     text_array = [
         menu_font.render("HP: " + str(hp_star[selected_blob_stars['max_hp']]), False, text_color),
         menu_font.render("Speed: " + speed_star[selected_blob_stars['top_speed']], False, text_color),
@@ -236,8 +278,12 @@ def blob_page_1(game_display):
         text_y += 66
 
 def blob_page_2(game_display):
+    '''
+    This displays the detailed blob stats in terms of "stars"
+    This reveals most of a blob's attributes but not abiility specifics
+    '''
     text_color = (0, 0, 255)
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    menu_font = font_cache['css_font']
     text_array = [
         menu_font.render("HP: " + str(selected_blob_stars['max_hp']) + "*", False, text_color),
         menu_font.render("Speed: " + str(selected_blob_stars['top_speed']) + "*", False, text_color),
@@ -270,10 +316,7 @@ def blob_page_2(game_display):
         game_display.blit(text_box, text_rect)
         text_y += 66
 
-    text_array = [
-        menu_font.render("Some blob stats are measured in stars (*),", False, text_color),
-        menu_font.render("which range from 1 to 5", False, text_color),
-    ]
+    text_array = static_text['blob_star_description']
     text_y = 628
     for text_box in text_array:
         text_rect = text_box.get_rect()
@@ -282,14 +325,19 @@ def blob_page_2(game_display):
         text_y += 66
 
 def blob_page_3(game_display):
+    '''
+    
+    '''
     pass
 
 def blob_page_4(game_display):
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    
+    '''
+    
+    '''
+    menu_font = font_cache['css_font']
     text_color = (0, 0, 255)
-    text_array = [
-        menu_font.render("Coming Soon!", False, text_color),
-    ]
+    text_array = static_text['coming_soon']
     text_y = 76
     for text_box in text_array:
         text_rect = text_box.get_rect()
@@ -298,6 +346,9 @@ def blob_page_4(game_display):
         text_y += 66
 
 def blob_page_5(game_display):
+    '''
+    Displays blob tips (these are stored in engine/blob_tips.py)
+    '''
     global selected_blob_tips
 
     text_y = 100
@@ -308,18 +359,10 @@ def blob_page_5(game_display):
         text_y += 36
 
 def draw_blob_page(game_display, info_getter, settings):
+    # Loads in and draws the appropriate blob page
     blob_tab = info_getter[2]
     ghost_tab = info_getter[3]
-    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
-    text_color = (0, 0, 255)
-    text_array = [
-        menu_font.render("Overview", False, text_color),
-        menu_font.render("Blob Stats", False, text_color),
-        menu_font.render("Matchups", False, text_color),
-        menu_font.render("Costumes", False, text_color),
-        menu_font.render("Tips", False, text_color),
-        menu_font.render("Back", False, text_color),
-    ]
+    text_array = static_text["blob_info_sidebar"]
     text_y = 76
     for text_box in text_array:
         text_rect = text_box.get_rect()
@@ -347,9 +390,12 @@ def draw_blob_page(game_display, info_getter, settings):
 
 
 def draw_blob_info(game_display, info_getter, settings):
+    '''
+    Draws the Selector Screen or the Blob Screen
+    '''
     draw_background(game_display, 'green_background', settings)
     selector_position = info_getter[0]
-    if not selector_position[2]:
+    if not selector_position[2]: # We are on the selector screen
         draw_blob_selector(game_display, info_getter, settings)
-    else:
+    else: # We have selected a blob
         draw_blob_page(game_display, info_getter, settings)

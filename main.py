@@ -85,7 +85,8 @@ def run(game_state):
             done = True
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
-    display_graphics(game_state, cwd, info_getter, settings)
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    # Why did I write it this way?
     handle_sound(bgm_song, settings)
     game_state = new_game_state
     pressed =  pg.key.get_pressed()
@@ -116,7 +117,12 @@ try:
         pg.quit()
         from sys import exit
         exit()
+
+
 except Exception as ex:
+    '''
+    Error handling. If the game crashes after loading it will leave a crash log
+    '''
     import logging
     logging.basicConfig(filename = cwd + "/crash_logs.log", level = logging.ERROR,\
         format='%(process)d-%(levelname)s-%(message)s')
