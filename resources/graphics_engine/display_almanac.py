@@ -1,16 +1,10 @@
 from engine.blobs import Blob
+from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd
 
-blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/blobs/quirkless_blob.png", "Quirkless Blob", "quirkless"], ["/blobs/fire_blob.png", "Fire Blob", "fire"], ["/blobs/ice_blob.png", "Ice Blob", "ice"], ["/blobs/water_blob.png", "Water Blob", "water"], ["/blobs/rock_blob.png", "Rock Blob", "rock"], ["/blobs/lightning_blob.png", "Lightning Blob", "lightning"], ["/blobs/wind_blob.png", "Wind Blob", "wind"],],
-[["/blobs/judge_blob.png", "Judge Blob", "judge"], ["/blobs/doctor_blob.png", "Doctor Blob", "doctor"], ["/blobs/king_blob.png", "King Blob", "king"], ["/blobs/cop_blob.png", "Cop Blob", "cop"], ["/blobs/boxer_blob.png", "Boxer Blob", "boxer"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/css_icons/back_arrow.png", "", ""], ["/css_icons/almanac_icon.png", "", ""], ["/css_icons/rules_icon.png", "", ""], ["/css_icons/gear_icon.png", "", ""], ["/css_icons/cpu_icon.png", "", ""],],
-]
+blob_array = load_almanac_blob_array()
 
 bic_cached = False
 blob_image_cache = [

@@ -68,7 +68,15 @@ lightning_tips = [
 ]
 
 wind_tips = [
-
+    tip_font.render("#1: Wind Blob can get across the field", False, text_color),
+    tip_font.render("very quickly by chaining short hops!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Gale will always push the enemy", False, text_color),
+    tip_font.render("and the ball away from your goal", False, text_color),
+    tip_font.render("for a bit", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Wind Blob can harass the opponent", False, text_color),
+    tip_font.render("with frequent kicks. Run and gun!", False, text_color),
 ]
 
 judge_tips = [
@@ -99,7 +107,14 @@ doctor_tips = [
 ]
 
 king_tips = [
-
+    tip_font.render("#1: Tax will make your enemy much slower", False, text_color),
+    tip_font.render("and their movement much slipperier!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Your kick, block and boost cooldowns", False, text_color),
+    tip_font.render("will all be reduced by a full second!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: You can stack the speed boost with", False, text_color),
+    tip_font.render("the stat swap from Tax!", False, text_color),
 ]
 
 cop_tips = [

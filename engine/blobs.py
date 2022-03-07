@@ -19,7 +19,8 @@ cwd = os.getcwd()
 # In engine/unlocks.py, update blob_unlock_dict
 # In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
-# In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
+# In resources/graphics_engine/almanac_blob_array.py, update the Blob Array there to show your blob in the almanac
+# In engine/blob_tips.py, add the blob's ID to the dictionary at the bottom and add an array containing tips
 
 def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]

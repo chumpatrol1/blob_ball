@@ -1,3 +1,4 @@
+from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background
 from resources.graphics_engine.display_almanac import load_mu_chart
 from engine.popup_list import find_blob_unlock
@@ -11,17 +12,12 @@ bic_cached = False
 blob_image_cache = [
 ]
 
-blob_array = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/blobs/quirkless_blob.png", "Quirkless Blob", "quirkless"], ["/blobs/fire_blob.png", "Fire Blob", "fire"], ["/blobs/ice_blob.png", "Ice Blob", "ice"], ["/blobs/water_blob.png", "Water Blob", "water"], ["/blobs/rock_blob.png", "Rock Blob", "rock"], ["/blobs/lightning_blob.png", "Lightning Blob", "lightning"], ["/blobs/wind_blob.png", "Wind Blob", "wind"],],
-[["/blobs/judge_blob.png", "Judge Blob", "judge"], ["/blobs/doctor_blob.png", "Doctor Blob", "doctor"], ["/blobs/king_blob.png", "King Blob", "king"], ["/blobs/cop_blob.png", "Cop Blob", "cop"], ["/blobs/boxer_blob.png", "Boxer Blob", "boxer"], ["/blobs/mirror_blob.png", "Mirror Blob", "mirror"], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/css_icons/back_arrow.png", "", ""], ["/css_icons/almanac_icon.png", "", ""], ["/css_icons/rules_icon.png", "", ""], ["/css_icons/gear_icon.png", "", ""], ["/css_icons/cpu_icon.png", "", ""],],
-] # TODO: Do something about this redundancy
+blob_array = load_almanac_blob_array()
 
 ball = None
 ghost = None
+info_ball = None
+info_ghost = None
 ball_state = 'deselected'
 mu_chart = None
 
@@ -71,16 +67,24 @@ def draw_blob_selector(game_display, info_getter, settings):
     global blob_image_cache
     global ball
     global ghost
+    global info_ball
+    global info_ghost
     global ball_state
     selector_position = info_getter[0]
     ghost_position = info_getter[1]
     directory = cwd + "/resources/images"
     if not bic_cached:
+        # For the character selection screen
         blob_image_cache = load_blobs(blob_image_cache, directory)
         bic_cached = True
         ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
         ghost = ball.convert_alpha()
         ghost.set_alpha(200)
+        # For the blob info screen
+        info_ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
+        info_ball = pg.transform.scale(ball, (38, 38)) # TODO: please stop loading this every frame
+        info_ghost = info_ball.convert_alpha()
+        info_ghost.set_alpha(200)
 
     x = 0
     y = 0
@@ -100,7 +104,7 @@ def draw_blob_selector(game_display, info_getter, settings):
         ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     if(selector_position[2] == 1):
-        mu_chart_text = "Cloud strife my baby" # But Gucci is my real baby... poor puppy :,(
+        mu_chart_text = "Gucci my baby" # You have been replaced, Cloud Strife
         
         text_x = 170
         text_y = 130
@@ -305,6 +309,7 @@ def blob_page_5(game_display):
 
 def draw_blob_page(game_display, info_getter, settings):
     blob_tab = info_getter[2]
+    ghost_tab = info_getter[3]
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     text_color = (0, 0, 255)
     text_array = [
@@ -322,9 +327,11 @@ def draw_blob_page(game_display, info_getter, settings):
         game_display.blit(text_box, text_rect)
         text_y += 66
 
-    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
-    ball = pg.transform.scale(ball, (38, 38)) # TODO: please stop loading this every frame
-    game_display.blit(ball, (1000, 76 + (66 * blob_tab)))
+    game_display.blit(info_ball, (1000, 76 + (66 * blob_tab)))
+
+    if(ghost_tab is not None and ghost_tab != blob_tab):
+        game_display.blit(info_ghost, (1000, 76 + (66 * ghost_tab)))
+
 
     page_directory = {
         0: blob_page_1,
