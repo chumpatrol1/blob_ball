@@ -47,6 +47,7 @@ def load_almanac_static_text():
         menu_font.render('Yael "Chumpatrol3" McLaughlin (Blob and Concept Artist)', False, (0, 0, 150)),
         menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
         menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
+        menu_font.render('Sunken/XNunuAZ (Programmer)', False, (0, 0, 150)),
     ]
     static_text['almanac_art'] = [
         menu_font.render('Backgrounds', False, (0, 0, 150)),

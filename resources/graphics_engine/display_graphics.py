@@ -51,6 +51,10 @@ previous_screen = ""
 toggle_timer = 0
 full_screen = False
 
+def capture_screen():
+    global game_surface
+    capture_gameplay(game_surface)
+
 def handle_graphics(game_state, main_cwd, info_getter, settings):
     real_screen_size = return_real_screen_size()
     global game_surface
@@ -82,7 +86,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         game_time = info_getter[6]
 
         draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
-        capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
+        #capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
         
     elif(game_state == "pause"):
         draw_pause_background(game_surface)

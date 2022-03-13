@@ -6,6 +6,7 @@ import engine.ball
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
+from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
@@ -96,6 +97,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     game_state = "casual_match"
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
+        capture_screen()
 
     def blob_ko(blob):
         blob.blob_ko()
