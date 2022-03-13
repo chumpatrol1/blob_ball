@@ -7,14 +7,14 @@ from math import ceil
 import pygame as pg
 cwd = getcwd()
 
-image_cache = {"initialized": False}
+image_cache = {"initialized": False, "ui_initialized": False}
 
 def return_image_cache():
     return image_cache
 
 def unload_image_cache():
     global image_cache
-    image_cache = {"initialized": False}
+    image_cache = {"initialized": False, "ui_initialized": False}
     image_cache['p1_ability_icon'] = None
     image_cache['p2_ability_icon'] = None
 
@@ -33,25 +33,30 @@ def draw_ball(game_display, ball):
 
 cooldown_species = ['instant', 'delayed']
 
-def draw_ui_icons(game_display, ui_font, blob, x_offset):
+def create_ui_icons(ui_font, blob):
+    '''
+    Creates the UI icons and blits them onto a surface
+    The surface generally doesn't change frame to frame
+    Returns the surface created with the parameters
+    '''
+    game_display = pg.Surface((390, 70), pg.SRCALPHA)
     if(blob.player == 1):
         ability_icon = image_cache['p1_ability_icon']
     else:
         ability_icon = image_cache['p2_ability_icon']
-    pg.draw.rect(game_display, (200, 200, 200), (x_offset, 0, 70, 70))
-    game_display.blit(image_cache["heart_icon"], (x_offset, 0))
-    menu_text = ui_font.render(str(blob.hp), False, (0, 255, 0))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (x_offset+35, 30)
-    game_display.blit(menu_text, text_rect)
-    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 80, 0, 70, 70))
-    game_display.blit(ability_icon, (x_offset + 80, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 160, 0, 70, 70))
-    game_display.blit(image_cache["kick_icon"], (x_offset + 160, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 240, 0, 70, 70))
-    game_display.blit(image_cache["block_icon"], (x_offset + 240, 0))
-    pg.draw.rect(game_display, (200, 200, 200), (x_offset + 320, 0, 70, 70))
-    game_display.blit(image_cache["boost_icon"], (x_offset + 320, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (0, 0, 70, 70))
+    game_display.blit(image_cache["heart_icon"], (0, 0))
+    
+    pg.draw.rect(game_display, (200, 200, 200), (80, 0, 70, 70))
+    game_display.blit(ability_icon, (80, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (160, 0, 70, 70))
+    game_display.blit(image_cache["kick_icon"], (160, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (240, 0, 70, 70))
+    game_display.blit(image_cache["block_icon"], (240, 0))
+    pg.draw.rect(game_display, (200, 200, 200), (320, 0, 70, 70))
+    game_display.blit(image_cache["boost_icon"], (320, 0))
+
+    return game_display
 
 def draw_cooldown(game_display, blob, ui_font, box_x, blob_function, boost_active = False, ability_active = False):
     #Draws the cooldown squares for abilities, kicks, blocks and boosts.
@@ -121,11 +126,29 @@ def draw_nrg_bar(game_display, blob, x_offset):
     game_display.blit(nrg_surface, (x_offset, 75))
 
 def draw_ui(screen_size, game_display, p1_blob, p2_blob):
+    '''
+    Draws all elements of the UI, including the icons, cooldowns, and Energy Bar
+    '''
     global image_cache
     ui_font = image_cache['ui_font']
     
-    draw_ui_icons(game_display, ui_font, p1_blob, 10)
-    draw_ui_icons(game_display, ui_font, p2_blob, 966)
+    if not (image_cache['ui_initialized']):
+        image_cache['p1_ui_icons'] = create_ui_icons(ui_font, p1_blob)
+        image_cache['p2_ui_icons'] = create_ui_icons(ui_font, p2_blob)
+        image_cache['ui_initialized'] = True
+
+    game_display.blit(image_cache['p1_ui_icons'], (10, 0))
+    game_display.blit(image_cache['p2_ui_icons'], (966, 0))
+
+    menu_text = ui_font.render(str(p1_blob.hp), False, (0, 255, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (10+35, 30)
+    game_display.blit(menu_text, text_rect)
+
+    menu_text = ui_font.render(str(p2_blob.hp), False, (0, 255, 0))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (966+35, 30)
+    game_display.blit(menu_text, text_rect)
 
     draw_nrg_bar(game_display, p1_blob, 10)
     draw_nrg_bar(game_display, p2_blob, 966)
@@ -235,23 +258,26 @@ def draw_timer(screen_size, game_display, timer):
             game_display.blit(timer_text, text_rect)
 
 def draw_blob_special(blob, game_display): # Blob special appears when kicking, blocking, boosting or focusing
-    
+    '''
+    Gets the blob and draws glowy shells around the blob
+    Each shell represents a different state
+    Red means the blob is kicking
+    Blue means the blob is blocking
+    Yellow means the blob is boosting
+    White means the blob is focusing, and can only jump
+    Grey means the blob is focusing, but can let go of the button to move
+    '''
     if(blob.boost_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+        game_display.blit(image_cache['blob_special_boost'], ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
 
     if(blob.focusing):
-        blob_special = image_cache['blob_special'].convert_alpha()
         if(blob.focus_lock):
-            blob_special.fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+            game_display.blit(image_cache['blob_special_focus_lock'], ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
         else:
-            blob_special.fill((200, 200, 200, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+            game_display.blit(image_cache['blob_special_focus_free'], ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+
     if(blob.block_timer):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
-        game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
+        game_display.blit(image_cache['blob_special_block'], ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
         p1_block_surface = pg.Surface((110, 220), pg.SRCALPHA)
         p1_block_surface.set_alpha(124)
         if(blob.block_timer < blob.block_timer_max - 3):
@@ -263,9 +289,9 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
             game_display.blit(p1_block_surface, ((blob.x_pos - 150)*(1000/1366), (blob.y_pos - 105)*(382/768)))
         else:
             game_display.blit(p1_block_surface, ((blob.x_pos + 186)*(1000/1366), (blob.y_pos - 105)*(382/768)))
+    
     if(blob.kick_visualization):
-        blob_special = image_cache['blob_special'].convert_alpha()
-        blob_special.fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        blob_special = image_cache['blob_special_kick'].convert_alpha()
         blob_special.set_alpha(255 - 16 * (blob.kick_visualization_max - blob.kick_visualization))
         game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
 
@@ -280,14 +306,34 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['initialized'] = True
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
+
+        image_cache['p1_blob_left'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
+        image_cache['p1_blob_right'] = pg.transform.flip(image_cache['p1_blob_left'], True, False)
         image_cache['p1_blob_clone'] = p1_blob.image
         image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
-        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
+        image_cache['p2_blob_left'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
+        image_cache['p2_blob_right'] = pg.transform.flip(image_cache['p2_blob_left'], True, False)
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
+        if(p2_blob.species == p1_blob.species):
+            if(not image_cache['p2_darkened']):
+                image_cache['p2_blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+                image_cache['p2_blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+                image_cache['p2_darkened'] = True
+        
         image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()
+        image_cache['blob_special_boost'].fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        image_cache['blob_special_focus_lock'] = image_cache['blob_special'].convert_alpha()
+        image_cache['blob_special_focus_lock'].fill((255, 255, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        image_cache['blob_special_focus_free'] = image_cache['blob_special'].convert_alpha()
+        image_cache['blob_special_focus_free'].fill((200, 200, 200, 124), special_flags=pg.BLEND_RGBA_MULT)
+        image_cache['blob_special_block'] = image_cache['blob_special'].convert_alpha()
+        image_cache['blob_special_block'].fill((0, 0, 255, 124), special_flags=pg.BLEND_RGBA_MULT)
+        image_cache['blob_special_kick'] = image_cache['blob_special'].convert_alpha()
+        image_cache['blob_special_kick'].fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+
         image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/kick_icon.png"), (70, 70))
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/boost_icon.png"), (70, 70))
@@ -298,18 +344,20 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 
     if(p1_blob.recharge_indicators['ability_swap_b']):
         image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        image_cache['ui_initialized'] = False
 
     if(p2_blob.recharge_indicators['ability_swap_b']):
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
+        image_cache['ui_initialized'] = False
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):
         image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_clone'] = p1_blob.image
-
-    if(p1_blob.facing == "right"):
-        gameplay_surface.blit(pg.transform.flip(image_cache['p1_blob'], True, False), (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-    else:
-        gameplay_surface.blit(image_cache['p1_blob'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+    if not("invisible" in p1_blob.image):
+        if(p1_blob.facing == "right"):
+            gameplay_surface.blit(image_cache['p1_blob_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+        else:
+            gameplay_surface.blit(image_cache['p1_blob_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
 
     draw_blob_special(p1_blob, gameplay_surface)
     draw_blob_particles(gameplay_surface, ball, p1_blob, p2_blob)
@@ -319,19 +367,13 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_darkened'] = False
 
-    if(p2_blob.species == p1_blob.species):
-        if(not image_cache['p2_darkened']):
-            image_cache['p2_blob'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-            image_cache['p2_darkened'] = True
-
-    if(p2_blob.facing == "right"):
-        gameplay_surface.blit(pg.transform.flip(image_cache['p2_blob'], True, False), (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
-    else:
-        gameplay_surface.blit(image_cache['p2_blob'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+    if not("invisible" in p2_blob.image):
+        if(p2_blob.facing == "right"):
+            gameplay_surface.blit(image_cache['p2_blob_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+        else:
+            gameplay_surface.blit(image_cache['p2_blob_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
 
     draw_blob_special(p2_blob, gameplay_surface)
-
-
     draw_blob_particles(gameplay_surface, ball, p2_blob, p1_blob) # Why is it like this again?
 
     #fade_out = 200
