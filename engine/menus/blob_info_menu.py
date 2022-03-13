@@ -43,7 +43,7 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
             selector_position[0] += 1
 
     if(selector_position[2] == 0):
-        if('ability' in pressed):
+        if('ability' in pressed or 'return' in pressed):
             if(selector_position == [3, 2, 0]):
                 createSFXEvent('select')
                 game_state = "almanac"
@@ -97,7 +97,7 @@ def blob_info_navigation(pressed, mouse): # Handles individual blob selection
         ghost_tab += 1
         if(ghost_tab > 5):
             ghost_tab = 0
-    elif('ability' in pressed):
+    elif('ability' in pressed or 'return' in pressed):
         blob_tab = ghost_tab
 
     for i in range(len(blob_info_buttons)):

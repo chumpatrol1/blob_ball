@@ -121,7 +121,7 @@ def almanac_stats_navigation_3():
             almanac_mu_chart_selector[0] += 1
     
     if(almanac_mu_chart_selector[2] == 0):
-        if('ability' in pressed):
+        if('ability' in pressed or 'return' in pressed):
             if(almanac_mu_chart_selector == [3, 2, 0]):
                 createSFXEvent('select')
                 game_state = "almanac"

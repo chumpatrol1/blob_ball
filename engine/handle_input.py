@@ -223,6 +223,8 @@ def merge_inputs(pressed):
             merged_press.append('ability')
         if('p1_kick' in pressed or 'p2_kick' in pressed):
             merged_press.append('kick')
+        if('return' in pressed):
+            merged_press.append('return')
     if(len(merged_press)):
         button_timer = 10
     return merged_press
