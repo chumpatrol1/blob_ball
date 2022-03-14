@@ -19,7 +19,7 @@ ZIP the files together for release!
 
 import os
 
-from pygame.display import update
+from engine.get_events import update_events
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -48,7 +48,7 @@ load_matchup_chart(cwd)
 
 load_blob_unlocks(cwd)
 load_medals(cwd)
-update_css_blobs()
+update_css_blobs(cwd)
 
 done = False
 
@@ -77,26 +77,21 @@ def run(game_state):
     global clock
     global cwd
     global escape_timer
+    events = update_events()
     clock.tick_busy_loop(60)
-    if(game_state == "rebind"):
-        clock.tick_busy_loop(10) # Manually reducing the frame rate because it ironically becomes faster to rebind
-    else:
-        for event in pg.event.get():
-            if event.type == pg.QUIT:
-                done = True
+
+    for event in events:
+        if event.type == pg.QUIT:
+            done = True
     handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
-    display_graphics(game_state, cwd, info_getter, settings)
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    # Why did I write it this way?
     handle_sound(bgm_song, settings)
     game_state = new_game_state
     pressed =  pg.key.get_pressed()
     if(pressed[pg.K_ESCAPE] and not escape_timer):
-        if(game_state == "casual_match"):
-            game_state = "css"
-            from resources.graphics_engine.display_gameplay import unload_image_cache
-            from engine.gameplay import clear_info_cache
-            clear_info_cache()
-            unload_image_cache()
+        if(game_state == "casual_match" or game_state == "pause"):
             escape_timer = 30
         elif(game_state == "rebind"):
             #game_state = "settings"
@@ -122,7 +117,12 @@ try:
         pg.quit()
         from sys import exit
         exit()
+
+
 except Exception as ex:
+    '''
+    Error handling. If the game crashes after loading it will leave a crash log
+    '''
     import logging
     logging.basicConfig(filename = cwd + "/crash_logs.log", level = logging.ERROR,\
         format='%(process)d-%(levelname)s-%(message)s')

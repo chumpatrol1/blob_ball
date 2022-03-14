@@ -3,7 +3,6 @@ import os
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.blob_stats import species_to_stars
-
 cwd = os.getcwd()
 
 # INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
@@ -20,13 +19,14 @@ cwd = os.getcwd()
 # In engine/unlocks.py, update blob_unlock_dict
 # In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
-# In resources/graphics_engine/display_almanac.py, update the Blob Array there to show your blob on the matchup chart.
+# In resources/graphics_engine/almanac_blob_array.py, update the Blob Array there to show your blob in the almanac
+# In engine/blob_tips.py, add the blob's ID to the dictionary at the bottom and add an array containing tips
 
 def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -50,6 +50,7 @@ def species_to_image(species):
         'king': blob_cwd + 'king_blob.png',
         'cop': blob_cwd + 'cop_blob.png',
         'boxer': blob_cwd + 'boxer_blob.png',
+        'mirror': blob_cwd + 'mirror_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -73,6 +74,7 @@ def species_to_ability_icon(species):
         'king': ability_cwd + "tax.png",
         'cop': ability_cwd + "block_icon.png",
         'boxer': ability_cwd + 'starpunch.png',
+        'mirror': ability_cwd + 'mirror.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -246,6 +248,7 @@ class Blob:
         self.status_effects = {
             "judged": 0,
             "pill": None,
+            "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
             "taxing": 0,
             "taxed": 0,
             "stunned": 0,
@@ -311,9 +314,11 @@ class Blob:
             elif(self.holding_timer % 60 == 59 and self.used_ability == "gale"):
                 createSFXEvent('gale')
             if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
+                createSFXEvent('spire')
                 self.used_ability = "spire"
             elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
                 self.used_ability = "thunderbolt"
+                createSFXEvent('electricity')
             elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
                 self.used_ability = None
                 '''elif(self.used_ability == "gale"): # Move me back later i guess!
@@ -334,6 +339,8 @@ class Blob:
             elif(self.used_ability == "starpunch_wait" and self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1)):
                 self.used_ability = "starpunch"
             elif(self.used_ability == "starpunch"):
+                self.used_ability = None
+            elif(self.used_ability == "mirror" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
                 self.used_ability = None
 
             if(self.special_ability_timer == 0):
@@ -559,15 +566,24 @@ class Blob:
                 else:
                     self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
 
-                if(self.hp == self.max_hp):
-                    if(self.boost_cooldown_timer > 0):
-                        pill_list = ['pill_boost', 'pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
-                    else:
-                        pill_list = ['pill_boost', 'pill_boost', 'pill_cooldown', 'pill_cooldown', 'pill_heal']
-                else:
-                    pill_list = ['pill_heal', 'pill_cooldown', 'pill_boost']
+                
+                pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
+                pill_weights = [0 if x <= 0 else x for x in self.status_effects['pill_weights'].values()]
+                #print("PRE", self.status_effects['pill_weights'])
+                current_pill = random.choices(pill_list, weights = pill_weights)[0]
+                self.status_effects['pill'] = current_pill
+                #print("CHOSEN", current_pill)
 
-                self.status_effects['pill'] = random.choice(pill_list)
+                if(self.hp <= self.max_hp//2):
+                    self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
+                    self.status_effects['pill_weights'][current_pill] -= 2
+                else:
+                    for pill in self.status_effects['pill_weights']:
+                        self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
+                    self.status_effects['pill_weights'][current_pill] -= 3 # Effectively subtracting 2
+                #print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
+
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
         elif(special_ability == "tax"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
@@ -593,7 +609,7 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.block_cooldown += 60
-                createSFXEvent('chime_progress')
+                createSFXEvent('whistle')
         elif(special_ability == "starpunch"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "starpunch_wait"
@@ -601,6 +617,15 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.kick_cooldown += 60
+                createSFXEvent('chime_progress')
+        elif(special_ability == "mirror"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+                self.used_ability = "mirror"
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                self.kick_cooldown -= 20
+                self.block_cooldown -= 20
                 createSFXEvent('chime_progress')
 
 
@@ -610,6 +635,7 @@ class Blob:
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
+            self.collision_timer = 0
             self.collision_distance = 175
             self.kick_visualization = self.kick_visualization_max
             self.info['kick_count'] += 1
@@ -767,25 +793,26 @@ class Blob:
                 self.toggle_recharge_indicator('damage_flash')
 
     def heal_hp(self, heal_amt = 1, overheal = False):
-        if overheal:
-            self.hp += heal_amt
-            self.toggle_recharge_indicator('heal_flash')
-        else:
-            self.hp += heal_amt
-            if(self.hp > self.max_hp):
-                self.hp = self.max_hp
-            else:
+        if(heal_amt > 0):
+            if overheal:
+                self.hp += heal_amt
                 self.toggle_recharge_indicator('heal_flash')
+            else:
+                self.hp += heal_amt
+                if(self.hp >= self.max_hp):
+                    self.hp = self.max_hp
+                else:
+                    self.toggle_recharge_indicator('heal_flash')
 
     def blob_ko(self):
         self.y_speed = 10
         if(self.y_pos < 2000):
             self.y_pos += self.y_speed
 
-    def reset(self, player):
+    def reset(self, ruleset):
         self.x_speed = 0
         self.y_speed = 0
-        if(player == 1):
+        if(self.player == 1):
             self.x_pos = 100
             self.facing = 'right'
         else:
@@ -813,6 +840,7 @@ class Blob:
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
         self.set_base_stats(self.stars)
+        #self.heal_hp(heal_amt=ruleset['hp_regen'])
         
     def move(self, pressed_buttons):
         pressed_conversions = player_to_controls(self.player)

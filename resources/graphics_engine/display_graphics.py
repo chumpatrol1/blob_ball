@@ -4,9 +4,11 @@ import os
 from pygame import image
 from pygame.constants import FULLSCREEN, RESIZABLE
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from resources.graphics_engine.display_blob_info import draw_blob_info
 from resources.graphics_engine.display_main_menu import draw_main_menu
 from resources.graphics_engine.display_css import draw_css
 from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gameplay
+from resources.graphics_engine.display_pause import capture_gameplay, draw_pause_background, draw_pause_screen
 from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
 from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
 from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
@@ -17,6 +19,8 @@ from resources.graphics_engine.display_splash import draw_splash_screen as draw_
 from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
 from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
+
+from engine.get_events import get_events
 
 from resources.graphics_engine.handle_screen_size import initialize_screen_size, return_real_screen_size, return_width_and_height, update_mouse_wh, update_width_and_height
 
@@ -47,6 +51,10 @@ previous_screen = ""
 toggle_timer = 0
 full_screen = False
 
+def capture_screen():
+    global game_surface
+    capture_gameplay(game_surface)
+
 def handle_graphics(game_state, main_cwd, info_getter, settings):
     real_screen_size = return_real_screen_size()
     global game_surface
@@ -76,12 +84,13 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         timer = info_getter[4]
         game_state = info_getter[5]
         game_time = info_getter[6]
-        try:
-            draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
-        except Exception as ex:
-            unload_image_cache()
-            print(ex)
-            print("Weird match end exception:", info_getter)
+
+        draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+        #capture_gameplay(game_surface) # TODO: If this can be faster, make it faster
+        
+    elif(game_state == "pause"):
+        draw_pause_background(game_surface)
+        draw_pause_screen(game_surface, info_getter, settings)
     elif(game_state == "casual_win"):
         draw_win_screen(game_surface, info_getter, settings)
     elif(game_state == "pop_up"):
@@ -99,10 +108,12 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         the_settings = info_getter[2]
         draw_settings_screen(game_surface, the_settings, selector_position)
     elif(game_state == "rebind"):
-        draw_rebind_screen(game_surface, settings, info_getter[1])
+        draw_rebind_screen(game_surface, settings, info_getter)
     elif(game_state == "almanac"):
         selector_position = info_getter[0]
         draw_almanac_main(game_surface, selector_position, settings)
+    elif(game_state == "blob_info"):
+        draw_blob_info(game_surface, info_getter, settings)
     elif(game_state == "medals"):
         draw_medals_screen(game_surface, info_getter, settings)
     elif(game_state == "almanac_stats"):
@@ -157,7 +168,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         else:
             game_display.blit(pg.transform.scale(game_surface, (real_screen_size[0], real_screen_size[1])), (0, 0))
     else:
-        for event in pg.event.get():
+        for event in get_events():
             if(event.type == pg.VIDEORESIZE):
                 display_width, display_height = update_width_and_height(event.w, event.h)
         if(settings['smooth_scaling']):

@@ -8,14 +8,15 @@ from engine.button import Button
 selector_position = 0
 rules_navigation_buttons = [
     Button(65, 130, 0, 600),
-    Button(135, 200, 0, 600),
-    Button(205, 275, 0, 600),
-    Button(290, 360, 0, 600),
-    Button(365, 430, 0, 600),
-    Button(440, 505, 0, 600),
-    Button(515, 580, 0, 600),
-    Button(590, 670, 0, 600),
-    Button(675, 740, 0, 600),
+    Button(130, 195, 0, 600),
+    Button(195, 260, 0, 600),
+    Button(260, 325, 0, 600),
+    Button(325, 390, 0, 600),
+    Button(390, 455, 0, 600),
+    Button(455, 520, 0, 600),
+    Button(520, 585, 0, 600),
+    Button(585, 650, 0, 600),
+    Button(650, 715, 0, 600),
 ]
 
 # Left arrow, or right clicks
@@ -49,6 +50,13 @@ def rules_navigation_selection_left(selector_position, ruleset, previous_screen,
         else:
             ruleset['special_ability_charge_base'] = 20
         createSFXEvent('chime_progress')
+
+    def update_hp_regen():
+        if(ruleset['hp_regen'] > 0):
+            ruleset['hp_regen'] -= 1
+        else:
+            ruleset['hp_regen'] = 5
+        createSFXEvent('chime_progress')
     
     def go_back():
         global selector_position
@@ -81,10 +89,11 @@ def rules_navigation_selection_left(selector_position, ruleset, previous_screen,
         2: update_time_bonus,
         3: update_charge_rate,
         4: toggle_dz,
-        5: goto_p1_mods,
-        6: goto_p2_mods,
-        7: reload_ruleset,
-        8: go_back,
+        5: update_hp_regen,
+        6: goto_p1_mods,
+        7: goto_p2_mods,
+        8: reload_ruleset,
+        9: go_back,
     }
 
     if(limit is None or selector_position <= limit):
@@ -125,7 +134,14 @@ def rules_navigation_selection_right(selector_position, ruleset, previous_screen
         else:
             ruleset['special_ability_charge_base'] = 0
         createSFXEvent('chime_progress')
-    
+
+    def update_hp_regen():
+        if(ruleset['hp_regen'] < 5):
+            ruleset['hp_regen'] += 1
+        else:
+            ruleset['hp_regen'] = 0
+        createSFXEvent('chime_progress')
+
     def go_back():
         global selector_position
         nonlocal game_state
@@ -157,10 +173,11 @@ def rules_navigation_selection_right(selector_position, ruleset, previous_screen
         2: update_time_bonus,
         3: update_charge_rate,
         4: toggle_dz,
-        5: goto_p1_mods,
-        6: goto_p2_mods,
-        7: reload_ruleset,
-        8: go_back,
+        5: update_hp_regen,
+        6: goto_p1_mods,
+        7: goto_p2_mods,
+        8: reload_ruleset,
+        9: go_back,
     }
 
     if(limit is None or selector_position <= limit):
@@ -186,9 +203,9 @@ def rules_navigation(timer, ruleset, previous_screen, cwd):
         else:
             selector_position += 1
     if('p1_left' in pressed or 'p2_left' in pressed):
-        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = 4)
+        game_state, ruleset = rules_navigation_selection_left(selector_position, ruleset, previous_screen, cwd, limit = 5)
     if('p1_right' in pressed or 'p2_right' in pressed or 'return' in pressed):
-        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = 4)
+        game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd, limit = 5)
     if(not timer) and ('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed):
         game_state, ruleset = rules_navigation_selection_right(selector_position, ruleset, previous_screen, cwd)
             
@@ -610,6 +627,18 @@ def player_mods_page_2_right(p_selector_position, ruleset, player, limit = None)
     if(p_selector_position < 8):
         createSFXEvent('chime_progress')
 
+player_mod_buttons = [
+    Button(65, 130, 0, 600),
+    Button(135, 200, 0, 600),
+    Button(205, 275, 0, 600),
+    Button(290, 360, 0, 600),
+    Button(365, 430, 0, 600),
+    Button(440, 505, 0, 600),
+    Button(515, 580, 0, 600),
+    Button(590, 670, 0, 600),
+    Button(675, 740, 0, 600),
+]
+
 def player_mods_navigation(timer, ruleset, game_state, cwd):
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -664,8 +693,8 @@ def player_mods_navigation(timer, ruleset, game_state, cwd):
             elif(page == 2):
                 player_mods_page_2_right(p_selector_position, ruleset, player, limit = 7)
 
-    for i in range(len(rules_navigation_buttons)):
-        if(rules_navigation_buttons[i].check_hover(mouse)):
+    for i in range(len(player_mod_buttons)):
+        if(player_mod_buttons[i].check_hover(mouse)):
             if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 p_selector_position = i # Change the selector position
 

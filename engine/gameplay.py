@@ -6,6 +6,7 @@ import engine.ball
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
+from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
@@ -49,19 +50,19 @@ game_info = {
         'avg_collisions_per_goal': 0,
         }
 
-def reset_round():
+def reset_round(ruleset):
     global p1_blob
     global p2_blob
     global ball
     global p1_ko
     global p2_ko
-    p1_blob.reset(1)
-    p2_blob.reset(2)
+    p1_blob.reset(ruleset)
+    p2_blob.reset(ruleset)
     ball.reset()
     p1_ko = False
     p2_ko = False
 
-def score_goal(winner, goal_limit):
+def score_goal(winner, goal_limit, ruleset):
     global timer
     global time_limit
     global time_bonus
@@ -71,12 +72,13 @@ def score_goal(winner, goal_limit):
     timer = 60
     if(game_score[winner] >= goal_limit):
         return "casual_win", (winner + 1)
-    reset_round()
+    #reset_round(ruleset)
     return "casual_match", 0
     
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer):
     pressed = engine.handle_input.gameplay_input()
+        
     global initialized
     global p1_blob
     global p2_blob
@@ -93,6 +95,9 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global time_limit
     
     game_state = "casual_match"
+    if('escape' in pressed and not pause_timer):
+        game_state = "pause"
+        capture_screen()
 
     def blob_ko(blob):
         blob.blob_ko()
@@ -179,22 +184,22 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                         winner_info = 3
                     game_state = "casual_win"
             game_info['time'] += 1
-
+            
         else:
             if(p1_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(1, goal_limit)
+                    game_state, winner_info = score_goal(1, goal_limit, ruleset)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
-                    reset_round()
+                    reset_round(ruleset)
             if(p2_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(0, goal_limit)
+                    game_state, winner_info = score_goal(0, goal_limit, ruleset)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
-                    reset_round()
+                    reset_round(ruleset)
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
@@ -207,11 +212,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 p2_blob.used_ability = ""
                 countdown -= 1
                 if(countdown == 0):
-                    game_state, winner_info = score_goal(goal_scorer, goal_limit)
+                    game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset)
                     goal_scored = False
                     goal_scorer = None
-                    reset_round()
+                    reset_round(ruleset)
             timer -= 1
+            if timer == 0:
+                p1_blob.heal_hp(ruleset['hp_regen'])
+                p2_blob.heal_hp(ruleset['hp_regen'])
 
         if(game_state == "casual_win"):
             game_info["game_score"] = game_score
@@ -226,7 +234,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
             except:
                 game_info['avg_collisions_per_goal'] = 0
-            '''
+            
             with open('blob_ball_results.txt', 'a') as bbr:
                 bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
                 bbr.write("\n")
@@ -243,7 +251,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 bbr.write("BALL: " + dumps(ball.info))
                 bbr.write("\n")
                 bbr.write("\n")
-            '''
+            
             update_game_stats(game_info, p1_blob, p2_blob, ball)
             update_mu_chart(game_score, p1_blob, p2_blob)
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])

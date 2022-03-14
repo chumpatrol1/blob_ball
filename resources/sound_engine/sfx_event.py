@@ -21,10 +21,17 @@ name_to_file = {
     'fire': ['fire_1.wav', 'fire_2.wav', 'fire_3.wav'],
     'ice': ['ice_1.wav', 'ice_2.wav'],
     'water': ['water_1.wav', 'water_2.wav', 'water_3.wav'],
+    'glyph': [],
+    'spire': ['spire_1.wav'],
+    'electricity': ['spark_1.wav', 'spark_2.wav'],
     'gale': ['gale.wav'],
+    'c&d': [],
+    'tax': [],
+    'whistle': ['whistle_1.wav'],
 	'goal': ['goal.wav'],
     'ball_spire_hit': ['ball_spire_hit.wav'],
-    'wavebounce': ['wavebounce.wav'],	
+    'wavebounce': ['wavebounce.wav'],
+    'camera': ['camera.wav'],
 }
 
 def convert_name_to_file(name):

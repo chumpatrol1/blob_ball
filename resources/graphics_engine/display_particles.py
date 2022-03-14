@@ -220,7 +220,7 @@ def clear_particle_memory():
 
 ball_particle_memory = []
 
-def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
+def draw_ball_particles(game_display, ball, p1_blob, p2_blob):
     global ball_particle_memory
     if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
         ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
@@ -291,7 +291,7 @@ def draw_ball_particles(screen_size, game_display, ball, p1_blob, p2_blob):
     ball_particle_memory = blit_and_update_particles(ball_particle_memory, game_display)
 
 ball_overlay_memory = []
-def draw_ball_overlay(screen_size, game_display, ball, p1_blob, p2_blob):
+def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
     global ball_overlay_memory
     if not overlay_cache['initialized']:
         particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/thunder_particle.png").convert_alpha(), (40, 40))

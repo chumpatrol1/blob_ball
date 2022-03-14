@@ -1,7 +1,7 @@
 from json import loads, dumps
 from copy import deepcopy
 # The original selector
-css_selector_list = [
+css_selector_list_blobs = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["settings", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -9,18 +9,18 @@ css_selector_list = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
 ]
 
-original_css_display_list = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
+original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
-[["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Mirror"], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
 
-css_display_list = deepcopy(original_css_display_list) #Creates an array of arrays, which contains the image to use, it's name, and special ability
+css_display_list_blobs = deepcopy(original_css_display_list_blobs) #Creates an array of arrays, which contains the image to use, it's name, and special ability
 
 
-css_location_dict = { # Stores every location to loop through. The key is a location, the value is cross checked with blob_unlock_dict
+css_location_dict_blobs = { # Stores every location to loop through. The key is a location, the value is cross checked with blob_unlock_dict
     (1, 0): "quirkless",
     (2, 0): "fire",
     (3, 0): "ice",
@@ -33,29 +33,29 @@ css_location_dict = { # Stores every location to loop through. The key is a loca
     (3, 1): "king",
     (4, 1): "cop",
     (5, 1): "boxer",
-    (6, 1): "quirkless",
-    (7, 1): "quirkless",
-    (1, 2): "quirkless",
-    (2, 2): "quirkless",
-    (3, 2): "quirkless",
-    (4, 2): "quirkless",
-    (5, 2): "quirkless",
-    (6, 2): "quirkless",
-    (7, 2): "quirkless",
-    (1, 3): "quirkless",
-    (2, 3): "quirkless",
-    (3, 3): "quirkless",
-    (4, 3): "quirkless",
-    (5, 3): "quirkless",
-    (6, 3): "quirkless",
-    (7, 3): "quirkless",
-    (1, 4): "quirkless",
-    (2, 4): "quirkless",
-    (3, 4): "quirkless",
-    (4, 4): "quirkless",
-    (5, 4): "quirkless",
-    (6, 4): "quirkless",
-    (7, 4): "quirkless",
+    (6, 1): "mirror",
+    (7, 1): "coming_soon",
+    (1, 2): "coming_soon",
+    (2, 2): "coming_soon",
+    (3, 2): "coming_soon",
+    (4, 2): "coming_soon",
+    (5, 2): "coming_soon",
+    (6, 2): "coming_soon",
+    (7, 2): "coming_soon",
+    (1, 3): "coming_soon",
+    (2, 3): "coming_soon",
+    (3, 3): "coming_soon",
+    (4, 3): "coming_soon",
+    (5, 3): "coming_soon",
+    (6, 3): "coming_soon",
+    (7, 3): "coming_soon",
+    (1, 4): "coming_soon",
+    (2, 4): "coming_soon",
+    (3, 4): "coming_soon",
+    (4, 4): "coming_soon",
+    (5, 4): "coming_soon",
+    (6, 4): "coming_soon",
+    (7, 4): "coming_soon",
 }
 
 blob_unlock_dict = { # Whether a given blob has been unlocked or not
@@ -71,6 +71,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "king": False,
     "cop": False,
     "boxer": False,
+    "mirror": False,
 }
 
 def load_blob_unlocks(cwd):
@@ -91,20 +92,32 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-def update_css_blobs():
-    global blob_unlock_dict
-    global css_selector_list
-    global css_display_list
+unlock_milestones = [0, 3, 6, 9, 12, 15, 18, 23, 28, 33, 38, 43, 48, 53, 60, 67, 74, 81, 88,\
+    95, 105, 115, 125, 135, 145, 155, 165, 180, 195, 210, 225, 240, 255, 270]
 
+def update_css_blobs(cwd):
+    global blob_unlock_dict
+    global css_selector_list_blobs
+    global css_display_list_blobs
+
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+
+    unlock_slot = 0
     for y in range(0, 5):
         for x in range(1, 8):
             location = (x, y)
-            if location in css_location_dict and blob_unlock_dict[css_location_dict[location]]:
-                blob_id = css_location_dict[location]
-                css_selector_list[y][x] = blob_id
-                css_display_list[y][x] = original_css_display_list[y][x]
+            if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":
+                css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
+            elif location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
+                blob_id = css_location_dict_blobs[location]
+                css_selector_list_blobs[y][x] = blob_id
+                css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
-                css_display_list[y][x] = ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"]
+                css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+            unlock_slot += 1
+            #if location in if_blob_shadow:
+                #css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "Bug", "Coming soon!"]
 
 def unlock_blob(blob, cwd):
     global blob_unlock_dict
@@ -122,34 +135,101 @@ def return_blob_unlocks():
     global blob_unlock_dict
     return blob_unlock_dict
 
-def return_css_selector():
-    global css_selector_list
-    return css_selector_list
+def return_css_selector_blobs():
+    global css_selector_list_blobs
+    return css_selector_list_blobs
 
-def return_css_display():
-    global css_display_list
-    return css_display_list
+def return_css_display_blobs():
+    global css_display_list_blobs
+    return css_display_list_blobs
 
 
 '''MEDALS'''
-original_medal_list = [ # Format: [Image, Name, Description]
-    [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "KO!", "Score a point by kicking a player into unconsciousness!"], ["/medals/", "Parry This!", "Use your block to nullify an incoming attack!"], ["/medals/", "Ball Stopper", "Use your block to completely stop the ball"], ["/medals/", "Clash of the Blobs", "Cancel out the kick of an opponent with a kick of your own"], ["/medals/", "Power Up!", "Increase your speed and damage with a boost"], ["/medals/", "Damage Stacking", "Deal 4 damage with a single kick!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
+original_css_display_list_medals = [ # Format: [Image, Name, Description]
+    [["/css_icons/back_arrow.png", "Back", ""], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "KO!", "Score a point by kicking a player into unconsciousness!"], ["/medals/", "Parry This!", "Use your block to nullify an incoming attack!"], ["/medals/", "Ball Stopper", "Use your block to completely stop the ball"], ["/medals/", "Clash of the Blobs", "Cancel out the kick of an opponent with a kick of your own"], ["/medals/", "Power Up!", "Increase your speed and damage with a boost"], ["/medals/", "Damage Stacking", "Deal 4 damage with a single kick!"], ["/medals/", "Ready and Able", "Use a Blob's ability!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
     [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
     [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
     [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
-    [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
+    [["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ["/medals/", "Goal!", "Score a point by kicking the ball into the goal!"], ],
     ]
 
-medal_list = original_medal_list.copy()
+css_selector_list_medals = [
+    ["back", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal",],
+    ["rules", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal",],
+    ["settings", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal",],
+    ["almanac", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal",],
+    ["back", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal", "questionmedal",],
+]
+
+css_display_list_medals = deepcopy(original_css_display_list_medals)
 
 medal_location_dict = {
-    (0, 0): "goal",
-    (1, 0): "ko",
-    (2, 0): "parry_this",
-    (3, 0): "ball_stop",
-    (4, 0): "clash_of_the_blobs",
-    (5, 0): "power_up",
-    (6, 0): "damage_stacking",
+    (1, 0): "goal",
+    (2, 0): "ko",
+    (3, 0): "parry_this",
+    (4, 0): "ball_stop",
+    (5, 0): "clash_of_the_blobs",
+    (6, 0): "power_up",
+    (7, 0): "damage_stacking",
+	(1, 1): "rule_breaker",
+	(2, 1): "questionmedal",
+	(3, 1): "questionmedal",
+	(4, 1): "questionmedal",
+	(5, 1): "questionmedal",
+    (6, 1): "questionmedal",
+    (7, 1): "questionmedal",
+    (1, 2): "questionmedal",
+    (2, 2): "questionmedal",
+    (3, 2): "questionmedal",
+    (4, 2): "questionmedal",
+    (5, 2): "questionmedal",
+    (6, 2): "questionmedal",
+    (7, 2): "questionmedal",
+    (1, 3): "questionmedal",
+    (2, 3): "questionmedal",
+    (3, 3): "questionmedal",
+    (4, 3): "questionmedal",
+    (5, 3): "questionmedal",
+    (6, 3): "questionmedal",
+    (7, 3): "questionmedal",
+    (1, 4): "questionmedal",
+    (2, 4): "questionmedal",
+    (3, 4): "questionmedal",
+    (4, 4): "questionmedal",
+    (5, 4): "questionmedal",
+    (6, 4): "questionmedal",
+    (7, 4): "questionmedal",
+}
+
+if_medal_shadow = { # Used later where it checks if the medal is on these coordinates, making them shadows of themselves
+    (1, 1),
+    (2, 1),
+    (3, 1),
+    (4, 1),
+    (5, 1),
+    (6, 1),
+    (7, 1),
+    (1, 2),
+    (2, 2),
+    (3, 2),
+    (4, 2),
+    (5, 2),
+    (6, 2),
+    (7, 2),
+    (1, 3),
+    (2, 3),
+    (3, 3),
+    (4, 3),
+    (5, 3),
+    (6, 3),
+    (7, 3),
+    (1, 4),
+    (2, 4),
+    (3, 4),
+    (4, 4),
+    (5, 4),
+    (6, 4),
+    (7, 4),
 }
 
 medal_unlock_dict = {
@@ -162,6 +242,14 @@ medal_unlock_dict = {
     "power_up": False,
     "damage_stacking": False,
 }
+
+def update_css_medals(cwd):
+    global medal_unlock_dict
+    global css_selector_list_medals
+    global css_display_list_medals
+
+    with open(cwd+'/saves/medals.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
 
 def unlock_medal(medal, cwd):
     global medal_unlock_dict
@@ -184,18 +272,53 @@ def load_medals(cwd):
         with open(cwd + "/saves/medals.txt", "w") as medaldoc:
             medaldoc.write(dumps(medal_unlock_dict))
 
+def update_css_medals():
+    global medal_unlock_dict
+    global original_css_display_list_medals
+    global css_display_list_medals
+
+    for y in range(0, 5):
+        for x in range(1, 8):
+            location = (x, y)
+            if location in css_location_dict_blobs and medal_unlock_dict[css_location_dict_blobs[location]]:
+                medal_id = css_location_dict_blobs[location]
+                css_selector_list_medals[y][x] = medal_id
+                css_display_list_medals[y][x] = original_css_display_list_blobs[y][x]
+            else:
+                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
+            
+            if location in if_medal_shadow:
+                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
+
+def return_medal_unlocks():
+    global medal_unlock_dict
+    return medal_unlock_dict
+
+def return_css_selector_medals():
+    global css_selector_list_medals
+    return css_selector_list_medals
+
+def return_css_display_medals():
+    global css_display_list_medals
+    return css_display_list_medals
+
 if __name__ == "__main__":
     from os import getcwd
     cwd = getcwd()
     load_blob_unlocks(cwd)
     #unlock_blob("ice", cwd)
     update_css_blobs()
-    
-    print(css_selector_list)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    print(css_display_list)
-    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+	#unlock_medal("goal", cwd)
+    update_css_medals
     load_medals(cwd)
     print(medal_unlock_dict)
     unlock_medal("goal", cwd)
     print(medal_unlock_dict)
+    print(css_selector_list_blobs)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(css_display_list_blobs)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(css_selector_list_blobs)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    print(css_display_list_medals)
+    print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")

@@ -1,4 +1,5 @@
 blob_unlock_popups = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
+    'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing Ability instead uses/your boost cooldown!"],
     'fire': ["fire_blob.png", "Fire Blob", "Press and hold your ability/button to speed the ball up!"],
     'ice': ["ice_blob.png", "Ice Blob", "Press and hold your ability/button to slow the ball down!"],
     'water': ['water_blob.png', "Water Blob", "Press and hold your ability/button to push the ball up!"],
@@ -10,6 +11,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'king': ['king_blob.png', "King Blob", "Tax your foes, reducing/your own cooldowns and/swapping your speed stats!"],
     'cop': ['cop_blob.png', "Cop Blob", "Blow your whistle at the/ball to stop it completely,/and make it intangible to the enemy!"],
     'boxer': ['boxer_blob.png', "Boxer Blob", "Unleash a mighty punch/at your enemy to do/heavy damage and stun them!/Blocking won't help much."],
+    'mirror': ['mirror_blob.png', "Mirror Blob", "Shatters as easily as it/is to find a used mirror./Reverses the ball's direction."]
 }
 
 def find_blob_unlock(key):
@@ -17,3 +19,15 @@ def find_blob_unlock(key):
         return blob_unlock_popups[key]
     except:
         print("Cannot find blob")
+
+medal_unlock_popups = { # Key is Medal name, first value is image, second is medal name, third is the description
+    'goal': ["goal_medal.jpg", "Goal!", "You got a point from a goal, good shots!"],
+    'ko': ["ko_medal.jpg", "KO!", "You got a point from a KO, nice slap!"],
+    'parry_this': ["parrythis.jpg", "Parry This!", "Use your block to nullify an incoming attack!"],
+}
+
+def find_medal_unlock(key):
+    try:
+        return medal_unlock_popups[key]
+    except:
+        print("Cannot find medal")

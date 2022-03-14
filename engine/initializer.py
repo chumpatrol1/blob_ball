@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.12.0b'
+game_version = '0.13.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -12,6 +12,10 @@ def check_folders(cwd):
     if(not os.path.isdir(cwd+"/saves")):
         os.mkdir(cwd+"/saves")
         print("Created saves folder")
+
+    if(not os.path.isdir(cwd+"/screenshots")):
+        os.mkdir(cwd+"/screenshots")
+        print("Created screenshots folder")
 
 def initialize_game_stats(cwd):
     game_stat_dict = {
@@ -100,6 +104,7 @@ def load_default_ruleset():
         'danger_zone_enabled': True,
         'p1_modifiers': player_mods,
         'p2_modifiers': player_mods,
+        'hp_regen': 0,
     }
     return ruleset
 
@@ -143,11 +148,16 @@ def initialize_settings(cwd):
     'smooth_scaling': True,
     'music_volume': 10,
     'sound_volume': 10,
+    'ui_mode': True, # True if shown on top, False is shown on bottom
     }
 
     try:
         with open(cwd+'/config/settings.txt', 'r') as settingsdoc:
-            settings = loads(settingsdoc.readline())
+            n_settings = loads(settingsdoc.readline())
+            for key in settings:
+                if not key in n_settings:
+                    n_settings[key] = settings[key]
+            settings = n_settings
     except:
         with open(cwd+'/config/settings.txt', 'w') as settingsdoc:
             settingsdoc.write(dumps(settings))

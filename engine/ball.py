@@ -91,7 +91,7 @@ class Ball:
         ball_vector = pg.math.Vector2(self.x_center, self.y_center)
         p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
         
-        if(blob.collision_timer == 0):
+        if(not blob.collision_timer) or (blob.kick_timer and self.bounciness > 0.1):
             if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                 if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                     pass
@@ -178,6 +178,7 @@ class Ball:
                     self.x_speed = 0
                     blob.collision_timer = 0
                     self.info['blob_warp_collisions'] += 1
+        self.check_ceiling_collisions()
         return blob
 
     def check_block_collisions(self, blob, other_blob):
@@ -216,6 +217,7 @@ class Ball:
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
                         self.get_blocked(collision_timer_duration, blob, other_blob)
+        self.check_ceiling_collisions()
         return blob, other_blob
 
     def get_blocked(self, collision_timer_duration, blob, other_blob):
@@ -234,6 +236,9 @@ class Ball:
         self.blocked_timer = 20
 
     def check_blob_ability(self, blob):
+        if(blob.used_ability == "mirror"):
+            self.x_speed *= -0.9
+            self.y_speed *= -0.5
         if(blob.used_ability == "fireball"):
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))
@@ -267,6 +272,17 @@ class Ball:
             self.image = type_to_image("blocked_ball")
             self.species = "blocked_ball"
             self.special_timer = 30
+
+    def check_ceiling_collisions(self):
+        ceiling = 210
+        if(self.y_pos < ceiling): #Don't raze the roof!
+            self.info['ceiling_collisions'] += 1
+            if(self.y_speed > -4):
+                self.y_speed = 0
+            else:
+                self.y_speed = math.floor(self.y_speed * -0.3) #Reduces bounciness over time
+            createSFXEvent('ball_metal_bounce', volume_modifier=(math.sqrt(abs(self.y_speed/self.y_speed_max))))
+            self.y_pos = ceiling
 
     def move(self, p1_blob, p2_blob): # Also has cooldowns in it.
         ground = Ball.ground
@@ -311,7 +327,7 @@ class Ball:
         #Interacting with the goalposts
         def interact_with_goal_posts():
             if(self.x_pos < left_goal or self.x_pos > right_goal):
-                if(self.x_pos < left_goal):
+                if(self.x_pos < left_goal): # Left Goal
                     side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], left_goal, 0)
                     if(left_goal < left_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
                         self.info['goal_collisions'] += 1
@@ -332,7 +348,8 @@ class Ball:
                         if(self.y_speed >= 0):
                             self.info['goal_collisions'] += 1
                             self.y_speed = self.y_speed * -0.5
-                            createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
+                            if(self.y_speed >= 2):
+                                createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
                             if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                                 for previous_location in self.previous_locations:
                                     if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
@@ -340,8 +357,11 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
+                    if(goal_top < self.y_pos < goal_top):
+                        self.y_pos = goal_top - self.gravity
+                
 
-                if(self.x_pos > right_goal):
+                if(self.x_pos > right_goal): # Right goal
                     side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
                     if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
                         self.info['goal_collisions'] += 1
@@ -362,7 +382,8 @@ class Ball:
                         if(self.y_speed >= 0):
                             self.info['goal_collisions'] += 1
                             self.y_speed = self.y_speed * -0.5
-                            createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
+                            if(self.y_speed >= 2):
+                                createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
                             if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
                                 for previous_location in self.previous_locations:
                                     if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
@@ -370,6 +391,8 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
+                    if(goal_top < self.y_pos < goal_top):
+                        self.y_pos = goal_top - self.gravity
             else:
                 self.goal_grounded = False
 
@@ -425,16 +448,8 @@ class Ball:
                 
                  #Reduces bounciness over time
             self.y_pos = ground
-        def check_ceiling_collisions():
-            if(self.y_pos < ceiling): #Don't raze the roof!
-                self.info['ceiling_collisions'] += 1
-                if(self.y_speed > -4):
-                    self.y_speed = 0
-                else:
-                    self.y_speed = math.floor(self.y_speed * -0.3) #Reduces bounciness over time
-                createSFXEvent('ball_metal_bounce', volume_modifier=(math.sqrt(abs(self.y_speed/self.y_speed_max))))
-                self.y_pos = ceiling
-        check_ceiling_collisions()
+        
+        self.check_ceiling_collisions()
 
         def apply_y_speed_limits():
             if(self.y_speed > self.y_speed_max):

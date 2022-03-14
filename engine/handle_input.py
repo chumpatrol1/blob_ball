@@ -4,6 +4,7 @@ from os import getcwd
 from json import loads, dumps
 
 from pygame.constants import K_KP_ENTER
+from engine.get_events import get_events
 from resources.graphics_engine.handle_screen_size import return_mouse_wh
 from resources.sound_engine.sfx_event import createSFXEvent
 
@@ -81,33 +82,61 @@ input_map = loads(controls.readlines()[0])
 
 update_mapkey_names(input_map)
 
-def unbind_inputs():
-    global input_map
-    for button in input_map:
-        input_map[button] = 0
-
 temp_binding = []
 
-def bind_input(key_to_rebind):
+def unbind_inputs(mode = 'all'):
     global input_map
     global temp_binding
-    for event in pg.event.get():
+    print("MODE", mode)
+    if(mode == 'p1'):
+        for button in input_map:
+            if 'p1' in button:
+                input_map[button] = 0
+        
+        for key in input_map:
+            if 'p2' in key:
+                temp_binding.append(input_map[key])
+
+    elif(mode == 'p2'):
+        for button in input_map:
+            if 'p2' in button:
+                input_map[button] = 0
+        
+        for key in input_map:
+            if 'p1' in key:
+                temp_binding.append(input_map[key])
+    
+
+    elif(mode == 'all'):
+        for button in input_map:
+            input_map[button] = 0
+    
+    else:
+        input_map[mode] = 0
+        print(input_map)
+        for key in input_map:
+            print(key)
+            if(key != mode):
+                temp_binding.append(input_map[key])
+
+def bind_input(key_to_rebind, last_key):
+    global input_map
+    global temp_binding
+    for event in get_events():
         if event.type == pg.KEYDOWN:
             if(not event.key in temp_binding and not event.key in forbidden_keys):
                 input_map[key_to_rebind] = event.key
                 temp_binding.append(event.key)
                 update_mapkey_names(temp_binding, key=key_to_rebind)
-                if(key_to_rebind == "p2_boost"):
+                print(temp_binding)
+                if(key_to_rebind == last_key):
                     temp_binding = []
                     with open(getcwd()+"/config/controls.txt", "w") as control_list:
-                        
                         control_list.write(dumps(input_map))
-                    createSFXEvent('chime_completion')
                 else:
                     createSFXEvent('chime_progress')
                 return True
             else:
-                createSFXEvent('chime_error')
                 return False
     else:
         return False
@@ -174,6 +203,8 @@ def get_keypress():
         pressed_array.append('p2_boost')
     if(pressed[pg.K_RETURN]):
         pressed_array.append('return')
+    if(pressed[pg.K_ESCAPE]):
+        pressed_array.append('escape')
     return pressed_array
 
 def merge_inputs(pressed):
@@ -192,6 +223,8 @@ def merge_inputs(pressed):
             merged_press.append('ability')
         if('p1_kick' in pressed or 'p2_kick' in pressed):
             merged_press.append('kick')
+        if('return' in pressed):
+            merged_press.append('return')
     if(len(merged_press)):
         button_timer = 10
     return merged_press

@@ -1,12 +1,13 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.12.0b**
+**v0.13.0b**
 
 **Features:**
 * Casual Matches!
-* 24 of the exact same blob!
-* 11 unique blobs!
+* 23 of the exact same blob!
+* 12 unique blobs!
+
 * Physics system that works 99.65% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
@@ -34,8 +35,6 @@ Slime Soccer type game
 * Block Ball: Comma
 * Use Stat Boost: Period
 
-
-
 *Other:*
 * Quit Game: ESC
 * Toggle Full Screen: CTRL (either one)
@@ -43,7 +42,10 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Boxer Blob
-* Buffed Rock, Lightning, Wind and King Blobs
-* New CPU Behaviors Added!
-* Added Mouse Controls
+* Added Mirror Blob
+* Buffed Rock Blob and Nerfed Water Blob
+* Added Blob Info to the Almanac!
+* Improved Key Rebinding
+* Added several game rules
+* Added UI Toggle, which determines whether or not the UI appears on the top or bottom
+

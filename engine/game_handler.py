@@ -3,15 +3,17 @@ def set_timer(frames):
     timer = frames
 
 from engine.gameplay import clear_info_cache
+import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
 import engine.menus.css_menu
 import engine.menus.rules_menu
 import engine.menus.settings_menu
 import engine.menus.almanac_menu
+import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
-from engine.unlocks import update_css_blobs
+from engine.unlocks import update_css_blobs, update_css_medals
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
@@ -80,11 +82,21 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, timer)
         game_state = info_getter[5]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]
             clear_info_cache()
+        elif(game_state == "pause"):
+            timer = 10
+    elif(game_state == "pause"):
+        game_state, info_getter = engine.menus.pause_menu.handle_pause_menu(timer, settings)
+        if(game_state == 'css'):
+            from resources.graphics_engine.display_gameplay import unload_image_cache
+            clear_info_cache()
+            unload_image_cache()
+        elif(game_state == 'casual_match'):
+            timer = 10
     elif(game_state == "casual_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
         song_playing = "bb_win_theme"
@@ -98,7 +110,7 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
         if(game_state != "pop_up"):
-            update_css_blobs()
+            update_css_blobs(cwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):
         info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
@@ -110,14 +122,17 @@ def update_game_state(game_state, cwd):
         info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
         game_state = info_getter[1]
     elif(game_state == "rebind"):
-        info_getter = engine.rebind.handle_rebinding()
-        game_state = info_getter[0]
+        game_state, info_getter = engine.rebind.rebind_menu()
+        
     elif(game_state == "almanac"):
         info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)
         game_state = info_getter[1]
         song_playing = "bb_credits_theme"
         if(game_state != "almanac"):
             timer = 10
+    elif(game_state == "blob_info"):
+        game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+        song_playing = "bb_credits_theme"
     elif(game_state == "medals"):
         game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
         song_playing = "bb_credits_theme"
@@ -156,6 +171,8 @@ def update_game_state(game_state, cwd):
         info_getter = engine.menus.almanac_menu.credits_navigation(timer)
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
+    elif(game_state == "tutorial"):
+        game_state, info_getter = "main_menu", []
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset
