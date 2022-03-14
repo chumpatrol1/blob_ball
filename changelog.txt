@@ -1,0 +1,22 @@
+BLOB BALL V0.13.0b
+
+For a full list of changes visit the official Changelog Document: https://docs.google.com/document/d/1M0mxPMobF79kyU8XHRvIrWKbIk6v8WotAPLwUnbOuFg/edit
+
+New Features!
+- Pause during matches using ESCAPE! You can adjust game volume, take screenshots and return to the menu!
+- Almanac Blob Info! View stats and tips relating to your favorite blobs!
+- New Game Setting - UI Positioning! The game UI can now appear at the top or at the bottom of the screen
+- New Game Rule - HP Regeneration! Adjustable setting which regenerates a bit of HP after each goal!
+- Improved Key Binding! Bind individual keys, a player's keys, or all keys at once!
+
+Aesthetics!
+- Blobs that are locked or unreleased are now marked appropriately
+- Added Sunken/XNunuAZ to the credits as a programmer - thanks Sunken!
+- Fixed a small visual error in Field Alpha's background
+- Added SFX for Rock, Lightning and Cop Blob
+
+Balance Changes!
+- Reduced ball bounciness on block
+- Buffed Doctor Blob to prioritize pills that haven't been pulled in a while
+- Nerfed Water Blob (Geyser Activation Cost 120 --> 210)
+- Buffed Rock Blob (Spire Cost 400 --> 360) (Boost Duration 4 --> 5)
