@@ -115,7 +115,7 @@ def draw_blob_selector(game_display, info_getter, settings):
     ]
         static_text['blob_star_description'] = [
         menu_font.render("Some blob stats are measured in stars (*),", False, text_color),
-        menu_font.render("which range from 1 to 5", False, text_color),
+        menu_font.render("   which range from 1 to 5", False, text_color),
     ]        
         static_text['coming_soon'] = [
         menu_font.render("Coming Soon!", False, text_color),

@@ -132,6 +132,7 @@ def update_game_state(game_state, cwd):
             timer = 10
     elif(game_state == "blob_info"):
         game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+        song_playing = "bb_credits_theme"
     elif(game_state == "medals"):
         game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
         song_playing = "bb_credits_theme"

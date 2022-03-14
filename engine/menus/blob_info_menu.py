@@ -98,6 +98,7 @@ def blob_info_navigation(pressed, mouse): # Handles individual blob selection
         if(ghost_tab > 5):
             ghost_tab = 0
     elif('ability' in pressed or 'return' in pressed):
+        createSFXEvent('select')
         blob_tab = ghost_tab
 
     for i in range(len(blob_info_buttons)):

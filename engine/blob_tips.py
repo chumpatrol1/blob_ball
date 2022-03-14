@@ -10,6 +10,17 @@ quirkless_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#2: Quirkless Blob's boost is slightly more ", False, text_color),
     tip_font.render("expensive than other blobs", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Quirkless Blob's fast kicks allows him", False, text_color),
+    tip_font.render("to deal massive damage. Use this to maintain", False, text_color),
+    tip_font.render("pressure and score points through KOs!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Quirkless Blob's block recharges very", False, text_color),
+    tip_font.render("quickly, allowing you to stop the ball", False, text_color),
+    tip_font.render("frequently or to parry incoming attacks!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Combining your boost with a kick will", False, text_color),
+    tip_font.render("cause your kick to do +1 damage!", False, text_color),
 ]
 
 fire_tips = [
@@ -18,6 +29,10 @@ fire_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#2: Holding down Fireball rather than tapping", False, text_color),
     tip_font.render("it will save on energy", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Need more energy? Holding down while on", False, text_color),
+    tip_font.render("the ground will cause your blob to Focus,", False, text_color),
+    tip_font.render("quintupling your energy production!", False, text_color),
 ]
 
 ice_tips = [
@@ -32,6 +47,9 @@ ice_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#4: Slowing down the ball slightly can cause", False, text_color),
     tip_font.render("opponents to mistime their abilities and jumps", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: You can use your block as an emergency brake", False, text_color),
+    tip_font.render("since it halts all momentum.", False, text_color),
 ]
 
 water_tips = [
@@ -44,6 +62,10 @@ water_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#3: Blocking the ball prevents Geyser's", False, text_color),
     tip_font.render("effect from working", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: If you are focusing to charge energy,", False, text_color),
+    tip_font.render("remember that you can always jump to cancel", False, text_color),
+    tip_font.render("your focus early!", False, text_color),
 ]
 
 rock_tips = [
@@ -53,17 +75,23 @@ rock_tips = [
     tip_font.render("a second when blocked - watch out!", False, text_color),
     tip_font.render("", False, text_color),
     tip_font.render("#3: Spire will always target the ball when used", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Pressing down in the air will make your", False, text_color),
+    tip_font.render("descent a lot faster!", False, text_color),
 ]
 
 lightning_tips = [
-    tip_font.render("#1: Thunderbolt will grant Lightning Blob a few", False, text_color),
+    tip_font.render("#1: Thunderbolt will alaways target the ball", False, text_color),
+    tip_font.render("when used. The delay is short, so watch out!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Thunderbolt will grant Lightning Blob a few", False, text_color),
     tip_font.render("seconds of boost if you hit yourself with it", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#2: Thunderbolt will cause the ball to cling to", False, text_color),
+    tip_font.render("#3: Thunderbolt will cause the ball to cling to", False, text_color),
     tip_font.render("the ground after the ball is hit, allowing you", False, text_color),
     tip_font.render("to combo with it!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#3: Thunderbolt's hitbox against foes is", False, text_color),
+    tip_font.render("#4: Thunderbolt's hitbox against foes is", False, text_color),
     tip_font.render("smaller than the one that activates your boost", False, text_color),
 ]
 
@@ -77,6 +105,11 @@ wind_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#3: Wind Blob can harass the opponent", False, text_color),
     tip_font.render("with frequent kicks. Run and gun!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: The yellow area surrounding your goal", False, text_color),
+    tip_font.render("is a danger zone! If you get kicked, you will", False, text_color),
+    tip_font.render("take +1 damage! Use Gale to reset the", False, text_color),
+    tip_font.render("situation and to preserve your pool of HP!", False, text_color),
 ]
 
 judge_tips = [
@@ -155,6 +188,9 @@ mirror_tips = [
     tip_font.render("#3: Mirror Blob shatters easily,", False, text_color),
     tip_font.render("try not to encounter an offensive Blob", False, text_color),
     tip_font.render("like Boxer Blob!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Mirror's reflection power is much", False, text_color),
+    tip_font.render("stronger horizontally than it is vertically.", False, text_color),
 ]
 def return_selected_blob_tips(selected_blob):
     tips_dict = {

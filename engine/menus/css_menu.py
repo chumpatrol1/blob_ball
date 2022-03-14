@@ -194,6 +194,7 @@ def css_handler():
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 3):
                 game_state = "almanac"
+                load_almanac_static_text()
                 p1_selector_position[2] = 0
                 p2_selector_position[2] = 0
             elif(p2_selector_position[1] == 4):
