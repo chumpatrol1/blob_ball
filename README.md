@@ -7,6 +7,7 @@ Slime Soccer type game
 * Casual Matches!
 * 23 of the exact same blob!
 * 12 unique blobs!
+
 * Physics system that works 99.65% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
@@ -47,3 +48,4 @@ Slime Soccer type game
 * Improved Key Rebinding
 * Added several game rules
 * Added UI Toggle, which determines whether or not the UI appears on the top or bottom
+
