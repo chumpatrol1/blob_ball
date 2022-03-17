@@ -6,7 +6,7 @@ from engine.blob_stats import species_to_stars
 cwd = os.getcwd()
 
 # INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
-# Add the Blob's Stats to the species_to_stars function (see other blobs for a guide)
+# Add the Blob's Stats to the species_to_stars function in blob_stats.py (see other blobs for a guide)
 # Classify that Blob's ability in ability_to_classification function (so it will show the cooldown)
 # Add that Blob's image in species_to_image (make sure that the image is in the resources/images/blobs folder)
 # Add that Blob's ability icon (make sure that the image is in the resources/images/ability_icons folder)
@@ -23,7 +23,7 @@ cwd = os.getcwd()
 # In engine/blob_tips.py, add the blob's ID to the dictionary at the bottom and add an array containing tips
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser', 'gale',]
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook']
     if(ability in held_abilities):
         return "held"
     instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
@@ -51,6 +51,7 @@ def species_to_image(species):
         'cop': blob_cwd + 'cop_blob.png',
         'boxer': blob_cwd + 'boxer_blob.png',
         'mirror': blob_cwd + 'mirror_blob.png',
+        'fisher': blob_cwd + 'fisher_blob.png',
         "random": blob_cwd + "random_blob.png",
         "invisible": blob_cwd + "invisible_blob.png"
     }
@@ -75,6 +76,7 @@ def species_to_ability_icon(species):
         'cop': ability_cwd + "block_icon.png",
         'boxer': ability_cwd + 'starpunch.png',
         'mirror': ability_cwd + 'mirror.png',
+        'fisher': ability_cwd + 'geyser.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
