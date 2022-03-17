@@ -62,7 +62,10 @@ def load_individual_blob(selector_position):
         selector_position = [0, 0, 1]
         selected_blob = blob_array[selector_position[1]][selector_position[0]]
     selected_blob_image = pg.image.load(cwd + "/resources/images" + selected_blob[0])
-    selected_blob_matchups = load_mu_chart()[selected_blob[2]]
+    try:
+        selected_blob_matchups = load_mu_chart()[selected_blob[2]]
+    except:
+        selected_blob_matchups = {'wins': 0, 'losses': 0, 'ties': 0}
     selected_blob_description = find_blob_unlock(selected_blob[2])[2]
     selected_blob_stars = species_to_stars(selected_blob[2], {})
     selected_blob_tips = return_selected_blob_tips(selected_blob[2])

@@ -3,10 +3,10 @@ import os
 import ctypes
 from pygame import image
 pg.font.init()
-cwd = os.getcwd() + "\\resources\\images\\backgrounds\\"
-user32 = ctypes.windll.user32
-screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
-game_display = pg.display.set_mode((0, 0)) # The canvas
+cwd = os.getcwd() + "/resources/images/backgrounds/"
+#user32 = ctypes.windll.user32
+#screen_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
+#game_display = pg.display.set_mode((0, 0)) # The canvas
 
 pg.init()
 clock = pg.time.Clock()
