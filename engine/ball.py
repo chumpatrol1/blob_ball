@@ -236,9 +236,6 @@ class Ball:
         self.blocked_timer = 20
 
     def check_blob_ability(self, blob):
-        if(blob.used_ability == "mirror"):
-            self.x_speed *= -0.9
-            self.y_speed *= -0.5
         if(blob.used_ability == "fireball"):
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))
@@ -272,6 +269,36 @@ class Ball:
             self.image = type_to_image("blocked_ball")
             self.species = "blocked_ball"
             self.special_timer = 30
+        elif(blob.used_ability == "mirror"):
+            self.x_speed *= -0.9
+            self.y_speed *= -0.5
+        elif(blob.used_ability == "hook"):
+            if(blob.holding_timer > blob.special_ability_delay):
+                # After the delay, start reeling the ball in. This is a gradual
+                # process, meaning that the ball won't get jerked in a certain
+                # direction and it also allows for the ball to be body blocked
+                #print((blob.x_center - 25 - self.x_pos)//150)
+                self.x_speed += (blob.x_center - 25 - self.x_pos)//150 
+                self.y_speed += (blob.y_center - 200 - self.y_pos)//200
+                if(abs(self.x_speed) > 20):
+                    self.x_speed *= 0.95
+                # Change the number after // - bigger means the pulling force is weaker
+                
+                '''
+                pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
+                try:
+                    pull_sign_x = (blob.x_center - 25 - self.x_pos)/abs(blob.x_center - 25 - self.x_pos)
+                except:
+                    pull_sign_x = 1
+                pull_force_y = math.sqrt(abs(blob.y_center - 200 - self.y_pos))
+                try:
+                    pull_sign_y = (blob.y_center - 200 - self.y_pos)/abs(blob.y_center - 200 - self.y_pos)
+                except:
+                    pull_sign_y = 1
+                '''
+                #print((pull_force_x * pull_sign_x)/20)
+                #self.x_speed += (pull_force_x * pull_sign_x)/20
+                #self.y_speed += (pull_force_y * pull_sign_y)/20
 
     def check_ceiling_collisions(self):
         ceiling = 210
