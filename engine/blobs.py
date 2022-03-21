@@ -124,7 +124,7 @@ class Blob:
         self.image = species_to_image(species)
         self.ability_icon = species_to_ability_icon(species)
         self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
-        self.max_hp = 2 * (self.stars['max_hp'] + 3) #Each star adds an additional HP.
+        self.max_hp = int(2 * (self.stars['max_hp'] + 3)) #Each star adds an additional HP.
         self.hp = self.max_hp
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted

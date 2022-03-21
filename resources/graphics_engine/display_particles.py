@@ -309,7 +309,7 @@ def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
 
     if(p1_blob.used_ability == "hook"):
         #print("hooka")
-        blob_x = (p1_blob.x_center - 25) * (1000/1366)
+        blob_x = (p1_blob.x_center) * (1000/1366)
         blob_y = (p1_blob.y_center - 200) * (382/768)
         ball_x = ball.x_center * (1000/1366)
         ball_y = ball.y_center * (400/768)
@@ -317,10 +317,11 @@ def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
             ball_x = (ball_x - blob_x) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_x
             ball_y = (ball_y - blob_y) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_y
         pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
+        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 
     if(p2_blob.used_ability == "hook"):
         #print("snooka")
-        blob_x = (p2_blob.x_center - 25) * (1000/1366)
+        blob_x = (p2_blob.x_center) * (1000/1366)
         blob_y = (p2_blob.y_center - 200) * (382/768)
         ball_x = ball.x_center * (1000/1366)
         ball_y = ball.y_center * (400/768)
@@ -328,6 +329,7 @@ def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
             ball_x = (ball_x - blob_x) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_x
             ball_y = (ball_y - blob_y) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_y
         pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
+        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 
     ball_overlay_memory = blit_and_update_particles(ball_overlay_memory, game_display)
 

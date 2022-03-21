@@ -278,7 +278,7 @@ class Ball:
                 # process, meaning that the ball won't get jerked in a certain
                 # direction and it also allows for the ball to be body blocked
                 #print((blob.x_center - 25 - self.x_pos)//150)
-                self.x_speed += (blob.x_center - 25 - self.x_pos)//150 
+                self.x_speed += (blob.x_center - self.x_pos)//150 
                 self.y_speed += (blob.y_center - 200 - self.y_pos)//200
                 if(abs(self.x_speed) > 20):
                     self.x_speed *= 0.95

@@ -102,7 +102,7 @@ def load_default_ruleset():
         'time_bonus': 600,
         'special_ability_charge_base': 1,
         'danger_zone_enabled': True,
-        'p1_modifiers': player_mods,
+        'p1_modifiers': dict(player_mods),
         'p2_modifiers': player_mods,
         'hp_regen': 0,
     }

@@ -65,7 +65,10 @@ def species_to_stars(species, stat_overrides):
     for key in stat_overrides:
         if stat_overrides[key] is not None:
             if(key == "max_hp"):
-                blob_dict[key] = (stat_overrides[key] - 6)//2
+                if(stat_overrides[key] == 1):
+                    blob_dict[key] = -2.5
+                else:
+                    blob_dict[key] = (stat_overrides[key] - 6)//2
             else:
                 blob_dict[key] = stat_overrides[key]
 
