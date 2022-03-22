@@ -924,3 +924,397 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+3980-ERROR-Game Crash at Tue Mar 22 18:32:21 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5904-ERROR-Game Crash at Tue Mar 22 18:38:30 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2660-ERROR-Game Crash at Tue Mar 22 18:41:17 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5560-ERROR-Game Crash at Tue Mar 22 18:51:45 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3660-ERROR-Game Crash at Tue Mar 22 18:54:56 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2580-ERROR-Game Crash at Tue Mar 22 19:19:48 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 137, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+TypeError: medal_navigation() missing 2 required positional arguments: 'selector' and 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12508-ERROR-Game Crash at Tue Mar 22 19:21:51 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 138, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+TypeError: medal_navigation() missing 1 required positional argument: 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7796-ERROR-Game Crash at Tue Mar 22 19:24:06 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 138, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 52, in medal_navigation
+    if(selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+11212-ERROR-Game Crash at Tue Mar 22 19:27:15 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 138, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 52, in medal_navigation
+    if(selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8348-ERROR-Game Crash at Tue Mar 22 19:30:28 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 52, in medal_navigation
+    if(selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5772-ERROR-Game Crash at Tue Mar 22 19:46:30 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 53, in medal_navigation
+    if(selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12024-ERROR-Game Crash at Tue Mar 22 19:46:56 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 53, in medal_navigation
+    if(selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12912-ERROR-Game Crash at Tue Mar 22 19:53:09 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 53, in medal_navigation
+    if(medal_selector[2] == 0):
+TypeError: 'int' object is not subscriptable
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4984-ERROR-Game Crash at Tue Mar 22 19:59:42 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+TypeError: medal_navigation() missing 1 required positional argument: 'timer'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1960-ERROR-Game Crash at Tue Mar 22 20:01:50 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer, timer)
+TypeError: medal_navigation() takes 2 positional arguments but 3 were given
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8140-ERROR-Game Crash at Tue Mar 22 20:02:13 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 103, in medal_navigation
+    return medal_selector, timer, ghost_selector
+UnboundLocalError: local variable 'ghost_selector' referenced before assignment
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9916-ERROR-Game Crash at Tue Mar 22 20:03:25 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 103, in medal_navigation
+    return medal_selector, timer, ghost_selector
+UnboundLocalError: local variable 'ghost_selector' referenced before assignment
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2552-ERROR-Game Crash at Tue Mar 22 20:05:00 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 105, in medal_navigation
+    return medal_selector, timer, ghost_selector
+UnboundLocalError: local variable 'ghost_selector' referenced before assignment
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12272-ERROR-Game Crash at Tue Mar 22 20:06:32 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+ValueError: too many values to unpack (expected 2)
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2960-ERROR-Game Crash at Tue Mar 22 20:08:42 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\medal_milestone_menu.py", line 104, in medal_navigation
+    return medal_selector, timer, ghost_selector
+NameError: name 'ghost_selector' is not defined
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7112-ERROR-Game Crash at Tue Mar 22 20:10:14 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+ValueError: too many values to unpack (expected 2)
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10424-ERROR-Game Crash at Tue Mar 22 20:10:54 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 109, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 87, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 65, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(selector, timer)
+ValueError: too many values to unpack (expected 2)
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

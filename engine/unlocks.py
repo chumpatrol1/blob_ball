@@ -164,7 +164,7 @@ css_selector_list_medals = [
 
 css_display_list_medals = deepcopy(original_css_display_list_medals)
 
-medal_location_dict = {
+css_location_dict_medals = {
     (1, 0): "goal",
     (2, 0): "ko",
     (3, 0): "parry_this",
@@ -202,37 +202,6 @@ medal_location_dict = {
     (7, 4): "questionmedal",
 }
 
-if_medal_shadow = { # Used later where it checks if the medal is on these coordinates, making them shadows of themselves
-    (1, 1),
-    (2, 1),
-    (3, 1),
-    (4, 1),
-    (5, 1),
-    (6, 1),
-    (7, 1),
-    (1, 2),
-    (2, 2),
-    (3, 2),
-    (4, 2),
-    (5, 2),
-    (6, 2),
-    (7, 2),
-    (1, 3),
-    (2, 3),
-    (3, 3),
-    (4, 3),
-    (5, 3),
-    (6, 3),
-    (7, 3),
-    (1, 4),
-    (2, 4),
-    (3, 4),
-    (4, 4),
-    (5, 4),
-    (6, 4),
-    (7, 4),
-}
-
 medal_unlock_dict = {
     "total": 0,
     "goal": False,
@@ -243,6 +212,24 @@ medal_unlock_dict = {
     "power_up": False,
     "damage_stacking": False,
 }
+
+def load_medal_unlocks(cwd):
+    global medal_unlock_dict
+    try:
+        with open(cwd + "/saves/medal_unlocks.txt", "r") as medalunlockdoc:
+            new_unlock_dict = loads(medalunlockdoc.readline())
+            for medal in medal_unlock_dict:
+                if medal not in new_unlock_dict:
+                    new_unlock_dict[medal] = False
+        
+        medal_unlock_dict = new_unlock_dict
+
+        with open(cwd + "/saves/medal_unlocks.txt", "w") as medalunlockdoc:
+            medalunlockdoc.write(dumps(medal_unlock_dict))
+        
+    except:
+        with open(cwd + "/saves/medal_unlocks.txt", "w") as medalunlockdoc:
+            medalunlockdoc.write(dumps(medal_unlock_dict))
 
 def update_css_medals(cwd):
     global medal_unlock_dict
@@ -273,23 +260,27 @@ def load_medals(cwd):
         with open(cwd + "/saves/medals.txt", "w") as medaldoc:
             medaldoc.write(dumps(medal_unlock_dict))
 
-def update_css_medals():
+def update_css_medals(cwd):
     global medal_unlock_dict
-    global original_css_display_list_medals
+    global css_selector_list_medals
     global css_display_list_medals
 
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+
+    unlock_slot = 0
     for y in range(0, 5):
         for x in range(1, 8):
             location = (x, y)
-            if location in css_location_dict_blobs and medal_unlock_dict[css_location_dict_blobs[location]]:
-                medal_id = css_location_dict_blobs[location]
+            if location in css_location_dict_medals and css_location_dict_medals[location] == "questionmedal":
+                css_display_list_medals[y][x] = ["/medals/questionMedal.png", "???", "Coming soon!"]
+            elif location in css_location_dict_medals and medal_unlock_dict[css_location_dict_medals[location]]:
+                medal_id = css_location_dict_medals[location]
                 css_selector_list_medals[y][x] = medal_id
-                css_display_list_medals[y][x] = original_css_display_list_blobs[y][x]
+                css_display_list_medals[y][x] = original_css_display_list_medals[y][x]
             else:
-                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
-            
-            if location in if_medal_shadow:
-                css_display_list_medals[y][x] = ["/medals/questionmedal.jpg", "???", "???"]
+                css_display_list_medals[y][x] = ["/medals/questionMedal.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+            unlock_slot += 1
 
 def return_medal_unlocks():
     global medal_unlock_dict
