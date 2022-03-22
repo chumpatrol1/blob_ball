@@ -128,18 +128,24 @@ class Ball:
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
                     try:
-                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv).normalize()
+                        # Make this not dependent on ball speed!
+                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         if(self.x_center > blob.x_center):
                             p1_ball_collision[0] = abs(p1_ball_collision[0])
+                            
                         else:
                             p1_ball_collision[0] = -1 * abs(p1_ball_collision[0])
+                        
+                        
                         blob_kick_x_modifier = 0
                     except: #Stationary ball?
                         p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
-                    
+                    p1_ball_collision.scale_to_length(50)
+                    #print(ball_vector, p1_vector, p1_ball_collision, p1_ball_nv)
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
-                    self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
+                    self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(p1_ball_collision[1] - blob_kick_y_modifier))
+                    #print(self.x_speed, self.y_speed)
                     createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
                     self.x_speed *= self.bounciness
                     self.y_speed *= self.bounciness
