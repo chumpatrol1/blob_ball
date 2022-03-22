@@ -24,16 +24,15 @@ medal = "goal"
 
 medal_list = return_css_selector_medals()
 
-def medal_navigation(player, timer):
+def medal_navigation(timer):
     global medal_selector
     global ghost_selector
     ghost_selector = None
-    pressed_conversions = engine.handle_input.player_to_controls(player)
+    pressed_conversions = engine.handle_input.merge_inputs(engine.handle_input.get_keypress())
     pressed_buttons = engine.handle_input.css_input()
-    if(player == 1):
-        mouse = engine.handle_input.handle_mouse(False)
-    else:
-        mouse = engine.handle_input.handle_mouse()
+    
+    mouse = engine.handle_input.handle_mouse()
+    game_state = "medals"
 
     pressed = []
     for button in pressed_buttons:
@@ -102,7 +101,7 @@ def medal_navigation(player, timer):
                 medal_selector[2] = 0
                 ghost_selector = None
                 
-    return medal_selector, timer, ghost_selector
+    return game_state, [medal_selector, ghost_selector]
     
 timer = 0
 def css_handler():
