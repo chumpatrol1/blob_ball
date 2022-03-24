@@ -138,10 +138,11 @@ class Ball:
                         
                         
                         blob_kick_x_modifier = 0
+                        p1_ball_collision.scale_to_length(50)
                     except: #Stationary ball?
                         p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
-                    p1_ball_collision.scale_to_length(50)
+                    
                     #print(ball_vector, p1_vector, p1_ball_collision, p1_ball_nv)
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
                     self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(p1_ball_collision[1] - blob_kick_y_modifier))
@@ -279,14 +280,14 @@ class Ball:
             self.x_speed *= -0.9
             self.y_speed *= -0.5
         elif(blob.used_ability == "hook"):
-            if(blob.holding_timer > blob.special_ability_delay):
+            if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
                 # After the delay, start reeling the ball in. This is a gradual
                 # process, meaning that the ball won't get jerked in a certain
                 # direction and it also allows for the ball to be body blocked
                 #print((blob.x_center - 25 - self.x_pos)//150)
                 self.x_speed += (blob.x_center - self.x_pos)//150 
                 self.y_speed += (blob.y_center - 200 - self.y_pos)//200
-                if(abs(self.x_speed) > 20):
+                if(abs(self.x_speed) > 15):
                     self.x_speed *= 0.95
                 # Change the number after // - bigger means the pulling force is weaker
                 

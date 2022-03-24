@@ -84,6 +84,13 @@ update_mapkey_names(input_map)
 
 temp_binding = []
 
+joysticks = []
+for i in range(pg.joystick.get_count()):
+    print("Joystick detected!")
+    joysticks.append(pg.joystick.Joystick(i))
+    joysticks[-1].init()
+
+
 def unbind_inputs(mode = 'all'):
     global input_map
     global temp_binding

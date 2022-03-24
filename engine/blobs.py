@@ -76,7 +76,7 @@ def species_to_ability_icon(species):
         'cop': ability_cwd + "block_icon.png",
         'boxer': ability_cwd + 'starpunch.png',
         'mirror': ability_cwd + 'mirror.png',
-        'fisher': ability_cwd + 'geyser.png',
+        'fisher': ability_cwd + 'hook.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
