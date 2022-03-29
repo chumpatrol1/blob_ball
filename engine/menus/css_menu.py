@@ -31,7 +31,10 @@ blob_list = return_css_selector_blobs()
 
 def css_navigation(player, selector, timer, other_selector, ghost_selector, other_ghost):
     pressed_conversions = engine.handle_input.player_to_controls(player)
-    pressed_buttons = engine.handle_input.css_input()
+    detect_new_controllers = True
+    if(player == 2):
+        detect_new_controllers = False
+    pressed_buttons = engine.handle_input.css_input(detect_new_controllers = detect_new_controllers)
     if(player == 1):
         mouse = engine.handle_input.handle_mouse(False)
     else:
@@ -143,6 +146,7 @@ def css_handler():
     global p1_timer
     global p2_timer
     game_state = "css"
+    # Controller failure - cannot swap players here
     p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position)
     p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position)
     

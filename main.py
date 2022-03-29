@@ -35,6 +35,7 @@ from engine.game_handler import update_game_state as ugs
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
 import engine.handle_input
+from engine.handle_input import detect_joysticks
 from json import loads, dumps
 import time
 from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medal_unlocks, update_css_medals
@@ -83,7 +84,8 @@ def run(game_state):
     for event in events:
         if event.type == pg.QUIT:
             done = True
-    handle_input()
+    detect_joysticks()
+    #handle_input()
     new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
     display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
     # Why did I write it this way?

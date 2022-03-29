@@ -85,11 +85,29 @@ update_mapkey_names(input_map)
 temp_binding = []
 
 joysticks = []
-for i in range(pg.joystick.get_count()):
-    print("Joystick detected!")
-    joysticks.append(pg.joystick.Joystick(i))
-    joysticks[-1].init()
+joystick_count = 0
+joystick_handler = {
+    'p1_joystick': None,
+    'p2_joystick': None,
+}
 
+def detect_joysticks():
+    global joysticks
+    global joystick_count
+    for event in get_events():
+        #print(event)
+        #print(pg.JOYDEVICEADDED)
+        if(event.type == pg.JOYDEVICEADDED):
+            print("OK")
+            joysticks.append(pg.joystick.Joystick(joystick_count))
+            joysticks[joystick_count].init()
+            joystick_count += 1
+        elif(event.type == pg.JOYDEVICEREMOVED):
+            print("SADGE")
+            joystick_count -= 1
+            joysticks[joystick_count].quit()
+            joysticks.pop(joystick_count)
+            
 
 def unbind_inputs(mode = 'all'):
     global input_map
@@ -172,9 +190,10 @@ def reset_inputs():
     with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
-def get_keypress():
+def get_keypress(detect_new_controllers = True):
     global input_map
     pressed = pg.key.get_pressed()
+    events = get_events()
     pressed_array = []
     if(pressed[input_map['p1_up']]):
         pressed_array.append('p1_up')
@@ -212,6 +231,127 @@ def get_keypress():
         pressed_array.append('return')
     if(pressed[pg.K_ESCAPE]):
         pressed_array.append('escape')
+    '''
+    for event in events:
+        if(event.type == pg.JOYAXISMOTION):
+            print("JAM")
+            if(event.__dict__['joy'] == 0):
+                if(event.__dict__['axis'] == 0):
+                    if(event.__dict__['value'] > 0.1):
+                        pressed_array.append('p1_right')
+                    elif(event.__dict__['value'] < -0.1):
+                        pressed_array.append('p1_left')
+                elif(event.__dict__['axis'] == 1):
+                    if(event.__dict__['value'] > 0.1):
+                        pressed_array.append('p1_down')
+                    elif(event.__dict__['value'] < -0.1):
+                        pressed_array.append('p1_up')
+                print(event.__dict__)
+        elif(event.type == pg.JOYBUTTONDOWN):
+            print("port value", event.__dict__['joy'])
+            if(event.__dict__['joy'] == 0):
+                if(event.__dict__['button'] == 0): # X
+                    pressed_array.append('p1_boost')
+                elif(event.__dict__['button'] == 1): # A
+                    pressed_array.append('p1_ability')
+                elif(event.__dict__['button'] == 2): # B
+                    pressed_array.append('p1_kick')
+                elif(event.__dict__['button'] == 3): # Y
+                    pressed_array.append('p1_boost')
+                elif(event.__dict__['button'] == 7): # Z
+                    pressed_array.append('p1_block')
+                else:
+                    print(event.__dict__)
+            else:
+                pressed_array.append('p2_ability')
+                print(event.__dict__)
+        elif(event.type == pg.JOYBUTTONUP):
+            print("BUTTON UP")
+            print(event.__dict__)
+        elif(event.type == pg.JOYHATMOTION):
+            print("HAT MOTION")
+            print(event.__dict__)
+    '''
+    '''
+    for joystick in joysticks:
+        #print(joystick.get_instance_id())
+        if(joystick.get_instance_id() == 4):
+            # Depending on the joystick ID, we will update the appropriate player
+            #print("Initialized?", joystick.get_init())
+            print(joystick.get_axis(0))
+            print(joystick.get_axis(1))
+            # Stick deadzone is < 0.3 for now - can be adjusted in a menu
+            #for button in range(joystick.get_numbuttons()):
+            # Each button has an action assigned (rebindable) to it
+            #    print(button, joystick.get_button(button)) 
+            for event in events:
+                if(event.type == pg.JOYBUTTONDOWN):
+                    print("port value", event.__dict__)
+            print(joystick.get_name(), joystick.get_button(2))
+    '''
+    # Handle Joystick Events
+    for event in events:
+        if(event.type in {pg.JOYAXISMOTION, pg.JOYHATMOTION, pg.JOYBUTTONUP}):
+
+            #print(event)
+            #print(joysticks[event.__dict__['joy']].get_button(2))
+            pass
+        elif(event.type == pg.JOYBUTTONDOWN):
+            #print(events)
+            if(joysticks[event.__dict__['joy']].get_button(9) and detect_new_controllers):
+                if(joystick_handler['p1_joystick'] == None):
+                    joystick_handler['p1_joystick'] = joysticks[event.__dict__['joy']].get_instance_id() - 1
+                    if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
+                        joystick_handler['p2_joystick'] = None
+                    print(joystick_handler)
+                elif(joystick_handler['p2_joystick'] == None):
+                    joystick_handler['p2_joystick'] = joysticks[event.__dict__['joy']].get_instance_id() - 1
+                    if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
+                        joystick_handler['p1_joystick'] = None
+                    print(joystick_handler)
+                else:
+                    print(joystick_handler)
+                    print(joysticks[event.__dict__['joy']].get_instance_id() - 1)
+
+    for joystick in joysticks:
+        header = ""
+        if(joystick.get_instance_id() - 1 == joystick_handler['p1_joystick']):
+            header = "p1_"
+        elif(joystick.get_instance_id() - 1 == joystick_handler['p2_joystick']):
+            header = "p2_"
+        else:
+            continue
+        
+        # Control Stick
+        if(joystick.get_axis(0) > 0.3):
+            #print("Holding Right")
+            pressed_array.append(header + "right")
+        elif(joystick.get_axis(0) < -0.3):
+            #print("Holding Left")
+            pressed_array.append(header + "left")
+
+        if(joystick.get_axis(1) > 0.3):
+            #print("Holding Down")
+            pressed_array.append(header + "down")
+        elif(joystick.get_axis(1) < -0.3):
+            #print("Holding Up")
+            pressed_array.append(header + "up")
+
+        # Buttons
+        if(joystick.get_button(2)):
+            pressed_array.append(header + "kick")
+        
+        if(joystick.get_button(1)):
+            pressed_array.append(header + "ability")
+
+        if(joystick.get_button(7)):
+            pressed_array.append(header + "block")
+
+        if(joystick.get_button(0) or joystick.get_button(3)):
+            pressed_array.append(header + "boost")
+    
+    #print(joysticks)
+    #print(joysticks[3].get_button(9))
     return pressed_array
 
 def merge_inputs(pressed):
@@ -258,10 +398,10 @@ def menu_input():
 
 p1_timer = 0
 p2_timer = 1
-def css_input():
+def css_input(detect_new_controllers = True):
     global button_timer
     if(button_timer == 0):
-        return get_keypress()
+        return get_keypress(detect_new_controllers = detect_new_controllers)
     else:
         button_timer -= 1
         return []
