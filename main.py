@@ -35,7 +35,7 @@ from engine.game_handler import update_game_state as ugs
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
 import engine.handle_input
-from engine.handle_input import detect_joysticks
+from engine.handle_input import detect_joysticks, get_keypress
 from json import loads, dumps
 import time
 from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medal_unlocks, update_css_medals
@@ -91,8 +91,8 @@ def run(game_state):
     # Why did I write it this way?
     handle_sound(bgm_song, settings)
     game_state = new_game_state
-    pressed =  pg.key.get_pressed()
-    if(pressed[pg.K_ESCAPE] and not escape_timer):
+    pressed = get_keypress(detect_new_controllers = False)
+    if('escape' in pressed and not escape_timer):
         if(game_state == "casual_match" or game_state == "pause"):
             escape_timer = 30
         elif(game_state == "rebind"):

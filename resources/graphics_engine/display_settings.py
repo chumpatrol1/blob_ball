@@ -27,21 +27,22 @@ def draw_settings_screen(game_display, settings, selector_position):
         menu_font.render("Smooth Scaling: " + str(settings['smooth_scaling']), False, text_color),
         menu_font.render("Music Volume: " + str(settings['music_volume']), False, text_color),
         menu_font.render("Sound Volume: " + str(settings['sound_volume']), False, text_color),
-        menu_font.render("Remap Inputs", False, text_color),
+        menu_font.render("Remap Keyboard", False, text_color),
+        menu_font.render("Remap Joystick", False, text_color),
         menu_font.render("Default Controls", False, text_color),
         menu_font.render("Reset to Default", False, text_color),
         menu_font.render("<-- Back", False, text_color),
     ]
-    text_y = 768//10
+    text_y = 76
     for text_box in text_array:
         text_rect = text_box.get_rect()
         text_rect.topleft = (68, text_y)
         game_display.blit(text_box, text_rect)
-        text_y += 76
+        text_y += 60
 
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     ball = pg.transform.scale(ball, (38, 38))
-    game_display.blit(ball, (10, 76 * (selector_position + 1)))
+    game_display.blit(ball, (10, 76 + 60 * selector_position))
 
 rebind_key_to_position = {
     'p1_up': 1,
@@ -128,6 +129,11 @@ def draw_rebind_screen(game_display, settings, info_getter):
 
     game_display.blit(ball, (selector_x, selector_y))
     
+
+def draw_controller_bind_screen():
+    pass
+
+
 def draw_rules_screen(game_display, ruleset, selector_position, settings):
     draw_background(game_display, "rules", settings)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)

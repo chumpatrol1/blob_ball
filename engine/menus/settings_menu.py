@@ -6,15 +6,16 @@ selector_position = 0
 
 from engine.button import Button
 settings_buttons = [
-    Button(65, 130, 0, 600),
-    Button(130, 200, 0, 600),
-    Button(200, 275, 0, 600),
-    Button(275, 360, 0, 600),
-    Button(360, 430, 0, 600),
-    Button(430, 505, 0, 600),
-    Button(505, 580, 0, 600),
-    Button(580, 670, 0, 600),
-    Button(670, 740, 0, 600),
+    Button(65, 125, 0, 600),
+    Button(125, 185, 0, 600),
+    Button(185, 245, 0, 600),
+    Button(245, 305, 0, 600),
+    Button(305, 365, 0, 600),
+    Button(365, 425, 0, 600),
+    Button(425, 485, 0, 600),
+    Button(485, 545, 0, 600),
+    Button(545, 605, 0, 600),
+    Button(605, 665, 0, 600),
 ]
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
@@ -78,9 +79,10 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings) + 2: go_back,
-        len(settings) + 1: reset_settings,
-        len(settings): reset_inputs,
+        len(settings) + 3: go_back,
+        len(settings) + 2: reset_settings,
+        len(settings) + 1: reset_inputs,
+        len(settings): enter_rebind,
     }        
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()

@@ -11,8 +11,8 @@ from resources.sound_engine.sfx_event import createSFXEvent
 #print(tuple(filter(lambda x: x.startswith("K_"), pg.constants.__dict__.keys())))
 
 pg.init()
-#clock = pg.time.Clock()
-#clock.tick(120)
+
+# DEFAULT KEYBOARD CONTROLS
 
 input_map = {
     'p1_up': pg.K_w,
@@ -32,6 +32,37 @@ input_map = {
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
 }
+
+# DEFAULT GAMECUBE CONTROLS - converts button press to an action
+
+gamecube_map = {
+    'horizontal_deadzone': 0.3,
+    'vertical_deadzone': 0.3,
+    'rumble': True,
+    0: 'up',
+    1: 'ability',
+    2: 'kick',
+    3: 'boost',
+    4: 'block',
+    5: 'block',
+    6: '',
+    7: 'down',
+    8: '',
+    9: 'escape',
+    10: '',
+    11: '',
+    12: '',
+    13: '',
+    14: '',
+    15: '',
+    16: '',
+    17: '',
+    18: '',
+    19: '',
+    20: '',
+}
+
+
 
 mapkey_names = {}
 override = {
@@ -231,88 +262,45 @@ def get_keypress(detect_new_controllers = True):
         pressed_array.append('return')
     if(pressed[pg.K_ESCAPE]):
         pressed_array.append('escape')
-    '''
-    for event in events:
-        if(event.type == pg.JOYAXISMOTION):
-            print("JAM")
-            if(event.__dict__['joy'] == 0):
-                if(event.__dict__['axis'] == 0):
-                    if(event.__dict__['value'] > 0.1):
-                        pressed_array.append('p1_right')
-                    elif(event.__dict__['value'] < -0.1):
-                        pressed_array.append('p1_left')
-                elif(event.__dict__['axis'] == 1):
-                    if(event.__dict__['value'] > 0.1):
-                        pressed_array.append('p1_down')
-                    elif(event.__dict__['value'] < -0.1):
-                        pressed_array.append('p1_up')
-                print(event.__dict__)
-        elif(event.type == pg.JOYBUTTONDOWN):
-            print("port value", event.__dict__['joy'])
-            if(event.__dict__['joy'] == 0):
-                if(event.__dict__['button'] == 0): # X
-                    pressed_array.append('p1_boost')
-                elif(event.__dict__['button'] == 1): # A
-                    pressed_array.append('p1_ability')
-                elif(event.__dict__['button'] == 2): # B
-                    pressed_array.append('p1_kick')
-                elif(event.__dict__['button'] == 3): # Y
-                    pressed_array.append('p1_boost')
-                elif(event.__dict__['button'] == 7): # Z
-                    pressed_array.append('p1_block')
-                else:
-                    print(event.__dict__)
-            else:
-                pressed_array.append('p2_ability')
-                print(event.__dict__)
-        elif(event.type == pg.JOYBUTTONUP):
-            print("BUTTON UP")
-            print(event.__dict__)
-        elif(event.type == pg.JOYHATMOTION):
-            print("HAT MOTION")
-            print(event.__dict__)
-    '''
-    '''
-    for joystick in joysticks:
-        #print(joystick.get_instance_id())
-        if(joystick.get_instance_id() == 4):
-            # Depending on the joystick ID, we will update the appropriate player
-            #print("Initialized?", joystick.get_init())
-            print(joystick.get_axis(0))
-            print(joystick.get_axis(1))
-            # Stick deadzone is < 0.3 for now - can be adjusted in a menu
-            #for button in range(joystick.get_numbuttons()):
-            # Each button has an action assigned (rebindable) to it
-            #    print(button, joystick.get_button(button)) 
-            for event in events:
-                if(event.type == pg.JOYBUTTONDOWN):
-                    print("port value", event.__dict__)
-            print(joystick.get_name(), joystick.get_button(2))
-    '''
+    
     # Handle Joystick Events
     for event in events:
-        if(event.type in {pg.JOYAXISMOTION, pg.JOYHATMOTION, pg.JOYBUTTONUP}):
+        if(event.type in {pg.JOYAXISMOTION, pg.JOYHATMOTION}):
 
             #print(event)
             #print(joysticks[event.__dict__['joy']].get_button(2))
             pass
         elif(event.type == pg.JOYBUTTONDOWN):
-            #print(events)
-            if(joysticks[event.__dict__['joy']].get_button(9) and detect_new_controllers):
+            #print(event)
+            # Left on DPAD
+            new_controller = joysticks[event.__dict__['joy']].get_instance_id() - 1
+            if(joysticks[event.__dict__['joy']].get_button(15) and detect_new_controllers):
                 if(joystick_handler['p1_joystick'] == None):
-                    joystick_handler['p1_joystick'] = joysticks[event.__dict__['joy']].get_instance_id() - 1
+                    joystick_handler['p1_joystick'] = new_controller
                     if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
                         joystick_handler['p2_joystick'] = None
-                    print(joystick_handler)
-                elif(joystick_handler['p2_joystick'] == None):
-                    joystick_handler['p2_joystick'] = joysticks[event.__dict__['joy']].get_instance_id() - 1
+                    #print(joystick_handler)
+                    print("Assigned joystick to P1")
+                #print(joystick_handler)
+            # Right on DPAD
+            elif(joysticks[event.__dict__['joy']].get_button(13) and detect_new_controllers):    
+                #print("test r passed")
+                if(joystick_handler['p2_joystick'] == None):
+                    joystick_handler['p2_joystick'] = new_controller
                     if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
                         joystick_handler['p1_joystick'] = None
-                    print(joystick_handler)
-                else:
-                    print(joystick_handler)
-                    print(joysticks[event.__dict__['joy']].get_instance_id() - 1)
+                    #print(joystick_handler)
+                    print("Assigned joystick to P2")
+                #print(joystick_handler)
+            else:
+                pass
+                #print(joystick_handler)
+                #print(new_controller)
 
+            if(joysticks[event.__dict__['joy']].get_button(14)): # Down on DPAD
+                pressed.append('return')
+
+        
     for joystick in joysticks:
         header = ""
         if(joystick.get_instance_id() - 1 == joystick_handler['p1_joystick']):
@@ -323,6 +311,7 @@ def get_keypress(detect_new_controllers = True):
             continue
         
         # Control Stick
+        # TODO: Deadzone updates
         if(joystick.get_axis(0) > 0.3):
             #print("Holding Right")
             pressed_array.append(header + "right")
@@ -337,18 +326,27 @@ def get_keypress(detect_new_controllers = True):
             #print("Holding Up")
             pressed_array.append(header + "up")
 
+        # TODO: Rebindable buttons
         # Buttons
-        if(joystick.get_button(2)):
+        if(joystick.get_button(2)): # GC B
             pressed_array.append(header + "kick")
         
-        if(joystick.get_button(1)):
+        if(joystick.get_button(1)): # GC A 
             pressed_array.append(header + "ability")
 
-        if(joystick.get_button(7)):
+        if(joystick.get_button(7)): # GC Z
             pressed_array.append(header + "block")
 
-        if(joystick.get_button(0) or joystick.get_button(3)):
+        if(joystick.get_button(0) or joystick.get_button(3)): # GC X Y
             pressed_array.append(header + "boost")
+
+        if(joystick.get_button(9)): # GC Home Button
+            pressed_array.append('escape')
+        
+        # TODO: Shoulder buttons/triggers
+        
+
+        
     
     #print(joysticks)
     #print(joysticks[3].get_button(9))
@@ -377,11 +375,13 @@ def merge_inputs(pressed):
     return merged_press
 button_timer = 0
 
-def menu_input():
+def menu_input(pause_screen = False):
     global button_timer
     pressed = get_keypress()
     selected = False
-    if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed):
+    if(not pause_screen and ("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed)):
+        selected = True
+    elif(pause_screen and "return" in pressed):
         selected = True
     if(pressed == []):
         button_timer = 0
@@ -434,10 +434,17 @@ def player_to_controls(player):
 def toggle_fullscreen():
 
     pressed = pg.key.get_pressed()
+    events = get_events()
     if(pressed[pg.K_LCTRL] or pressed[pg.K_RCTRL]):
         return True
-    else:
-        return False
+    
+    for event in events:
+        if(event.type == pg.JOYBUTTONDOWN):
+            # Up on DPAD
+            if(joysticks[event.__dict__['joy']].get_button(12)):
+                return True
+
+    return False
 
 def gameplay_input():
     pressed = get_keypress()
