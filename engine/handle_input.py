@@ -38,12 +38,13 @@ input_map = {
 gamecube_map = {
     'horizontal_deadzone': 0.3,
     'vertical_deadzone': 0.3,
+    'bumper_deadzone': 0.3,
     'rumble': True,
-    0: 'up',
-    1: 'ability',
-    2: 'kick',
-    3: 'boost',
-    4: 'block',
+    0: 'up', # X
+    1: 'ability', # A
+    2: 'kick', # B
+    3: 'boost', # 
+    4: 'block', # 
     5: 'block',
     6: '',
     7: 'down',
@@ -51,15 +52,6 @@ gamecube_map = {
     9: 'escape',
     10: '',
     11: '',
-    12: '',
-    13: '',
-    14: '',
-    15: '',
-    16: '',
-    17: '',
-    18: '',
-    19: '',
-    20: '',
 }
 
 
@@ -264,6 +256,7 @@ def get_keypress(detect_new_controllers = True):
         pressed_array.append('escape')
     
     # Handle Joystick Events
+    # TODO: Create popup when connecting a new controller
     for event in events:
         if(event.type in {pg.JOYAXISMOTION, pg.JOYHATMOTION}):
 
@@ -275,22 +268,34 @@ def get_keypress(detect_new_controllers = True):
             # Left on DPAD
             new_controller = joysticks[event.__dict__['joy']].get_instance_id() - 1
             if(joysticks[event.__dict__['joy']].get_button(15) and detect_new_controllers):
+                old_joystick = joystick_handler['p1_joystick']
                 if(joystick_handler['p1_joystick'] == None):
                     joystick_handler['p1_joystick'] = new_controller
                     if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
                         joystick_handler['p2_joystick'] = None
-                    #print(joystick_handler)
-                    print("Assigned joystick to P1")
+                else:
+                    if(new_controller != old_joystick):
+                        joystick_handler['p1_joystick'] = new_controller
+                        if(new_controller == joystick_handler['p2_joystick'] or joystick_handler['p2_joystick'] == None):
+                            joystick_handler['p2_joystick'] = old_joystick
+                print(joystick_handler)
+                print("Assigned joystick to P1")
                 #print(joystick_handler)
             # Right on DPAD
             elif(joysticks[event.__dict__['joy']].get_button(13) and detect_new_controllers):    
                 #print("test r passed")
+                old_joystick = joystick_handler['p2_joystick']
                 if(joystick_handler['p2_joystick'] == None):
                     joystick_handler['p2_joystick'] = new_controller
                     if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
                         joystick_handler['p1_joystick'] = None
-                    #print(joystick_handler)
-                    print("Assigned joystick to P2")
+                else:
+                    if(new_controller != old_joystick):
+                        joystick_handler['p2_joystick'] = new_controller
+                        if(new_controller == joystick_handler['p1_joystick'] or joystick_handler['p1_joystick'] == None):
+                            joystick_handler['p1_joystick'] = old_joystick
+                print(joystick_handler)
+                print("Assigned joystick to P2")
                 #print(joystick_handler)
             else:
                 pass
@@ -298,7 +303,7 @@ def get_keypress(detect_new_controllers = True):
                 #print(new_controller)
 
             if(joysticks[event.__dict__['joy']].get_button(14)): # Down on DPAD
-                pressed.append('return')
+                pressed_array.append('return')
 
         
     for joystick in joysticks:
@@ -312,6 +317,7 @@ def get_keypress(detect_new_controllers = True):
         
         # Control Stick
         # TODO: Deadzone updates
+        # TODO: C-Stick Attack
         if(joystick.get_axis(0) > 0.3):
             #print("Holding Right")
             pressed_array.append(header + "right")

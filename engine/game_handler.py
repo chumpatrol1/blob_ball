@@ -124,6 +124,8 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[1]
     elif(game_state == "rebind"):
         game_state, info_getter = engine.rebind.rebind_menu()
+    elif(game_state == "controller_config"):
+        game_state,info_getter = "quit", [] # TODO: Create function
         
     elif(game_state == "almanac"):
         info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)

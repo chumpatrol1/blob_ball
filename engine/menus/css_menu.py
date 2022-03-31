@@ -20,8 +20,8 @@ for i in range(8): # 8 columns
 
 
 # X position, Y position, Confirmation, CPU/Human
-p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
-p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p1_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p2_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p1_ghost_position = None
 p2_ghost_position = None
 p1_blob = "quirkless"
@@ -41,10 +41,12 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         mouse = engine.handle_input.handle_mouse()
 
     pressed = []
+    override = {'return', 'escape'}
     for button in pressed_buttons:
         if(button in pressed_conversions):
             pressed.append(pressed_conversions[button])
-        
+        elif(button in override):
+            pressed.append(button)
     if pressed == []:
         timer = 0
 
@@ -81,6 +83,9 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
             else:
                 selector[0] += 1
     
+    if('return' in pressed):
+        print("return pressed")
+
     if(selector[2] == 0):
         if('ability' in pressed):
             selector[2] = 1
