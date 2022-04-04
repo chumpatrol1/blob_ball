@@ -43,18 +43,41 @@ gamecube_map = {
     0: 'up', # X
     1: 'ability', # A
     2: 'kick', # B
-    3: 'boost', # 
-    4: 'block', # 
-    5: 'block',
+    3: 'down', # Y
+    4: 'block', # L
+    5: 'block', # R
     6: '',
-    7: 'down',
+    7: 'boost', # Z
     8: '',
-    9: 'escape',
+    9: 'escape', # HOME
     10: '',
-    11: '',
 }
 
+xbox360_map = {
 
+}
+
+ps3_map = {
+
+}
+
+ps4_map = {
+
+}
+
+switchpro_map = {
+
+}
+
+player_mapping = {
+    'GameCube Controller Adapter': dict(gamecube_map),
+    'Generic': dict(gamecube_map),
+}
+
+joystick_mapping = {
+    1: dict(player_mapping),
+    2: dict(player_mapping),
+}
 
 mapkey_names = {}
 override = {
@@ -98,10 +121,26 @@ except:
         controls.write(dumps(input_map))
     controls = open(getcwd()+"/config/controls.txt", "r+")
 
+try:
+    n_joystick_mapping = open(getcwd()+"/configs/joysticks.txt", "r+")
+    for key in joystick_mapping:
+            if not key in n_joystick_mapping:
+                n_joystick_mapping[key] = joystick_mapping[key]
+            else:
+                for joy_button in n_joystick_mapping[key]:
+                    if not joy_button in n_joystick_mapping[key]:
+                        n_joystick_mapping[key][joy_button] = joystick_mapping[key][joy_button]
+    joystick_mapping = n_joystick_mapping
+except:
+    with open(getcwd()+"/config/joysticks.txt", "w") as joystick_file:
+        joystick_file.write(dumps(joystick_mapping))
+    joystick_mapping = open(getcwd()+"/config/joysticks.txt", "r+")
+
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
+joystick_map = loads(joystick_mapping.readlines()[0])
 
 update_mapkey_names(input_map)
 
