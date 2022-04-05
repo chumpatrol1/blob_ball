@@ -136,11 +136,14 @@ except:
         joystick_file.write(dumps(joystick_mapping))
     joystick_mapping = open(getcwd()+"/config/joysticks.txt", "r+")
 
-
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
 joystick_map = loads(joystick_mapping.readlines()[0])
+
+def return_joystick_mapping():
+    global joystick_map
+    return joystick_map
 
 update_mapkey_names(input_map)
 
@@ -396,11 +399,11 @@ def get_keypress(detect_new_controllers = True):
     #print(joysticks)
     #print(joysticks[3].get_button(9))
     return pressed_array
-
-def merge_inputs(pressed):
+button_timer = 0
+def merge_inputs(pressed, override = False):
     global button_timer
     merged_press = []
-    if not button_timer:
+    if not button_timer or override:
         if('p1_up' in pressed or 'p2_up' in pressed):
             merged_press.append('up')
         if('p1_down' in pressed or 'p2_down' in pressed):
@@ -418,7 +421,6 @@ def merge_inputs(pressed):
     if(len(merged_press)):
         button_timer = 10
     return merged_press
-button_timer = 0
 
 def menu_input(pause_screen = False):
     global button_timer
@@ -476,8 +478,8 @@ def player_to_controls(player):
         }
     return button_list
 
-def toggle_fullscreen():
-
+def toggle_fullscreen(force_override = False): # TODO: Override so it works with the settings menu
+    
     pressed = pg.key.get_pressed()
     events = get_events()
     if(pressed[pg.K_LCTRL] or pressed[pg.K_RCTRL]):
@@ -488,6 +490,9 @@ def toggle_fullscreen():
             # Up on DPAD
             if(joysticks[event.__dict__['joy']].get_button(12)):
                 return True
+
+    if(force_override):
+        return True
 
     return False
 

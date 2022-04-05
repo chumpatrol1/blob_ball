@@ -20,7 +20,7 @@ settings_buttons = [
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
     game_state = "settings"
-
+    # TODO: Force Toggle Fullscreen
     def adjust_music():
         if(settings['music_volume'] < 10):
                 settings['music_volume'] += 1
@@ -56,6 +56,11 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         game_state = "rebind"
         createSFXEvent('select')
 
+    def enter_joystick():
+        nonlocal game_state
+        game_state = "controller_config"
+        createSFXEvent('select')
+
     def toggle_background():
         settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         createSFXEvent('select')
@@ -82,7 +87,7 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         len(settings) + 3: go_back,
         len(settings) + 2: reset_settings,
         len(settings) + 1: reset_inputs,
-        len(settings): enter_rebind,
+        len(settings): enter_joystick,
     }        
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
@@ -94,7 +99,7 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
     
 def settings_selection_left(selector_position, settings, previous_screen, cwd, limit = None): # Handles left arrow, right clicks
     game_state = "settings"
-
+    # TODO: Force Toggle Fullscreen
     def adjust_music():
         if(settings['music_volume'] > 0):
             settings['music_volume'] -= 1
@@ -130,6 +135,11 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         game_state = "rebind"
         createSFXEvent('select')
 
+    def enter_joystick():
+        nonlocal game_state
+        game_state = "controller_config"
+        createSFXEvent('select')
+
     def toggle_background():
         settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         createSFXEvent('select')
@@ -153,10 +163,12 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings): go_back,
-        len(settings): reset_settings,
-        len(settings): reset_inputs,
-    }        
+        len(settings) + 3: go_back,
+        len(settings) + 2: reset_settings,
+        len(settings) + 1: reset_inputs,
+        len(settings): enter_joystick,
+    }      
+
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
     

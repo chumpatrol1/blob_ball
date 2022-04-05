@@ -1,6 +1,8 @@
-from engine.handle_input import bind_input as bind_input
+from engine.handle_input import bind_input as bind_input, get_keypress
+from engine.handle_input import menu_input
 from engine.handle_input import unbind_inputs as unbind_inputs
 from engine.handle_input import handle_mouse
+from engine.handle_input import merge_inputs
 
 from engine.button import Button
 from resources.sound_engine.sfx_event import createSFXEvent
@@ -91,3 +93,34 @@ def rebind_menu():
 
 
     return game_state, [rebind_key, selector_position]
+
+player_page = 0 # 0 is default page, 1 and 2 
+controller_mapping = ""
+def handle_joystick_config():
+    global player_page
+    global selector_position
+    global controller_mapping
+    game_state = "controller_config"
+
+    pressed = merge_inputs(menu_input(), True)
+    
+
+    if('up' in pressed):
+        selector_position -= 1
+        if(selector_position <= -1):
+            selector_position = 5
+    elif('down' in pressed):
+        selector_position += 1
+        if(selector_position >= 6):
+            selector_position = 0
+    
+    if('left' in pressed):
+        selector_position -= 3
+        if(selector_position <= -1):
+            selector_position += 6
+    elif('right' in pressed):
+        selector_position += 3
+        if(selector_position >= 6):
+            selector_position -= 6
+
+    return game_state, [player_page, selector_position, controller_mapping]

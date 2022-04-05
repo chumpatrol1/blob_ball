@@ -1,7 +1,7 @@
 from os import getcwd
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_particles import draw_ball_particles as draw_ball_particles
-from engine.handle_input import return_mapkey_names
+from engine.handle_input import return_mapkey_names, return_joystick_mapping
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -99,7 +99,7 @@ def draw_rebind_screen(game_display, settings, info_getter):
         text_rect.topleft = (568, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 60
-
+    # TODO: Cache these
     small_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 15)
     text_array = [
         small_font.render("Note: You may need to press", False, text_color),
@@ -116,7 +116,7 @@ def draw_rebind_screen(game_display, settings, info_getter):
         text_rect.topleft = (978, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 36
-    if(rebind_key == "Click to Rebind!"):
+    if(rebind_key == "Click to Rebind!"): # TODO: Cache these
         ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")
     else:
         ball = pg.image.load(cwd + "/resources/images/balls/goal_ball.png")
@@ -130,8 +130,56 @@ def draw_rebind_screen(game_display, settings, info_getter):
     game_display.blit(ball, (selector_x, selector_y))
     
 
-def draw_controller_bind_screen():
-    pass
+def draw_controller_bind_screen(game_display, info_getter, settings):
+    text_color = (0, 0, 255)
+    draw_background(game_display, "rebind", settings)
+
+    player_page = info_getter[0]
+    selector_position = info_getter[1]
+
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    menu_text = menu_font.render('PLAYER PAGE' + str(player_page), False, text_color)
+    text_rect = menu_text.get_rect()
+    text_rect.center = (450, 50)
+    game_display.blit(menu_text, text_rect)
+
+    ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png") # TODO: Cache this
+    ball = pg.transform.scale(ball, (38, 38))
+
+    selector_x = 500 * (selector_position//3)
+    selector_y = 150 + 60 * (selector_position%3)
+
+    game_display.blit(ball, (selector_x, selector_y))
+
+    input_keys = return_joystick_mapping()
+    if(player_page == 0):
+        text_array = []
+        for i in input_keys:
+            for j in input_keys[i]:
+                config_text = j
+                if(config_text == "GameCube Controller Adapter"):
+                    config_text = "GCCA"
+                text_array.append(menu_font.render(config_text, False, text_color))
+
+        text_array.insert(len(text_array)//2, menu_font.render("Reset All", False, text_color))
+        text_array.append(menu_font.render("Back", False, text_color))
+
+        text_y = 152
+        for text_box in text_array[:len(text_array)//2]:
+            text_rect = text_box.get_rect()
+            text_rect.topleft = (68, text_y)
+            game_display.blit(text_box, text_rect)
+            text_y += 60
+        
+        text_y = 152
+        for text_box in text_array[len(text_array)//2:]:
+            text_rect = text_box.get_rect()
+            text_rect.topleft = (568, text_y)
+            game_display.blit(text_box, text_rect)
+            text_y += 60
+    elif(player_page == 1 or player_page == 2):
+        pass
+    #print(len(text_array))
 
 
 def draw_rules_screen(game_display, ruleset, selector_position, settings):

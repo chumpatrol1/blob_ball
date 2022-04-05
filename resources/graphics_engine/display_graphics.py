@@ -11,7 +11,7 @@ from resources.graphics_engine.display_gameplay import draw_gameplay as draw_gam
 from resources.graphics_engine.display_pause import capture_gameplay, draw_pause_background, draw_pause_screen
 from resources.graphics_engine.display_win_screen import draw_win_screen as draw_win_screen
 from resources.graphics_engine.display_gameplay import unload_image_cache as unload_image_cache
-from resources.graphics_engine.display_settings import draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
+from resources.graphics_engine.display_settings import draw_controller_bind_screen, draw_rebind_screen, draw_settings_screen, draw_rules_screen, draw_pmods_screen
 from resources.graphics_engine.display_almanac import draw_almanac_art, draw_almanac_backgrounds, draw_almanac_blobs, draw_almanac_stats, draw_almanac_stats_2, draw_almanac_stats_3, draw_almanac_main as draw_almanac_main
 from resources.graphics_engine.display_medals_and_milestones import draw_mam
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
@@ -109,6 +109,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_settings_screen(game_surface, the_settings, selector_position)
     elif(game_state == "rebind"):
         draw_rebind_screen(game_surface, settings, info_getter)
+    elif(game_state == "controller_config"):
+        draw_controller_bind_screen(game_surface, info_getter, settings)
     elif(game_state == "almanac"):
         selector_position = info_getter[0]
         draw_almanac_main(game_surface, selector_position, settings)
