@@ -123,4 +123,12 @@ def handle_joystick_config():
         if(selector_position >= 6):
             selector_position -= 6
 
+    if('ability' in pressed):
+        if(selector_position == 5):
+            game_state = "settings"
+            player_page = 0
+            selector_position = 0
+            controller_mapping = ""
+            createSFXEvent("select")
+
     return game_state, [player_page, selector_position, controller_mapping]

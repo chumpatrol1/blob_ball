@@ -452,8 +452,8 @@ class Ball:
                 self.x_speed = self.x_speed_max
             elif(self.x_speed < -1 * self.x_speed_max):
                 self.x_speed = -1 * self.x_speed_max
-            self.x_pos += self.x_speed
-            self.info['x_distance_moved'] += abs(self.x_speed)
+        self.x_pos += self.x_speed
+        self.info['x_distance_moved'] += abs(self.x_speed)
 
         apply_traction_friction()
         interact_with_goal_posts()
