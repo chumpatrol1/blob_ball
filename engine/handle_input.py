@@ -7,7 +7,7 @@ from pygame.constants import K_KP_ENTER
 from engine.get_events import get_events
 from resources.graphics_engine.handle_screen_size import return_mouse_wh
 from resources.sound_engine.sfx_event import createSFXEvent
-
+import copy
 #print(tuple(filter(lambda x: x.startswith("K_"), pg.constants.__dict__.keys())))
 
 pg.init()
@@ -32,7 +32,7 @@ input_map = {
     'p2_block': pg.K_COMMA,
     'p2_boost': pg.K_PERIOD,
 }
-
+# INT KEYS MUST BE STRINGS - this is because when saving/loading the controls to file they are stored as strings!
 # DEFAULT GAMECUBE CONTROLS - converts button press to an action
 
 gamecube_map = {
@@ -40,17 +40,17 @@ gamecube_map = {
     'vertical_deadzone': 0.3,
     'bumper_deadzone': 0.3,
     'rumble': True,
-    0: 'up', # X
-    1: 'ability', # A
-    2: 'kick', # B
-    3: 'down', # Y
-    4: 'block', # L
-    5: 'block', # R
-    6: '',
-    7: 'boost', # Z
-    8: '',
-    9: 'escape', # HOME
-    10: '',
+    '0': 'up', # X
+    '1': 'ability', # A
+    '2': 'kick', # B
+    '3': 'down', # Y
+    '4': 'block', # L
+    '5': 'block', # R
+    '6': '',
+    '7': 'boost', # Z
+    '8': '',
+    '9': 'escape', # HOME
+    '10': '',
 }
 
 xbox360_map = {
@@ -74,9 +74,9 @@ player_mapping = {
     'Generic': dict(gamecube_map),
 }
 
-joystick_mapping = {
-    1: dict(player_mapping),
-    2: dict(player_mapping),
+original_joystick_mapping = {
+    "1": dict(player_mapping),
+    "2": dict(player_mapping),
 }
 
 mapkey_names = {}
@@ -113,6 +113,12 @@ def update_mapkey_names(input_list, key = None):
 def return_mapkey_names():
     global mapkey_names
     return mapkey_names
+joystick_map = {}
+def reset_joystick_map():
+    global joystick_map
+    joystick_map = copy.deepcopy(original_joystick_mapping)
+
+reset_joystick_map()
 
 try:
     controls = open(getcwd()+"/config/controls.txt", "r+")
@@ -122,28 +128,43 @@ except:
     controls = open(getcwd()+"/config/controls.txt", "r+")
 
 try:
-    n_joystick_mapping = open(getcwd()+"/configs/joysticks.txt", "r+")
-    for key in joystick_mapping:
-            if not key in n_joystick_mapping:
-                n_joystick_mapping[key] = joystick_mapping[key]
-            else:
-                for joy_button in n_joystick_mapping[key]:
-                    if not joy_button in n_joystick_mapping[key]:
-                        n_joystick_mapping[key][joy_button] = joystick_mapping[key][joy_button]
-    joystick_mapping = n_joystick_mapping
-except:
+    with open(getcwd()+"/config/joysticks.txt", "r+") as joy_file:
+        n_joystick_mapping = loads(joy_file.readlines()[0])
+
+    for key in original_joystick_mapping:
+        if not key in n_joystick_mapping:
+            n_joystick_mapping[key] = original_joystick_mapping[key]
+        else:
+            for joy_button in n_joystick_mapping[key]:
+                if not joy_button in n_joystick_mapping[key]:
+                    n_joystick_mapping[key][joy_button] = original_joystick_mapping[key][joy_button]
+
+    joystick_map = n_joystick_mapping
+
+except Exception as ex:
     with open(getcwd()+"/config/joysticks.txt", "w") as joystick_file:
-        joystick_file.write(dumps(joystick_mapping))
-    joystick_mapping = open(getcwd()+"/config/joysticks.txt", "r+")
+        joystick_file.write(dumps(original_joystick_mapping))
+    
+    with open(getcwd()+"/config/joysticks.txt", "r+") as joy_file:
+        joystick_map = loads(joy_file.readlines()[0])
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
 
 input_map = loads(controls.readlines()[0])
-joystick_map = loads(joystick_mapping.readlines()[0])
+controls.close()
+
 
 def return_joystick_mapping():
     global joystick_map
     return joystick_map
+
+def bind_to_joy(player, controller, key, value):
+    global joystick_map
+    joystick_map[player][controller][key] = value
+    with open(getcwd()+"/config/joysticks.txt", "w") as joystick_file:
+        joystick_file.write(dumps(joystick_map))
+    
+
 
 update_mapkey_names(input_map)
 
@@ -255,7 +276,7 @@ def reset_inputs():
     with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
-def get_keypress(detect_new_controllers = True):
+def get_keypress(detect_new_controllers = True, menu_input = True):
     global input_map
     pressed = pg.key.get_pressed()
     events = get_events()
@@ -352,31 +373,53 @@ def get_keypress(detect_new_controllers = True):
         header = ""
         if(joystick.get_instance_id() - 1 == joystick_handler['p1_joystick']):
             header = "p1_"
+            player_key = "1"
         elif(joystick.get_instance_id() - 1 == joystick_handler['p2_joystick']):
             header = "p2_"
+            player_key = "2"
         else:
             continue
         
+        if(joystick.get_name() in {"GameCube Controller Adapter"}):
+            player_joystick = joystick.get_name()
+        else:
+            player_joystick = "Generic"
         # Control Stick
         # TODO: Deadzone updates
         # TODO: C-Stick Attack
-        if(joystick.get_axis(0) > 0.3):
+        if(joystick.get_axis(0) > joystick_map[player_key][player_joystick]['horizontal_deadzone']):
             #print("Holding Right")
             pressed_array.append(header + "right")
-        elif(joystick.get_axis(0) < -0.3):
+        elif(joystick.get_axis(0) < -1 * joystick_map[player_key][player_joystick]['horizontal_deadzone']):
             #print("Holding Left")
             pressed_array.append(header + "left")
 
-        if(joystick.get_axis(1) > 0.3):
+        if(joystick.get_axis(1) > joystick_map[player_key][player_joystick]['vertical_deadzone']):
             #print("Holding Down")
             pressed_array.append(header + "down")
-        elif(joystick.get_axis(1) < -0.3):
+        elif(joystick.get_axis(1) < -1 * joystick_map[player_key][player_joystick]['vertical_deadzone']):
             #print("Holding Up")
             pressed_array.append(header + "up")
+        
+        used_map = original_joystick_mapping
+        if(not menu_input):
+            used_map = joystick_map
 
-        # TODO: Rebindable buttons
         # Buttons
-        if(joystick.get_button(2)): # GC B
+        for button in range(joystick.get_numbuttons()):
+            if(str(button) in used_map[player_key][player_joystick] and joystick.get_button(button)):
+                #print(used_map)
+                #print(joystick_map == original_joystick_mapping)
+                #  and joystick.get_button(button)
+                joy_button_pressed = used_map[player_key][player_joystick][str(button)]
+                if(joy_button_pressed != "escape"):
+                    pressed_array.append(header + used_map[player_key][player_joystick][str(button)])
+                else:
+                    pressed_array.append('escape')
+                
+            
+
+        '''if(joystick.get_button(2)): # GC B
             pressed_array.append(header + "kick")
         
         if(joystick.get_button(1)): # GC A 
@@ -390,7 +433,7 @@ def get_keypress(detect_new_controllers = True):
 
         if(joystick.get_button(9)): # GC Home Button
             pressed_array.append('escape')
-        
+        '''
         # TODO: Shoulder buttons/triggers
         
 
@@ -497,7 +540,7 @@ def toggle_fullscreen(force_override = False): # TODO: Override so it works with
     return False
 
 def gameplay_input():
-    pressed = get_keypress()
+    pressed = get_keypress(menu_input = False)
     return pressed
 
 was_pressed = [0, 0, 0]

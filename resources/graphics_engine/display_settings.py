@@ -136,6 +136,7 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
 
     player_page = info_getter[0]
     selector_position = info_getter[1]
+    controller_mapping = info_getter[2]
 
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     menu_text = menu_font.render('PLAYER PAGE' + str(player_page), False, text_color)
@@ -146,13 +147,14 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
     ball = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png") # TODO: Cache this
     ball = pg.transform.scale(ball, (38, 38))
 
-    selector_x = 500 * (selector_position//3)
-    selector_y = 150 + 60 * (selector_position%3)
-
-    game_display.blit(ball, (selector_x, selector_y))
-
     input_keys = return_joystick_mapping()
     if(player_page == 0):
+
+        selector_x = 500 * (selector_position//3)
+        selector_y = 150 + 60 * (selector_position%3)
+
+        game_display.blit(ball, (selector_x, selector_y))
+
         text_array = []
         for i in input_keys:
             for j in input_keys[i]:
@@ -178,7 +180,37 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
             game_display.blit(text_box, text_rect)
             text_y += 60
     elif(player_page == 1 or player_page == 2):
-        pass
+        active_joystick_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
+
+        selector_x = 0
+        selector_y = 150 + 55 * (selector_position)
+
+        game_display.blit(ball, (selector_x, selector_y))
+
+        if(controller_mapping == "GameCube Controller Adapter"):
+            text_array = [
+                menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
+                menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
+                menu_font.render("A: " + str(active_joystick_mapping['1']), False, text_color),
+                menu_font.render("B: " + str(active_joystick_mapping['2']), False, text_color),
+                menu_font.render("X: " + str(active_joystick_mapping['0']), False, text_color),
+                menu_font.render("Y: " + str(active_joystick_mapping['3']), False, text_color),
+                menu_font.render("Z: " + str(active_joystick_mapping['7']), False, text_color),
+                menu_font.render("L: " + str(active_joystick_mapping['4']), False, text_color),
+                menu_font.render("R: " + str(active_joystick_mapping['5']), False, text_color),
+                menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
+                menu_font.render("Back", False, text_color),
+            ]
+        elif(controller_mapping == "Generic"):
+            text_array = []
+
+        text_y = 152
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.topleft = (68, text_y)
+            game_display.blit(text_box, text_rect)
+            text_y += 55
+
     #print(len(text_array))
 
 
