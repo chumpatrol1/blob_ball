@@ -202,7 +202,19 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("Back", False, text_color),
             ]
         elif(controller_mapping == "Generic"):
-            text_array = []
+            text_array = [
+                menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
+                menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
+                menu_font.render("B0: " + str(active_joystick_mapping['0']), False, text_color),
+                menu_font.render("B1: " + str(active_joystick_mapping['1']), False, text_color),
+                menu_font.render("B2: " + str(active_joystick_mapping['2']), False, text_color),
+                menu_font.render("B3: " + str(active_joystick_mapping['3']), False, text_color),
+                menu_font.render("B4: " + str(active_joystick_mapping['4']), False, text_color),
+                menu_font.render("B5: " + str(active_joystick_mapping['5']), False, text_color),
+                menu_font.render("B6: " + str(active_joystick_mapping['6']), False, text_color),
+                menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
+                menu_font.render("Back", False, text_color),
+            ]
 
         text_y = 152
         for text_box in text_array:

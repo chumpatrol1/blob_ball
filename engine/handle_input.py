@@ -46,11 +46,11 @@ gamecube_map = {
     '3': 'down', # Y
     '4': 'block', # L
     '5': 'block', # R
-    '6': '',
+    '6': 'none',
     '7': 'boost', # Z
-    '8': '',
+    '8': 'none',
     '9': 'escape', # HOME
-    '10': '',
+    '10': 'none',
 }
 
 xbox360_map = {
