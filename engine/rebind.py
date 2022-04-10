@@ -211,7 +211,7 @@ def handle_joystick_config():
                     value = current_mapping['horizontal_deadzone']
                     value = round(value - 0.1, 1)
                     if(value < 0.1):
-                        value = 0.9
+                        value = 0.8
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
                     
@@ -220,7 +220,7 @@ def handle_joystick_config():
                     value = current_mapping['vertical_deadzone']
                     value = round(value - 0.1, 1)
                     if(value < 0.1):
-                        value = 0.9
+                        value = 0.8
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
 
@@ -281,7 +281,7 @@ def handle_joystick_config():
                     value = current_mapping['horizontal_deadzone']
                     value = round(value - 0.1, 1)
                     if(value < 0.1):
-                        value = 0.9
+                        value = 0.8
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
                     
@@ -290,7 +290,7 @@ def handle_joystick_config():
                     value = current_mapping['vertical_deadzone']
                     value = round(value - 0.1, 1)
                     if(value < 0.1):
-                        value = 0.9
+                        value = 0.8
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
 
@@ -355,7 +355,7 @@ def handle_joystick_config():
                     bind_to_joy_arr[2] = 'horizontal_deadzone'
                     value = current_mapping['horizontal_deadzone']
                     value = round(value + 0.1, 1)
-                    if(value > 0.9):
+                    if(value > 0.8):
                         value = 0.1
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
@@ -364,7 +364,7 @@ def handle_joystick_config():
                     bind_to_joy_arr[2] = 'vertical_deadzone'
                     value = current_mapping['vertical_deadzone']
                     value = round(value + 0.1, 1)
-                    if(value > 0.9):
+                    if(value > 0.8):
                         value = 0.1
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
@@ -424,7 +424,7 @@ def handle_joystick_config():
                     bind_to_joy_arr[2] = 'horizontal_deadzone'
                     value = current_mapping['horizontal_deadzone']
                     value = round(value + 0.1, 1)
-                    if(value > 0.9):
+                    if(value > 0.8):
                         value = 0.1
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
@@ -433,7 +433,7 @@ def handle_joystick_config():
                     bind_to_joy_arr[2] = 'vertical_deadzone'
                     value = current_mapping['vertical_deadzone']
                     value = round(value + 0.1, 1)
-                    if(value > 0.9):
+                    if(value > 0.8):
                         value = 0.1
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
