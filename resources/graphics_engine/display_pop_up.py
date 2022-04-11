@@ -67,6 +67,7 @@ def draw_pop_up(game_display, info_getter, settings):
 
 def create_controller_popup(pop_up):
     pop_up_surface = pg.Surface((450, 200), pg.SRCALPHA)
+    pop_up_surface2 = pg.Surface((450, 200), pg.SRCALPHA)
     pg.draw.rect(pop_up_surface, (150, 150, 0), (0, 0, 450, 200), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
     if(pop_up.entry.event_id == -1):
@@ -79,7 +80,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 0):
         text_array = [
@@ -91,7 +92,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 1):
         text_color = (255, 0, 0)
@@ -104,7 +105,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 2):
         text_color = (0, 0, 255)
@@ -117,7 +118,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 3):
         text_color = (255, 0, 0)
@@ -130,7 +131,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 4):
         text_color = (0, 0, 255)
@@ -143,7 +144,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 5):
         text_color = (255, 0, 0)
@@ -156,7 +157,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 6):
         text_color = (0, 0, 255)
@@ -169,7 +170,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 7):
         text_color = (255, 0, 0)
@@ -182,7 +183,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id == 8):
         text_color = (0, 0, 255)
@@ -195,7 +196,7 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
     elif(pop_up.entry.event_id >= 10):
         text_array = [
@@ -207,9 +208,12 @@ def create_controller_popup(pop_up):
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.midtop = (225, text_y)
-            pop_up_surface.blit(text_box, text_rect)
+            pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
+    pop_up_surface.set_alpha(10)
+    pop_up_surface2.set_alpha(10)
     pop_up.surface = pop_up_surface
+    pop_up.surface2 = pop_up_surface2
         
 
 def process_controller_popups(game_display):
@@ -218,6 +222,15 @@ def process_controller_popups(game_display):
         return
     if(pop_up.surface is None):
         create_controller_popup(pop_up)
+    if(pop_up.timer < 20):
+        pop_up.surface.set_alpha(200 * pop_up.timer/20)
+    if(pop_up.fade_in >= 0):
+        pop_up.surface.set_alpha(200 * (8 - pop_up.fade_in)/8)
     game_display.blit(pop_up.surface, (891, 518))
-    
+    if(pop_up.surface2 is not None):
+        if(pop_up.timer < 20):
+            pop_up.surface2.set_alpha(255 * pop_up.timer/20)
+        if(pop_up.fade_in >= 0):
+            pop_up.surface2.set_alpha(255 * (8 - pop_up.fade_in)/8)
+        game_display.blit(pop_up.surface2, (891, 518))
     # Then game_display.blit

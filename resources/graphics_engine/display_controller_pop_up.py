@@ -4,6 +4,8 @@ class Node:
     def __init__(self, entry, timer = 120):
         self.entry = entry # This is the popup contained
         self.surface = None
+        self.surface2 = None
+        self.fade_in = 8
         self.timer = timer # This is the time left on this particular entry
         self.next = None # This is the next Node
 
@@ -20,9 +22,15 @@ class Queue:
 
     def process(self):
         if(self.head):
+            
             self.head.timer -= 1
+
+            if(self.head.fade_in >= 0):
+                self.head.fade_in -= 1
+
             if(self.head.timer <= 0):
                 self.head = self.head.next
+            
         return self.head
 
     def add_item(self, entry):
@@ -47,6 +55,7 @@ class Queue:
 
 class ControllerPopUp:
     def __init__(self, controller, event_id, name):
+        # TODO: Declare a type? If I run type(ControllerPopUp) it should return something like "Controller Pop Up"
         self.controller_number = controller
         self.event_id = event_id
         self.controller_name = name
