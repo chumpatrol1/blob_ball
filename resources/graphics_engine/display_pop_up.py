@@ -67,21 +67,148 @@ def draw_pop_up(game_display, info_getter, settings):
 
 def create_controller_popup(pop_up):
     pop_up_surface = pg.Surface((450, 200), pg.SRCALPHA)
+    pg.draw.rect(pop_up_surface, (150, 150, 0), (0, 0, 450, 200), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
-    if(pop_up.entry.event_id == 0):
-        pg.draw.rect(pop_up_surface, (0, 0, 255), (0, 0, 450, 200), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
+    if(pop_up.entry.event_id == -1):
         text_array = [
-            menu_font.render("Connected Controller " + str(pop_up.entry.controller_number), False, (0, 0, 0)),
+            menu_font.render("Disconnected Controller " + str(pop_up.entry.controller_number), False, (0, 0, 0)),
+            menu_font.render("Type: " + str(pop_up.entry.controller_name), False, (0, 0, 0)),
+            menu_font.render("from Blob Ball!", False, (0, 0, 0)),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 0):
+        text_array = [
+            menu_font.render("Controller " + str(pop_up.entry.controller_number) + " Connected!", False, (0, 0, 0)),
             menu_font.render("Type: " + str(pop_up.entry.controller_name), False, (0, 0, 0)),
             menu_font.render("Press DPad Left/Right to bind", False, (0, 0, 0)),
         ]
-        text_y = 0
+        text_y = 25
         for text_box in text_array:
             text_rect = text_box.get_rect()
-            text_rect.topleft = (20, text_y)
+            text_rect.midtop = (225, text_y)
             pop_up_surface.blit(text_box, text_rect)
             text_y += 50
-        print("created red")
+    elif(pop_up.entry.event_id == 1):
+        text_color = (255, 0, 0)
+        text_array = [
+            menu_font.render("", False, text_color),
+            menu_font.render("Successfully Assigned " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("to Player 1!", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 2):
+        text_color = (0, 0, 255)
+        text_array = [
+            menu_font.render("", False, text_color),
+            menu_font.render("Successfully Assigned " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("to Player 2!", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 3):
+        text_color = (255, 0, 0)
+        text_array = [
+            menu_font.render("", False, text_color),
+            menu_font.render("Successfully Reassigned " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("to Player 1!", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 4):
+        text_color = (0, 0, 255)
+        text_array = [
+            menu_font.render("", False, text_color),
+            menu_font.render("Successfully Reassigned " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("to Player 2!", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 5):
+        text_color = (255, 0, 0)
+        text_array = [
+            menu_font.render("Successfully Replaced", False, text_color),
+            menu_font.render("Player 1's Controller with", False, text_color),
+            menu_font.render("Controller " + str(pop_up.entry.controller_number), False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 6):
+        text_color = (0, 0, 255)
+        text_array = [
+            menu_font.render("Successfully Replaced", False, text_color),
+            menu_font.render("Player 2's Controller with", False, text_color),
+            menu_font.render("Controller " + str(pop_up.entry.controller_number), False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 7):
+        text_color = (255, 0, 0)
+        text_array = [
+            menu_font.render("Successfully Unbound", False, text_color),
+            menu_font.render("Controller " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("from Player 1", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 8):
+        text_color = (0, 0, 255)
+        text_array = [
+            menu_font.render("Successfully Unbound", False, text_color),
+            menu_font.render("Controller " + str(pop_up.entry.controller_number), False, text_color),
+            menu_font.render("from Player 2", False, text_color),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id >= 10):
+        text_array = [
+            menu_font.render("Successfully Swapped", False, (0, 0, 0)),
+            menu_font.render("Controllers " + str(pop_up.entry.controller_number) + " and " + str(pop_up.entry.event_id - pop_up.entry.controller_number - 10), False, (0, 0, 0)),
+            menu_font.render("from Player 1", False, (0, 0, 0)),
+        ]
+        text_y = 25
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
     pop_up.surface = pop_up_surface
         
 

@@ -55,7 +55,21 @@ gamecube_map = {
 }
 
 xbox360_map = {
-
+    'horizontal_deadzone': 0.3,
+    'vertical_deadzone': 0.5,
+    'bumper_deadzone': 0.3,
+    'rumble': True,
+    '0': 'up', # X
+    '1': 'ability', # A
+    '2': 'kick', # B
+    '3': 'down', # Y
+    '4': 'block', # L
+    '5': 'block', # R
+    '6': 'none',
+    '7': 'boost', # Z
+    '8': 'none',
+    '9': 'escape', # HOME
+    '10': 'none',
 }
 
 ps3_map = {
@@ -72,6 +86,7 @@ switchpro_map = {
 
 player_mapping = {
     'GameCube Controller Adapter': dict(gamecube_map),
+    'Xbox 360 Controller': dict(xbox360_map),
     'Generic': dict(gamecube_map),
 }
 
@@ -280,6 +295,74 @@ def reset_inputs():
     with open(getcwd()+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
+def bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name):
+    generated_event = -2
+    controller_name = "GCCA"
+    if(joysticks[event.__dict__['joy']].get_button(15) and detect_new_controllers):
+        old_joystick = joystick_handler['p1_joystick']
+        if(joystick_handler['p1_joystick'] == None): # No Controller Currently Assigned
+            joystick_handler['p1_joystick'] = new_controller
+            generated_event = 1
+            if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
+                # Unassign Port 2's controller if we are swapping the ports of this controller
+                generated_event = 3
+                joystick_handler['p2_joystick'] = None
+            # GENERATE HERE
+            create_controller_pop_up(new_controller, controller_name, generated_event)
+        else: # P1 already has a controller
+            if(new_controller != old_joystick): # If we mash DLeft, nothing will happen
+                joystick_handler['p1_joystick'] = new_controller # Assign new controller to P1
+                generated_event = 5
+                # Check if the controller used to be assigned to P2, or if P2 is empty
+                if(new_controller == joystick_handler['p2_joystick']): # True if we swap
+                    # P1's old controller is now P2's new controller
+                    joystick_handler['p2_joystick'] = old_joystick
+                    generated_event = 10 + old_joystick + new_controller
+                elif(joystick_handler['p2_joystick'] == None): # True if P2 is currently unbound
+                    joystick_handler['p2_joystick'] = old_joystick
+                    create_controller_pop_up(old_joystick, controller_name, 2)
+                else: # True if we unbound P1's old controller
+                    create_controller_pop_up(old_joystick, controller_name, 7)
+                create_controller_pop_up(new_controller, controller_name, generated_event)
+                # GENERATE HERE
+        print(joystick_handler)
+        print("Assigned joystick to P1")
+        #print(joystick_handler)
+    # Right on DPAD
+    elif(joysticks[event.__dict__['joy']].get_button(13) and detect_new_controllers):    
+        #print("test r passed")
+        old_joystick = joystick_handler['p2_joystick']
+        if(joystick_handler['p2_joystick'] == None):
+            joystick_handler['p2_joystick'] = new_controller
+            generated_event = 2
+            if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
+                generated_event = 4
+                joystick_handler['p1_joystick'] = None
+            create_controller_pop_up(new_controller, controller_name, generated_event)
+        else:
+            if(new_controller != old_joystick):
+                joystick_handler['p2_joystick'] = new_controller
+                generated_event = 6
+                if(new_controller == joystick_handler['p1_joystick']):
+                    joystick_handler['p1_joystick'] = old_joystick
+                    generated_event = 10 + old_joystick + new_controller
+                elif(joystick_handler['p1_joystick'] == None):
+                    joystick_handler['p1_joystick'] = old_joystick
+                    create_controller_pop_up(old_joystick, controller_name, 1)
+                else: # True if we unbound P2's old controller
+                    create_controller_pop_up(old_joystick, controller_name, 8)
+                create_controller_pop_up(new_controller, controller_name, generated_event)
+        print(joystick_handler)
+        print("Assigned joystick to P2")
+        #print(joystick_handler)
+    else:
+        pass
+        #print(joystick_handler)
+        #print(new_controller)
+    
+def bind_generic_to_player():
+    pass
+
 def get_keypress(detect_new_controllers = True, menu_input = True):
     global input_map
     pressed = pg.key.get_pressed()
@@ -335,68 +418,11 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             # Assign Controller to Port
             # Left on DPAD
             new_controller = joysticks[event.__dict__['joy']].get_instance_id() - 1 # Get Controller ID
-            generated_event = -2
-            if(joysticks[event.__dict__['joy']].get_button(15) and detect_new_controllers):
-                old_joystick = joystick_handler['p1_joystick']
-                if(joystick_handler['p1_joystick'] == None): # No Controller Currently Assigned
-                    joystick_handler['p1_joystick'] = new_controller
-                    generated_event = 1
-                    if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
-                        # Unassign Port 2's controller if we are swapping the ports of this controller
-                        generated_event = 3
-                        joystick_handler['p2_joystick'] = None
-                    # GENERATE HERE
-                    create_controller_pop_up(new_controller, generated_event)
-                else: # P1 already has a controller
-                    if(new_controller != old_joystick): # If we mash DLeft, nothing will happen
-                        joystick_handler['p1_joystick'] = new_controller # Assign new controller to P1
-                        generated_event = 5
-                        # Check if the controller used to be assigned to P2, or if P2 is empty
-                        if(new_controller == joystick_handler['p2_joystick']): # True if we swap
-                            # P1's old controller is now P2's new controller
-                            joystick_handler['p2_joystick'] = old_joystick
-                            generated_event = 10 + old_joystick + new_controller
-                        elif(joystick_handler['p2_joystick'] == None): # True if P2 is currently unbound
-                            joystick_handler['p2_joystick'] = old_joystick
-                            create_controller_pop_up(old_joystick, 2)
-                        else: # True if we unbound P1's old controller
-                            create_controller_pop_up(old_joystick, 7)
-                        create_controller_pop_up(new_controller, generated_event)
-                        # GENERATE HERE
-                print(joystick_handler)
-                print("Assigned joystick to P1")
-                #print(joystick_handler)
-            # Right on DPAD
-            elif(joysticks[event.__dict__['joy']].get_button(13) and detect_new_controllers):    
-                #print("test r passed")
-                old_joystick = joystick_handler['p2_joystick']
-                if(joystick_handler['p2_joystick'] == None):
-                    joystick_handler['p2_joystick'] = new_controller
-                    generated_event = 2
-                    if(joystick_handler['p1_joystick'] == joystick_handler['p2_joystick']):
-                        generated_event = 4
-                        joystick_handler['p1_joystick'] = None
-                    create_controller_pop_up(new_controller, generated_event)
-                else:
-                    if(new_controller != old_joystick):
-                        joystick_handler['p2_joystick'] = new_controller
-                        generated_event = 6
-                        if(new_controller == joystick_handler['p1_joystick']):
-                            joystick_handler['p1_joystick'] = old_joystick
-                            generated_event = 10 + old_joystick + new_controller
-                        elif(joystick_handler['p1_joystick'] == None):
-                            joystick_handler['p1_joystick'] = old_joystick
-                            create_controller_pop_up(old_joystick, 1)
-                        else: # True if we unbound P2's old controller
-                            create_controller_pop_up(old_joystick, 8)
-                        create_controller_pop_up(new_controller, generated_event)
-                print(joystick_handler)
-                print("Assigned joystick to P2")
-                #print(joystick_handler)
+            controller_name = joysticks[event.__dict__['joy']].get_name()
+            if(controller_name == "GameCube Controller Adapter"):
+                bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name)
             else:
-                pass
-                #print(joystick_handler)
-                #print(new_controller)
+                print("Unsupported for now!")
             
 
 
@@ -415,7 +441,7 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
         else:
             continue
         
-        if(joystick.get_name() in {"GameCube Controller Adapter"}):
+        if(joystick.get_name() in {"GameCube Controller Adapter", "Xbox 360 Controller"}):
             player_joystick = joystick.get_name()
         else:
             player_joystick = "Generic"

@@ -1,7 +1,7 @@
 # This isn't tied to any specific game state - instead it can pop up at any time
 
 class Node:
-    def __init__(self, entry, timer = 60):
+    def __init__(self, entry, timer = 120):
         self.entry = entry # This is the popup contained
         self.surface = None
         self.timer = timer # This is the time left on this particular entry
@@ -46,35 +46,35 @@ class Queue:
         
 
 class ControllerPopUp:
-    def __init__(self, controller, event_id):
+    def __init__(self, controller, event_id, name):
         self.controller_number = controller
         self.event_id = event_id
-        self.controller_name = controller
+        self.controller_name = name
 
     def __str__(self):
         return f"Event: {self.event_id}, Controller: {self.controller_number}"
 
-def create_controller_pop_up(controller, event_id):
+def create_controller_pop_up(controller, name = "GCCA", event_id = -2):
     if(event_id == 9 or event_id == -2): # Event ID 9 is ignored
         return
-    new_pop_up = ControllerPopUp(controller, event_id)
+    new_pop_up = ControllerPopUp(controller, event_id, name)
     new_entry = Node(new_pop_up)
     #print(new_pop_up)
     controller_popup_queue.add_item(new_entry)
     #print(controller_popup_queue)
 
 controller_popup_queue = Queue()
-create_controller_pop_up(0, -1)
-create_controller_pop_up(0, 0)
-create_controller_pop_up(0, 1)
-create_controller_pop_up(0, 2)
-create_controller_pop_up(0, 3)
-create_controller_pop_up(0, 4)
-create_controller_pop_up(0, 5)
-create_controller_pop_up(0, 6)
-create_controller_pop_up(0, 7)
-create_controller_pop_up(0, 8)
-create_controller_pop_up(0, 11)
+create_controller_pop_up(0, event_id = -1)
+create_controller_pop_up(0, event_id = 0)
+create_controller_pop_up(0, event_id = 1)
+create_controller_pop_up(0, event_id = 2)
+create_controller_pop_up(0, event_id = 3)
+create_controller_pop_up(0, event_id = 4)
+create_controller_pop_up(0, event_id = 5)
+create_controller_pop_up(0, event_id = 6)
+create_controller_pop_up(0, event_id = 7)
+create_controller_pop_up(0, event_id = 8)
+create_controller_pop_up(0, event_id = 11)
 
 # Intended Control Flow
 # Create Controller Pop Up is called
