@@ -360,6 +360,9 @@ def bind_gcca_to_player(event, detect_new_controllers, new_controller, controlle
         #print(joystick_handler)
         #print(new_controller)
     
+def bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name):
+    pass
+
 def bind_generic_to_player():
     pass
 
@@ -421,13 +424,16 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             controller_name = joysticks[event.__dict__['joy']].get_name()
             if(controller_name == "GameCube Controller Adapter"):
                 bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name)
+                if(joysticks[event.__dict__['joy']].get_button(14)): # Down on DPAD
+                    pressed_array.append('return')
+            elif(controller_name == "Xbox 360 Controller"):
+                bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name)
             else:
                 print("Unsupported for now!")
             
 
 
-            if(joysticks[event.__dict__['joy']].get_button(14)): # Down on DPAD
-                pressed_array.append('return')
+            
 
         
     for joystick in joysticks:
