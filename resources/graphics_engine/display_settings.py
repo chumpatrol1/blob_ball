@@ -139,7 +139,7 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
     controller_mapping = info_getter[2]
 
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
-    menu_text = menu_font.render('PLAYER PAGE' + str(player_page), False, text_color)
+    menu_text = menu_font.render('PLAYER PAGE' + str(player_page) + controller_mapping, False, text_color)
     text_rect = menu_text.get_rect()
     text_rect.center = (450, 50)
     game_display.blit(menu_text, text_rect)
@@ -150,8 +150,8 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
     input_keys = return_joystick_mapping()
     if(player_page == 0):
 
-        selector_x = 500 * (selector_position//3)
-        selector_y = 150 + 60 * (selector_position%3)
+        selector_x = 500 * (selector_position//4)
+        selector_y = 150 + 60 * (selector_position%4)
 
         game_display.blit(ball, (selector_x, selector_y))
 
@@ -215,6 +215,21 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
                 menu_font.render("Back", False, text_color),
             ]
+        elif(controller_mapping == "Xbox 360 Controller"):
+            text_array = [
+                menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
+                menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
+                menu_font.render("B0: " + str(active_joystick_mapping['0']), False, text_color),
+                menu_font.render("B1: " + str(active_joystick_mapping['1']), False, text_color),
+                menu_font.render("B2: " + str(active_joystick_mapping['2']), False, text_color),
+                menu_font.render("B3: " + str(active_joystick_mapping['3']), False, text_color),
+                menu_font.render("B4: " + str(active_joystick_mapping['4']), False, text_color),
+                menu_font.render("B5: " + str(active_joystick_mapping['5']), False, text_color),
+                menu_font.render("B6: " + str(active_joystick_mapping['6']), False, text_color),
+                menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
+                menu_font.render("Back", False, text_color),
+            ]
+        
 
         text_y = 152
         for text_box in text_array:

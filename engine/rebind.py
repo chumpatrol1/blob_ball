@@ -108,6 +108,13 @@ def rebind_gcca(player):
     createSFXEvent("select")
     return game_state, controller_mapping
 
+def rebind_xbox360(player):
+    #print(return_joystick_mapping()[str(player)]["Generic"])
+    game_state = "controller_config"
+    controller_mapping = "Xbox 360 Controller"
+    createSFXEvent("select")
+    return game_state, controller_mapping
+
 def rebind_generic(player):
     #print(return_joystick_mapping()[str(player)]["Generic"])
     game_state = "controller_config"
@@ -119,7 +126,7 @@ def joystick_misc_func(player):
     global player_page
     global selector_position
     if(player == 1):
-        selector_position = 2
+        selector_position = 3
         createSFXEvent('chime_completion') # TODO: Actually reset the joysticks
         reset_joystick_map()
         game_state = "controller_config"
@@ -133,9 +140,10 @@ def joystick_misc_func(player):
     return game_state, controller_mapping
 
 config_menu_func_dict = {
-    0: rebind_gcca,
-    1: rebind_generic,
-    2: joystick_misc_func,
+    'GameCube Controller Adapter': rebind_gcca,
+    'Xbox 360 Controller': rebind_xbox360,
+    'Generic': rebind_generic,
+    3: joystick_misc_func, 
 }
 
 cycle_left_dict = {
@@ -172,7 +180,7 @@ def handle_joystick_config():
         selector_position -= 1
         if(selector_position <= -1):
             if(player_page == 0):
-                selector_position = 5
+                selector_position = 7
             else:
                 if(controller_mapping == "GameCube Controller Adapter"):
                     selector_position = 10
@@ -185,7 +193,7 @@ def handle_joystick_config():
         selector_position += 1
         selector_max = 0
         if(player_page == 0):
-            selector_max = 5
+            selector_max = 7
         else:
             if(controller_mapping == "GameCube Controller Adapter"):
                 selector_max = 10
@@ -199,9 +207,9 @@ def handle_joystick_config():
     
     if('left' in pressed):
         if(player_page == 0):
-            selector_position -= 3
+            selector_position -= 4
             if(selector_position <= -1):
-                selector_position += 6
+                selector_position += 8
         else:
             if(controller_mapping == "GameCube Controller Adapter"):
                 current_mapping = return_joystick_mapping()[str(player_page)]["GameCube Controller Adapter"]
@@ -273,8 +281,8 @@ def handle_joystick_config():
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
 
-            elif(controller_mapping == "Generic"): # TODO: Make this more modular?
-                current_mapping = return_joystick_mapping()[str(player_page)]["Generic"]
+            elif(controller_mapping == "Generic" or controller_mapping == "Xbox 360 Controller"): # TODO: Make this more modular?
+                current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
                 if(selector_position == 0): # H Dead
                     bind_to_joy_arr[2] = 'horizontal_deadzone'
@@ -344,9 +352,9 @@ def handle_joystick_config():
                     bind_to_joy(*bind_to_joy_arr)
     elif('right' in pressed):
         if(player_page == 0):
-            selector_position += 3
-            if(selector_position >= 6):
-                selector_position -= 6
+            selector_position += 4
+            if(selector_position >= 8):
+                selector_position -= 8
         else:
             if(controller_mapping == "GameCube Controller Adapter"):
                 current_mapping = return_joystick_mapping()[str(player_page)]["GameCube Controller Adapter"]
@@ -417,8 +425,8 @@ def handle_joystick_config():
                     value = not value
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
-            elif(controller_mapping == "Generic"): # TODO: Make this more modular?
-                current_mapping = return_joystick_mapping()[str(player_page)]["Generic"]
+            elif(controller_mapping == "Generic" or controller_mapping == "Xbox 360 Controller"): # TODO: Make this more modular?
+                current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
                 if(selector_position == 0): # H Dead
                     bind_to_joy_arr[2] = 'horizontal_deadzone'
@@ -489,10 +497,31 @@ def handle_joystick_config():
 
 
     if('ability' in pressed):
-        if(player_page == 0 and selector_position % 3 in config_menu_func_dict):
-            player_page = (selector_position//3) + 1
-            game_state, controller_mapping = config_menu_func_dict[selector_position % 3](player_page)
-            if(selector_position != 2):
+        if(player_page == 0):
+            input_keys = return_joystick_mapping()
+
+            player_page = (selector_position//4) + 1
+            # TODO: Make this work dynamically with shifting lists
+
+            if(selector_position != 3 and selector_position != 7):
+                i_ct = 0
+                if(selector_position < 3):
+                    for i in input_keys['1']:
+                        if(selector_position % 4 == i_ct):
+                            game_state, controller_mapping = config_menu_func_dict[i](player_page)
+                            print(controller_mapping)
+                            break
+                        i_ct += 1
+                else:
+                    for i in input_keys['2']:
+                        if(selector_position % 4 == i_ct):
+                            game_state, controller_mapping = config_menu_func_dict[i](player_page)
+                            print(controller_mapping)
+                            break
+                        i_ct += 1
+            else:
+                game_state, controller_mapping = config_menu_func_dict[selector_position % 4](player_page)
+            if(selector_position != 3):
                 selector_position = 0
             else:
                 player_page = 0
@@ -502,6 +531,10 @@ def handle_joystick_config():
                 player_page = 0
                 controller_mapping = ""
             if(controller_mapping == "Generic" and selector_position == 10):
+                selector_position = 0
+                player_page = 0
+                controller_mapping = ""
+            if(controller_mapping == "Xbox 360 Controller" and selector_position == 10):
                 selector_position = 0
                 player_page = 0
                 controller_mapping = ""
