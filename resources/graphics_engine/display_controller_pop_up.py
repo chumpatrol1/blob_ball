@@ -10,13 +10,40 @@ class Node:
     def create_surface(self):
         pass # Creates a Pygame Surface that gets assigned to self.surface
 
+    def __str__(self):
+        return str(self.entry) + f"\nTimer: {self.timer}\n"
+
 class Queue:
     def __init__(self):
         self.head = None
         self.tail = None
 
     def process(self):
-        pass
+        if(self.head):
+            self.head.timer -= 1
+            if(self.head.timer <= 0):
+                self.head = self.head.next
+        return self.head
+
+    def add_item(self, entry):
+        if(self.head == None):
+            self.head = self.tail = entry
+        else:
+            self.tail.next = entry # Update the pointer of the tail.
+            self.tail = entry # Update the tail.
+
+    def __iter__(self):
+        node = self.head
+        while node is not None:
+            yield node
+            node = node.next
+
+    def __str__(self):
+        ret_str = ""
+        for i in self:
+            ret_str += str(i)
+        return ret_str
+        
 
 class ControllerPopUp:
     def __init__(self, controller, event_id):
@@ -31,9 +58,23 @@ def create_controller_pop_up(controller, event_id):
     if(event_id == 9 or event_id == -2): # Event ID 9 is ignored
         return
     new_pop_up = ControllerPopUp(controller, event_id)
-    print(new_pop_up)
+    new_entry = Node(new_pop_up)
+    #print(new_pop_up)
+    controller_popup_queue.add_item(new_entry)
+    #print(controller_popup_queue)
 
 controller_popup_queue = Queue()
+create_controller_pop_up(0, -1)
+create_controller_pop_up(0, 0)
+create_controller_pop_up(0, 1)
+create_controller_pop_up(0, 2)
+create_controller_pop_up(0, 3)
+create_controller_pop_up(0, 4)
+create_controller_pop_up(0, 5)
+create_controller_pop_up(0, 6)
+create_controller_pop_up(0, 7)
+create_controller_pop_up(0, 8)
+create_controller_pop_up(0, 11)
 
 # Intended Control Flow
 # Create Controller Pop Up is called
@@ -42,17 +83,24 @@ controller_popup_queue = Queue()
 # > Stores an integer determining what event happened
 # > > -2: No Connection Event
 # > > -1: Controller disconnected (P)
+# > > > "Disconnected Controller #/Name/from game"
 # > > 0: Controller detected (P)
+# > > > "Connected Controller #/Name/Press DPad L/R to assign to port"
 # > > 1: Controller assigned to Port 1 without affecting Port 2 (P)
 # > > 2: Controller assigned to Port 2 without affecting Port 1 (P)
+# > > > "Successfully assigned # to P"
 # > > 3: Controller assigned to Port 1, unbinding from Port 2 (P)
 # > > 4: Controller assigned to Port 2, unbinding from Port 1 (P)
+# > > > "Successfully reassigned # to P"
 # > > 5: Controller assigned to Port 1, replacing old Port 1. Generates either Event 2 or event 7. (P)
-# > > 6: Controller assigned to Port 2, replacing old Port 2. Generate Event 1 or Event 8. (P)
+# > > 6: Controller assigned to Port 2, replacing old Port 2. Generates either Event 1 or Event 8. (P)
+# > > > "Successfully replaced controller at P1 with #"
 # > > 7: Controller assigned to Port 1, unbinding the old Port 1 Controller without updating Port 2. (P)
 # > > 8: Controller assigned to Port 2, unbinding the old Port 2 Controller without updating Port 1. (P)
+# > > > "Successfully unbound # from P"
 # > > 9: Controllers swapped. Ignored. Might also be empty
 # > > 10+: Controllers swapped. Event number is sum of Port 1 (stored), Port 2 and 10. (P)
+# > > > "Successfully swapped # and #"
 # > > EX: Swap controllers 2 (P1) and 1 (P2). Controller is 2, Event # is 13.
 # > Stores the Controller's Name
 # A new Node is created with the ControllerPopUp as the entry

@@ -16,7 +16,7 @@ from resources.graphics_engine.display_almanac import draw_almanac_art, draw_alm
 from resources.graphics_engine.display_medals_and_milestones import draw_mam
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
-from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up
+from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up, process_controller_popups
 from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
 
@@ -138,6 +138,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
 
     # Draw Debug info (really laggily)
     #draw_debug(game_surface)
+    process_controller_popups(game_surface)
 
     global toggle_timer
     global full_screen

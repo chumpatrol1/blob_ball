@@ -1,4 +1,5 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from resources.graphics_engine.display_controller_pop_up import controller_popup_queue
 from engine.handle_input import return_mapkey_names
 import pygame as pg
 from os import getcwd
@@ -63,3 +64,33 @@ def draw_pop_up(game_display, info_getter, settings):
         text_rect.center = (683, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 50
+
+def create_controller_popup(pop_up):
+    pop_up_surface = pg.Surface((450, 200), pg.SRCALPHA)
+    menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
+    if(pop_up.entry.event_id == 0):
+        pg.draw.rect(pop_up_surface, (0, 0, 255), (0, 0, 450, 200), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
+        text_array = [
+            menu_font.render("Connected Controller " + str(pop_up.entry.controller_number), False, (0, 0, 0)),
+            menu_font.render("Type: " + str(pop_up.entry.controller_name), False, (0, 0, 0)),
+            menu_font.render("Press DPad Left/Right to bind", False, (0, 0, 0)),
+        ]
+        text_y = 0
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.topleft = (20, text_y)
+            pop_up_surface.blit(text_box, text_rect)
+            text_y += 50
+        print("created red")
+    pop_up.surface = pop_up_surface
+        
+
+def process_controller_popups(game_display):
+    pop_up = controller_popup_queue.process()
+    if(pop_up is None):
+        return
+    if(pop_up.surface is None):
+        create_controller_popup(pop_up)
+    game_display.blit(pop_up.surface, (891, 518))
+    
+    # Then game_display.blit
