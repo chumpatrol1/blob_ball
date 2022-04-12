@@ -59,17 +59,19 @@ xbox360_map = {
     'vertical_deadzone': 0.5,
     'bumper_deadzone': 0.3,
     'rumble': True,
-    '0': 'up', # X
-    '1': 'ability', # A
-    '2': 'kick', # B
+    '0': 'ability', # A
+    '1': 'kick', # B
+    '2': 'up', # X
     '3': 'down', # Y
     '4': 'block', # L
     '5': 'block', # R
-    '6': 'none',
-    '7': 'boost', # Z
+    '6': 'escape', # ?
+    '7': 'escape', # Z
     '8': 'none',
-    '9': 'escape', # HOME
+    '9': 'none', # HOME
     '10': 'none',
+    'lt': 'boost', # LT
+    'rt': 'boost', # RT
 }
 
 ps3_map = {
@@ -572,10 +574,10 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             #print(event)
             #print(joysticks)
             #print(joysticks[event.__dict__['instance_id']].get_button(2))
-
+            new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
             controller_name = joysticks[event.__dict__['instance_id']].get_name()
             if(controller_name == "Xbox 360 Controller"):
-                print(joysticks[event.__dict__['instance_id']].get_hat(0))
+                #print(joysticks[event.__dict__['instance_id']].get_hat(0))
                 bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name)
         elif(event.type == pg.JOYBUTTONDOWN):
             #print(event)
@@ -613,7 +615,7 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
         else:
             player_joystick = "Generic"
         # Control Stick
-        # TODO: C-Stick Attack
+        # TODO: C-Stick Attack(?)
         if(joysticks[joystick].get_axis(0) > joystick_map[player_key][player_joystick]['horizontal_deadzone']):
             #print("Holding Right")
             pressed_array.append(header + "right")
@@ -627,6 +629,15 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
         elif(joysticks[joystick].get_axis(1) < -1 * joystick_map[player_key][player_joystick]['vertical_deadzone']):
             #print("Holding Up")
             pressed_array.append(header + "up")
+
+        if(player_joystick == "Xbox 360 Controller"):
+            if(joysticks[joystick].get_axis(2) > 0.3):
+                #print("Holding Down")
+                pressed_array.append(header + joystick_map[player_key][player_joystick]['lt'])
+            if(joysticks[joystick].get_axis(2) > 0.3):
+                #print("Holding Up")
+                pressed_array.append(header + joystick_map[player_key][player_joystick]['rt'])
+
         
         used_map = original_joystick_mapping
         if(not menu_input):
@@ -758,11 +769,11 @@ def toggle_fullscreen(force_override = False): # TODO: Override so it works with
     for event in events:
         if(event.type == pg.JOYBUTTONDOWN):
             # Up on DPAD
-            try:
-                if(joysticks[event.__dict__['instance_id']].get_button(12)):
+            if(joysticks[event.__dict__['instance_id']].get_name() == "GameCube Controller Adapter" and joysticks[event.__dict__['instance_id']].get_button(12)):
                     return True
-            except Exception as ex:
-                print(ex)
+        elif(event.type == pg.JOYHATMOTION):
+            if(joysticks[event.__dict__['instance_id']].get_name() == "Xbox 360 Controller" and joysticks[event.__dict__['instance_id']].get_hat(0)[1] == 1):
+                return True
 
     if(force_override):
         return True

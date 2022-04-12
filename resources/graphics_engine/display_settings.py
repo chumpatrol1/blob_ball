@@ -182,12 +182,8 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
     elif(player_page == 1 or player_page == 2):
         active_joystick_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
 
-        selector_x = 0
-        selector_y = 150 + 55 * (selector_position)
-
-        game_display.blit(ball, (selector_x, selector_y))
-
         if(controller_mapping == "GameCube Controller Adapter"):
+            y_shift = 55
             text_array = [
                 menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
                 menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
@@ -202,6 +198,7 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("Back", False, text_color),
             ]
         elif(controller_mapping == "Generic"):
+            y_shift = 55
             text_array = [
                 menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
                 menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
@@ -216,27 +213,33 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("Back", False, text_color),
             ]
         elif(controller_mapping == "Xbox 360 Controller"):
+            y_shift = 50
             text_array = [
                 menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
                 menu_font.render("V Deadzone: " + str(active_joystick_mapping['vertical_deadzone']), False, text_color),
-                menu_font.render("B0: " + str(active_joystick_mapping['0']), False, text_color),
-                menu_font.render("B1: " + str(active_joystick_mapping['1']), False, text_color),
-                menu_font.render("B2: " + str(active_joystick_mapping['2']), False, text_color),
-                menu_font.render("B3: " + str(active_joystick_mapping['3']), False, text_color),
-                menu_font.render("B4: " + str(active_joystick_mapping['4']), False, text_color),
-                menu_font.render("B5: " + str(active_joystick_mapping['5']), False, text_color),
-                menu_font.render("B6: " + str(active_joystick_mapping['6']), False, text_color),
+                menu_font.render("A: " + str(active_joystick_mapping['0']), False, text_color),
+                menu_font.render("B: " + str(active_joystick_mapping['1']), False, text_color),
+                menu_font.render("X: " + str(active_joystick_mapping['2']), False, text_color),
+                menu_font.render("Y: " + str(active_joystick_mapping['3']), False, text_color),
+                menu_font.render("LB: " + str(active_joystick_mapping['4']), False, text_color),
+                menu_font.render("RB: " + str(active_joystick_mapping['5']), False, text_color),
+                menu_font.render("LT: " + str(active_joystick_mapping['lt']), False, text_color),
+                menu_font.render("RT: " + str(active_joystick_mapping['rt']), False, text_color),
                 menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
                 menu_font.render("Back", False, text_color),
             ]
         
+        selector_x = 0
+        selector_y = 150 + y_shift * (selector_position)
+
+        game_display.blit(ball, (selector_x, selector_y))
 
         text_y = 152
         for text_box in text_array:
             text_rect = text_box.get_rect()
             text_rect.topleft = (68, text_y)
             game_display.blit(text_box, text_rect)
-            text_y += 55
+            text_y += y_shift
 
     #print(len(text_array))
 
