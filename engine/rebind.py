@@ -509,14 +509,12 @@ def handle_joystick_config():
                     for i in input_keys['1']:
                         if(selector_position % 4 == i_ct):
                             game_state, controller_mapping = config_menu_func_dict[i](player_page)
-                            print(controller_mapping)
                             break
                         i_ct += 1
                 else:
                     for i in input_keys['2']:
                         if(selector_position % 4 == i_ct):
                             game_state, controller_mapping = config_menu_func_dict[i](player_page)
-                            print(controller_mapping)
                             break
                         i_ct += 1
             else:
