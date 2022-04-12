@@ -254,6 +254,7 @@ class Blob:
             "taxing": 0,
             "taxed": 0,
             "stunned": 0,
+            "reflecting": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -623,6 +624,7 @@ class Blob:
         elif(special_ability == "mirror"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "mirror"
+                self.status_effects['reflecting'] = self.special_ability_duration
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
@@ -702,6 +704,9 @@ class Blob:
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
                 blob.take_damage(accumulated_damage)
+                if(blob.status_effects['reflecting'] > 1):
+                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
+
                     
     def check_ability_collision(self, blob, ball):
         #Hit self with Lightning bolt
@@ -714,12 +719,16 @@ class Blob:
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             if(blob.block_timer == 0):
                 blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
+                if(blob.status_effects['reflecting'] > 1):
+                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
             else:
                 blob.take_damage(damage=0)
                 blob.block_cooldown += 30
         elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             blob.take_damage()
+            if(blob.status_effects['reflecting'] > 1):
+                self.take_damage(damage = 1, unblockable=True, unclankable=True)
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
@@ -762,6 +771,8 @@ class Blob:
                         stun_amount = 0
 
                     blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
+                    if(blob.status_effects['reflecting'] > 1):
+                        self.take_damage(damage = 1, unblockable=True, unclankable=True)
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True):
@@ -800,7 +811,9 @@ class Blob:
                 damage_taken = True
         
         if(damage_taken):
-            self.hp -= damage
+            # Increase damage by 1 if using hook
+            # Decrease damage by 1 if using reflect
+            self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
