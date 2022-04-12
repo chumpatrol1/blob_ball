@@ -192,7 +192,7 @@ update_mapkey_names(input_map)
 
 temp_binding = []
 
-joysticks = []
+joysticks = {}
 joystick_count = 0
 joystick_handler = {
     'p1_joystick': None,
@@ -203,21 +203,47 @@ def detect_joysticks():
     global joysticks
     global joystick_count
     for event in get_events():
-        #print(event)
+        
         #print(pg.JOYDEVICEADDED)
         if(event.type == pg.JOYDEVICEADDED):
-            joysticks.append(pg.joystick.Joystick(joystick_count))
-            joysticks[joystick_count].init()
-            print("Connected", joysticks[joystick_count].get_name())
-            create_controller_pop_up(joystick_count, 0)
+            #print(event)
+            jindex = event.__dict__['device_index']
+            dindex = pg.joystick.Joystick(jindex).get_instance_id()
+            joysticks[dindex] = pg.joystick.Joystick(jindex)
+            #print(joysticks[dindex])
+            joysticks[dindex].init()
+            name = joysticks[dindex].get_name()
+            if(name == "GameCube Controller Adapter"):
+                name = "GCCA"
+            elif(name == "Xbox 360 Controller"):
+                name = "XBox 360 Controller"
+            else:
+                name = "Generic"
+            print("Connected", name)
+            
+            create_controller_pop_up(jindex + 1, name, 0)
             joystick_count += 1
             
         elif(event.type == pg.JOYDEVICEREMOVED): # TODO: Ensure this works correctly for non 4 port adapters
-            print("Disconnected", joysticks[joystick_count - 1].get_name())
+            #print(event)
+            dindex = event.__dict__['instance_id']
+            jindex = joysticks[dindex].get_id()
+            
+            name = joysticks[dindex].get_name()
+            if(name == "GameCube Controller Adapter"):
+                name = "GCCA"
+            elif(name == "Xbox 360 Controller"):
+                name = "XBox 360 Controller"
+            else:
+                name = "Generic"
+            print("Disconnected", name)
             joystick_count -= 1
-            create_controller_pop_up(joystick_count, -1)
-            joysticks[joystick_count].quit()
-            joysticks.pop(joystick_count)
+            create_controller_pop_up(jindex + 1, name, -1)
+            joysticks[dindex].quit()
+            del(joysticks[dindex])
+            
+        
+    #print(joysticks)
             
 
 def unbind_inputs(mode = 'all'):
@@ -572,32 +598,32 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
         
     for joystick in joysticks:
         header = ""
-        if(joystick.get_instance_id() - 1 == joystick_handler['p1_joystick']):
+        if(joystick - 1 == joystick_handler['p1_joystick']):
             header = "p1_"
             player_key = "1"
-        elif(joystick.get_instance_id() - 1 == joystick_handler['p2_joystick']):
+        elif(joystick - 1 == joystick_handler['p2_joystick']):
             header = "p2_"
             player_key = "2"
         else:
             continue
         
-        if(joystick.get_name() in {"GameCube Controller Adapter", "Xbox 360 Controller"}):
+        if(joysticks[joystick].get_name() in {"GameCube Controller Adapter", "Xbox 360 Controller"}):
             player_joystick = joystick.get_name()
         else:
             player_joystick = "Generic"
         # Control Stick
         # TODO: C-Stick Attack
-        if(joystick.get_axis(0) > joystick_map[player_key][player_joystick]['horizontal_deadzone']):
+        if(joysticks[joystick].get_axis(0) > joystick_map[player_key][player_joystick]['horizontal_deadzone']):
             #print("Holding Right")
             pressed_array.append(header + "right")
-        elif(joystick.get_axis(0) < -1 * joystick_map[player_key][player_joystick]['horizontal_deadzone']):
+        elif(joysticks[joystick].get_axis(0) < -1 * joystick_map[player_key][player_joystick]['horizontal_deadzone']):
             #print("Holding Left")
             pressed_array.append(header + "left")
 
-        if(joystick.get_axis(1) > joystick_map[player_key][player_joystick]['vertical_deadzone']):
+        if(joysticks[joystick].get_axis(1) > joystick_map[player_key][player_joystick]['vertical_deadzone']):
             #print("Holding Down")
             pressed_array.append(header + "down")
-        elif(joystick.get_axis(1) < -1 * joystick_map[player_key][player_joystick]['vertical_deadzone']):
+        elif(joysticks[joystick].get_axis(1) < -1 * joystick_map[player_key][player_joystick]['vertical_deadzone']):
             #print("Holding Up")
             pressed_array.append(header + "up")
         
@@ -606,7 +632,7 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             used_map = joystick_map
 
         # Buttons
-        for button in range(joystick.get_numbuttons()):
+        for button in range(joysticks[joystick].get_numbuttons()):
             if(str(button) in used_map[player_key][player_joystick] and joystick.get_button(button)):
                 #print(used_map)
                 #print(joystick_map == original_joystick_mapping)

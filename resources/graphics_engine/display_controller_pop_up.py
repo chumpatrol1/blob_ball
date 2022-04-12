@@ -73,17 +73,17 @@ def create_controller_pop_up(controller, name = "GCCA", event_id = -2):
     #print(controller_popup_queue)
 
 controller_popup_queue = Queue()
-create_controller_pop_up(0, event_id = -1)
-create_controller_pop_up(0, event_id = 0)
-create_controller_pop_up(0, event_id = 1)
-create_controller_pop_up(0, event_id = 2)
-create_controller_pop_up(0, event_id = 3)
-create_controller_pop_up(0, event_id = 4)
-create_controller_pop_up(0, event_id = 5)
-create_controller_pop_up(0, event_id = 6)
-create_controller_pop_up(0, event_id = 7)
-create_controller_pop_up(0, event_id = 8)
-create_controller_pop_up(0, event_id = 11)
+#create_controller_pop_up(0, event_id = -1)
+#create_controller_pop_up(0, event_id = 0)
+#create_controller_pop_up(0, event_id = 1)
+#create_controller_pop_up(0, event_id = 2)
+#create_controller_pop_up(0, event_id = 3)
+#create_controller_pop_up(0, event_id = 4)
+#create_controller_pop_up(0, event_id = 5)
+#create_controller_pop_up(0, event_id = 6)
+#create_controller_pop_up(0, event_id = 7)
+#create_controller_pop_up(0, event_id = 8)
+#create_controller_pop_up(0, event_id = 11)
 
 # Intended Control Flow
 # Create Controller Pop Up is called
