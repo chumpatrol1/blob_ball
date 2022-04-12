@@ -330,7 +330,7 @@ def reset_inputs():
 def bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name):
     generated_event = -2
     controller_name = "GCCA"
-    if(joysticks[event.__dict__['joy']].get_button(15) and detect_new_controllers):
+    if(joysticks[event.__dict__['instance_id']].get_button(15) and detect_new_controllers):
         old_joystick = joystick_handler['p1_joystick']
         if(joystick_handler['p1_joystick'] == None): # No Controller Currently Assigned
             joystick_handler['p1_joystick'] = new_controller
@@ -361,7 +361,7 @@ def bind_gcca_to_player(event, detect_new_controllers, new_controller, controlle
         print("Assigned joystick to P1")
         #print(joystick_handler)
     # Right on DPAD
-    elif(joysticks[event.__dict__['joy']].get_button(13) and detect_new_controllers):    
+    elif(joysticks[event.__dict__['instance_id']].get_button(13) and detect_new_controllers):    
         #print("test r passed")
         old_joystick = joystick_handler['p2_joystick']
         if(joystick_handler['p2_joystick'] == None):
@@ -395,7 +395,7 @@ def bind_gcca_to_player(event, detect_new_controllers, new_controller, controlle
 def bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name):
     generated_event = -2
     controller_name = "XBox 360"
-    if(joysticks[event.__dict__['joy']].get_hat(0)[0] == -1 and detect_new_controllers):
+    if(joysticks[event.__dict__['instance_id']].get_hat(0)[0] == -1 and detect_new_controllers):
         old_joystick = joystick_handler['p1_joystick']
         if(joystick_handler['p1_joystick'] == None): # No Controller Currently Assigned
             joystick_handler['p1_joystick'] = new_controller
@@ -426,7 +426,7 @@ def bind_xbox_360_to_player(event, detect_new_controllers, new_controller, contr
         print("Assigned joystick to P1")
         #print(joystick_handler)
     # Right on DPAD
-    elif(joysticks[event.__dict__['joy']].get_hat(0)[0] == 1 and detect_new_controllers):    
+    elif(joysticks[event.__dict__['instance_id']].get_hat(0)[0] == 1 and detect_new_controllers):    
         #print("test r passed")
         old_joystick = joystick_handler['p2_joystick']
         if(joystick_handler['p2_joystick'] == None):
@@ -460,7 +460,7 @@ def bind_xbox_360_to_player(event, detect_new_controllers, new_controller, contr
 def bind_generic_to_player(event, detect_new_controllers, new_controller, controller_name):
     generated_event = -2
     controller_name = "Generic"
-    if(joysticks[event.__dict__['joy']].get_hat(0)[0] == -1 and detect_new_controllers):
+    if(joysticks[event.__dict__['instance_id']].get_hat(0)[0] == -1 and detect_new_controllers):
         old_joystick = joystick_handler['p1_joystick']
         if(joystick_handler['p1_joystick'] == None): # No Controller Currently Assigned
             joystick_handler['p1_joystick'] = new_controller
@@ -491,7 +491,7 @@ def bind_generic_to_player(event, detect_new_controllers, new_controller, contro
         print("Assigned joystick to P1")
         #print(joystick_handler)
     # Right on DPAD
-    elif(joysticks[event.__dict__['joy']].get_hat(0)[0] == 1 and detect_new_controllers):    
+    elif(joysticks[event.__dict__['instance_id']].get_hat(0)[0] == 1 and detect_new_controllers):    
         #print("test r passed")
         old_joystick = joystick_handler['p2_joystick']
         if(joystick_handler['p2_joystick'] == None):
@@ -570,21 +570,22 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
         if(event.type in {pg.JOYAXISMOTION, pg.JOYHATMOTION}):
 
             #print(event)
-            #print(joysticks[event.__dict__['joy']].get_button(2))
+            #print(joysticks)
+            #print(joysticks[event.__dict__['instance_id']].get_button(2))
 
-            controller_name = joysticks[event.__dict__['joy']].get_name()
+            controller_name = joysticks[event.__dict__['instance_id']].get_name()
             if(controller_name == "Xbox 360 Controller"):
-                print(joysticks[event.__dict__['joy']].get_hat(0))
+                print(joysticks[event.__dict__['instance_id']].get_hat(0))
                 bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name)
         elif(event.type == pg.JOYBUTTONDOWN):
             #print(event)
             # Assign Controller to Port
             # Left on DPAD
-            new_controller = joysticks[event.__dict__['joy']].get_instance_id() - 1 # Get Controller ID
-            controller_name = joysticks[event.__dict__['joy']].get_name()
+            new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
+            controller_name = joysticks[event.__dict__['instance_id']].get_name()
             if(controller_name == "GameCube Controller Adapter"):
                 bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name)
-                if(joysticks[event.__dict__['joy']].get_button(14)): # Down on DPAD
+                if(joysticks[event.__dict__['instance_id']].get_button(14)): # Down on DPAD
                     pressed_array.append('return')
             elif(controller_name == "Xbox 360 Controller"):
                 bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name)
@@ -608,7 +609,7 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             continue
         
         if(joysticks[joystick].get_name() in {"GameCube Controller Adapter", "Xbox 360 Controller"}):
-            player_joystick = joystick.get_name()
+            player_joystick = joysticks[joystick].get_name()
         else:
             player_joystick = "Generic"
         # Control Stick
@@ -633,7 +634,7 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
 
         # Buttons
         for button in range(joysticks[joystick].get_numbuttons()):
-            if(str(button) in used_map[player_key][player_joystick] and joystick.get_button(button)):
+            if(str(button) in used_map[player_key][player_joystick] and joysticks[joystick].get_button(button)):
                 #print(used_map)
                 #print(joystick_map == original_joystick_mapping)
                 #  and joystick.get_button(button)
@@ -758,7 +759,7 @@ def toggle_fullscreen(force_override = False): # TODO: Override so it works with
         if(event.type == pg.JOYBUTTONDOWN):
             # Up on DPAD
             try:
-                if(joysticks[event.__dict__['joy']].get_button(12)):
+                if(joysticks[event.__dict__['instance_id']].get_button(12)):
                     return True
             except Exception as ex:
                 print(ex)
