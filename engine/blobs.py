@@ -869,6 +869,7 @@ class Blob:
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
+        self.status_effects['reflecting'] = 0
         self.set_base_stats(self.stars)
         #self.heal_hp(heal_amt=ruleset['hp_regen'])
         
@@ -1072,6 +1073,8 @@ class Blob:
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
+
+        return pressed
     
     def set_base_stats(self, stars):
         self.top_speed = 10+(1*stars['top_speed'])

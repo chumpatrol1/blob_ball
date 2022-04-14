@@ -63,10 +63,8 @@ def pause_menu_selection(selector_position, game_state, settings, left_mode = Fa
 
     def quit_game():
         nonlocal game_state
-        nonlocal unpause_mode
-        if(unpause_mode):
-            createSFXEvent('select')
-            game_state = 'css'
+        createSFXEvent('select')
+        game_state = 'css'
 
     run_func = {
         0: go_back,

@@ -24,7 +24,7 @@ def load_almanac_static_text():
     menu_font = font_cache['default_font']
     static_text['almanac_main'] = [
         menu_font.render('Blobs and Info', False, (0, 0, 150)),
-        menu_font.render('Medals', False, (0, 0, 150)),
+        menu_font.render('Load Replay', False, (0, 0, 150)),
         menu_font.render('Game Statistics', False, (0, 0, 150)),
         menu_font.render('Art', False, (0, 0, 150)),
         menu_font.render('Credits', False, (0, 0, 150)),

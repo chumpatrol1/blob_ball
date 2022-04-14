@@ -6,6 +6,7 @@ import engine.ball
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
+from engine.replays import save_replay
 from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
@@ -40,6 +41,7 @@ p1_ko = False
 p2_ko = False
 goal_scored = False
 goal_scorer = None
+replay_inputs = ""
 #goal_limit = 5 #Defaults to 5 goals
 #time_limit = 3600 #Defaults to 3600, or 1 minute
 #time_bonus = 600 #Defaults to 600, or 10 seconds
@@ -77,6 +79,35 @@ def score_goal(winner, goal_limit, ruleset):
             return "casual_win", 3
     #reset_round(ruleset)
     return "casual_match", 0
+
+input_to_code = {
+    'p1_ability': '1',
+    'p1_kick': '2',
+    'p1_block': '3',
+    'p1_boost': '4',
+    'p1_up': '5',
+    'p1_down': '6',
+    'p1_left': '7',
+    'p1_right': '8',
+    'p2_ability': 'a',
+    'p2_kick': 'b',
+    'p2_block': 'c',
+    'p2_boost': 'd',
+    'p2_up': 'e',
+    'p2_down': 'f',
+    'p2_left': 'g',
+    'p2_right': 'h',
+    
+}
+def convert_inputs_to_replay(inputs, player):
+    global input_to_code
+    encoded_string = ""
+    for rinput in inputs:
+        input = "p" + str(player) + "_" + rinput
+        if(input in input_to_code):
+            encoded_string += input_to_code[input]
+    return encoded_string
+
     
 
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer):
@@ -96,6 +127,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global score_goal
     global goal_limit
     global time_limit
+    global replay_inputs
     
     game_state = "casual_match"
     if('escape' in pressed and not pause_timer):
@@ -118,15 +150,17 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(p1_blob.is_cpu):
                 cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p1_blob, p2_blob, ball, game_score, game_info['time'])
                 p1_blob.cpu_memory = cpu_memory
-                p1_blob.move(cpu_logic)
+                replay_inputs += convert_inputs_to_replay(p1_blob.move(cpu_logic), 1)
             else:
-                p1_blob.move(pressed)
+                replay_inputs += convert_inputs_to_replay(p1_blob.move(pressed), 1)
             if(p2_blob.is_cpu):
                 cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p2_blob, p1_blob, ball, game_score, game_info['time'])
                 p2_blob.cpu_memory = cpu_memory
-                p2_blob.move(cpu_logic)
+                
+                replay_inputs += convert_inputs_to_replay(p2_blob.move(cpu_logic), 2)
             else:
-                p2_blob.move(pressed)
+                replay_inputs += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+            replay_inputs += "/"
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
             ball.check_blob_ability(p1_blob)
@@ -250,7 +284,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             except:
                 game_info['avg_collisions_per_goal'] = 0
             
-            with open('blob_ball_results.txt', 'a') as bbr:
+            '''with open('blob_ball_results.txt', 'a') as bbr:
                 bbr.write("MATCH COMPLETED: " + time.ctime(time.time()))
                 bbr.write("\n")
                 bbr.write("RANDOM SEED:" + str(random_seed))
@@ -266,7 +300,9 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 bbr.write("BALL: " + dumps(ball.info))
                 bbr.write("\n")
                 bbr.write("\n")
-            
+                '''
+
+            save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob)                    
             update_game_stats(game_info, p1_blob, p2_blob, ball)
             update_mu_chart(game_score, p1_blob, p2_blob)
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])
@@ -282,6 +318,7 @@ def clear_info_cache():
     global p1_blob
     global p2_blob
     global ball
+    global replay_inputs
     game_score = [0, 0]
     timer = 180
     countdown = 0
@@ -291,3 +328,4 @@ def clear_info_cache():
     p1_blob = None
     p2_blob = None
     ball = None
+    replay_inputs = ""

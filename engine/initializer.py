@@ -17,6 +17,10 @@ def check_folders(cwd):
         os.mkdir(cwd+"/screenshots")
         print("Created screenshots folder")
 
+    if(not os.path.isdir(cwd+"/replays")):
+        os.mkdir(cwd+"/replays")
+        print("Created replays folder")
+
 def initialize_game_stats(cwd):
     game_stat_dict = {
     #Stats about the state of the game
@@ -171,6 +175,10 @@ def check_existing_directory(cwd):
         os.mkdir(cwd+'/config') 
     if not(os.path.isdir(cwd + '/saves')): # Saves folder
         os.mkdir(cwd+'/saves')
+    if not(os.path.isdir(cwd + '/screenshots')): # Screenshots folder
+        os.mkdir(cwd+'/screenshots')
+    if not(os.path.isdir(cwd + '/replays')): # Replays folder
+        os.mkdir(cwd+'/replays')
 
 def return_game_version():
     return game_version
