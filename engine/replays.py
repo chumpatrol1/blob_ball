@@ -1,19 +1,30 @@
+from bz2 import decompress
 import time
-from json import dumps
+from json import dumps, loads
 import zlib
 
 def compress_replay_file(string_to_compress, file_str):
     compressed_data = zlib.compress(string_to_compress.encode('ascii'), zlib.Z_BEST_COMPRESSION)
     with open(file_str, "wb") as compressed_v:
         compressed_v.write(compressed_data)
+    
+    with open("compressed", "wb") as compressed_v:
+        compressed_v.write(compressed_data)
 
 def decompress_replay_file(): # DANGER: DO NOT USE! WE NEED TO HAVE FILE EXPLORER
     with open("compressed", "rb") as compressed_v:
         string_to_compress = compressed_v.read()
-    decompressed_data = zlib.decompress(string_to_compress)
-    
-    with open("decompressed", "wb") as compressed_v:
-        compressed_v.write(decompressed_data)
+    decompressed_data = zlib.decompress(string_to_compress).decode('ascii').split('\n')
+    print('seed', decompressed_data[0])
+    print('rules', loads(decompressed_data[1]))
+    print('p1', loads(decompressed_data[2])['species'])
+    print('p2', loads(decompressed_data[2])['species'])
+    #print(decompressed_data)
+    #with open("decompressed", "wb") as compressed_v:
+    #    compressed_v.write(decompressed_data)
+
+def return_replay_info():
+    pass
 
 def save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob):
     current_time = time.localtime()

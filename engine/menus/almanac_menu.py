@@ -1,4 +1,5 @@
 import engine.handle_input
+from engine.replays import decompress_replay_file
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
 selector_position = 0
@@ -32,8 +33,9 @@ def almanac_navigation(timer, previous_screen):
         if(selector_position == 0): #Blobs
             game_state = "blob_info"
         elif(selector_position == 1):
-            game_state = "medals" #... may not be medals for long
-            #game_state = "almanac"
+            #game_state = "medals" #... may not be medals for long
+            game_state = "almanac"
+            decompress_replay_file()
             selector_position = 1
             # Will be temporarily disabled
         elif(selector_position == 2):
