@@ -34,7 +34,7 @@ def almanac_navigation(timer, previous_screen):
             game_state = "blob_info"
         elif(selector_position == 1):
             #game_state = "medals" #... may not be medals for long
-            game_state = "almanac"
+            game_state = "replay_match"
             decompress_replay_file()
             selector_position = 1
             # Will be temporarily disabled

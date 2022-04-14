@@ -6,15 +6,18 @@ import engine.ball
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
-from engine.replays import save_replay
+from engine.replays import return_replay_info, save_replay
 from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
-def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu):
+def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None):
     global random_seed
-    random_seed = random.randint(-2147483648, 2147483647)
+    if(set_seed == None):
+        random_seed = random.randint(-2147483648, 2147483647)
+    else:
+        random_seed = set_seed
     random.seed(random_seed)
     global goal_limit
     global time_limit
@@ -108,11 +111,23 @@ def convert_inputs_to_replay(inputs, player):
             encoded_string += input_to_code[input]
     return encoded_string
 
-    
+code_to_input = {v: k for k, v in input_to_code.items()} # All keys are now values
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer):
-    pressed = engine.handle_input.gameplay_input()
-        
+def convert_replay_to_inputs(inputs):
+    global input_to_code
+    decoded_inputs = []
+    for rinput in inputs:
+            decoded_inputs.append(code_to_input[rinput])
+    return decoded_inputs
+
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer, is_replay = False):
+    if(is_replay):
+        game_state = "replay_match"
+        pressed = return_replay_info()[4][game_info['time']]
+        pressed = convert_replay_to_inputs(pressed)
+    else:
+        game_state = "casual_match"
+        pressed = engine.handle_input.gameplay_input()
     global initialized
     global p1_blob
     global p2_blob
@@ -129,7 +144,6 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global time_limit
     global replay_inputs
     
-    game_state = "casual_match"
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
         capture_screen()
@@ -139,7 +153,10 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
 
 
     if not initialized:
-        blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu)
+        if(is_replay):
+            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = return_replay_info()[0])
+        else:
+            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
@@ -306,7 +323,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             update_game_stats(game_info, p1_blob, p2_blob, ball)
             update_mu_chart(game_score, p1_blob, p2_blob)
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])
-    return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit
+    return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit # TODO: Fix/Parity the Output
 
 def clear_info_cache():
     global game_score

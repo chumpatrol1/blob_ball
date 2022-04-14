@@ -2,6 +2,7 @@ def set_timer(frames):
     global timer
     timer = frames
 
+from tkinter import N
 from engine.gameplay import clear_info_cache
 import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
@@ -13,6 +14,7 @@ import engine.menus.almanac_menu
 import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
+from engine.replays import return_replay_info
 from engine.unlocks import update_css_blobs, update_css_medals
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
@@ -23,6 +25,7 @@ cwd = getcwd()
 
 ruleset = initialize_ruleset(cwd)
 settings = initialize_settings(cwd)
+replay_ruleset = None
 
 
 timer = 0
@@ -107,6 +110,15 @@ def update_game_state(game_state, cwd):
             resources.graphics_engine.display_win_screen.unload_win_screen()
             if(game_state == "pop_up"):
                 timer = 60
+    elif(game_state == "replay_match"):
+        update_replay_blobs()
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, timer, is_replay = True)
+        game_state = info_getter[5] # TODO: Fix/parity the output
+        if(game_state == "casual_win"):
+            game_stats = info_getter[6]
+            clear_info_cache()
+        elif(game_state == "pause"):
+            timer = 10
     elif(game_state == "pop_up"):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
@@ -178,6 +190,15 @@ def update_game_state(game_state, cwd):
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset
+
+def update_replay_blobs():
+    global replay_ruleset
+    global p1_blob
+    global p2_blob
+    extracted_info = return_replay_info()
+    replay_ruleset = extracted_info[1]
+    p1_blob = extracted_info[2]
+    p2_blob = extracted_info[3]
 
 def return_blobs():
     return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

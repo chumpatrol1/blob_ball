@@ -76,7 +76,7 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_main_menu(game_surface, info_getter, settings)
     elif(game_state == "css"):
         draw_css(game_surface, info_getter, settings)
-    elif(game_state == "casual_match"):
+    elif(game_state == "casual_match" or game_state == "replay_match"):
         p1_blob = info_getter[0]
         p2_blob = info_getter[1]
         ball = info_getter[2]

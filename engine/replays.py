@@ -11,20 +11,26 @@ def compress_replay_file(string_to_compress, file_str):
     with open("compressed", "wb") as compressed_v:
         compressed_v.write(compressed_data)
 
+current_replay = None
+
 def decompress_replay_file(): # DANGER: DO NOT USE! WE NEED TO HAVE FILE EXPLORER
+    global current_replay
     with open("compressed", "rb") as compressed_v:
         string_to_compress = compressed_v.read()
     decompressed_data = zlib.decompress(string_to_compress).decode('ascii').split('\n')
-    print('seed', decompressed_data[0])
-    print('rules', loads(decompressed_data[1]))
-    print('p1', loads(decompressed_data[2])['species'])
-    print('p2', loads(decompressed_data[2])['species'])
+    #print('seed', decompressed_data[0])
+    #print('rules', loads(decompressed_data[1]))
+    #print('p1', loads(decompressed_data[2])['species'])
+    #print('p2', loads(decompressed_data[2])['species'])
+
+    current_replay = [decompressed_data[0], loads(decompressed_data[1]), loads(decompressed_data[2])['species'], loads(decompressed_data[3])['species'], decompressed_data[4].split('/')]
+    #print(decompressed_data[4].split('/'))
     #print(decompressed_data)
     #with open("decompressed", "wb") as compressed_v:
     #    compressed_v.write(decompressed_data)
 
 def return_replay_info():
-    pass
+    return current_replay
 
 def save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob):
     current_time = time.localtime()
