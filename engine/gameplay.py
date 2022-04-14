@@ -71,7 +71,10 @@ def score_goal(winner, goal_limit, ruleset):
     game_score[winner] += 1
     timer = 60
     if(game_score[winner] >= goal_limit):
-        return "casual_win", (winner + 1)
+        if(game_score[0] != game_score[1]):
+            return "casual_win", (winner + 1)
+        else:
+            return "casual_win", 3
     #reset_round(ruleset)
     return "casual_match", 0
     
@@ -186,20 +189,32 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             game_info['time'] += 1
             
         else:
-            if(p1_ko):
+            if(p1_ko and not p2_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
                     game_state, winner_info = score_goal(1, goal_limit, ruleset)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
                     reset_round(ruleset)
-            if(p2_ko):
+
+            elif(p2_ko and not p1_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
                     game_state, winner_info = score_goal(0, goal_limit, ruleset)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
                     reset_round(ruleset)
+            elif(p1_ko and p2_ko):
+                blob_ko(p1_blob)
+                blob_ko(p2_blob)
+                if(p1_blob.y_pos >= 1800 or p2_blob.y_pos >= 1800):
+                    game_state, winner_info = score_goal(1, goal_limit, ruleset)
+                    game_state, winner_info = score_goal(0, goal_limit, ruleset)
+                    p1_ko, p2_ko = False, False
+                    p1_blob.hp = p1_blob.max_hp
+                    p2_blob.hp = p2_blob.max_hp
+                    reset_round(ruleset)
+
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
