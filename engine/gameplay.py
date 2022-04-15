@@ -320,10 +320,11 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 '''
             if(is_replay == False):
                 save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob)
+                update_game_stats(game_info, p1_blob, p2_blob, ball)
+                update_mu_chart(game_score, p1_blob, p2_blob)
             else:
                 game_state = "replay_win"                   
-            update_game_stats(game_info, p1_blob, p2_blob, ball)
-            update_mu_chart(game_score, p1_blob, p2_blob)
+            
             return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])
     return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit # TODO: Fix/Parity the Output
 

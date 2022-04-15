@@ -54,7 +54,7 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         pressed = []
         
     if not (pressed == []):
-        if('ability' in pressed):
+        if('ability' in pressed or 'escape' in pressed):
             timer = 15
         else:
             timer = 30
@@ -90,6 +90,11 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         if('ability' in pressed):
             selector[2] = 1
             ghost_selector = None
+        elif('escape' in pressed):
+            if(other_selector[2] == 0 and selector[3] == 0):
+                other_selector[2] = 2
+                other_selector[3] = 1
+
     elif('kick' in pressed):
         selector[2] = 0
         if(other_selector[2] == 2):
@@ -99,9 +104,15 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         if('ability' in pressed):
             selector[2] = 2
             ghost_selector = None
-        elif('return' in pressed):
+        elif('return' in pressed or 'escape' in pressed):
             selector[2] = 2
             other_selector[2] = 2
+            ghost_selector = None
+    elif(selector[2] >= 1 and other_selector[2] == 0):
+        if('escape' in pressed and selector[3] == 0):
+            selector[2] = 2
+            other_selector[2] = 2
+            other_selector[3] = 1
             ghost_selector = None
 
     if(player == 1):

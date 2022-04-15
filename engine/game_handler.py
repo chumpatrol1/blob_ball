@@ -77,6 +77,7 @@ def update_game_state(game_state, cwd):
             p2_selector_position[2] = 0
             p1_blob = info_getter[2]
             p2_blob = info_getter[3]
+            timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
             previous_screen = "css"
@@ -99,6 +100,7 @@ def update_game_state(game_state, cwd):
             from resources.graphics_engine.display_gameplay import unload_image_cache
             clear_info_cache()
             unload_image_cache()
+            timer = 10
         elif(game_state == 'casual_match'):
             timer = 10
     elif(game_state == "casual_win"):
