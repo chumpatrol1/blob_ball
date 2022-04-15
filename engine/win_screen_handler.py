@@ -19,12 +19,15 @@ def reset_ready():
     p1_ready = False
     p2_ready = False
 
-def handle_win_screen(game_stats):
+def handle_win_screen(game_stats, is_replay = False):
     global p1_ready
     global p2_ready
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
+    
     game_state = "casual_win"
+    if(is_replay):
+        game_state = "replay_win"
 
     if('p1_ability' in pressed):
         p1_ready = True
@@ -48,6 +51,8 @@ def handle_win_screen(game_stats):
         if not (engine.popup_event.get_pop_up_events() == []):
             createSFXEvent("chime_milestone")
             game_state = "pop_up"
+        if(is_replay):
+            game_state = "almanac"
 
     flash = updateFlash()
 

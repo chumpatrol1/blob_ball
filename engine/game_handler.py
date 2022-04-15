@@ -114,11 +114,18 @@ def update_game_state(game_state, cwd):
         update_replay_blobs()
         info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, timer, is_replay = True)
         game_state = info_getter[5] # TODO: Fix/parity the output
-        if(game_state == "casual_win"):
+        if(game_state == "replay_win"):
             game_stats = info_getter[6]
             clear_info_cache()
         elif(game_state == "pause"):
             timer = 10
+    elif(game_state == "replay_win"):
+        game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats, is_replay = True)
+        song_playing = "bb_win_theme"
+        if(game_state == "almanac"):
+            engine.win_screen_handler.reset_ready()
+            resources.graphics_engine.display_gameplay.unload_image_cache()
+            resources.graphics_engine.display_win_screen.unload_win_screen()
     elif(game_state == "pop_up"):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
