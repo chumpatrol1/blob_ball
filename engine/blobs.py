@@ -499,6 +499,7 @@ class Blob:
         elif(special_ability == "spire"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Spire activation
+                createSFXEvent('glyph')
                 self.used_ability = "spire_wait"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
@@ -506,6 +507,7 @@ class Blob:
         elif(special_ability == "thunderbolt"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Thunderbolt activation
+                #createSFXEvent('glyph')
                 self.used_ability = 'thunderbolt_wait' #This is done for a technical reason, to prevent premature electrocution
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer

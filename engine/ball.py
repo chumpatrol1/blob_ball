@@ -277,7 +277,7 @@ class Ball:
             self.species = "blocked_ball"
             self.special_timer = 30
         elif(blob.used_ability == "mirror"):
-            self.x_speed *= -0.9
+            self.x_speed *= -1.1
             self.y_speed *= -0.5
         elif(blob.used_ability == "hook"):
             if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):

@@ -428,8 +428,8 @@ def handle_joystick_config():
                     value = not value
                     bind_to_joy_arr[3] = value
                     bind_to_joy(*bind_to_joy_arr)
-    elif('right' in pressed):
-        if(player_page == 0):
+    elif('right' in pressed or 'ability' in pressed or 'return' in pressed):
+        if(player_page == 0 and 'ability' not in pressed and 'return' not in pressed):
             selector_position += 4
             if(selector_position >= 8):
                 selector_position -= 8
@@ -649,7 +649,7 @@ def handle_joystick_config():
                     bind_to_joy(*bind_to_joy_arr)
 
 
-    if('ability' in pressed):
+    if('ability' in pressed or 'return' in pressed):
         if(player_page == 0):
             input_keys = return_joystick_mapping()
 
