@@ -67,7 +67,7 @@ def reset_round(ruleset):
     p1_ko = False
     p2_ko = False
 
-def score_goal(winner, goal_limit, ruleset):
+def score_goal(winner, goal_limit, ruleset, is_replay = False):
     global timer
     global time_limit
     global time_bonus
@@ -81,7 +81,10 @@ def score_goal(winner, goal_limit, ruleset):
         else:
             return "casual_win", 3
     #reset_round(ruleset)
-    return "casual_match", 0
+    if(is_replay):
+        return "replay_match", 0
+    else:
+        return "casual_match", 0
 
 input_to_code = {
     'p1_ability': '1',
@@ -243,7 +246,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(p1_ko and not p2_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(1, goal_limit, ruleset)
+                    game_state, winner_info = score_goal(1, goal_limit, ruleset, is_replay)
                     p1_ko = False
                     p1_blob.hp = p1_blob.max_hp
                     reset_round(ruleset)
@@ -251,7 +254,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             elif(p2_ko and not p1_ko):
                 blob_ko(p2_blob)
                 if(p2_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(0, goal_limit, ruleset)
+                    game_state, winner_info = score_goal(0, goal_limit, ruleset, is_replay)
                     p2_blob.hp = p2_blob.max_hp
                     p2_ko = False
                     reset_round(ruleset)
@@ -259,8 +262,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 blob_ko(p1_blob)
                 blob_ko(p2_blob)
                 if(p1_blob.y_pos >= 1800 or p2_blob.y_pos >= 1800):
-                    game_state, winner_info = score_goal(1, goal_limit, ruleset)
-                    game_state, winner_info = score_goal(0, goal_limit, ruleset)
+                    game_state, winner_info = score_goal(1, goal_limit, ruleset, is_replay)
+                    game_state, winner_info = score_goal(0, goal_limit, ruleset, is_replay)
                     p1_ko, p2_ko = False, False
                     p1_blob.hp = p1_blob.max_hp
                     p2_blob.hp = p2_blob.max_hp
@@ -278,7 +281,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 p2_blob.used_ability = ""
                 countdown -= 1
                 if(countdown == 0):
-                    game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset)
+                    game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset, is_replay)
                     goal_scored = False
                     goal_scorer = None
                     reset_round(ruleset)

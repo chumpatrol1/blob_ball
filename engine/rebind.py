@@ -1,6 +1,8 @@
+from engine.controller_mappings.gamecube_helper import gamecube_controller_left, gamecube_controller_right
+from engine.controller_mappings.generic_helper import generic_left, generic_right
+from engine.controller_mappings.xbox_360_helper import xbox_360_left, xbox_360_right
 from engine.handle_input import bind_input as bind_input
 from engine.handle_input import reset_joystick_map
-from engine.handle_input import get_keypress
 from engine.handle_input import return_joystick_mapping
 from engine.handle_input import bind_to_joy
 from engine.handle_input import menu_input
@@ -13,9 +15,30 @@ from resources.sound_engine.sfx_event import createSFXEvent
 rebind_buttons = [
 ]
 
+joy_page_0 = [
+]
+
+joy_shift_50 = [
+]
+
+joy_shift_55 = [
+]
+
 for i in range(2): # 2 columns
     for j in range(10): # 10 rows
         rebind_buttons.append(Button(140+60*j, 200 + 60*j, i*450, 450 + i*450))
+
+for i in range(2): # 2 columns
+    for j in range(4): # 10 rows
+        joy_page_0.append(Button(140+60*j, 200 + 60*j, i*450, 450 + i*450))
+
+for i in range(1): # 2 columns
+    for j in range(12): # 10 rows
+        joy_shift_50.append(Button(140+50*j, 200 + 50*j, i*900, 900 + i*900))
+
+for i in range(1): # 2 columns
+    for j in range(11): # 10 rows
+        joy_shift_55.append(Button(140+55*j, 200 + 55*j, i*900, 900 + i*900))
 
 # God forbid I made spaghetti
 
@@ -146,26 +169,6 @@ config_menu_func_dict = {
     3: joystick_misc_func, 
 }
 
-cycle_left_dict = {
-    'ability': 'none',
-    'kick': 'ability',
-    'block': 'kick',
-    'boost': 'block',
-    'up': 'boost',
-    'down': 'up',
-    'none': 'down',
-}
-
-cycle_right_dict = {
-    'ability': 'kick',
-    'kick': 'block',
-    'block': 'boost',
-    'boost': 'up',
-    'up': 'down',
-    'down': 'none',
-    'none': 'ability',
-}
-
 
 def handle_joystick_config():
     global player_page
@@ -218,216 +221,18 @@ def handle_joystick_config():
             if(controller_mapping == "GameCube Controller Adapter"):
                 current_mapping = return_joystick_mapping()[str(player_page)]["GameCube Controller Adapter"]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # A
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # X
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # Y
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # Z
-                    bind_to_joy_arr[2] = '7'
-                    value = current_mapping['7']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # L
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # R
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
+                gamecube_controller_left(selector_position, bind_to_joy_arr, current_mapping)
+                bind_to_joy(*bind_to_joy_arr)
             elif(controller_mapping == "Xbox 360 Controller"): # TODO: Make this more modular?
                 current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # B0
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B1
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # B2
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # B3
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # B4
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # B5
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # LT
-                    bind_to_joy_arr[2] = 'lt'
-                    value = current_mapping['lt']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # RT
-                    bind_to_joy_arr[2] = 'rt'
-                    value = current_mapping['rt']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 10): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
+                xbox_360_left(selector_position, bind_to_joy_arr, current_mapping)
+                bind_to_joy(*bind_to_joy_arr)
             elif(controller_mapping == "Generic"): # TODO: Make this more modular?
                 current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value - 0.1, 1)
-                    if(value < 0.1):
-                        value = 0.8
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # B0
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B1
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # B2
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # B3
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # B4
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # B5
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # B6
-                    bind_to_joy_arr[2] = '6'
-                    value = current_mapping['6']
-                    value = cycle_left_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
+                generic_left(selector_position, bind_to_joy_arr, current_mapping)
+                bind_to_joy(*bind_to_joy_arr)
     elif('right' in pressed or 'ability' in pressed or 'return' in pressed):
         if(player_page == 0 and 'ability' not in pressed and 'return' not in pressed):
             selector_position += 4
@@ -437,217 +242,18 @@ def handle_joystick_config():
             if(controller_mapping == "GameCube Controller Adapter"):
                 current_mapping = return_joystick_mapping()[str(player_page)]["GameCube Controller Adapter"]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # A
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # X
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # Y
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # Z
-                    bind_to_joy_arr[2] = '7'
-                    value = current_mapping['7']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # L
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # R
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
+                gamecube_controller_right(selector_position, bind_to_joy_arr, current_mapping)
+                bind_to_joy(*bind_to_joy_arr)
             elif(controller_mapping == "Xbox 360 Controller"): # TODO: Make this more modular?
                 current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # A
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # X
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # Y
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # Left Bumper
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # Right Bumper
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # Left Trigger
-                    bind_to_joy_arr[2] = 'lt'
-                    value = current_mapping['lt']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # Right Trigger
-                    bind_to_joy_arr[2] = 'rt'
-                    value = current_mapping['rt']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 10): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
+                xbox_360_right(selector_position, bind_to_joy_arr, current_mapping)
+                bind_to_joy(*bind_to_joy_arr)
             elif(controller_mapping == "Generic"): # TODO: Make this more modular?
                 current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                if(selector_position == 0): # H Dead
-                    bind_to_joy_arr[2] = 'horizontal_deadzone'
-                    value = current_mapping['horizontal_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                    
-                elif(selector_position == 1): # V Dead
-                    bind_to_joy_arr[2] = 'vertical_deadzone'
-                    value = current_mapping['vertical_deadzone']
-                    value = round(value + 0.1, 1)
-                    if(value > 0.8):
-                        value = 0.1
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
-                elif(selector_position == 2): # B0
-                    bind_to_joy_arr[2] = '0'
-                    value = current_mapping['0']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 3): # B1
-                    bind_to_joy_arr[2] = '1'
-                    value = current_mapping['1']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 4): # B2
-                    bind_to_joy_arr[2] = '2'
-                    value = current_mapping['2']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 5): # B3
-                    bind_to_joy_arr[2] = '3'
-                    value = current_mapping['3']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 6): # B4
-                    bind_to_joy_arr[2] = '4'
-                    value = current_mapping['4']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 7): # B5
-                    bind_to_joy_arr[2] = '5'
-                    value = current_mapping['5']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 8): # B6
-                    bind_to_joy_arr[2] = '6'
-                    value = current_mapping['6']
-                    value = cycle_right_dict[value]
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-                elif(selector_position == 9): # Rumble
-                    bind_to_joy_arr[2] = 'rumble'
-                    value = current_mapping['rumble']
-                    value = not value
-                    bind_to_joy_arr[3] = value
-                    bind_to_joy(*bind_to_joy_arr)
-
+                generic_right(selector_position)
+                bind_to_joy(*bind_to_joy_arr)
 
     if('ability' in pressed or 'return' in pressed):
         if(player_page == 0):
@@ -689,6 +295,101 @@ def handle_joystick_config():
                 selector_position = 0
                 player_page = 0
                 controller_mapping = ""
+
+    mouse = handle_mouse()
+    if(player_page == 0):
+        for i in range(len(joy_page_0)):
+            if(joy_page_0[i].check_hover(mouse)):
+                if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+                    selector_position = i # Change the selector position
+
+                if(mouse[1][0] or mouse[1][2]):
+                    input_keys = return_joystick_mapping()
+                    player_page = (selector_position//4) + 1
+                    # TODO: Make this work dynamically with shifting lists
+
+                    if(selector_position != 3 and selector_position != 7):
+                        i_ct = 0
+                        if(selector_position < 3):
+                            for i in input_keys['1']:
+                                if(selector_position % 4 == i_ct):
+                                    game_state, controller_mapping = config_menu_func_dict[i](player_page)
+                                    break
+                                i_ct += 1
+                        else:
+                            for i in input_keys['2']:
+                                if(selector_position % 4 == i_ct):
+                                    game_state, controller_mapping = config_menu_func_dict[i](player_page)
+                                    break
+                                i_ct += 1
+                    else:
+                        game_state, controller_mapping = config_menu_func_dict[selector_position % 4](player_page)
+                    if(selector_position != 3):
+                        selector_position = 0
+                    else:
+                        player_page = 0
+
+    elif(controller_mapping == "Xbox 360 Controller"):
+        for i in range(len(joy_shift_50)):
+            if(joy_shift_50[i].check_hover(mouse)):
+                if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+                    selector_position = i # Change the selector position
+
+                if(mouse[1][0]):
+                    if(selector_position < 11):
+                        current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
+                        bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
+                        xbox_360_right(selector_position, bind_to_joy_arr, current_mapping)
+                        bind_to_joy(*bind_to_joy_arr)
+                    else:
+                        player_page = 0
+                        selector_position = 0
+                        controller_mapping = ""
+                elif(mouse[1][2]):
+                    if(selector_position < 11):
+                        current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
+                        bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
+                        xbox_360_left(selector_position, bind_to_joy_arr, current_mapping)
+                        bind_to_joy(*bind_to_joy_arr)
+                    else:
+                        player_page = 0
+                        selector_position = 0
+                        controller_mapping = ""
+                    # TODO: Make this work dynamically with shifting lists
+
+    else:
+        if(controller_mapping == "GameCube Controller Adapter"):
+            l_func = gamecube_controller_left
+            r_func = gamecube_controller_right
+        else:
+            l_func = generic_left
+            r_func = generic_right
+        for i in range(len(joy_shift_55)):
+            if(joy_shift_55[i].check_hover(mouse)):
+                if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
+                    selector_position = i # Change the selector position
+
+                if(mouse[1][0]):
+                    if(selector_position < 10):
+                        current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
+                        bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
+                        r_func(selector_position, bind_to_joy_arr, current_mapping)
+                        bind_to_joy(*bind_to_joy_arr)
+                    else:
+                        player_page = 0
+                        selector_position = 0
+                        controller_mapping = ""
+                elif(mouse[1][2]):
+                    if(selector_position < 10):
+                        current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
+                        bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
+                        l_func(selector_position, bind_to_joy_arr, current_mapping)
+                        bind_to_joy(*bind_to_joy_arr)
+                    else:
+                        player_page = 0
+                        selector_position = 0
+                        controller_mapping = ""
+                    # TODO: Make this work dynamically with shifting lists
 
 
     return game_state, [player_page, selector_position, controller_mapping]
