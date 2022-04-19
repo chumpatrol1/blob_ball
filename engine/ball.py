@@ -1,3 +1,4 @@
+from cmath import sqrt
 import math
 import os
 import pygame as pg
@@ -277,7 +278,7 @@ class Ball:
             self.species = "blocked_ball"
             self.special_timer = 30
         elif(blob.used_ability == "mirror"):
-            self.x_speed *= -1.1
+            self.x_speed *= -0.9
             self.y_speed *= -0.5
         elif(blob.used_ability == "hook"):
             if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
@@ -290,7 +291,13 @@ class Ball:
                 if(abs(self.x_speed) > 15):
                     self.x_speed *= 0.95
                 # Change the number after // - bigger means the pulling force is weaker
-                
+            elif(not self.species == "blocked_ball"):
+                x_dist = (self.x_center - blob.x_center)**2
+                y_dist = (self.y_center - blob.y_center)**2
+                t_dist = math.sqrt(x_dist + y_dist)
+                print(t_dist)
+                if(t_dist < 500):
+                    blob.holding_timer += 1
                 '''
                 pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                 try:
