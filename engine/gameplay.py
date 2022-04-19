@@ -156,6 +156,13 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
         capture_screen()
+    elif(is_replay):
+        pause_check = engine.handle_input.gameplay_input()
+        if('escape' in pause_check and not pause_timer):
+            game_state = "pause"
+            capture_screen()
+            game_state = "replay_pause"
+
 
     def blob_ko(blob):
         blob.blob_ko()

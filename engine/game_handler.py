@@ -119,7 +119,7 @@ def update_game_state(game_state, cwd):
         if(game_state == "replay_win"):
             game_stats = info_getter[6]
             clear_info_cache()
-        elif(game_state == "pause"):
+        elif(game_state == "replay_pause"):
             timer = 10
     elif(game_state == "replay_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats, is_replay = True)
@@ -128,6 +128,19 @@ def update_game_state(game_state, cwd):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
+    elif(game_state == "replay_pause"):
+        game_state, info_getter = engine.menus.pause_menu.handle_pause_menu(timer, settings)
+        if(game_state == 'css'):
+            from resources.graphics_engine.display_gameplay import unload_image_cache
+            game_state = "almanac"
+            clear_info_cache()
+            unload_image_cache()
+            timer = 10
+        elif(game_state == 'casual_match'):
+            game_state = 'replay_match'
+            timer = 10
+        else:
+            game_state = "replay_pause"
     elif(game_state == "pop_up"):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""

@@ -91,6 +91,9 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     elif(game_state == "pause"):
         draw_pause_background(game_surface)
         draw_pause_screen(game_surface, info_getter, settings)
+    elif(game_state == "replay_pause"):
+        draw_pause_background(game_surface)
+        draw_pause_screen(game_surface, info_getter, settings)
     elif(game_state == "casual_win" or game_state == "replay_win"):
         draw_win_screen(game_surface, info_getter, settings)
     elif(game_state == "pop_up"):

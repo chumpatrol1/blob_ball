@@ -93,7 +93,7 @@ def run(game_state):
     game_state = new_game_state
     pressed = get_keypress(detect_new_controllers = False)
     if('escape' in pressed and not escape_timer):
-        if(game_state == "casual_match" or game_state == "pause" or game_state == "css"):
+        if(game_state in {"casual_match", "pause", "css", "replay_match", "replay_pause"}):
             escape_timer = 30
         elif(game_state == "rebind"):
             #game_state = "settings"
