@@ -574,7 +574,10 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             #print(event)
             #print(joysticks)
             #print(joysticks[event.__dict__['instance_id']].get_button(2))
-            new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
+            try:
+                new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
+            except KeyError:
+                continue
             controller_name = joysticks[event.__dict__['instance_id']].get_name()
             if(controller_name == "Xbox 360 Controller"):
                 #print(joysticks[event.__dict__['instance_id']].get_hat(0))
@@ -583,7 +586,10 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
             #print(event)
             # Assign Controller to Port
             # Left on DPAD
-            new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
+            try:
+                new_controller = joysticks[event.__dict__['instance_id']].get_instance_id() - 1 # Get Controller ID
+            except KeyError:
+                continue
             controller_name = joysticks[event.__dict__['instance_id']].get_name()
             if(controller_name == "GameCube Controller Adapter"):
                 bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name)

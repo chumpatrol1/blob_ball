@@ -44,7 +44,7 @@ p1_ko = False
 p2_ko = False
 goal_scored = False
 goal_scorer = None
-replay_inputs = ""
+replay_inputs = [""]
 #goal_limit = 5 #Defaults to 5 goals
 #time_limit = 3600 #Defaults to 3600, or 1 minute
 #time_bonus = 600 #Defaults to 600, or 10 seconds
@@ -126,7 +126,13 @@ def convert_replay_to_inputs(inputs):
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer, is_replay = False):
     if(is_replay):
         game_state = "replay_match"
-        pressed = return_replay_info()[4][game_info['time']]
+        #if(game_info['time'] > 2460):
+        #    print(return_replay_info()[4][game_info['time']:])
+        try:
+            pressed = return_replay_info()[4][game_info['time']]
+        except:
+            print(game_info['time'])
+            raise KeyError
         pressed = convert_replay_to_inputs(pressed)
     else:
         game_state = "casual_match"
@@ -170,17 +176,19 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(p1_blob.is_cpu):
                 cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p1_blob, p2_blob, ball, game_score, game_info['time'])
                 p1_blob.cpu_memory = cpu_memory
-                replay_inputs += convert_inputs_to_replay(p1_blob.move(cpu_logic), 1)
+                replay_inputs[-1] += convert_inputs_to_replay(p1_blob.move(cpu_logic), 1)
             else:
-                replay_inputs += convert_inputs_to_replay(p1_blob.move(pressed), 1)
+                replay_inputs[-1] += convert_inputs_to_replay(p1_blob.move(pressed), 1)
             if(p2_blob.is_cpu):
                 cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p2_blob, p1_blob, ball, game_score, game_info['time'])
                 p2_blob.cpu_memory = cpu_memory
                 
-                replay_inputs += convert_inputs_to_replay(p2_blob.move(cpu_logic), 2)
+                replay_inputs[-1] += convert_inputs_to_replay(p2_blob.move(cpu_logic), 2)
             else:
-                replay_inputs += convert_inputs_to_replay(p2_blob.move(pressed), 2)
-            replay_inputs += "/"
+                replay_inputs[-1] += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+            replay_inputs[-1] += "/"
+            if(game_info['time'] % 1200 == 1199):
+                replay_inputs.append("")
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
             ball.check_blob_ability(p1_blob)
@@ -351,4 +359,4 @@ def clear_info_cache():
     p1_blob = None
     p2_blob = None
     ball = None
-    replay_inputs = ""
+    replay_inputs = [""]

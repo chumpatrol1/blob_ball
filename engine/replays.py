@@ -25,7 +25,7 @@ def decompress_replay_file(file_name): # DANGER: DO NOT USE! WE NEED TO HAVE FIL
     #print(decompressed_data[4].split('/'))
     #print(decompressed_data)
     #with open("decompressed", "wb") as compressed_v:
-    #    compressed_v.write(decompressed_data)
+    #    compressed_v.write(zlib.decompress(string_to_compress))
 
 def return_replay_info():
     return current_replay
@@ -42,5 +42,9 @@ def save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob):
         identifier += 1
         file_str = getcwd() + '/replays/Blob Ball Replay ' + time_str + str(identifier) + ".bbr"
 
-    string_to_save = str(random_seed) + "\n" + dumps(ruleset) + "\n" + dumps(p1_blob.info) + "\n" + dumps(p2_blob.info) + "\n" + replay_inputs
+    combined_inputs = ""
+    for i in replay_inputs:
+        combined_inputs += i
+
+    string_to_save = str(random_seed) + "\n" + dumps(ruleset) + "\n" + dumps(p1_blob.info) + "\n" + dumps(p2_blob.info) + "\n" + combined_inputs
     compress_replay_file(string_to_save, file_str)
