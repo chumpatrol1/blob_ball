@@ -48,6 +48,7 @@ def load_almanac_static_text():
         menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
         menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
         menu_font.render('Sunken/XNunuAZ (Programmer)', False, (0, 0, 150)),
+        menu_font.render('Allan "Quackus" Weiner (Artist, Contributor)', False, (0, 0, 150)),
     ]
     static_text['almanac_art'] = [
         menu_font.render('Backgrounds', False, (0, 0, 150)),

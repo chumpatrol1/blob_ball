@@ -229,7 +229,7 @@ def draw_ball_particles(game_display, ball, p1_blob, p2_blob):
         ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
     
     if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
+        ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
     
     if(p1_blob.used_ability == "geyser" or p2_blob.used_ability == "geyser"):
         for y in range((1240 - round(ball.y_pos))//40):

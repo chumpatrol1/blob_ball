@@ -194,15 +194,15 @@ mirror_tips = [
 ]
 
 fisher_tips = [
-    tip_font.render("#1: Blocking the ball as the ability is", False, text_color),
-    tip_font.render("used can completely negate it", False, text_color),
+    tip_font.render("#1: Fisher Blob hooks onto the ball", False, text_color),
+    tip_font.render("faster if the ball is closeby!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#2: If used at the right time, Mirror", False, text_color),
-    tip_font.render("may net you a goal", False, text_color),
+    tip_font.render("#2: Fisher Blob is extra vulnerable when", False, text_color),
+    tip_font.render("using Hook - he takes +1 damage", False, text_color),
+    tip_font.render("from all sources!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#3: Mirror Blob shatters easily,", False, text_color),
-    tip_font.render("try not to encounter an offensive Blob", False, text_color),
-    tip_font.render("like Boxer Blob!", False, text_color),
+    tip_font.render("#3: You can block Hook from working by", False, text_color),
+    tip_font.render("using your block on the ball!", False, text_color),
     tip_font.render("", False, text_color),
     tip_font.render("#4: Mirror's reflection power is much", False, text_color),
     tip_font.render("stronger horizontally than it is vertically.", False, text_color),

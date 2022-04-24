@@ -295,7 +295,7 @@ class Ball:
                 x_dist = (self.x_center - blob.x_center)**2
                 y_dist = (self.y_center - blob.y_center)**2
                 t_dist = math.sqrt(x_dist + y_dist)
-                print(t_dist)
+                #print(t_dist)
                 if(t_dist < 500):
                     blob.holding_timer += 1
                 '''
