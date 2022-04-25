@@ -297,7 +297,7 @@ class Ball:
                 t_dist = math.sqrt(x_dist + y_dist)
                 #print(t_dist)
                 if(t_dist < 500):
-                    blob.holding_timer += 1
+                    blob.holding_timer += 3
                 '''
                 pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                 try:

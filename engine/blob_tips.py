@@ -191,6 +191,11 @@ mirror_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#4: Mirror's reflection power is much", False, text_color),
     tip_font.render("stronger horizontally than it is vertically.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Mirror Blob gains a reflection", False, text_color),
+    tip_font.render("status effect when using its ability.", False, text_color),
+    tip_font.render("It reduces incoming damage slightly", False, text_color),
+    tip_font.render("and reflects that damage to the attacker!", False, text_color),
 ]
 
 fisher_tips = [
@@ -204,8 +209,9 @@ fisher_tips = [
     tip_font.render("#3: You can block Hook from working by", False, text_color),
     tip_font.render("using your block on the ball!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#4: Mirror's reflection power is much", False, text_color),
-    tip_font.render("stronger horizontally than it is vertically.", False, text_color),
+    tip_font.render("#4: A spicy trick you can do is called", False, text_color),
+    tip_font.render("Threading the Loop. Jump, hook the ball", False, text_color),
+    tip_font.render("and have it spin around you before letting go.", False, text_color),
 ]
 
 def return_selected_blob_tips(selected_blob):
