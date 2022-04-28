@@ -1,6 +1,10 @@
 class Particle:
-    def __init__(self, image = "", alpha = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, fade = 5, lifetime = 60, ground_clip = False):
+    def __init__(self, image = "", alpha = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, fade = 5, lifetime = 60, ground_clip = False, crop = None):
         self.image = image
+        if(crop):
+            self.crop = crop
+        else:
+            self.crop = image.get_rect()
         self.alpha = alpha
         self.x_pos = x_pos
         self.y_pos = y_pos

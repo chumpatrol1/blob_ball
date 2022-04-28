@@ -11,7 +11,7 @@ def blit_and_update_particles(memory, game_display):
     temparray = []
     for particle in memory:
         particle.image.set_alpha(particle.alpha)
-        game_display.blit(particle.image, (particle.x_pos, particle.y_pos))
+        game_display.blit(particle.image, (particle.x_pos, particle.y_pos), area = particle.crop)
         particle.update()
         if not (particle.alpha <= 0) and not particle.lifetime <= 0:
            temparray.append(particle)
@@ -141,6 +141,7 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['boost_flash'] = pg.image.load(cwd + "/resources/images/particles/boost_flash.png").convert_alpha()
         particle_cache['stun_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/stun_particle.png").convert_alpha(), (30, 30))
         particle_cache['reflection_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/mirror.png").convert_alpha(), (30, 30))
+        particle_cache['shatter_spritesheet'] = pg.image.load(cwd + "/resources/images/particles/shatter_spritesheet.png").convert_alpha()
         particle_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (30, 30))
         particle_cache['taxation'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/tax.png").convert_alpha(), (30, 30))
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
@@ -210,6 +211,15 @@ def draw_boost_flash(flash_x):
 def draw_energy_flash(flash_x):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = flash_x, y_pos = 75, fade = 15, ground_clip = True))
+
+def draw_shatter(flash_x, shatter_timer):
+    global particle_memory
+    shatter_timer = (68 - shatter_timer)//4
+    original = particle_cache['shatter_spritesheet'].get_rect()
+    cropx, cropy = ((shatter_timer-1)%5)*70, ((shatter_timer-1)//5) * 70
+    cropRect = (cropx, cropy, 70, 70)
+
+    ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = flash_x, y_pos = 0, lifetime=1, ground_clip = True, crop=cropRect))
 
 def clear_particle_memory():
     global particle_memory

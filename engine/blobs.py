@@ -255,6 +255,7 @@ class Blob:
             "taxed": 0,
             "stunned": 0,
             "reflecting": 0,
+            "reflect_break": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -708,6 +709,8 @@ class Blob:
                 blob.take_damage(accumulated_damage)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                    blob.status_effects['reflect_break'] = 68
+
 
                     
     def check_ability_collision(self, blob, ball):
@@ -723,6 +726,7 @@ class Blob:
                 blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                    blob.status_effects['reflect_break'] = 68
             else:
                 blob.take_damage(damage=0)
                 blob.block_cooldown += 30
@@ -731,6 +735,7 @@ class Blob:
             blob.take_damage()
             if(blob.status_effects['reflecting'] > 1):
                 self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                blob.status_effects['reflect_break'] = 68
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
@@ -775,6 +780,7 @@ class Blob:
                     blob.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
                     if(blob.status_effects['reflecting'] > 1):
                         self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                        blob.status_effects['reflect_break'] = 68
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True):
@@ -872,6 +878,7 @@ class Blob:
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
         self.status_effects['reflecting'] = 0
+        self.status_effects['reflect_break'] = 0
         self.set_base_stats(self.stars)
         #self.heal_hp(heal_amt=ruleset['hp_regen'])
         

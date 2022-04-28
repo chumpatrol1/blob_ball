@@ -261,7 +261,7 @@ def draw_rules_screen(game_display, ruleset, selector_position, settings):
     if(len(time_bonus_seconds) == 1):
         time_bonus_seconds = "0" + time_bonus_seconds
 
-    time_bonus_text = f"{ruleset['time_bonus']//3660}:{time_bonus_seconds}"
+    time_bonus_text = f"{ruleset['time_bonus']//3600}:{time_bonus_seconds}"
     if(ruleset['time_bonus'] == 0):
         time_bonus_text = "No Bonus"
 
