@@ -89,7 +89,7 @@ switchpro_map = {
 player_mapping = {
     'GameCube Controller Adapter': dict(gamecube_map),
     'Xbox 360 Controller': dict(xbox360_map),
-    'Generic': dict(gamecube_map),
+    'Generic': dict(xbox360_map),
 }
 
 original_joystick_mapping = {

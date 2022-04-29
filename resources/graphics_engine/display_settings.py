@@ -197,7 +197,7 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
                 menu_font.render("Back", False, text_color),
             ]
-        elif(controller_mapping == "Generic"):
+            '''elif(controller_mapping == "Generic"):
             y_shift = 55
             text_array = [
                 menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),
@@ -211,8 +211,8 @@ def draw_controller_bind_screen(game_display, info_getter, settings):
                 menu_font.render("B6: " + str(active_joystick_mapping['6']), False, text_color),
                 menu_font.render("Rumble: " + str(active_joystick_mapping['rumble']), False, text_color),
                 menu_font.render("Back", False, text_color),
-            ]
-        elif(controller_mapping == "Xbox 360 Controller"):
+            ]'''
+        elif(controller_mapping == "Xbox 360 Controller" or controller_mapping == "Generic"):
             y_shift = 50
             text_array = [
                 menu_font.render("H Deadzone: " + str(active_joystick_mapping['horizontal_deadzone']), False, text_color),

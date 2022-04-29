@@ -190,7 +190,7 @@ def handle_joystick_config():
                 elif(controller_mapping == "Xbox 360 Controller"):
                     selector_position = 11
                 elif(controller_mapping == "Generic"):
-                    selector_position = 10
+                    selector_position = 11
                 else:
                     selector_position = 10
 
@@ -205,7 +205,7 @@ def handle_joystick_config():
             elif(controller_mapping == "Xbox 360 Controller"):
                 selector_max = 11
             elif(controller_mapping == "Generic"):
-                selector_max = 10
+                selector_max = 11
             else:
                 selector_max = 10
 
@@ -252,7 +252,7 @@ def handle_joystick_config():
             elif(controller_mapping == "Generic"): # TODO: Make this more modular?
                 current_mapping = return_joystick_mapping()[str(player_page)][controller_mapping]
                 bind_to_joy_arr = [str(player_page), controller_mapping, None, None] # Player, Mapping, Key, Value
-                generic_right(selector_position)
+                generic_right(selector_position, bind_to_joy_arr, current_mapping)
                 bind_to_joy(*bind_to_joy_arr)
 
     if('ability' in pressed or 'return' in pressed):
@@ -287,7 +287,7 @@ def handle_joystick_config():
                 selector_position = 0
                 player_page = 0
                 controller_mapping = ""
-            if(controller_mapping == "Generic" and selector_position == 10):
+            if(controller_mapping == "Generic" and selector_position == 11):
                 selector_position = 0
                 player_page = 0
                 controller_mapping = ""
