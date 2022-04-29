@@ -1,6 +1,7 @@
 # Blob Ball
 A fast paced two player game. Soccer-like game with magic and combat. Score 5 points to win!
 Join our Discord: https://discord.gg/sPR2B9hhkF
+Can be played with either Keyboard or Controller
 
 **How to Play**
 Both players start on opposite sides of the field, with a white ball in the middle.
@@ -26,7 +27,7 @@ Press down while on the ground to Focus - this builds up energy more quickly!
 Press up while focusing to cancel your focus - you'll be in the air though!
 If you are moving at maximum speed, you can tap the opposite direction to wavebounce (reversing direction quickly!)
 
-**Default Controls**
+**Default Controls (Can be Adjusted under Settings -> Remap Keyboard)**
 *P1:*
 * Movement: WASD
 * Use Ability/Select on Menu: 1
@@ -55,3 +56,4 @@ Neophyte_TPK
 Ellexium
 BoingK
 Sunken/XNunuAZ
+Allan "Quackus" Weiner
