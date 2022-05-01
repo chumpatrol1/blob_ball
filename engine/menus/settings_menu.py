@@ -6,20 +6,21 @@ selector_position = 0
 
 from engine.button import Button
 settings_buttons = [
-    Button(65, 130, 0, 600),
-    Button(130, 200, 0, 600),
-    Button(200, 275, 0, 600),
-    Button(275, 360, 0, 600),
-    Button(360, 430, 0, 600),
-    Button(430, 505, 0, 600),
-    Button(505, 580, 0, 600),
-    Button(580, 670, 0, 600),
-    Button(670, 740, 0, 600),
+    Button(65, 125, 0, 600),
+    Button(125, 185, 0, 600),
+    Button(185, 245, 0, 600),
+    Button(245, 305, 0, 600),
+    Button(305, 365, 0, 600),
+    Button(365, 425, 0, 600),
+    Button(425, 485, 0, 600),
+    Button(485, 545, 0, 600),
+    Button(545, 605, 0, 600),
+    Button(605, 665, 0, 600),
 ]
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
     game_state = "settings"
-
+    # TODO: Force Toggle Fullscreen
     def adjust_music():
         if(settings['music_volume'] < 10):
                 settings['music_volume'] += 1
@@ -55,6 +56,11 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         game_state = "rebind"
         createSFXEvent('select')
 
+    def enter_joystick():
+        nonlocal game_state
+        game_state = "controller_config"
+        createSFXEvent('select')
+
     def toggle_background():
         settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         createSFXEvent('select')
@@ -78,9 +84,10 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings) + 2: go_back,
-        len(settings) + 1: reset_settings,
-        len(settings): reset_inputs,
+        len(settings) + 3: go_back,
+        len(settings) + 2: reset_settings,
+        len(settings) + 1: reset_inputs,
+        len(settings): enter_joystick,
     }        
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
@@ -92,7 +99,7 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
     
 def settings_selection_left(selector_position, settings, previous_screen, cwd, limit = None): # Handles left arrow, right clicks
     game_state = "settings"
-
+    # TODO: Force Toggle Fullscreen
     def adjust_music():
         if(settings['music_volume'] > 0):
             settings['music_volume'] -= 1
@@ -128,6 +135,11 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         game_state = "rebind"
         createSFXEvent('select')
 
+    def enter_joystick():
+        nonlocal game_state
+        game_state = "controller_config"
+        createSFXEvent('select')
+
     def toggle_background():
         settings['hd_backgrounds'] = not(settings['hd_backgrounds'])
         createSFXEvent('select')
@@ -151,10 +163,12 @@ def settings_selection_left(selector_position, settings, previous_screen, cwd, l
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings): go_back,
-        len(settings): reset_settings,
-        len(settings): reset_inputs,
-    }        
+        len(settings) + 3: go_back,
+        len(settings) + 2: reset_settings,
+        len(settings) + 1: reset_inputs,
+        len(settings): enter_joystick,
+    }      
+
     if(limit is None or selector_position <= limit):
         run_func[selector_position]()
     
@@ -170,11 +184,11 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = len(settings) + 2
+            selector_position = len(settings) + 3
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == len(settings) + 2:
+        if selector_position == len(settings) + 3:
             selector_position = 0
         else:
             selector_position += 1

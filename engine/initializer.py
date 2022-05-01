@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.13.0b'
+game_version = '0.14.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -16,6 +16,10 @@ def check_folders(cwd):
     if(not os.path.isdir(cwd+"/screenshots")):
         os.mkdir(cwd+"/screenshots")
         print("Created screenshots folder")
+
+    if(not os.path.isdir(cwd+"/replays")):
+        os.mkdir(cwd+"/replays")
+        print("Created replays folder")
 
 def initialize_game_stats(cwd):
     game_stat_dict = {
@@ -102,7 +106,7 @@ def load_default_ruleset():
         'time_bonus': 600,
         'special_ability_charge_base': 1,
         'danger_zone_enabled': True,
-        'p1_modifiers': player_mods,
+        'p1_modifiers': dict(player_mods),
         'p2_modifiers': player_mods,
         'hp_regen': 0,
     }
@@ -148,7 +152,7 @@ def initialize_settings(cwd):
     'smooth_scaling': True,
     'music_volume': 10,
     'sound_volume': 10,
-    'ui_mode': True, # True if shown on top, False is shown on bottom
+    'ui_mode': False, # True if shown on top, False is shown on bottom
     }
 
     try:
@@ -171,6 +175,10 @@ def check_existing_directory(cwd):
         os.mkdir(cwd+'/config') 
     if not(os.path.isdir(cwd + '/saves')): # Saves folder
         os.mkdir(cwd+'/saves')
+    if not(os.path.isdir(cwd + '/screenshots')): # Screenshots folder
+        os.mkdir(cwd+'/screenshots')
+    if not(os.path.isdir(cwd + '/replays')): # Replays folder
+        os.mkdir(cwd+'/replays')
 
 def return_game_version():
     return game_version

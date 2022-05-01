@@ -16,12 +16,14 @@ pause_buttons = [
 ]
 
 
-def pause_menu_selection(selector_position, game_state, settings, left_mode = False):
+def pause_menu_selection(selector_position, game_state, settings, left_mode = False, unpause_mode = False):
 
     def go_back():
         nonlocal game_state
-        game_state = 'casual_match'
-        createSFXEvent('select')
+        nonlocal unpause_mode
+        if(unpause_mode):
+            game_state = 'casual_match'
+            createSFXEvent('select')
 
     def take_screenshot():
         from resources.graphics_engine.display_pause import take_screenshot
@@ -79,7 +81,7 @@ def pause_menu_selection(selector_position, game_state, settings, left_mode = Fa
 def handle_pause_menu(timer, settings):
     global selector_position
     game_state = 'pause'
-    pressed = engine.handle_input.menu_input()
+    pressed = engine.handle_input.menu_input(pause_screen=True)
     mouse = engine.handle_input.handle_mouse()
     if('p1_up' in pressed or 'p2_up' in pressed):
         if(selector_position == 0):
@@ -94,8 +96,10 @@ def handle_pause_menu(timer, settings):
 
     if(not timer and 'escape' in pressed):
         game_state = 'casual_match'
-    elif('p1_ability' in pressed or 'p2_ability' in pressed or 'return' in pressed or 'p1_right' in pressed or 'p2_right' in pressed):
+    elif('p1_ability' in pressed or 'p2_ability' in pressed or 'p1_right' in pressed or 'p2_right' in pressed):
         game_state = pause_menu_selection(selector_position, game_state, settings,)
+    elif('return' in pressed):
+        game_state = pause_menu_selection(selector_position, game_state, settings, unpause_mode=True)
     elif('p1_kick' in pressed or 'p2_kick' in pressed or 'p1_left' in pressed or 'p2_left' in pressed):
         game_state = pause_menu_selection(selector_position, game_state, settings, left_mode=True)
 
@@ -108,8 +112,8 @@ def handle_pause_menu(timer, settings):
                 selector_position = i # Change the selector position
 
             if(mouse[1][0]):
-                game_state = pause_menu_selection(selector_position, game_state, settings,)
+                game_state = pause_menu_selection(selector_position, game_state, settings, unpause_mode = True)
             elif(mouse[1][2]):
-                game_state = pause_menu_selection(selector_position, game_state, settings,left_mode=True)
+                game_state = pause_menu_selection(selector_position, game_state, settings,left_mode=True, unpause_mode = True)
 
     return game_state, [selector_position]

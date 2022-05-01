@@ -1,3 +1,4 @@
+from cmath import sqrt
 import math
 import os
 import pygame as pg
@@ -128,18 +129,25 @@ class Ball:
                     self.special_timer = 30
                     p1_ball_nv = p1_vector - ball_vector
                     try:
-                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv).normalize()
+                        # Make this not dependent on ball speed!
+                        p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         if(self.x_center > blob.x_center):
                             p1_ball_collision[0] = abs(p1_ball_collision[0])
+                            
                         else:
                             p1_ball_collision[0] = -1 * abs(p1_ball_collision[0])
+                        
+                        
                         blob_kick_x_modifier = 0
+                        p1_ball_collision.scale_to_length(50)
                     except: #Stationary ball?
                         p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
                         blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
                     
+                    #print(ball_vector, p1_vector, p1_ball_collision, p1_ball_nv)
                     blob_kick_y_modifier = 0#((blob.y_center - self.y_center)/50) * 10 #TODO: Fix for Sponge/Sci Slime
-                    self.x_speed, self.y_speed = (40 * p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(45 * p1_ball_collision[1] - blob_kick_y_modifier))
+                    self.x_speed, self.y_speed = (p1_ball_collision[0] + blob_kick_x_modifier), (-1 * abs(p1_ball_collision[1] - blob_kick_y_modifier))
+                    #print(self.x_speed, self.y_speed)
                     createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
                     self.x_speed *= self.bounciness
                     self.y_speed *= self.bounciness
@@ -236,9 +244,6 @@ class Ball:
         self.blocked_timer = 20
 
     def check_blob_ability(self, blob):
-        if(blob.used_ability == "mirror"):
-            self.x_speed *= -0.9
-            self.y_speed *= -0.5
         if(blob.used_ability == "fireball"):
             self.x_speed *= (1.05 - (self.x_speed/1000))
             self.y_speed *= (1.05 - (self.y_speed/1000))
@@ -272,6 +277,42 @@ class Ball:
             self.image = type_to_image("blocked_ball")
             self.species = "blocked_ball"
             self.special_timer = 30
+        elif(blob.used_ability == "mirror"):
+            self.x_speed *= -0.9
+            self.y_speed *= -0.5
+        elif(blob.used_ability == "hook"):
+            if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
+                # After the delay, start reeling the ball in. This is a gradual
+                # process, meaning that the ball won't get jerked in a certain
+                # direction and it also allows for the ball to be body blocked
+                #print((blob.x_center - 25 - self.x_pos)//150)
+                self.x_speed += (blob.x_center - self.x_pos)//150 
+                self.y_speed += (blob.y_center - 200 - self.y_pos)//200
+                if(abs(self.x_speed) > 15):
+                    self.x_speed *= 0.95
+                # Change the number after // - bigger means the pulling force is weaker
+            elif(not self.species == "blocked_ball"):
+                x_dist = (self.x_center - blob.x_center)**2
+                y_dist = (self.y_center - blob.y_center)**2
+                t_dist = math.sqrt(x_dist + y_dist)
+                #print(t_dist)
+                if(t_dist < 500):
+                    blob.holding_timer += 3
+                '''
+                pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
+                try:
+                    pull_sign_x = (blob.x_center - 25 - self.x_pos)/abs(blob.x_center - 25 - self.x_pos)
+                except:
+                    pull_sign_x = 1
+                pull_force_y = math.sqrt(abs(blob.y_center - 200 - self.y_pos))
+                try:
+                    pull_sign_y = (blob.y_center - 200 - self.y_pos)/abs(blob.y_center - 200 - self.y_pos)
+                except:
+                    pull_sign_y = 1
+                '''
+                #print((pull_force_x * pull_sign_x)/20)
+                #self.x_speed += (pull_force_x * pull_sign_x)/20
+                #self.y_speed += (pull_force_y * pull_sign_y)/20
 
     def check_ceiling_collisions(self):
         ceiling = 210
@@ -418,8 +459,8 @@ class Ball:
                 self.x_speed = self.x_speed_max
             elif(self.x_speed < -1 * self.x_speed_max):
                 self.x_speed = -1 * self.x_speed_max
-            self.x_pos += self.x_speed
-            self.info['x_distance_moved'] += abs(self.x_speed)
+        self.x_pos += self.x_speed
+        self.info['x_distance_moved'] += abs(self.x_speed)
 
         apply_traction_friction()
         interact_with_goal_posts()

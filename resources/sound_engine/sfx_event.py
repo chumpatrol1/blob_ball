@@ -21,7 +21,7 @@ name_to_file = {
     'fire': ['fire_1.wav', 'fire_2.wav', 'fire_3.wav'],
     'ice': ['ice_1.wav', 'ice_2.wav'],
     'water': ['water_1.wav', 'water_2.wav', 'water_3.wav'],
-    'glyph': [],
+    'glyph': ['glyph_1.wav'],
     'spire': ['spire_1.wav'],
     'electricity': ['spark_1.wav', 'spark_2.wav'],
     'gale': ['gale.wav'],

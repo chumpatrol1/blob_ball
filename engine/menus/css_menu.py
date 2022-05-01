@@ -20,8 +20,8 @@ for i in range(8): # 8 columns
 
 
 # X position, Y position, Confirmation, CPU/Human
-p1_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
-p2_selector_position = [4, 2, 0, 0] #0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p1_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p2_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
 p1_ghost_position = None
 p2_ghost_position = None
 p1_blob = "quirkless"
@@ -31,17 +31,22 @@ blob_list = return_css_selector_blobs()
 
 def css_navigation(player, selector, timer, other_selector, ghost_selector, other_ghost):
     pressed_conversions = engine.handle_input.player_to_controls(player)
-    pressed_buttons = engine.handle_input.css_input()
+    detect_new_controllers = True
+    if(player == 2):
+        detect_new_controllers = False
+    pressed_buttons = engine.handle_input.css_input(detect_new_controllers = detect_new_controllers)
     if(player == 1):
         mouse = engine.handle_input.handle_mouse(False)
     else:
         mouse = engine.handle_input.handle_mouse()
 
     pressed = []
+    override = {'return', 'escape'}
     for button in pressed_buttons:
         if(button in pressed_conversions):
             pressed.append(pressed_conversions[button])
-        
+        elif(button in override):
+            pressed.append(button)
     if pressed == []:
         timer = 0
 
@@ -49,7 +54,7 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         pressed = []
         
     if not (pressed == []):
-        if('ability' in pressed):
+        if('ability' in pressed or 'escape' in pressed):
             timer = 15
         else:
             timer = 30
@@ -78,10 +83,18 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
             else:
                 selector[0] += 1
     
+    if('return' in pressed):
+        print("return pressed")
+
     if(selector[2] == 0):
         if('ability' in pressed):
             selector[2] = 1
             ghost_selector = None
+        elif('escape' in pressed):
+            if(other_selector[2] == 0 and selector[3] == 0):
+                other_selector[2] = 2
+                other_selector[3] = 1
+
     elif('kick' in pressed):
         selector[2] = 0
         if(other_selector[2] == 2):
@@ -91,9 +104,15 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
         if('ability' in pressed):
             selector[2] = 2
             ghost_selector = None
-        elif('return' in pressed):
+        elif('return' in pressed or 'escape' in pressed):
             selector[2] = 2
             other_selector[2] = 2
+            ghost_selector = None
+    elif(selector[2] >= 1 and other_selector[2] == 0):
+        if('escape' in pressed and selector[3] == 0):
+            selector[2] = 2
+            other_selector[2] = 2
+            other_selector[3] = 1
             ghost_selector = None
 
     if(player == 1):
@@ -143,6 +162,7 @@ def css_handler():
     global p1_timer
     global p2_timer
     game_state = "css"
+    # Controller failure - cannot swap players here
     p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position)
     p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position)
     
