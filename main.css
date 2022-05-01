@@ -1,7 +1,7 @@
 body {
 	background-color:rgb(100,100,0);
 }
-div#boxed1 {
+div#title {
 	position:absolute;
 	left:10px;
 	top:10px;
@@ -11,7 +11,7 @@ div#boxed1 {
     margin:35px;
     background-color:rgba(0,0,255,0.5);
 }
-div#boxed2 {
+div#dl {
 	position:absolute;
 	left:380px;
 	top:118px;
@@ -21,7 +21,27 @@ div#boxed2 {
     border:10px solid yellow;
     background-color:rgba(0,0,255,0.5);
 }
-div#boxed3 {
+div#yt {
+	position:absolute;
+	left:560px;
+	top:118px;
+	color:#ff0;
+	width:150px;
+	height:50px;
+    border:10px solid yellow;
+    background-color:rgba(0,0,255,0.5);
+}
+div#disco {
+	position:absolute;
+	left:740px;
+	top:118px;
+	color:#ff0;
+	width:150px;
+	height:50px;
+    border:10px solid yellow;
+    background-color:rgba(0,0,255,0.5);
+}
+div#bottomDesc {
 	text-indent:12px;
 	position:absolute;
 	left:10px;
@@ -52,6 +72,6 @@ p#cVer {
     font-size: 18px;
 	transition-duration:0.4s;
 }
-.button:hover {
-	background-color:rgba(0,0,255,0.4);
+div.button:hover {
+	background-color:rgba(0,0,255,0.4); 
 }
