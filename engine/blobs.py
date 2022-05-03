@@ -34,29 +34,30 @@ def ability_to_classification(ability):
         return "delayed"
     return "other"
 
-def species_to_image(species):
+#TODO: Implement costume support and include death sprites
+def species_to_image(species, costume):
     global cwd
     blob_cwd = cwd + '/resources/images/blobs/'
     image_dict = {
-        "quirkless": blob_cwd + "quirkless_blob.png",
-        "fire": blob_cwd + "fire_blob.png",
-        "ice": blob_cwd + "ice_blob.png",
-        'water': blob_cwd + "water_blob.png",
-        'rock': blob_cwd + "rock_blob.png",
-        'lightning': blob_cwd + "lightning_blob.png",
-        'wind': blob_cwd + "wind_blob.png",
-        'judge': blob_cwd + "judge_blob.png",
-        'doctor': blob_cwd + "doctor_blob.png",
-        'king': blob_cwd + 'king_blob.png',
-        'cop': blob_cwd + 'cop_blob.png',
-        'boxer': blob_cwd + 'boxer_blob.png',
-        'mirror': blob_cwd + 'mirror_blob.png',
-        'fisher': blob_cwd + 'fisher_blob.png',
-        "random": blob_cwd + "random_blob.png",
-        "invisible": blob_cwd + "invisible_blob.png"
+        'quirkless': {0: (blob_cwd + "quirkless_blob.png", blob_cwd + "quirkless_blob_-1.png")},
+        'fire': {0: (blob_cwd + "fire_blob.png", blob_cwd + "fire_blob_-1.png")},
+        'ice': {0: (blob_cwd + "ice_blob.png", blob_cwd + "ice_blob_-1.png")},
+        'water': {0: (blob_cwd + "water_blob.png", blob_cwd + "water_blob_-1.png")},
+        'rock': {0: (blob_cwd + "rock_blob.png", blob_cwd + "rock_blob_-1.png")},
+        'lightning': {0: (blob_cwd + "lightning_blob.png", blob_cwd + "lightning_blob_-1.png")},
+        'wind': {0: (blob_cwd + "wind_blob.png", blob_cwd + "wind_blob_-1.png")},
+        'judge': {0: (blob_cwd + "judge_blob.png", blob_cwd + "judge_blob_-1.png")},
+        'doctor': {0: (blob_cwd + "doctor_blob.png", blob_cwd + "doctor_blob_-1.png")},
+        'king': {0: (blob_cwd + "king_blob.png", blob_cwd + "king_blob_-1.png")},
+        'cop': {0: (blob_cwd + "cop_blob.png", blob_cwd + "cop_blob_-1.png")},
+        'boxer': {0: (blob_cwd + "boxer_blob.png", blob_cwd + "boxer_blob_-1.png")},
+        'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png")},
+        'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png")},
+        'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
+        'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
     }
 
-    return image_dict[species]
+    return image_dict[species][costume]
 
 def species_to_ability_icon(species):
     global cwd
@@ -112,7 +113,7 @@ def create_visualization(number):
 
 class Blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, danger_zone_enabled = True, is_cpu = False, stat_overrides = None):
+    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = None):
         self.species = species
         self.player = player #Player 1 or 2
         if(player == 1):
@@ -121,7 +122,9 @@ class Blob:
             self.danger_zone = 1475
         self.is_cpu = is_cpu
         self.cpu_memory = {'press_queue': [], 'game_state': '', 'current_play': ''}
-        self.image = species_to_image(species)
+        self.costume = costume
+        self.image, self.image_death = species_to_image(species, costume)
+        print(self.image == self.image_death)
         self.ability_icon = species_to_ability_icon(species)
         self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
         self.max_hp = int(2 * (self.stars['max_hp'] + 3)) #Each star adds an additional HP.
@@ -406,9 +409,9 @@ class Blob:
         if(self.damage_flash_timer > 0):
             self.damage_flash_timer -= 1
             if((self.damage_flash_timer // 10) % 2 == 1):
-                self.image = species_to_image('invisible')
+                self.image = species_to_image('invisible', 0)[0]
             else:
-                self.image = species_to_image(self.species)
+                self.image = species_to_image(self.species, self.costume)[0]
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
@@ -865,7 +868,7 @@ class Blob:
         self.block_timer = 0
         self.focusing = False
         self.damage_flash_timer = 0
-        self.image = species_to_image(self.species)
+        self.image = species_to_image(self.species, self.costume)[0]
         self.special_ability_timer = 0
         self.used_ability = None
         self.top_speed = self.base_top_speed

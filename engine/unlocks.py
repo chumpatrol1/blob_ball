@@ -93,8 +93,11 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-unlock_milestones = [0, 3, 6, 9, 12, 15, 18, 23, 28, 33, 38, 43, 48, 53, 60, 67, 74, 81, 88,\
-    95, 105, 115, 125, 135, 145, 155, 165, 180, 195, 210, 225, 240, 255, 270]
+unlock_milestones = [0, 2, 4, 6, 8, 10, 12,\
+    15, 20, 25, 30, 35, 40, 45,\
+        52, 59, 66, 74, 82, 90,\
+    100, 110, 120, 130, 140, 150, 160,\
+    165, 180, 195, 210, 225, 240, 255]
 
 def update_css_blobs(cwd):
     global blob_unlock_dict
@@ -293,6 +296,7 @@ def return_css_selector_medals():
 def return_css_display_medals():
     global css_display_list_medals
     return css_display_list_medals
+
 
 if __name__ == "__main__":
     from os import getcwd

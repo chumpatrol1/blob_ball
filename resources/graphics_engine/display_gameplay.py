@@ -312,13 +312,17 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['initialized'] = True
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-
+        # TODO: Death sprites
         image_cache['p1_blob_left'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_right'] = pg.transform.flip(image_cache['p1_blob_left'], True, False)
+        image_cache['p1_dead_left'] = pg.transform.scale(pg.image.load(p1_blob.image_death).convert_alpha(), (120, 66))
+        image_cache['p1_dead_right'] = pg.transform.flip(image_cache['p1_dead_left'], True, False)
         image_cache['p1_blob_clone'] = p1_blob.image
         image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_blob_left'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
         image_cache['p2_blob_right'] = pg.transform.flip(image_cache['p2_blob_left'], True, False)
+        image_cache['p2_dead_left'] = pg.transform.scale(pg.image.load(p2_blob.image_death).convert_alpha(), (120, 66))
+        image_cache['p2_dead_right'] = pg.transform.flip(image_cache['p2_dead_left'], True, False)
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
@@ -361,10 +365,15 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p1_blob_clone'] = p1_blob.image
     if not("invisible" in p1_blob.image):
         if(p1_blob.facing == "right"):
-            gameplay_surface.blit(image_cache['p1_blob_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+            if(p1_blob.hp > 0):
+                gameplay_surface.blit(image_cache['p1_blob_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+            else:
+                gameplay_surface.blit(image_cache['p1_dead_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
         else:
-            gameplay_surface.blit(image_cache['p1_blob_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-
+            if(p1_blob.hp > 0):
+                gameplay_surface.blit(image_cache['p1_blob_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
+            else:
+                gameplay_surface.blit(image_cache['p1_dead_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
     draw_blob_special(p1_blob, gameplay_surface)
     draw_blob_particles(gameplay_surface, ball, p1_blob, p2_blob)
     
@@ -375,9 +384,15 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
 
     if not("invisible" in p2_blob.image):
         if(p2_blob.facing == "right"):
-            gameplay_surface.blit(image_cache['p2_blob_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+            if(p2_blob.hp > 0):
+                gameplay_surface.blit(image_cache['p2_blob_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+            else:
+                gameplay_surface.blit(image_cache['p2_dead_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
         else:
-            gameplay_surface.blit(image_cache['p2_blob_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+            if(p2_blob.hp > 0):
+                gameplay_surface.blit(image_cache['p2_blob_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
+            else:
+                gameplay_surface.blit(image_cache['p2_dead_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
 
     draw_blob_special(p2_blob, gameplay_surface)
     draw_blob_particles(gameplay_surface, ball, p2_blob, p1_blob) # Why is it like this again?
