@@ -32,3 +32,13 @@ def find_medal_unlock(key):
         return medal_unlock_popups[key]
     except:
         print("Cannot find medal")
+
+costume_unlock_popups = { # Key is 
+    
+}
+
+def find_costume_unlock(key):
+    try:
+        return costume_unlock_popups[key]
+    except:
+        print("Cannot find blob")

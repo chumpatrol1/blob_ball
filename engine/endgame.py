@@ -3,21 +3,21 @@ from os import getcwd
 from engine.popup_event import createPopUpEvent
 cwd = getcwd()
 
-def attempt_unlocks(game_stats):
+def attempt_blob_unlocks(game_stats):
     blob_unlock_requirements = {
-        3: "fire",
-        6: "ice",
-        9: "water",
-        12: "rock",
-        15: "lightning",
-        18: "wind",
-        23: "judge",
-        28: "doctor",
-        33: "king",
-        38: "cop",
-        43: "boxer",
-        48: "mirror",
-        53: "fisher",
+        2: "fire",
+        4: "ice",
+        6: "water",
+        8: "rock",
+        10: "lightning",
+        12: "wind",
+        15: "judge",
+        20: "doctor",
+        25: "king",
+        30: "cop",
+        35: "boxer",
+        40: "mirror",
+        45: "fisher",
     }
     
     blobs_unlocked = 0
@@ -25,6 +25,22 @@ def attempt_unlocks(game_stats):
         if(game_stats['matches_played'] >= dict_key):
             if(createPopUpEvent(blob_unlock_requirements[dict_key], 0)):
                 blobs_unlocked += 1
+
+    return blobs_unlocked
+
+def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
+    costume_unlock_requirements = {
+        "quirkless": {10: ""},
+    }
+    print(p1_blob, p2_blob, "joe mama")
+    blobs_unlocked = 0
+    try:
+        for dict_key in costume_unlock_requirements[p1_blob.species]:
+            if(mu_chart[p1_blob.species]['total'] >= dict_key):
+                if(createPopUpEvent(costume_unlock_requirements[dict_key], 2)):
+                    blobs_unlocked += 1
+    except KeyError:
+        print("No Costumes Available")
 
     return blobs_unlocked
 
@@ -61,7 +77,7 @@ def update_game_stats(game_info, p1_blob, p2_blob, ball):
         game_stats['ball_ceiling_collisions'] = game_stats['ball_ceiling_collisions'] + ball.info['ceiling_collisions']
         game_stats['ball_wall_collisions'] = game_stats['ball_wall_collisions'] + ball.info['wall_collisions']
         
-        game_stats['blobs_unlocked'] += attempt_unlocks(game_stats)
+        game_stats['blobs_unlocked'] += attempt_blob_unlocks(game_stats)
 
 
         game_stats['time_in_game'] = round(game_stats['time_in_game'] + game_info['time_seconds'])
@@ -150,7 +166,7 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
             mu_chart[winner]['total'] = 0
         mu_chart[loser]['total'] += 1
         mu_chart[winner]['total'] += 1
-
+        attempt_costume_unlocks(mu_chart, p1_blob, p2_blob)
         muchart.write(dumps(mu_chart))
 
         most_played_character = ""

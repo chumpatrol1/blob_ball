@@ -168,7 +168,7 @@ def update_game_state(game_state, cwd):
     elif(game_state == "controller_config"):
         game_state,info_getter = engine.rebind.handle_joystick_config()
     elif(game_state == "almanac"):
-        info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen)
+        info_getter = engine.menus.almanac_menu.almanac_navigation(timer, previous_screen, ruleset)
         game_state = info_getter[1]
         song_playing = "bb_credits_theme"
         if(game_state != "almanac"):

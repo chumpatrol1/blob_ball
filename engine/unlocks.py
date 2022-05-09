@@ -352,14 +352,29 @@ def return_available_costumes():
     global available_costumes
     return available_costumes
 
+def unlock_costume(blob, costume, cwd):
+    global costume_unlock_dict
+    if blob in costume_unlock_dict:
+        if(costume in costume_unlock_dict[blob] and not costume_unlock_dict[blob][costume]):
+            with open(cwd + "/saves/costume_unlocks.txt", "r") as blobunlockdoc:
+                costume_unlock_dict = loads(blobunlockdoc.readline())
+            costume_unlock_dict[blob][costume] = True
+            with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+                blobunlockdoc.write(dumps(costume_unlock_dict))
+        else:
+            raise ValueError("Already Unlocked")
+    else:
+        raise ValueError("Invalid Blob!")
+
 if __name__ == "__main__":
     from os import getcwd
     cwd = getcwd()
     load_blob_unlocks(cwd)
     #unlock_blob("ice", cwd)
-    update_css_blobs()
+    #update_css_blobs()
 	#unlock_medal("goal", cwd)
-    update_css_medals
+    #update_css_medals()
+    
     load_medals(cwd)
     print(medal_unlock_dict)
     unlock_medal("goal", cwd)
@@ -372,3 +387,6 @@ if __name__ == "__main__":
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print(css_display_list_medals)
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    
+    unlock_costume("quirkless", "grayscale_1", cwd)
+    print(costume_unlock_dict)

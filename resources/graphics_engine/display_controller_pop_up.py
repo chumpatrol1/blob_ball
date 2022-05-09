@@ -51,17 +51,32 @@ class Queue:
         for i in self:
             ret_str += str(i)
         return ret_str
-        
+
+class GenericPopUp:
+    def __init__(self, event_id):
+        self.pop_type = "Generic"
+        self.event_id = event_id
+
+    def __str__(self):
+        return f"Event: {self.event_id}"
 
 class ControllerPopUp:
     def __init__(self, controller, event_id, name):
         # TODO: Declare a type? If I run type(ControllerPopUp) it should return something like "Controller Pop Up"
+        self.pop_type = "Controller"
         self.controller_number = controller
         self.event_id = event_id
         self.controller_name = name
 
     def __str__(self):
         return f"Event: {self.event_id}, Controller: {self.controller_number}"
+
+def create_generic_pop_up(event_id = 0):
+    new_pop_up = GenericPopUp(event_id)
+    new_entry = Node(new_pop_up)
+    #print(new_pop_up)
+    controller_popup_queue.add_item(new_entry)
+    #print(controller_popup_queue)
 
 def create_controller_pop_up(controller, name = "GCCA", event_id = -2):
     if(event_id == 9 or event_id == -2): # Event ID 9 is ignored
@@ -84,7 +99,7 @@ controller_popup_queue = Queue()
 #create_controller_pop_up(0, event_id = 7)
 #create_controller_pop_up(0, event_id = 8)
 #create_controller_pop_up(0, event_id = 11)
-
+create_generic_pop_up(0)
 # Intended Control Flow
 # Create Controller Pop Up is called
 # A new ControllerPopUp is created based off of the Joystick Event
@@ -129,3 +144,6 @@ controller_popup_queue = Queue()
 # > If the Node Timer is 0, remove references to the current Head and reassign
 # > Return Surface and Timer
 # > Display the Surface at the position specified by the timer
+
+# Generic Popups
+# > 0: Replay failed to load (incompatible version)
