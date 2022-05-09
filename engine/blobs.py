@@ -31,7 +31,10 @@ cwd = os.getcwd()
 # In unlocks.py, under costume_unlock_dict, navigate to the blob who you want to add a costume to
 # Add a new entry to the nested dictionary (formatted costumename_#) 
 # The number at the end is very important and should match the key in species_to_image
-# Unlock requirement?
+# To be able to unlock the costume:
+# In engine/endgame.py under the attempt_costume_unlocks function, find (or add) the blob who you want to tie the costume to
+# Add a new key/value pair, with the key being the number of matches it takes to unlock that costume
+# In engine/popup_list.py, add an entry formatted as blob/alt_# - this dictates what the popup screen says and shows
 
 def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook']

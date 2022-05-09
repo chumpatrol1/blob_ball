@@ -29,15 +29,35 @@ def attempt_blob_unlocks(game_stats):
     return blobs_unlocked
 
 def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
-    costume_unlock_requirements = {
-        "quirkless": {10: ""},
+    costume_unlock_requirements = { # Key is Blob Species, Value is how we look up the costume when unlocking. The / is important!
+        "quirkless": {10: "quirkless/grayscale_1"},
+        "fire": {10: "fire/grayscale_1"},
+        "ice": {10: "ice/grayscale_1"},
+        "water": {10: "water/grayscale_1"},
+        "rock": {10: "rock/grayscale_1"},
+        "lightning": {10: "lightning/grayscale_1"},
+        "wind": {10: "wind/grayscale_1"},
+        "judge": {10: "judge/grayscale_1"},
+        "doctor": {10: "doctor/grayscale_1"},
+        "king": {10: "king/grayscale_1"},
+        "cop": {10: "cop/grayscale_1"},
+        "boxer": {10: "boxer/grayscale_1"},
+        "mirror": {10: "mirror/grayscale_1"},
+        "fisher": {10: "fisher/grayscale_1"},
     }
-    print(p1_blob, p2_blob, "joe mama")
     blobs_unlocked = 0
     try:
         for dict_key in costume_unlock_requirements[p1_blob.species]:
             if(mu_chart[p1_blob.species]['total'] >= dict_key):
-                if(createPopUpEvent(costume_unlock_requirements[dict_key], 2)):
+                if(createPopUpEvent(costume_unlock_requirements[p1_blob.species][dict_key], 2)):
+                    blobs_unlocked += 1
+    except KeyError:
+        print("No Costumes Available")
+
+    try:
+        for dict_key in costume_unlock_requirements[p2_blob.species]:
+            if(mu_chart[p2_blob.species]['total'] >= dict_key):
+                if(createPopUpEvent(costume_unlock_requirements[p2_blob.species][dict_key], 2)):
                     blobs_unlocked += 1
     except KeyError:
         print("No Costumes Available")

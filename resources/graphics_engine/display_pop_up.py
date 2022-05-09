@@ -34,6 +34,7 @@ def draw_pop_up(game_display, info_getter, settings):
     if(info_getter is not None):
         temp_dict = {
             0: "Blob Unlocked!",
+            2: "Costume Unlocked!"
         }
         menu_text = temp_dict[info_getter[3]]
 

@@ -361,9 +361,12 @@ def unlock_costume(blob, costume, cwd):
             costume_unlock_dict[blob][costume] = True
             with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
                 blobunlockdoc.write(dumps(costume_unlock_dict))
+            print(f"Unlocked {blob} {costume}!")
         else:
+            print("Already Unlocked!")
             raise ValueError("Already Unlocked")
     else:
+        print("Invalid Blob!")
         raise ValueError("Invalid Blob!")
 
 if __name__ == "__main__":

@@ -15,7 +15,7 @@ import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
-from engine.unlocks import return_available_costumes, update_css_blobs, update_css_medals
+from engine.unlocks import return_available_costumes, update_css_blobs, update_css_medals, update_costumes
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
@@ -117,6 +117,7 @@ def update_game_state(game_state, cwd):
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
             resources.graphics_engine.display_css.update_css_blobs(cwd)
+            update_costumes()
             if(game_state == "pop_up"):
                 timer = 60
     elif(game_state == "replay_match"):

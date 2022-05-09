@@ -28,12 +28,14 @@ def add_milestone(cwd, event):
     if(event.pop_up_type == 0):
         blurb = f"You unlocked {event.info[1]}"
     elif(event.pop_up_type == 1):
+        blurb = f"You unlocked {event.info[1]}"
+    elif(event.pop_up_type == 3):
         blurb = f"You achieved {event.info[1]}"
 
     try:
         milestones[pop_type_to_category[event.pop_up_type]][event.time_notified] = {"blurb": blurb, "time": event.time_notified}
     except Exception as ex:
-        print (ex)
+        print(ex)
 
     with open(cwd + "/saves/notices.txt", "w") as milestonedoc:
             milestonedoc.write(dumps(milestones))

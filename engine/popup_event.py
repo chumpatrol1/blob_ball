@@ -4,7 +4,7 @@ from os import getcwd
 from time import time
 from engine.milestones import add_milestone
 from engine.popup_list import find_blob_unlock, find_medal_unlock, find_costume_unlock
-from engine.unlocks import unlock_blob, unlock_medal
+from engine.unlocks import unlock_blob, unlock_medal, unlock_costume
 
 pop_up_events = []
 
@@ -50,9 +50,10 @@ class PopUpEvent():
                 unlock_medal(self.name, getcwd())
             except ValueError:
                 raise ValueError("Already Unlocked!")
-        elif(self.pop_up_type == 1):
+        elif(self.pop_up_type == 2):
+            print(self.name)
             try:
-                pass
+                unlock_costume(self.name.split("/")[0], self.name.split("/")[1], getcwd())
             except ValueError:
                 raise ValueError("Already Unlocked!")
 
@@ -68,7 +69,7 @@ def createPopUpEvent(name, pop_up_type):
     except ValueError as ex:
         pass
     except Exception as ex:
-        print(Exception)
+        print(ex)
 
 def clear_pop_up_events():
     global pop_up_events

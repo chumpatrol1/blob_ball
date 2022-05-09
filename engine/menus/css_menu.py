@@ -213,8 +213,8 @@ def css_handler():
         if(p2_selector_position[0] == 0):
             if(p2_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0, 0]
-                p2_selector_position = [4, 2, 0, 0]
+                p1_selector_position = [4, 2, 0, 0, 0]
+                p2_selector_position = [4, 2, 0, 0, 0]
                 p1_ghost_position = None
                 p2_ghost_position = None
             elif(p2_selector_position[1] == 1):
