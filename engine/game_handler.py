@@ -121,7 +121,7 @@ def update_game_state(game_state, cwd):
                 timer = 60
     elif(game_state == "replay_match"):
         update_replay_blobs()
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, timer, is_replay = True)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
         game_state = info_getter[5] # TODO: Fix/parity the output
         if(game_state == "replay_win"):
             game_stats = info_getter[6]
@@ -224,10 +224,14 @@ def update_replay_blobs():
     global replay_ruleset
     global p1_blob
     global p2_blob
+    global p1_costume
+    global p2_costume
     extracted_info = return_replay_info()
     replay_ruleset = extracted_info[1]
     p1_blob = extracted_info[2]
-    p2_blob = extracted_info[3]
+    p1_costume = extracted_info[3]
+    p2_blob = extracted_info[4]
+    p2_costume = extracted_info[5]
 
 def return_blobs():
     return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

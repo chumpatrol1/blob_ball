@@ -9,6 +9,7 @@ cwd = os.getcwd()
 # Add the Blob's Stats to the species_to_stars function in blob_stats.py (see other blobs for a guide)
 # Classify that Blob's ability in ability_to_classification function (so it will show the cooldown)
 # Add that Blob's image in species_to_image (make sure that the image is in the resources/images/blobs folder)
+# Adding to the above point, Key 0 is the default costume. It loads in the alive sprite (first item in the tuple) and the dead sprite
 # Add that Blob's ability icon (make sure that the image is in the resources/images/ability_icons folder)
 # In the Blob class, navigate to the ability method to make sure that the ability can be activated.
 # Depending on the ability, check the cooldown method 
@@ -21,6 +22,16 @@ cwd = os.getcwd()
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/almanac_blob_array.py, update the Blob Array there to show your blob in the almanac
 # In engine/blob_tips.py, add the blob's ID to the dictionary at the bottom and add an array containing tips
+
+# INSTRUCTIONS FOR ADDING ADDITIONAL COSTUMES
+# Add Costume sprite + corresponding death sprite to resources/images/blobs
+# In species_to_image, under the blob who you want to add a costume to, add a new key
+# The key needs to be an integer (ideally one greater than the next largest costume)
+# The left half of the tuple is the living sprite. The right half is the death sprite.
+# In unlocks.py, under costume_unlock_dict, navigate to the blob who you want to add a costume to
+# Add a new entry to the nested dictionary (formatted costumename_#) 
+# The number at the end is very important and should match the key in species_to_image
+# Unlock requirement?
 
 def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook']

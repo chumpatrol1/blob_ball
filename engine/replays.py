@@ -23,7 +23,7 @@ def decompress_replay_file(file_name): # DANGER: DO NOT USE! WE NEED TO HAVE FIL
     #print('p1', loads(decompressed_data[2])['species'])
     #print('p2', loads(decompressed_data[2])['species'])
 
-    current_replay = [decompressed_data[0], loads(decompressed_data[1]), loads(decompressed_data[2])['species'], loads(decompressed_data[3])['species'], decompressed_data[4].split('/')]
+    current_replay = [decompressed_data[0], loads(decompressed_data[1]), loads(decompressed_data[2])['species'], loads(decompressed_data[2])['costume'], loads(decompressed_data[3])['species'], loads(decompressed_data[3])['costume'], decompressed_data[4].split('/')]
     #print(decompressed_data[4].split('/'))
     #print(decompressed_data)
     #with open("decompressed", "wb") as compressed_v:

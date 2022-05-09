@@ -129,7 +129,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
         #if(game_info['time'] > 2460):
         #    print(return_replay_info()[4][game_info['time']:])
         try:
-            pressed = return_replay_info()[4][game_info['time']]
+            pressed = return_replay_info()[6][game_info['time']]
         except:
             print(game_info['time'])
             raise KeyError
