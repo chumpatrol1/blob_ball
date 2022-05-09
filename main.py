@@ -38,7 +38,7 @@ import engine.handle_input
 from engine.handle_input import detect_joysticks, get_keypress
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_css_blobs, load_medal_unlocks, update_css_medals
+from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs, load_medal_unlocks, update_css_medals, load_costume_unlocks
 game_state = "control_splash"
 new_game_state = "control_splash"
 
@@ -49,7 +49,9 @@ load_matchup_chart(cwd)
 
 load_blob_unlocks(cwd)
 load_medal_unlocks(cwd)
+load_costume_unlocks(cwd)
 update_css_blobs(cwd)
+update_costumes()
 
 done = False
 

@@ -298,6 +298,60 @@ def return_css_display_medals():
     return css_display_list_medals
 
 
+'''COSTUMES'''
+costume_unlock_dict = {
+    "quirkless": {"grayscale_1": False},
+    "fire": {"grayscale_1": False},
+    "ice": {"grayscale_1": False},
+    "water": {"grayscale_1": False},
+    "rock": {"grayscale_1": False},
+    "lightning": {"grayscale_1": False},
+    "wind": {"grayscale_1": False},
+    "judge": {"grayscale_1": False},
+    "doctor": {"grayscale_1": False},
+    "king": {"grayscale_1": False},
+    "cop": {"grayscale_1": False},
+    "boxer": {"grayscale_1": False},
+    "mirror": {"grayscale_1": False},
+    "fisher": {"grayscale_1": False},
+}
+
+def load_costume_unlocks(cwd):
+    global costume_unlock_dict
+    try:
+        with open(cwd + "/saves/costume_unlocks.txt", "r") as blobunlockdoc:
+            new_unlock_dict = loads(blobunlockdoc.readline())
+            for blob in blob_unlock_dict:
+                if blob not in new_unlock_dict:
+                    new_unlock_dict[blob] = False
+        
+        costume_unlock_dict = new_unlock_dict
+
+        with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(costume_unlock_dict))
+        
+    except:
+        with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(costume_unlock_dict))
+
+def return_costume_unlocks():
+    global costume_unlock_dict
+    return costume_unlock_dict
+
+available_costumes = dict(return_blob_unlocks())
+
+def update_costumes():
+    global available_costumes
+    for i in available_costumes:
+        available_costumes[i] = [0]
+        for j in costume_unlock_dict[i]:
+            if(costume_unlock_dict[i][j]):
+                available_costumes[i].append(int(j.split("_")[-1]))
+
+def return_available_costumes():
+    global available_costumes
+    return available_costumes
+
 if __name__ == "__main__":
     from os import getcwd
     cwd = getcwd()

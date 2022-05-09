@@ -7,6 +7,8 @@ def compress_replay_file(string_to_compress, file_str):
     compressed_data = zlib.compress(string_to_compress.encode('ascii'), zlib.Z_BEST_COMPRESSION)
     with open(file_str, "wb") as compressed_v:
         compressed_v.write(compressed_data)
+    with open("bruh.txt", "w") as compressed_v:
+        compressed_v.write(string_to_compress)
     
 
 current_replay = None

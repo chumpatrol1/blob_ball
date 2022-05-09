@@ -15,7 +15,7 @@ import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
-from engine.unlocks import update_css_blobs, update_css_medals
+from engine.unlocks import return_available_costumes, update_css_blobs, update_css_medals
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
@@ -34,6 +34,8 @@ p1_blob = []
 p2_blob = []
 p1_is_cpu = False
 p2_is_cpu = False
+p1_costume = 0
+p2_costume = 0
 game_stats = []
 def update_game_state(game_state, cwd):
     global timer
@@ -42,6 +44,8 @@ def update_game_state(game_state, cwd):
     global p2_blob
     global p1_is_cpu
     global p2_is_cpu
+    global p1_costume
+    global p2_costume
     global ruleset
     global settings
     global game_stats
@@ -77,6 +81,8 @@ def update_game_state(game_state, cwd):
             p2_selector_position[2] = 0
             p1_blob = info_getter[2]
             p2_blob = info_getter[3]
+            p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
+            p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
@@ -87,7 +93,7 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, timer)
+        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
         game_state = info_getter[5]
         if(game_state == "casual_win"):
             game_stats = info_getter[6]

@@ -39,8 +39,8 @@ def species_to_image(species, costume):
     global cwd
     blob_cwd = cwd + '/resources/images/blobs/'
     image_dict = {
-        'quirkless': {0: (blob_cwd + "quirkless_blob.png", blob_cwd + "quirkless_blob_-1.png")},
-        'fire': {0: (blob_cwd + "fire_blob.png", blob_cwd + "fire_blob_-1.png")},
+        'quirkless': {0: (blob_cwd + "quirkless_blob.png", blob_cwd + "quirkless_blob_-1.png"), 1: (blob_cwd + "quirkless_blob_1.png", blob_cwd + "quirkless_blob_-1.png"), 2: (blob_cwd + "shadow_blob.png", blob_cwd + "quirkless_blob_-1.png")},
+        'fire': {0: (blob_cwd + "fire_blob.png", blob_cwd + "fire_blob_-1.png"), 1: (blob_cwd + "fire_blob_1.png", blob_cwd + "fire_blob_-1.png")},
         'ice': {0: (blob_cwd + "ice_blob.png", blob_cwd + "ice_blob_-1.png")},
         'water': {0: (blob_cwd + "water_blob.png", blob_cwd + "water_blob_-1.png")},
         'rock': {0: (blob_cwd + "rock_blob.png", blob_cwd + "rock_blob_-1.png")},
@@ -124,7 +124,6 @@ class Blob:
         self.cpu_memory = {'press_queue': [], 'game_state': '', 'current_play': ''}
         self.costume = costume
         self.image, self.image_death = species_to_image(species, costume)
-        print(self.image == self.image_death)
         self.ability_icon = species_to_ability_icon(species)
         self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
         self.max_hp = int(2 * (self.stars['max_hp'] + 3)) #Each star adds an additional HP.
@@ -218,6 +217,7 @@ class Blob:
         self.danger_zone_enabled = danger_zone_enabled
         self.info = {
             'species': self.species,
+            'costume': self.costume,
             'damage_taken': 0,
             'points_from_goals': 0,
             'points_from_kos': 0,
