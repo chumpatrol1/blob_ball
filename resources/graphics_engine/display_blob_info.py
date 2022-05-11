@@ -1,7 +1,9 @@
+from engine.blobs import species_to_image
+from engine.unlocks import return_available_costumes, return_costume_unlocks
 from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background
 from resources.graphics_engine.display_almanac import load_mu_chart
-from engine.popup_list import find_blob_unlock
+from engine.popup_list import find_blob_unlock, find_costume_unlock
 from engine.blob_stats import species_to_stars
 from engine.blob_tips import return_selected_blob_tips
 import pygame as pg
@@ -48,6 +50,7 @@ selected_blob_description = None
 selected_blob_stars = None
 selected_blob_tips = None
 selected_blob_costumes = None
+selected_blob_costume_text = None
 def load_individual_blob(selector_position):
     '''Done based off of the selector position 
     This function only gets called by blob_info_menu.py'''
@@ -56,7 +59,10 @@ def load_individual_blob(selector_position):
     global selected_blob_matchups
     global selected_blob_description
     global selected_blob_stars
+    global selected_blob_costumes
+    global selected_blob_costume_text
     global selected_blob_tips
+    
     selected_blob = blob_array[selector_position[1]][selector_position[0]]
     if(selected_blob[1] == ''):
         selector_position = [0, 0, 1]
@@ -70,6 +76,28 @@ def load_individual_blob(selector_position):
     selected_blob_stars = species_to_stars(selected_blob[2], {})
     selected_blob_tips = return_selected_blob_tips(selected_blob[2])
     #print(selected_blob_stars)
+    selected_blob_costumes = []
+    selected_blob_costume_text = []
+    #print(selected_blob)
+    available_costumes = return_available_costumes()[selected_blob[2]]
+    all_costumes = return_costume_unlocks()[selected_blob[2]]
+    for i in all_costumes:
+        text_color = (0, 0, 255)
+        menu_font = font_cache['css_font']
+        if all_costumes[i]:
+            loaded = species_to_image(selected_blob[2], int(i.split("_")[-1]))[0]
+            costume_name = find_costume_unlock(selected_blob[2]+"/"+ i)[1]
+        else:
+            loaded = species_to_image("locked", 0)[0]
+            costume_name = "Locked!"
+        costume_unlock = find_costume_unlock(selected_blob[2]+"/"+ i)[3]
+        l_text = [menu_font.render(costume_name, False, text_color),
+            menu_font.render(costume_unlock, False, text_color),
+            ]
+        loaded = pg.image.load(loaded)
+        selected_blob_costumes.append(loaded)
+        selected_blob_costume_text.append(l_text)
+    #print(selected_blob_costumes)
     
 
 def draw_blob_selector(game_display, info_getter, settings):
@@ -331,13 +359,6 @@ def blob_page_3(game_display):
     '''
     
     '''
-    pass
-
-def blob_page_4(game_display):
-    
-    '''
-    
-    '''
     menu_font = font_cache['css_font']
     text_color = (0, 0, 255)
     text_array = static_text['coming_soon']
@@ -348,6 +369,24 @@ def blob_page_4(game_display):
         game_display.blit(text_box, text_rect)
         text_y += 66
 
+def blob_page_4(game_display):
+    
+    '''
+    Displays costumes
+    '''
+    global selected_blob_costumes
+
+    blob_y = 100
+    for costume in range(len(selected_blob_costumes)):
+        game_display.blit(selected_blob_costumes[costume], (100, blob_y))
+        for text_box in range(len(selected_blob_costume_text[costume])):
+            text_rect = selected_blob_costume_text[costume][text_box].get_rect()
+            text_rect.topleft = (350, blob_y + 10 + text_box * 40)
+            game_display.blit(selected_blob_costume_text[costume][text_box], text_rect)
+        blob_y += 125
+
+    
+
 def blob_page_5(game_display):
     '''
     Displays blob tips (these are stored in engine/blob_tips.py)
@@ -357,7 +396,7 @@ def blob_page_5(game_display):
     text_y = 100
     for text_box in selected_blob_tips:
         text_rect = text_box.get_rect()
-        text_rect.topleft = (50, text_y)
+        text_rect.topleft = (100, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 36
 
@@ -382,7 +421,7 @@ def draw_blob_page(game_display, info_getter, settings):
     page_directory = {
         0: blob_page_1,
         1: blob_page_2,
-        2: blob_page_4,
+        2: blob_page_3,
         3: blob_page_4,
         4: blob_page_5,
         5: blob_page_5,

@@ -64,26 +64,36 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
     
     if(selector[2] == 0):
         if('up' in pressed):
+            selector[4] = 0
             if selector[1] == 0:
                 selector[1] = 4
-                
             else:
                 selector[1] -= 1
+            
         elif('down' in pressed):
+            selector[4] = 0
             if selector[1] == 4:
                 selector[1] = 0
             else:
                 selector[1] += 1
         if('left' in pressed):
+            selector[4] = 0
             if selector[0] == 0:
                 selector[0] = 7
             else:
                 selector[0] -= 1
         elif('right' in pressed):
+            selector[4] = 0
             if selector[0] == 7:
                 selector[0] = 0
             else:
                 selector[0] += 1
+
+    if('block' in pressed and selector[0] > 0):
+        selector[4] += 1
+        costumes = return_available_costumes()
+        if(selector[4] >= len(costumes[cur_blob])):
+            selector[4] = 0
     
     if('return' in pressed):
         print("return pressed")
@@ -110,22 +120,12 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
             selector[2] = 2
             other_selector[2] = 2
             ghost_selector = None
-        elif('block' in pressed):
-            selector[4] += 1
-            costumes = return_available_costumes()
-            if(selector[4] >= len(costumes[cur_blob])):
-                selector[4] = 0
     elif(selector[2] >= 1 and other_selector[2] == 0):
         if('escape' in pressed and selector[3] == 0):
             selector[2] = 2
             other_selector[2] = 2
             other_selector[3] = 1
             ghost_selector = None
-        elif('block' in pressed):
-            selector[4] += 1
-            costumes = return_available_costumes()
-            if(selector[4] >= len(costumes[cur_blob])):
-                selector[4] = 0
 
 
     if(player == 1):
@@ -204,10 +204,9 @@ def css_handler():
             elif(p1_selector_position[1] == 4):
                 p1_selector_position[2] = 0
                 p1_selector_position[3] = not p1_selector_position[3]
-
-        else:
-            #TODO: Fix this spaghetti
-            p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
+    
+    if(p1_selector_position[0] > 0):
+        p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
     
     if(p2_selector_position[2] == 1):
         if(p2_selector_position[0] == 0):
@@ -233,9 +232,11 @@ def css_handler():
             elif(p2_selector_position[1] == 4):
                 p2_selector_position[2] = 0
                 p2_selector_position[3] = not p2_selector_position[3]
-        else:
+
             #TODO: Fix this spaghetti
-            p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
+    
+    if(p2_selector_position[0] > 0):
+        p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         game_state = "casual_match"

@@ -186,7 +186,13 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
             mu_chart[winner]['total'] = 0
         mu_chart[loser]['total'] += 1
         mu_chart[winner]['total'] += 1
-        attempt_costume_unlocks(mu_chart, p1_blob, p2_blob)
+
+        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+            game_stats = loads(statsdoc.readline())
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            game_stats['costumes_unlocked'] += attempt_costume_unlocks(mu_chart, p1_blob, p2_blob)
+            statsdoc.write(dumps(game_stats))
+
         muchart.write(dumps(mu_chart))
 
         most_played_character = ""
@@ -203,6 +209,4 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
             most_played_character = winner
 
         game_stats['most_played_character'] = most_played_character
-        
-        with open(cwd+"/saves/game_stats.txt", "w") as statsdoc:
-            statsdoc.write(dumps(game_stats))
+            
