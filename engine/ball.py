@@ -2,6 +2,7 @@ from cmath import sqrt
 import math
 import os
 import pygame as pg
+from engine.environmental_modifiers import return_environmental_modifiers
 
 from resources.sound_engine.sfx_event import createSFXEvent
 cwd = os.getcwd()
@@ -73,6 +74,9 @@ class Ball:
             'ceiling_collisions': 0,
             'goal_collisions': 0,
         }
+        self.status_effects = {
+            'glued': 0,
+        }
     
     ground = 1240
 
@@ -82,6 +86,8 @@ class Ball:
         self.x_pos = 902
         self.y_pos  = 900
         self.image = type_to_image("soccer_ball")
+        for effect in self.status_effects:
+            self.status_effects[effect] = 0
 
     def check_blob_collisions(self, blob):
         #The distance to p1's blob
@@ -314,6 +320,23 @@ class Ball:
                 #self.x_speed += (pull_force_x * pull_sign_x)/20
                 #self.y_speed += (pull_force_y * pull_sign_y)/20
 
+    def check_environmental_collisions(self, environment):
+        
+        for hazard in environment['glue_puddle_1']:
+            #print(hazard.player, hazard.affects)
+            if("ball" in hazard.affects):
+                if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
+                    self.status_effects['glued'] = 2
+                    break
+
+        for hazard in environment['glue_puddle_2']:
+            #print(hazard.player, hazard.affects)
+            if("ball" in hazard.affects):
+                if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
+                    self.status_effects['glued'] = 2
+                    break
+                #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
+
     def check_ceiling_collisions(self):
         ceiling = 210
         if(self.y_pos < ceiling): #Don't raze the roof!
@@ -340,18 +363,24 @@ class Ball:
 
         #Traction/Friction
         def apply_traction_friction():
+            ball_traction = self.traction
+            if(self.status_effects['glued']):
+                #self.image = type_to_image('kicked_ball')
+                #self.species = "kicked_ball"
+                #self.special_timer = 10
+                ball_traction += 0.2
             if(self.y_pos == ground):
                 self.grounded = True
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.traction) > 0:
+                    if(self.x_speed + ball_traction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.traction #Normal deceleration
+                        self.x_speed += ball_traction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.traction) < 0:
+                    if(self.x_speed - ball_traction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.traction #Normal deceleration
+                        self.x_speed -= ball_traction #Normal deceleration
             else:
                 self.grounded = False
                 if(self.x_speed < 0): #If we're going left, decelerate
@@ -455,10 +484,13 @@ class Ball:
         
         def apply_x_speed_limits():
             #Speed Limits (X)
-            if(self.x_speed > self.x_speed_max):
-                self.x_speed = self.x_speed_max
-            elif(self.x_speed < -1 * self.x_speed_max):
-                self.x_speed = -1 * self.x_speed_max
+            speed_limit = self.x_speed_max
+            if(self.status_effects['glued']):
+                speed_limit -= 10
+            if(self.x_speed > speed_limit):
+                self.x_speed = speed_limit
+            elif(self.x_speed < -1 * speed_limit):
+                self.x_speed = -1 * speed_limit
         self.x_pos += self.x_speed
         self.info['x_distance_moved'] += abs(self.x_speed)
 
@@ -471,6 +503,7 @@ class Ball:
         if(self.y_pos < ground):
             self.y_speed += self.gravity
         elif(self.y_pos >= ground): #Don't go under the floor!
+            self.check_environmental_collisions(return_environmental_modifiers())
             if(2 >= self.y_speed >= 0 or self.species == "blocked_ball"):
                 self.y_speed = 0
             elif(self.y_speed < 0 ):
@@ -484,6 +517,8 @@ class Ball:
                         if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
                             self.y_speed = self.y_speed * 0.3
                             break
+                if(self.status_effects['glued']):
+                    self.y_speed = self.y_speed * 0.3
                             
 
                 
@@ -513,4 +548,8 @@ class Ball:
             self.blocked_timer -= 1
             if(self.blocked_timer == 0):
                 self.bounciness = 1
+        
+        for effect in self.status_effects:
+            if(self.status_effects[effect] > 0):
+                self.status_effects[effect] -= 1
         

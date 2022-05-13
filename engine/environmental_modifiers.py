@@ -28,13 +28,14 @@ class EnvironmentalModifiers:
         self.y_speed += self.gravity
         self.lifetime -= 1
         if(self.species == 'glue_shot' and self.y_pos > 1350):
-            create_environmental_modifier(self.player, affects = {'enemy'}, species = 'glue_puddle', x_pos = self.x_pos - 27.5, y_pos = 1380, lifetime = 180)
+            create_environmental_modifier(self.player, affects = self.affects, species = 'glue_puddle_' + str(self.player), x_pos = self.x_pos - 27.5, y_pos = 1380, lifetime = 180)
             self.lifetime = 0
 
 # FOR EACH MODIFIER, ADD A NEW ENTRY!
 environmental_modifiers = {
     'glue_shot': [],
-    'glue_puddle': [],
+    'glue_puddle_1': [],
+    'glue_puddle_2': [],
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60):
@@ -62,5 +63,6 @@ def clear_environmental_modifiers():
     global environmental_modifiers
     environmental_modifiers = environmental_modifiers = {
     'glue_shot': [],
-    'glue_puddle': [],
+    'glue_puddle_1': [],
+    'glue_puddle_2': [],
 }

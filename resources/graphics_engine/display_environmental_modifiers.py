@@ -3,7 +3,8 @@ from resources.graphics_engine.display_particles import return_particle_cache
 
 modifier_images = {
     'glue_shot': 'glue_shot',
-    'glue_puddle': 'glue_puddle',
+    'glue_puddle_1': 'glue_puddle_1',
+    'glue_puddle_2': 'glue_puddle_2',
 }
 
 def draw_environmental_modifiers(game_display, ):

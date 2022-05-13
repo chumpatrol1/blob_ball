@@ -278,6 +278,7 @@ class Blob:
             "reflecting": 0,
             "reflect_break": 0,
             "glued": 0,
+            "buttered": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -691,7 +692,7 @@ class Blob:
                     x_mod = 1
 
                 if(not (self.holding_timer % 4)):
-                    create_environmental_modifier(self.player, affects = {'enemy'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
+                    create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
                     #createSFXEvent('water')
 
 
@@ -827,11 +828,26 @@ class Blob:
                         blob.status_effects['reflect_break'] = 68
 
     def check_environmental_collisions(self, environment):
-        for hazard in environment['glue_puddle']:
+        for hazard in environment['glue_puddle_1']:
             #print(hazard.player, hazard.affects)
             if(hazard.player != self.player and "enemy" in hazard.affects):
                 if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
                     self.status_effects['glued'] = 2
+                    break
+            elif(hazard.player == self.player and "self" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['buttered'] = 2
+                    break
+
+        for hazard in environment['glue_puddle_2']:
+            #print(hazard.player, hazard.affects)
+            if(hazard.player != self.player and "enemy" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['glued'] = 2
+                    break
+            elif(hazard.player == self.player and "self" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['buttered'] = 2
                     break
                 #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
                 
@@ -970,10 +986,11 @@ class Blob:
                 pressed.remove('ability')
 
             #HORIZONTAL MOVEMENT
+        blob_speed = self.top_speed
         if(self.status_effects['glued']):
-            self.top_speed = 5 + (3 * bool(self.boost_timer))
-        else:
-            self.top_speed = 10+(1*self.stars['top_speed'])
+            blob_speed = 5 + (3 * bool(self.boost_timer))
+        if(self.status_effects['buttered']):
+            blob_speed += 2
         if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
@@ -981,15 +998,15 @@ class Blob:
                     self.x_speed = 0
                     self.x_pos = 0
                 else:
-                    if(abs(self.x_speed) < self.top_speed):
+                    if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed > 0):
                             self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
                         else:
                             self.x_speed -= self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
-                        self.x_speed = -1*self.top_speed #If at max speed, maintain it
-                        if(round(prev_speed) == self.top_speed):
+                        self.x_speed = -1*blob_speed #If at max speed, maintain it
+                        if(round(prev_speed) == blob_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce')
                         
@@ -999,15 +1016,15 @@ class Blob:
                     self.x_speed = 0
                     self.x_pos = 1700
                 else:
-                    if(abs(self.x_speed) < self.top_speed):
+                    if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed < 0):
                             self.x_speed += 1.2 * self.traction # Turn around faster by holding left
                         else:
                             self.x_speed += self.traction # Accelerate based off of traction
                     else:
                         prev_speed = self.x_speed
-                        self.x_speed = self.top_speed #If at max speed, maintain it
-                        if(round(prev_speed) == -1 * self.top_speed):
+                        self.x_speed = blob_speed #If at max speed, maintain it
+                        if(round(prev_speed) == -1 * blob_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
@@ -1028,15 +1045,15 @@ class Blob:
                     self.x_speed = 0
                     self.x_pos = 0
                 else:
-                    if(abs(self.x_speed) < self.top_speed):
+                    if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed > 0):
                             self.x_speed -= 1.5 * self.friction # Turn around faster by holding left
                         else:
                             self.x_speed -= self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
-                        self.x_speed = -1*self.top_speed #If at max speed, maintain it
-                        if(round(prev_speed) == self.top_speed):
+                        self.x_speed = -1*blob_speed #If at max speed, maintain it
+                        if(round(prev_speed) == blob_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce') 
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
@@ -1045,15 +1062,15 @@ class Blob:
                     self.x_speed = 0
                     self.x_pos = 1700
                 else:
-                    if(abs(self.x_speed) < self.top_speed):
+                    if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed < 0):
                             self.x_speed += 1.5 * self.friction # Turn around faster by holding left
                         else:
                             self.x_speed += self.friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
-                        self.x_speed = self.top_speed #If at max speed, maintain it
-                        if(round(prev_speed) == -1 * self.top_speed):
+                        self.x_speed = blob_speed #If at max speed, maintain it
+                        if(round(prev_speed) == -1 * blob_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once

@@ -67,6 +67,7 @@ def reset_round(ruleset):
     ball.reset()
     p1_ko = False
     p2_ko = False
+    clear_environmental_modifiers()
 
 def score_goal(winner, goal_limit, ruleset, is_replay = False):
     global timer
@@ -203,6 +204,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             # STEP 2: CHECK COLLISIONS FOR EACH BLOB, THEN BALL
             p1_blob.check_environmental_collisions(return_environmental_modifiers())
             p2_blob.check_environmental_collisions(return_environmental_modifiers())
+            ball.check_environmental_collisions(return_environmental_modifiers())
             # STEP 3: DRAW THE MODIFIERS
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)

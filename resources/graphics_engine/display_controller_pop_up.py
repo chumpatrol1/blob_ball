@@ -99,7 +99,7 @@ controller_popup_queue = Queue()
 #create_controller_pop_up(0, event_id = 7)
 #create_controller_pop_up(0, event_id = 8)
 #create_controller_pop_up(0, event_id = 11)
-create_generic_pop_up(0)
+#create_generic_pop_up(0)
 # Intended Control Flow
 # Create Controller Pop Up is called
 # A new ControllerPopUp is created based off of the Joystick Event
