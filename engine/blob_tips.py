@@ -214,6 +214,22 @@ fisher_tips = [
     tip_font.render("and have it spin around you before letting go.", False, text_color),
 ]
 
+glue_tips = [
+    tip_font.render("#1: Fisher Blob hooks onto the ball", False, text_color),
+    tip_font.render("faster if the ball is closeby!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Fisher Blob is extra vulnerable when", False, text_color),
+    tip_font.render("using Hook - he takes +1 damage", False, text_color),
+    tip_font.render("from all sources!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: You can block Hook from working by", False, text_color),
+    tip_font.render("using your block on the ball!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: A spicy trick you can do is called", False, text_color),
+    tip_font.render("Threading the Loop. Jump, hook the ball", False, text_color),
+    tip_font.render("and have it spin around you before letting go.", False, text_color),
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -230,5 +246,6 @@ def return_selected_blob_tips(selected_blob):
         'boxer': boxer_tips,
         'mirror': mirror_tips,
         'fisher': fisher_tips,
+        'glue': glue_tips,
     }
     return tips_dict[selected_blob]

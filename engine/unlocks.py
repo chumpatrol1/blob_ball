@@ -12,7 +12,7 @@ css_selector_list_blobs = [
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
 [["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"],],
-[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
@@ -35,7 +35,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (5, 1): "boxer",
     (6, 1): "mirror",
     (7, 1): "fisher",
-    (1, 2): "coming_soon",
+    (1, 2): "glue",
     (2, 2): "coming_soon",
     (3, 2): "coming_soon",
     (4, 2): "coming_soon",
@@ -73,6 +73,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "boxer": False,
     "mirror": False,
     "fisher": False,
+    "glue": False,
 }
 
 def load_blob_unlocks(cwd):
@@ -314,6 +315,7 @@ costume_unlock_dict = {
     "boxer": {"grayscale_1": False},
     "mirror": {"grayscale_1": False},
     "fisher": {"grayscale_1": False},
+    "glue": {"grayscale_1": False},
 }
 
 def load_costume_unlocks(cwd):
@@ -323,7 +325,13 @@ def load_costume_unlocks(cwd):
             new_unlock_dict = loads(blobunlockdoc.readline())
             for blob in blob_unlock_dict:
                 if blob not in new_unlock_dict:
-                    new_unlock_dict[blob] = False
+                    new_unlock_dict[blob] = costume_unlock_dict[blob]
+                    continue
+                for costume in costume_unlock_dict:
+                    if(costume not in new_unlock_dict[blob]):
+                        new_unlock_dict[blob][costume] = False
+                        continue
+                
         
         costume_unlock_dict = new_unlock_dict
 
@@ -361,9 +369,8 @@ def unlock_costume(blob, costume, cwd):
             costume_unlock_dict[blob][costume] = True
             with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
                 blobunlockdoc.write(dumps(costume_unlock_dict))
-            print(f"Unlocked {blob} {costume}!")
+            #print(f"Unlocked {blob} {costume}!")
         else:
-            print("Already Unlocked!")
             raise ValueError("Already Unlocked")
     else:
         print("Invalid Blob!")

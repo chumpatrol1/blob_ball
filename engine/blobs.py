@@ -1,6 +1,7 @@
 import math
 import os
 import random
+from engine.environmental_modifiers import create_environmental_modifier
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.blob_stats import species_to_stars
 cwd = os.getcwd()
@@ -37,7 +38,7 @@ cwd = os.getcwd()
 # In engine/popup_list.py, add an entry formatted as blob/alt_# - this dictates what the popup screen says and shows
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook']
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
     instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
@@ -67,6 +68,7 @@ def species_to_image(species, costume):
         'boxer': {0: (blob_cwd + "boxer_blob.png", blob_cwd + "boxer_blob_-1.png"), 1: (blob_cwd + "boxer_blob_1.png", blob_cwd + "boxer_blob_-1.png")},
         'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png"), 1: (blob_cwd + "mirror_blob_1.png", blob_cwd + "mirror_blob_-1.png")},
         'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png")},
+        'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -93,6 +95,7 @@ def species_to_ability_icon(species):
         'boxer': ability_cwd + 'starpunch.png',
         'mirror': ability_cwd + 'mirror.png',
         'fisher': ability_cwd + 'hook.png',
+        'glue': ability_cwd + 'glue.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -666,6 +669,32 @@ class Blob:
                     self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0
+                    #createSFXEvent('water')
+        elif(special_ability == "gluegun"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "gluegun"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                    self.holding_timer += 1
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "gluegun"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                    self.holding_timer = 0
+                if(self.facing == 'left'):
+                    x_mod = -1
+                else:
+                    x_mod = 1
+
+                if(self.y_speed != 0):
+                    y_mod = self.y_speed/abs(self.y_speed)
+                else:
+                    y_mod = 0
+                if(not (self.holding_timer % 4)):
+                    create_environmental_modifier(self.player, affects = {'enemy'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 8, gravity = 0.25, lifetime = 600)
                     #createSFXEvent('water')
 
 

@@ -3,6 +3,7 @@ from resources.graphics_engine.background_handler import draw_background as draw
 from resources.graphics_engine.display_particles import draw_ball_overlay, draw_ball_particles as draw_ball_particles, draw_blob_particles, draw_shatter
 from resources.graphics_engine.display_particles import clear_particle_memory as clear_particle_memory
 from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash, draw_energy_flash, draw_block_flash, draw_boost_flash
+from resources.graphics_engine.display_environmental_modifiers import draw_environmental_modifiers
 from math import ceil
 import pygame as pg
 cwd = getcwd()
@@ -401,6 +402,8 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
     draw_ball_particles(gameplay_surface, ball, p1_blob, p2_blob)
     draw_ball(gameplay_surface, ball)
     draw_ball_overlay(gameplay_surface, ball, p1_blob, p2_blob)
+
+    draw_environmental_modifiers(gameplay_surface)
 
     menu_font = image_cache['menu_font']
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (200, 230, 200))

@@ -31,6 +31,10 @@ overlay_cache = {'initialized': False}
 particle_memory = []
 ui_memory = []
 
+def return_particle_cache():
+    global particle_cache
+    return particle_cache
+
 def draw_top_speed_particles(generator_x, particle_memory):
     '''
     HOW TO ADD A NEW PARTICLE TO THE MIX:
@@ -144,6 +148,8 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['shatter_spritesheet'] = pg.image.load(cwd + "/resources/images/particles/shatter_spritesheet.png").convert_alpha()
         particle_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (30, 30))
         particle_cache['taxation'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/tax.png").convert_alpha(), (30, 30))
+        particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
+        particle_cache['glue_puddle'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle.png").convert_alpha()
     if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)

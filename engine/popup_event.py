@@ -51,7 +51,7 @@ class PopUpEvent():
             except ValueError:
                 raise ValueError("Already Unlocked!")
         elif(self.pop_up_type == 2):
-            print(self.name)
+            #print(self.name)
             try:
                 unlock_costume(self.name.split("/")[0], self.name.split("/")[1], getcwd())
             except ValueError:

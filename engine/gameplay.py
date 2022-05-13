@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+from engine.environmental_modifiers import clear_environmental_modifiers, update_environmental_modifiers
 import engine.handle_input
 import engine.blobs
 import engine.ball
@@ -196,6 +197,11 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             replay_inputs[-1] += "/"
             if(game_info['time'] % 1200 == 1199):
                 replay_inputs.append("")
+            # TODO: Check environmental collisions FIRST (like glue patches)
+            # STEP 1: UPDATE EXISTING ENV
+            update_environmental_modifiers()
+            # STEP 2: CHECK COLLISIONS FOR EACH BLOB, THEN BALL
+            # STEP 3: DRAW THE MODIFIERS
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
             ball.check_blob_ability(p1_blob)
@@ -367,3 +373,4 @@ def clear_info_cache():
     p2_blob = None
     ball = None
     replay_inputs = [""]
+    clear_environmental_modifiers()

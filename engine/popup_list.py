@@ -13,6 +13,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'boxer': ['boxer_blob.png', "Boxer Blob", "Unleash a mighty punch/at your enemy to do/heavy damage and stun them!/Blocking won't help much."],
     'mirror': ['mirror_blob.png', "Mirror Blob", "Shatters as easily as it/is to find a used mirror./Reverses the ball's direction."],
     'fisher': ['fisher_blob.png', "Fisher Blob", "Press and hold your ability button/to reel in your catch!/It seems to always be a soccer ball."],
+    'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue!/It traps both your enemy/and the ball!"],
 }
 
 def find_blob_unlock(key):
@@ -48,6 +49,7 @@ costume_unlock_popups = { # Key is
     'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
     'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
     'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
 }
 
 def find_costume_unlock(key):
