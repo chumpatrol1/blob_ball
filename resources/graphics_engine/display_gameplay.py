@@ -327,7 +327,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p2_blob_clone'] = p2_blob.image
         image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
-        if(p2_blob.species == p1_blob.species):
+        if(p2_blob.species == p1_blob.species and p2_blob.costume == p1_blob.costume):
             if(not image_cache['p2_darkened']):
                 image_cache['p2_blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
                 image_cache['p2_blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)

@@ -277,6 +277,7 @@ class Blob:
             "stunned": 0,
             "reflecting": 0,
             "reflect_break": 0,
+            "glued": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -689,12 +690,8 @@ class Blob:
                 else:
                     x_mod = 1
 
-                if(self.y_speed != 0):
-                    y_mod = self.y_speed/abs(self.y_speed)
-                else:
-                    y_mod = 0
                 if(not (self.holding_timer % 4)):
-                    create_environmental_modifier(self.player, affects = {'enemy'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 8, gravity = 0.25, lifetime = 600)
+                    create_environmental_modifier(self.player, affects = {'enemy'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
                     #createSFXEvent('water')
 
 
@@ -829,19 +826,33 @@ class Blob:
                         self.take_damage(damage = 1, unblockable=True, unclankable=True)
                         blob.status_effects['reflect_break'] = 68
 
+    def check_environmental_collisions(self, environment):
+        for hazard in environment['glue_puddle']:
+            #print(hazard.player, hazard.affects)
+            if(hazard.player != self.player and "enemy" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['glued'] = 2
+                    break
+                #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
+                
+
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
                 if(show_parry):
+                    if(self.block_timer >= self.block_timer_max - 3):
+                        self.special_ability_meter += 300
+                        if(self.special_ability_meter > self.special_ability_max):
+                            self.special_ability_meter = self.special_ability_max
                     self.parried = 2
                     self.info['parries'] += 1
                     createSFXEvent('parry')
                 return False # We failed the block check, don't take damage
             else:
                 
-                return True # Return true if the block check passes
+                return True # Return true if the block check passes, we can take damage!
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
@@ -959,6 +970,10 @@ class Blob:
                 pressed.remove('ability')
 
             #HORIZONTAL MOVEMENT
+        if(self.status_effects['glued']):
+            self.top_speed = 5 + (3 * bool(self.boost_timer))
+        else:
+            self.top_speed = 10+(1*self.stars['top_speed'])
         if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
@@ -1063,7 +1078,7 @@ class Blob:
         
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
-            self.y_speed = -1 * self.jump_force
+            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force)
             self.focus_lock = 0
             self.focusing = False
             self.info['jumps'] += 1

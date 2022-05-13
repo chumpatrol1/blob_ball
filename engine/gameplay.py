@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from engine.environmental_modifiers import clear_environmental_modifiers, update_environmental_modifiers
+from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 import engine.handle_input
 import engine.blobs
 import engine.ball
@@ -201,6 +201,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             # STEP 1: UPDATE EXISTING ENV
             update_environmental_modifiers()
             # STEP 2: CHECK COLLISIONS FOR EACH BLOB, THEN BALL
+            p1_blob.check_environmental_collisions(return_environmental_modifiers())
+            p2_blob.check_environmental_collisions(return_environmental_modifiers())
             # STEP 3: DRAW THE MODIFIERS
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
