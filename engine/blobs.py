@@ -645,7 +645,7 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
                 self.kick_cooldown += 60
-                createSFXEvent('chime_progress')
+                createSFXEvent('boxing_bell')
         elif(special_ability == "mirror"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "mirror"

@@ -28,10 +28,17 @@ name_to_file = {
     'c&d': [],
     'tax': [],
     'whistle': ['whistle_1.wav'],
+    'boxing_bell': ['boxing_bell.wav'],
 	'goal': ['goal.wav'],
     'ball_spire_hit': ['ball_spire_hit.wav'],
     'wavebounce': ['wavebounce.wav'],
     'camera': ['camera.wav'],
+}
+
+suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)
+    'boost': [0, 30, 90],
+    'whistle': [0, 30, 60],
+    'boxing_bell': [0, 30, 90],
 }
 
 def convert_name_to_file(name):
@@ -61,7 +68,11 @@ class SFXEvent():
 
 def createSFXEvent(name, volume_modifier = 1):
     global sound_events
+    if(name in suppression_list and suppression_list[name][0] >= suppression_list[name][2]):
+        return
     sound_events.append(SFXEvent(name = name, volume_modifier = volume_modifier))
+    if(name in suppression_list and suppression_list[name][0] < suppression_list[name][2]):
+        suppression_list[name][0] += suppression_list[name][1] # Only increment if the sound is actually played
 
 def clear_sound_events():
     global sound_events
@@ -70,3 +81,9 @@ def clear_sound_events():
 def get_sound_events():
     global sound_events
     return sound_events
+
+def decrement_supression():
+    global suppression_list
+    # This is for you, Quackus
+    for annoying_sound in  suppression_list:
+        suppression_list[annoying_sound][0] -= 1 if suppression_list[annoying_sound][0] > 0 else 0
