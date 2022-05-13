@@ -190,6 +190,9 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
     if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
         particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
 
+    if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
+        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
+
     create_blob_particles(blob, other_blob)
     #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)

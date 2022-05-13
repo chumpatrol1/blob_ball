@@ -279,6 +279,7 @@ class Blob:
             "reflect_break": 0,
             "glued": 0,
             "buttered": 0,
+            "hypothermia": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -748,6 +749,8 @@ class Blob:
                 accumulated_damage = 2
                 if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
                     accumulated_damage += 1
+                    if(self.species == "ice"):
+                        blob.status_effects['hypothermia'] = 300
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
@@ -991,6 +994,8 @@ class Blob:
             blob_speed = 5 + (3 * bool(self.boost_timer))
         if(self.status_effects['buttered']):
             blob_speed += 2
+        if(self.status_effects['hypothermia']):
+            blob_speed -= 3
         if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
                 self.facing = "left"
