@@ -9,6 +9,7 @@ name_to_file = {
     "block": ["block.wav"],
     "boost": ["boost.wav"],
     "parry": ["parry.wav"],
+    "perfect_parry": ["perfect_parry.wav"],
     "clank": ["clank.wav"],
     "hit": ["hit.wav"],
     "ball_grass_bounce": ['ball_grass_bounce_1.wav', 'ball_grass_bounce_2.wav', 'ball_grass_bounce_3.wav'],

@@ -866,9 +866,12 @@ class Blob:
                         self.special_ability_meter += 300
                         if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
+                        createSFXEvent('perfect_parry')
+                    else:
+                        createSFXEvent('parry')
                     self.parried = 2
                     self.info['parries'] += 1
-                    createSFXEvent('parry')
+                    
                 return False # We failed the block check, don't take damage
             else:
                 
