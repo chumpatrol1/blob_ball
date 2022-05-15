@@ -47,7 +47,7 @@ def species_to_stars(species, stat_overrides):
     full_dict = {
         'quirkless': create_dict(3, 4, 4, 4, 4, 5, 5, 840, 5, 5, 'boost', 840, 0, 1800, 510, 0, 0),
         'fire': create_dict(2, 4, 4, 3, 1, 3, 4, 600, 3, 3, 'fireball', 150, 12, 1800, 2, 0, 0),
-        'ice': create_dict(4, 4, 1, 3, 4, 3, 5, 600, 3, 3, 'snowball', 150, 12, 1800, 2, 0, 0),
+        'ice': create_dict(3, 4, 1, 3, 4, 3, 5, 600, 3, 3, 'snowball', 150, 12, 1800, 2, 0, 0),
         'water': create_dict(2, 3, 4, 2, 3, 3, 3, 600, 3, 3, 'geyser', 210, 15, 1800, 2, 0, 0),
         'rock': create_dict(5, 1, 5, 1, 5, 1, 2, 600, 3, 5, 'spire', 360, 0, 1800, 300, 30, 0),
         'lightning': create_dict(1, 5, 3, 5, 5, 2, 1, 600, 3, 3, 'thunderbolt', 600, 0, 1800, 360, 10, 120),

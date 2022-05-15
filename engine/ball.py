@@ -255,7 +255,7 @@ class Ball:
             self.y_speed *= (1.05 - (self.y_speed/1000))
         elif(blob.used_ability == "snowball"):
             self.x_speed *= .975
-            self.y_speed *= (.95 - (self.y_speed/1000))
+            self.y_speed *= (.9 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
             try:
                 geyser_power = math.sqrt(Ball.ground - self.y_pos)/4-5

@@ -744,17 +744,18 @@ class Blob:
     
     def check_blob_collision(self, blob):
         #Used to see if a blob is getting kicked!
+        status_effects = []
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
                 accumulated_damage = 2
                 if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
                     accumulated_damage += 1
                     if(self.species == "ice"):
-                        blob.status_effects['hypothermia'] = 300
+                        status_effects.append(['hypothermia', 180])
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
-                blob.take_damage(accumulated_damage)
+                blob.take_damage(accumulated_damage,  status_effects = status_effects)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
@@ -856,7 +857,7 @@ class Blob:
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
-        show_parry = True):
+        show_parry = True, status_effects = []):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
@@ -906,6 +907,8 @@ class Blob:
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
+            for status_effect in status_effects:
+                self.status_effects[status_effect[0]] += status_effect[1]
 
     def heal_hp(self, heal_amt = 1, overheal = False):
         if(heal_amt > 0):
@@ -933,6 +936,7 @@ class Blob:
         else:
             self.x_pos = 1600
             self.facing = 'left'
+        self.move([])
         self.y_pos = Blob.ground
         if(self.species == "quirkless" and self.boost_timer):
             self.special_ability_cooldown -= self.boost_timer
@@ -950,6 +954,8 @@ class Blob:
         self.traction = self.base_traction
         self.impact_land_frames = 0
         self.movement_lock = 0
+        self.holding_timer = 0
+        self.status_effects['hypothermia'] = 0
         self.status_effects['judged'] = 0
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0

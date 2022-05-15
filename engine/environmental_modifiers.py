@@ -61,7 +61,7 @@ def return_environmental_modifiers():
 
 def clear_environmental_modifiers():
     global environmental_modifiers
-    environmental_modifiers = environmental_modifiers = {
+    environmental_modifiers =  {
     'glue_shot': [],
     'glue_puddle_1': [],
     'glue_puddle_2': [],
