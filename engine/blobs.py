@@ -558,6 +558,22 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+
+
+            '''if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "c&d"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                    self.holding_timer += 1
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "c&d"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                    self.holding_timer = 0
+            '''
         elif(special_ability == "pill"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 # Spend cost and activate cooldown
@@ -655,7 +671,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown -= 20
+                self.kick_cooldown -= 20 # TODO: Remove this?
                 self.block_cooldown -= 20
                 createSFXEvent('chime_progress')
         elif(special_ability == "hook"):
@@ -866,7 +882,7 @@ class Blob:
                         self.special_ability_meter += 300
                         if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
-                        createSFXEvent('perfect_parry')
+                        createSFXEvent('perfect_parry', volume_modifier=0.4)
                     else:
                         createSFXEvent('parry')
                     self.parried = 2

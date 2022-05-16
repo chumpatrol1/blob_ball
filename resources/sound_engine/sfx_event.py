@@ -40,6 +40,7 @@ suppression_list = { # First number is the supression timer, second is the incre
     'boost': [0, 30, 90],
     'whistle': [0, 30, 60],
     'boxing_bell': [0, 30, 90],
+    'wavebounce': [0, 15, 90],
 }
 
 def convert_name_to_file(name):
