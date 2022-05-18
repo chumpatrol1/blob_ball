@@ -671,8 +671,8 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown -= 20 # TODO: Remove this?
-                self.block_cooldown -= 20
+                #self.kick_cooldown -= 20
+                #self.block_cooldown -= 20
                 createSFXEvent('chime_progress')
         elif(special_ability == "hook"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):

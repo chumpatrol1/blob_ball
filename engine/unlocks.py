@@ -327,7 +327,7 @@ def load_costume_unlocks(cwd):
                 if blob not in new_unlock_dict:
                     new_unlock_dict[blob] = costume_unlock_dict[blob]
                     continue
-                for costume in costume_unlock_dict:
+                for costume in costume_unlock_dict[blob]:
                     if(costume not in new_unlock_dict[blob]):
                         new_unlock_dict[blob][costume] = False
                         continue
