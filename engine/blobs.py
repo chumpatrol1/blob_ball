@@ -2,6 +2,7 @@ import math
 import os
 import random
 from engine.environmental_modifiers import create_environmental_modifier
+from engine.handle_input import merge_inputs
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.blob_stats import species_to_stars
 cwd = os.getcwd()
@@ -57,11 +58,11 @@ def species_to_image(species, costume):
         'quirkless': {0: (blob_cwd + "quirkless_blob.png", blob_cwd + "quirkless_blob_-1.png"), 1: (blob_cwd + "quirkless_blob_1.png", blob_cwd + "quirkless_blob_-1.png"), 2: (blob_cwd + "shadow_blob.png", blob_cwd + "quirkless_blob_-1.png")},
         'fire': {0: (blob_cwd + "fire_blob.png", blob_cwd + "fire_blob_-1.png"), 1: (blob_cwd + "fire_blob_1.png", blob_cwd + "fire_blob_-1.png")},
         'ice': {0: (blob_cwd + "ice_blob.png", blob_cwd + "ice_blob_-1.png"), 1: (blob_cwd + "ice_blob_1.png", blob_cwd + "ice_blob_-1.png")},
-        'water': {0: (blob_cwd + "water_blob.png", blob_cwd + "water_blob_-1.png"), 1: (blob_cwd + "water_blob.png_1", blob_cwd + "water_blob_-1.png")},
+        'water': {0: (blob_cwd + "water_blob.png", blob_cwd + "water_blob_-1.png"), 1: (blob_cwd + "water_blob_1.png", blob_cwd + "water_blob_-1.png")},
         'rock': {0: (blob_cwd + "rock_blob.png", blob_cwd + "rock_blob_-1.png"), 1: (blob_cwd + "rock_blob_1.png", blob_cwd + "rock_blob_-1.png")},
         'lightning': {0: (blob_cwd + "lightning_blob.png", blob_cwd + "lightning_blob_-1.png"), 1: (blob_cwd + "lightning_blob_1.png", blob_cwd + "lightning_blob_-1.png")},
         'wind': {0: (blob_cwd + "wind_blob.png", blob_cwd + "wind_blob_-1.png"), 1: (blob_cwd + "wind_blob_1.png", blob_cwd + "wind_blob_-1.png")},
-        'judge': {0: (blob_cwd + "judge_blob.png", blob_cwd + "judge_blob_-1.png"), 1: (blob_cwd + "judge_blob.png", blob_cwd + "judge_blob_1_-1.png")},
+        'judge': {0: (blob_cwd + "judge_blob.png", blob_cwd + "judge_blob_-1.png"), 1: (blob_cwd + "judge_blob_1.png", blob_cwd + "judge_blob_-1.png")},
         'doctor': {0: (blob_cwd + "doctor_blob.png", blob_cwd + "doctor_blob_-1.png"), 1: (blob_cwd + "doctor_blob_1.png", blob_cwd + "doctor_blob_-1.png")},
         'king': {0: (blob_cwd + "king_blob.png", blob_cwd + "king_blob_-1.png"), 1: (blob_cwd + "king_blob_1.png", blob_cwd + "king_blob_-1.png")},
         'cop': {0: (blob_cwd + "cop_blob.png", blob_cwd + "cop_blob_-1.png"), 1: (blob_cwd + "cop_blob_1.png", blob_cwd + "cop_blob_-1.png")},
@@ -219,6 +220,7 @@ class Blob:
 
         self.damage_flash_timer = 0 #Flashes when damage is taken
         self.parried = False #True when parrying
+        self.perfect_parried = False
         self.clanked = False #True when clanking
 
         self.ability_cooldown_visualization = 0
@@ -280,6 +282,7 @@ class Blob:
             "glued": 0,
             "buttered": 0,
             "hypothermia": 0,
+            "steroided": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -439,6 +442,9 @@ class Blob:
 
         if(self.parried):
             self.parried -= 1
+        
+        if(self.perfect_parried):
+            self.perfect_parried -= 1
 
         if(self.clanked):
             self.clanked -= 1
@@ -584,19 +590,18 @@ class Blob:
 
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
-                    if(self.hp == self.max_hp):
-                        sac = bool(self.special_ability_cooldown > 0)
-                        skc = bool(self.kick_cooldown > 0)
-                        slc = bool(self.block_cooldown > 0)
-                        sbc = bool(self.boost_cooldown_timer > 0)
-                        self.special_ability_cooldown -= 15
-                        self.kick_cooldown -= 15
-                        self.block_cooldown -= 15
-                        if(self.boost_cooldown_timer > 0):
-                            self.boost_cooldown_timer -= 15
-                        self.check_cooldown_completion(sac, skc, slc, sbc)
-                    else:
+                    if(self.hp != self.max_hp):
                         self.heal_hp(heal_amt = 1)
+                    sac = bool(self.special_ability_cooldown > 0)
+                    skc = bool(self.kick_cooldown > 0)
+                    slc = bool(self.block_cooldown > 0)
+                    sbc = bool(self.boost_cooldown_timer > 0)
+                    self.special_ability_cooldown -= 30
+                    self.kick_cooldown -= 30
+                    self.block_cooldown -= 30
+                    if(self.boost_cooldown_timer > 0):
+                        self.boost_cooldown_timer -= 30
+                    self.check_cooldown_completion(sac, skc, slc, sbc)
                 elif(self.status_effects['pill'] == 'pill_cooldown'):
                     sac = bool(self.special_ability_cooldown > 0)
                     skc = bool(self.kick_cooldown > 0)
@@ -610,7 +615,8 @@ class Blob:
                     self.check_cooldown_completion(sac, skc, slc, sbc)
 
                 else:
-                    self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
+                    self.status_effects['steroided'] += 180
+                    self.boost(boost_cost = 0, boost_duration=180, boost_cooldown=0, ignore_cooldown=True)
 
                 
                 pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
@@ -671,8 +677,9 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                #self.kick_cooldown -= 20
-                #self.block_cooldown -= 20
+                self.kick_cooldown += 60
+                self.block_cooldown += 60
+                self.boost_cooldown_timer += 60
                 createSFXEvent('chime_progress')
         elif(special_ability == "hook"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
@@ -764,17 +771,23 @@ class Blob:
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
                 accumulated_damage = 2
+                pierce = 0
                 if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
                     accumulated_damage += 1
                     if(self.species == "ice"):
                         status_effects.append(['hypothermia', 180])
+                    #elif(self.species == "doctor"):
+                    #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
-                blob.take_damage(accumulated_damage,  status_effects = status_effects)
+                if(self.status_effects['steroided']):
+                    pierce += 1
+                blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
+                    blob.special_ability_cooldown += 180
 
 
                     
@@ -792,6 +805,7 @@ class Blob:
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
+                    blob.special_ability_cooldown += 180
             else:
                 blob.take_damage(damage=0)
                 blob.block_cooldown += 30
@@ -801,6 +815,7 @@ class Blob:
             if(blob.status_effects['reflecting'] > 1):
                 self.take_damage(damage = 1, unblockable=True, unclankable=True)
                 blob.status_effects['reflect_break'] = 68
+                blob.special_ability_cooldown += 180
         elif((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
@@ -846,6 +861,7 @@ class Blob:
                     if(blob.status_effects['reflecting'] > 1):
                         self.take_damage(damage = 1, unblockable=True, unclankable=True)
                         blob.status_effects['reflect_break'] = 68
+                        blob.special_ability_cooldown += 180
 
     def check_environmental_collisions(self, environment):
         for hazard in environment['glue_puddle_1']:
@@ -873,7 +889,7 @@ class Blob:
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
-        show_parry = True, status_effects = []):
+        show_parry = True, status_effects = [], pierce = 0):
         damage_taken = False
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
@@ -883,9 +899,10 @@ class Blob:
                         if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
                         createSFXEvent('perfect_parry', volume_modifier=0.4)
+                        self.perfect_parried = 2
                     else:
                         createSFXEvent('parry')
-                    self.parried = 2
+                        self.parried = 2
                     self.info['parries'] += 1
                     
                 return False # We failed the block check, don't take damage
@@ -915,6 +932,10 @@ class Blob:
             if(check_block() and check_clank()):
                 damage_taken = True
         
+        if(not damage_taken and pierce):
+            damage = pierce
+            damage_taken = True
+
         if(damage_taken):
             # Increase damage by 1 if using hook
             # Decrease damage by 1 if using reflect
@@ -976,6 +997,7 @@ class Blob:
         self.holding_timer = 0
         self.status_effects['hypothermia'] = 0
         self.status_effects['judged'] = 0
+        self.status_effects['steroided'] = 0
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0
         self.status_effects['stunned'] = 0
@@ -1194,6 +1216,11 @@ class Blob:
 
         return pressed
     
+    def tutorial_move(self, pressed_buttons, tutorial_slide):
+        pressed = merge_inputs(pressed_buttons, override=True)
+        # TODO: Filter out inputs based on the tutorial_slide
+        self.move(pressed)
+
     def set_base_stats(self, stars):
         self.top_speed = 10+(1*stars['top_speed'])
         self.base_top_speed = self.top_speed

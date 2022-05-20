@@ -28,7 +28,7 @@ class EnvironmentalModifiers:
         self.y_speed += self.gravity
         self.lifetime -= 1
         if(self.species == 'glue_shot' and self.y_pos > 1350):
-            create_environmental_modifier(self.player, affects = self.affects, species = 'glue_puddle_' + str(self.player), x_pos = self.x_pos - 27.5, y_pos = 1380, lifetime = 180)
+            create_environmental_modifier(self.player, affects = self.affects, species = 'glue_puddle_' + str(self.player), x_pos = self.x_pos - 27.5, y_pos = 1378, lifetime = 180)
             self.lifetime = 0
 
 # FOR EACH MODIFIER, ADD A NEW ENTRY!

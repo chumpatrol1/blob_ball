@@ -145,8 +145,10 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['boost_flash'] = pg.image.load(cwd + "/resources/images/particles/boost_flash.png").convert_alpha()
         particle_cache['stun_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/stun_particle.png").convert_alpha(), (30, 30))
         particle_cache['reflection_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/mirror.png").convert_alpha(), (30, 30))
+        particle_cache['shield_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/shield_particle.png").convert_alpha(), (70, 70))
         particle_cache['shatter_spritesheet'] = pg.image.load(cwd + "/resources/images/particles/shatter_spritesheet.png").convert_alpha()
         particle_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (30, 30))
+        particle_cache['pill_boost'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/pill_boost.png").convert_alpha(), (30, 30))
         particle_cache['taxation'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/tax.png").convert_alpha(), (30, 30))
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
@@ -168,6 +170,10 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
         particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
 
+    if(blob.perfect_parried):
+        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 100) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) - 1, y_speed = -3, gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 40) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1))
+        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center + 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) + 1, y_speed = -3, gravity = 0.1))
 
     if(blob.clanked):
         particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
@@ -182,6 +188,9 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
     
     if(blob.status_effects['reflecting'] % 5 == 0 and blob.status_effects['reflecting'] > 0):
         particle_memory.append(dpc.Particle(image = particle_cache['reflection_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+
+    if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
+        particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
     if(blob.used_ability == "pill"):
         ability_icon = pg.image.load(blob.ability_icon)
