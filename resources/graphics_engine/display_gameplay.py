@@ -77,7 +77,9 @@ def draw_cooldown(game_display, blob, ui_font, box_x, blob_function, boost_activ
         text_color = (0, 255, 255)
     cooldown_surface = pg.Surface((70, 70), pg.SRCALPHA)
     cooldown_surface.set_alpha(124)
-    pg.draw.rect(cooldown_surface, square_color, (0, 70-cooldown_percentage*70, 70, 140))
+    if(cooldown_percentage > 1):
+        cooldown_percentage = 1
+    pg.draw.rect(cooldown_surface, square_color, (0, 70-cooldown_percentage*70, 70, 70))
     game_display.blit(cooldown_surface, (box_x, 0))
     menu_text = ui_font.render(str(cooldown_visualization), False, text_color)
     text_rect = menu_text.get_rect()

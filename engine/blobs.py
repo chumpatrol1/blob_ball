@@ -637,6 +637,7 @@ class Blob:
 
 
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
+                createSFXEvent('crunch')
         elif(special_ability == "tax"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "tax"

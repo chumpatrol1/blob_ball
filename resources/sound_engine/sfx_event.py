@@ -25,6 +25,7 @@ name_to_file = {
     'glyph': ['glyph_1.wav'],
     'spire': ['spire_1.wav'],
     'electricity': ['spark_1.wav', 'spark_2.wav'],
+    'crunch': ['crunch.wav'],
     'gale': ['gale.wav'],
     'c&d': [],
     'tax': [],
@@ -38,6 +39,7 @@ name_to_file = {
 
 suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)
     'boost': [0, 30, 90],
+    'crunch': [0, 15, 90],
     'whistle': [0, 30, 60],
     'boxing_bell': [0, 30, 90],
     'wavebounce': [0, 15, 90],
@@ -69,6 +71,10 @@ class SFXEvent():
         return f"SFX Name: {self.name}\nSFX File: {self.return_file()}"
 
 def createSFXEvent(name, volume_modifier = 1):
+    '''
+    Name: String of the sound to play. May result in a randomized sound
+    Volume Modifier: Default volume is 1.
+    '''
     global sound_events
     if(name in suppression_list and suppression_list[name][0] >= suppression_list[name][2]):
         return

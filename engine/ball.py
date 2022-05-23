@@ -427,7 +427,7 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
-                    if(goal_top < self.y_pos < goal_top):
+                    if(goal_top < self.y_pos < goal_top + 1 and self.y_speed >= 0):
                         self.y_pos = goal_top - self.gravity
                 
 
@@ -461,7 +461,7 @@ class Ball:
                                         break
                     else:
                         self.goal_grounded = False
-                    if(goal_top < self.y_pos < goal_top):
+                    if(goal_top < self.y_pos < goal_top + 1 and self.y_speed >= 0):
                         self.y_pos = goal_top - self.gravity
             else:
                 self.goal_grounded = False
@@ -518,7 +518,7 @@ class Ball:
                             self.y_speed = self.y_speed * 0.3
                             break
                 if(self.status_effects['glued']):
-                    self.y_speed = self.y_speed * 0.3
+                    self.y_speed = self.y_speed * 0.75
                             
 
                 

@@ -1,5 +1,6 @@
 from json import loads, dumps
 from copy import deepcopy
+
 # The original selector
 css_selector_list_blobs = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -135,6 +136,12 @@ def unlock_blob(blob, cwd):
     else:
         raise ValueError("Blob already unlocked!")
 
+def unlock_all_blobs():
+    for blob in blob_unlock_dict:
+        blob_unlock_dict[blob] = True
+    from os import getcwd
+    with open(getcwd() + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(blob_unlock_dict))
 
 def return_blob_unlocks():
     global blob_unlock_dict

@@ -67,9 +67,9 @@ def create_blob_particles(blob, other_blob):
         random_number = randint(0,2)
         if(random_number):
             if(blob.player == 1):
-                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(150, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
             elif(blob.player == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(100, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(150, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
     
     def draw_starpunch_wait(blob, other_blob): #Bad location
         particle_memory.append(dpc.Particle(image = particle_cache['star_glove'], x_pos = blob.x_center * (1000/1366) - 20, y_pos = blob.y_center * (382/768), alpha = 255, lifetime = 1))
