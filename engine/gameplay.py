@@ -179,6 +179,12 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
         p2_blob = blobs[1]
         ball = blobs[2]
         
+        temp_dict = {
+            1: p1_blob,
+            2: p2_blob
+        }
+        p1_blob.all_blobs = temp_dict
+        p2_blob.all_blobs = temp_dict        
         initialized = True
     else:
         if(timer == 0):

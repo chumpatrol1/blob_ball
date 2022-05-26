@@ -135,6 +135,7 @@ class Blob:
     special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = None):
         self.species = species
         self.player = player #Player 1 or 2
+        self.all_blobs = {}
         if(player == 1):
             self.danger_zone = 225
         else:
@@ -531,18 +532,20 @@ class Blob:
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Spire activation
                 createSFXEvent('glyph')
-                self.used_ability = "spire_wait"
+                #self.used_ability = "spire_wait"
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = self.special_ability_delay, y_pos = 700)
         elif(special_ability == "thunderbolt"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 #Thunderbolt activation
                 #createSFXEvent('glyph')
-                self.used_ability = 'thunderbolt_wait' #This is done for a technical reason, to prevent premature electrocution
+                #self.used_ability = 'thunderbolt_wait' #This is done for a technical reason, to prevent premature electrocution
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = self.special_ability_delay, y_pos = 700)
         elif(special_ability == "gale"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
                 if(self.special_ability_timer > 0):
@@ -794,23 +797,8 @@ class Blob:
                     
     def check_ability_collision(self, blob, ball):
         #Hit self with Lightning bolt
+
         if(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
-        and ball.x_center - 175 <= self.x_center <= ball.x_center + 175):
-            self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
-
-
-        if(self.used_ability == "spire" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
-            if(blob.block_timer == 0):
-                blob.take_damage(y_speed_mod = -40 - (5 * (blob.gravity_mod - 1.05)), stun_amount = 20)
-                if(blob.status_effects['reflecting'] > 1):
-                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
-                    blob.status_effects['reflect_break'] = 68
-                    blob.special_ability_cooldown += 180
-            else:
-                blob.take_damage(damage=0)
-                blob.block_cooldown += 30
-        elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
         and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
             blob.take_damage()
             if(blob.status_effects['reflecting'] > 1):
@@ -887,6 +875,34 @@ class Blob:
                     self.status_effects['buttered'] = 2
                     break
                 #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
+
+        for hazard in environment['spire_spike']:
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215):
+                if(self.block_timer == 0):
+                    self.take_damage(y_speed_mod = -40 - (5 * (self.gravity_mod - 1.05)), stun_amount = 20)
+                    # TODO: Reflection
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180
+                else:
+                    self.take_damage(damage=0)
+                    self.block_cooldown += 30
+        
+        for hazard in environment['thunder_bolt']:
+            if(hazard.player == self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'self' in hazard.affects and hazard.x_pos - 110 <= self.x_center <= hazard.x_pos + 240):
+                self.boost(boost_cost = 0, boost_duration=120, boost_cooldown=0, ignore_cooldown=True)
+            
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215):
+                self.take_damage()
+                if(self.status_effects['reflecting'] > 1):
+                    self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                    self.status_effects['reflect_break'] = 68
+                    self.special_ability_cooldown += 180
+                '''if(self.status_effects['reflecting'] > 1):
+                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                    self.status_effects['reflect_break'] = 68
+                    self.special_ability_cooldown += 180'''
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
