@@ -89,7 +89,7 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
             else:
                 selector[0] += 1
 
-    if('block' in pressed and selector[0] > 0):
+    if('block' in pressed and selector[0] > 0 and not (cur_blob == 'quirkless' and selector[0] != 0 and selector[1] != 0)):
         selector[4] += 1
         costumes = return_available_costumes()
         if(selector[4] >= len(costumes[cur_blob])):
