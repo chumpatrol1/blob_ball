@@ -153,7 +153,16 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
         particle_cache['glue_puddle_2'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_2.png").convert_alpha()
-    if(abs(blob.x_speed) >= blob.top_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
+    
+    blob_speed = blob.top_speed
+    if(blob.status_effects['glued']):
+        blob_speed = 5 + (3 * bool(blob.boost_timer))
+    if(blob.status_effects['buttered']):
+        blob_speed += 2
+    if(blob.status_effects['hypothermia']):
+        blob_speed -= 3
+    
+    if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
         particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
         particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
