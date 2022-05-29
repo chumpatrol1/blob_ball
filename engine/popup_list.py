@@ -13,7 +13,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'boxer': ['boxer_blob.png', "Boxer Blob", "Unleash a mighty punch/at your enemy to do/heavy damage and stun them!/Blocking won't help much."],
     'mirror': ['mirror_blob.png', "Mirror Blob", "Shatters as easily as it/is to find a used mirror./Reverses the ball's direction."],
     'fisher': ['fisher_blob.png', "Fisher Blob", "Press and hold your ability button/to reel in your catch!/It seems to always be a soccer ball."],
-    'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue!/It traps both your enemy/and the ball!"],
+    'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue pellets!/When they land, the puddles trap/both your enemy and the ball!"],
 }
 
 def find_blob_unlock(key):
