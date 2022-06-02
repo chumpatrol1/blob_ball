@@ -7,3 +7,6 @@ function youtube() {
 function discord() {
 	window.location.replace('https://discord.gg/sPR2B9hhkF');
 }
+function wiki() {
+	window.location.replace('https://blob-ball.fandom.com/wiki/Blob_Ball_Wiki');
+}
