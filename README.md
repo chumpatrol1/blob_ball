@@ -1,12 +1,12 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.14.0b**
+**v0.15.0b**
 
 **Features:**
 * Casual Matches!
-* 22 of the exact same blob!
-* 13 unique blobs!
+* 21 of the exact same blob!
+* 14 unique blobs!
 
 * Physics system that works 99.99% of the time!
 * High Octane Matches!
@@ -42,6 +42,6 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Fisher Blob
-* Added Controller Support
-* Added Replays
+* Added Glue Blob
+* Added Costumes
+* Lots of Balance Changes
