@@ -1,5 +1,6 @@
 import pygame as pg
 import sys
+from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 import engine.handle_input
 import engine.blobs
 import engine.ball
@@ -12,7 +13,7 @@ import engine.cpu_logic
 import random
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
-def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None):
+def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None, p1_costume = 0, p2_costume = 0):
     global random_seed
     if(set_seed == None):
         random_seed = random.randint(-2147483648, 2147483647)
@@ -22,8 +23,8 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'])
-    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'])
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
     ball = engine.ball.Ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
@@ -66,6 +67,7 @@ def reset_round(ruleset):
     ball.reset()
     p1_ko = False
     p2_ko = False
+    clear_environmental_modifiers()
 
 def score_goal(winner, goal_limit, ruleset, is_replay = False):
     global timer
@@ -123,13 +125,13 @@ def convert_replay_to_inputs(inputs):
             decoded_inputs.append(code_to_input[rinput])
     return decoded_inputs
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, pause_timer, is_replay = False):
+def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, pause_timer, is_replay = False):
     if(is_replay):
         game_state = "replay_match"
         #if(game_info['time'] > 2460):
         #    print(return_replay_info()[4][game_info['time']:])
         try:
-            pressed = return_replay_info()[4][game_info['time']]
+            pressed = return_replay_info()[6][game_info['time']]
         except:
             print(game_info['time'])
             raise KeyError
@@ -170,13 +172,19 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
 
     if not initialized:
         if(is_replay):
-            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = return_replay_info()[0])
+            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume, set_seed = return_replay_info()[0])
         else:
-            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu)
+            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
         
+        temp_dict = {
+            1: p1_blob,
+            2: p2_blob
+        }
+        p1_blob.all_blobs = temp_dict
+        p2_blob.all_blobs = temp_dict        
         initialized = True
     else:
         if(timer == 0):
@@ -196,6 +204,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             replay_inputs[-1] += "/"
             if(game_info['time'] % 1200 == 1199):
                 replay_inputs.append("")
+            # TODO: Check environmental collisions FIRST (like glue patches)
+            # STEP 1: UPDATE EXISTING ENV
+            update_environmental_modifiers()
+            # STEP 2: CHECK COLLISIONS FOR EACH BLOB, THEN BALL
+            p1_blob.check_environmental_collisions(return_environmental_modifiers())
+            p2_blob.check_environmental_collisions(return_environmental_modifiers())
+            ball.check_environmental_collisions(return_environmental_modifiers())
+            # STEP 3: DRAW THE MODIFIERS
             p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
             p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
             ball.check_blob_ability(p1_blob)
@@ -367,3 +383,4 @@ def clear_info_cache():
     p2_blob = None
     ball = None
     replay_inputs = [""]
+    clear_environmental_modifiers()

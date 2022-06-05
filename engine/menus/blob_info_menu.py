@@ -1,4 +1,6 @@
 from engine.button import Button
+from engine.unlocks import unlock_all_blobs
+from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
 from resources.graphics_engine.display_blob_info import load_individual_blob
 import engine.handle_input
@@ -51,6 +53,10 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
                 createSFXEvent('select')
                 load_individual_blob(selector_position)
                 selector_position[2] = 1
+        elif('boost' in pressed):
+            unlock_all_blobs()
+            createSFXEvent('chime_completion')
+            force_load_blobs()
                 
     if(selector_position[2] == 1 and 
     ('up' in pressed or 'down' in pressed or 'left' in pressed or 'right' in pressed)):

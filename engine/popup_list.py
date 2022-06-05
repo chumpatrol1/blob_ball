@@ -13,6 +13,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'boxer': ['boxer_blob.png', "Boxer Blob", "Unleash a mighty punch/at your enemy to do/heavy damage and stun them!/Blocking won't help much."],
     'mirror': ['mirror_blob.png', "Mirror Blob", "Shatters as easily as it/is to find a used mirror./Reverses the ball's direction."],
     'fisher': ['fisher_blob.png', "Fisher Blob", "Press and hold your ability button/to reel in your catch!/It seems to always be a soccer ball."],
+    'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue pellets!/When they land, the puddles trap/both your enemy and the ball!"],
 }
 
 def find_blob_unlock(key):
@@ -32,3 +33,27 @@ def find_medal_unlock(key):
         return medal_unlock_popups[key]
     except:
         print("Cannot find medal")
+
+costume_unlock_popups = { # Key is 
+    'quirkless/grayscale_1': ["quirkless_blob_1.png", "Grayscale Quirkless", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'fire/grayscale_1': ["fire_blob_1.png", "Grayscale Fire", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'ice/grayscale_1': ["ice_blob_1.png", "Grayscale Ice", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'water/grayscale_1': ["water_blob_1.png", "Grayscale Water", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'rock/grayscale_1': ["rock_blob_1.png", "Grayscale Rock", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'lightning/grayscale_1': ["lightning_blob_1.png", "Grayscale Lightning", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'wind/grayscale_1': ["wind_blob_1.png", "Grayscale Wind", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'judge/grayscale_1': ["judge_blob_1.png", "Grayscale Judge", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'doctor/grayscale_1': ["doctor_blob_1.png", "Grayscale Doctor", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'king/grayscale_1': ["king_blob_1.png", "Grayscale King", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'cop/grayscale_1': ["cop_blob_1.png", "Grayscale Cop", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+}
+
+def find_costume_unlock(key):
+    try:
+        return costume_unlock_popups[key]
+    except:
+        print("Cannot find costume")

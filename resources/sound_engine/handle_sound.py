@@ -1,6 +1,6 @@
 import pygame as pg
 from resources.sound_engine.handle_bgm import load_bgm
-from resources.sound_engine.sfx_event import get_sound_events, clear_sound_events
+from resources.sound_engine.sfx_event import decrement_supression, get_sound_events, clear_sound_events
 from time import time
 pg.init()
 try:
@@ -74,5 +74,6 @@ def handle_sound(song_playing, settings):
     try:
         play_bgm(song_playing, settings)
         play_sfx(settings)
+        decrement_supression()
     except:
         pass

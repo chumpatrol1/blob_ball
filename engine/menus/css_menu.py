@@ -1,6 +1,6 @@
 from pygame.display import Info
 import engine.handle_input
-from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs
+from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
 from engine.popup_event import clear_pop_up_events, get_pop_up_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
@@ -20,8 +20,8 @@ for i in range(8): # 8 columns
 
 
 # X position, Y position, Confirmation, CPU/Human
-p1_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
-p2_selector_position = [4, 2, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu
+p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
+p2_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
 p1_ghost_position = None
 p2_ghost_position = None
 p1_blob = "quirkless"
@@ -37,8 +37,10 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
     pressed_buttons = engine.handle_input.css_input(detect_new_controllers = detect_new_controllers)
     if(player == 1):
         mouse = engine.handle_input.handle_mouse(False)
+        cur_blob = p1_blob
     else:
         mouse = engine.handle_input.handle_mouse()
+        cur_blob = p2_blob
 
     pressed = []
     override = {'return', 'escape'}
@@ -62,26 +64,36 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
     
     if(selector[2] == 0):
         if('up' in pressed):
+            selector[4] = 0
             if selector[1] == 0:
                 selector[1] = 4
-                
             else:
                 selector[1] -= 1
+            
         elif('down' in pressed):
+            selector[4] = 0
             if selector[1] == 4:
                 selector[1] = 0
             else:
                 selector[1] += 1
         if('left' in pressed):
+            selector[4] = 0
             if selector[0] == 0:
                 selector[0] = 7
             else:
                 selector[0] -= 1
         elif('right' in pressed):
+            selector[4] = 0
             if selector[0] == 7:
                 selector[0] = 0
             else:
                 selector[0] += 1
+
+    if('block' in pressed and selector[0] > 0 and not (cur_blob == 'quirkless' and selector[0] != 0 and selector[1] != 0)):
+        selector[4] += 1
+        costumes = return_available_costumes()
+        if(selector[4] >= len(costumes[cur_blob])):
+            selector[4] = 0
     
     if('return' in pressed):
         print("return pressed")
@@ -114,6 +126,7 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
             other_selector[2] = 2
             other_selector[3] = 1
             ghost_selector = None
+
 
     if(player == 1):
         css_menu_buttons = p1_css_menu_buttons
@@ -171,8 +184,8 @@ def css_handler():
             unload_almanac_static_text()
             if(p1_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0, 0]
-                p2_selector_position = [4, 2, 0, 0]
+                p1_selector_position = [4, 2, 0, 0, 0]
+                p2_selector_position = [4, 2, 0, 0, 0]
                 p1_ghost_position = None
                 p2_ghost_position = None
             elif(p1_selector_position[1] == 1):
@@ -191,17 +204,16 @@ def css_handler():
             elif(p1_selector_position[1] == 4):
                 p1_selector_position[2] = 0
                 p1_selector_position[3] = not p1_selector_position[3]
-
-        else:
-            #TODO: Fix this spaghetti
-            p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
+    
+    if(p1_selector_position[0] > 0):
+        p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
     
     if(p2_selector_position[2] == 1):
         if(p2_selector_position[0] == 0):
             if(p2_selector_position[1] == 0):
                 game_state = "main_menu"
-                p1_selector_position = [4, 2, 0, 0]
-                p2_selector_position = [4, 2, 0, 0]
+                p1_selector_position = [4, 2, 0, 0, 0]
+                p2_selector_position = [4, 2, 0, 0, 0]
                 p1_ghost_position = None
                 p2_ghost_position = None
             elif(p2_selector_position[1] == 1):
@@ -220,9 +232,11 @@ def css_handler():
             elif(p2_selector_position[1] == 4):
                 p2_selector_position[2] = 0
                 p2_selector_position[3] = not p2_selector_position[3]
-        else:
+
             #TODO: Fix this spaghetti
-            p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
+    
+    if(p2_selector_position[0] > 0):
+        p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         game_state = "casual_match"

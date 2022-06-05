@@ -1,3 +1,5 @@
+from engine.blobs import species_to_image
+from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs
 import pygame as pg
@@ -10,6 +12,7 @@ bic_cached = False
 blob_image_cache = [
 ]
 big_image_cache = []
+costume_cache = [[None, None], [None, None]] # P1: [CostumeName, Surface], P2: [CostumeName, Surface]
 
 font_cache = {}
 token_cache = {}
@@ -51,7 +54,7 @@ def force_load_blobs():
     blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
     unload_css()
 
-def css_blobs(game_display, p1_selector_position, p2_selector_position):
+def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
@@ -103,8 +106,16 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position):
             else:
                 game_display.blit(blob, (1366*(x/10)+(1366*(20/1366)), 768*(y * (100/768)) - (768*(20/768))))
         x = 0
-    
-    p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
+
+    if(not p1_selector_position[4]):
+        p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
+    else:
+        # TODO: Check costume thing
+        temp_loaded = species_to_image(p1_blob, return_available_costumes()[p1_blob][p1_selector_position[4]])[0]
+        if(costume_cache[0][0] != temp_loaded):
+            costume_cache[0][0] = temp_loaded
+            costume_cache[0][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, 109))
+        p1_selected_blob = costume_cache[0][1]
     p1_selected_blob = p1_selected_blob.convert_alpha()
     if(p1_selector_position[2] == 0):
         p1_selected_blob.set_alpha(200)
@@ -120,8 +131,15 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position):
     if(p1_selector_position[3] == 1):
         game_display.blit(token_cache['cpu_icon'], (75, 575))
 
-
-    p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
+    if(not p2_selector_position[4]):
+        p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
+    else:
+        # TODO: Check costume thing
+        temp_loaded = species_to_image(p2_blob, return_available_costumes()[p2_blob][p2_selector_position[4]])[0]
+        if(costume_cache[1][0] != temp_loaded):
+            costume_cache[1][0] = temp_loaded
+            costume_cache[1][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, 109))
+        p2_selected_blob = costume_cache[1][1]
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
         p2_selected_blob.set_alpha(200)
@@ -159,11 +177,13 @@ def draw_css(game_display, info_getter, settings):
     global cwd
     p1_selector_position = info_getter[0]
     p2_selector_position = info_getter[1]
+    p1_blob = info_getter[2]
+    p2_blob = info_getter[3]
     p1_ghost_position = info_getter[4]
     p2_ghost_position = info_getter[5]
 
     draw_background(game_display, "css", settings)
-    css_blobs(game_display, p1_selector_position, p2_selector_position)
+    css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)
 
     if(not p1_selector_position[3]): #Are we a CPU?
         if(p1_selector_position[2] == 0):

@@ -1,5 +1,6 @@
 import engine.handle_input
-from engine.replays import decompress_replay_file
+from engine.replays import decompress_replay_file, return_replay_info
+from resources.graphics_engine.display_controller_pop_up import create_generic_pop_up
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
 from os import getcwd
@@ -23,7 +24,7 @@ almanac_main_buttons = [
     Button(350, 410, 400, 950),
     Button(425, 500, 400, 950),
 ]
-def almanac_navigation(timer, previous_screen):
+def almanac_navigation(timer, previous_screen, ruleset):
     game_state = "almanac"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -48,9 +49,15 @@ def almanac_navigation(timer, previous_screen):
             #game_state = "medals" #... may not be medals for long
             game_state = "almanac"
             replay_file = prompt_file()
+            
             if(replay_file != ""):
-                game_state = "replay_match"
                 decompress_replay_file(replay_file)
+                if(return_replay_info()[1]["version"] == ruleset['version']):
+                    game_state = "replay_match"
+                else:
+                    create_generic_pop_up(0)
+                
+
             selector_position = 1
             # Will be temporarily disabled
         elif(selector_position == 2):

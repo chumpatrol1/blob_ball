@@ -9,6 +9,7 @@ name_to_file = {
     "block": ["block.wav"],
     "boost": ["boost.wav"],
     "parry": ["parry.wav"],
+    "perfect_parry": ["perfect_parry.wav"],
     "clank": ["clank.wav"],
     "hit": ["hit.wav"],
     "ball_grass_bounce": ['ball_grass_bounce_1.wav', 'ball_grass_bounce_2.wav', 'ball_grass_bounce_3.wav'],
@@ -24,14 +25,24 @@ name_to_file = {
     'glyph': ['glyph_1.wav'],
     'spire': ['spire_1.wav'],
     'electricity': ['spark_1.wav', 'spark_2.wav'],
+    'crunch': ['crunch.wav'],
     'gale': ['gale.wav'],
     'c&d': [],
     'tax': [],
     'whistle': ['whistle_1.wav'],
+    'boxing_bell': ['boxing_bell.wav'],
 	'goal': ['goal.wav'],
     'ball_spire_hit': ['ball_spire_hit.wav'],
     'wavebounce': ['wavebounce.wav'],
     'camera': ['camera.wav'],
+}
+
+suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)
+    'boost': [0, 30, 90],
+    'crunch': [0, 15, 90],
+    'whistle': [0, 30, 60],
+    'boxing_bell': [0, 30, 90],
+    'wavebounce': [0, 15, 90],
 }
 
 def convert_name_to_file(name):
@@ -60,8 +71,16 @@ class SFXEvent():
         return f"SFX Name: {self.name}\nSFX File: {self.return_file()}"
 
 def createSFXEvent(name, volume_modifier = 1):
+    '''
+    Name: String of the sound to play. May result in a randomized sound
+    Volume Modifier: Default volume is 1.
+    '''
     global sound_events
+    if(name in suppression_list and suppression_list[name][0] >= suppression_list[name][2]):
+        return
     sound_events.append(SFXEvent(name = name, volume_modifier = volume_modifier))
+    if(name in suppression_list and suppression_list[name][0] < suppression_list[name][2]):
+        suppression_list[name][0] += suppression_list[name][1] # Only increment if the sound is actually played
 
 def clear_sound_events():
     global sound_events
@@ -70,3 +89,9 @@ def clear_sound_events():
 def get_sound_events():
     global sound_events
     return sound_events
+
+def decrement_supression():
+    global suppression_list
+    # This is for you, Quackus
+    for annoying_sound in  suppression_list:
+        suppression_list[annoying_sound][0] -= 1 if suppression_list[annoying_sound][0] > 0 else 0

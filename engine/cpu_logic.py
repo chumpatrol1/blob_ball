@@ -162,7 +162,7 @@ def check_if_winning(blob, game_score):
 def compile_openings(blob, other_blob):
     # Options: You are expensive t/f, you are fast t/f, enemy is expensive t/f, enemy is fast t/f
     self_fast = bool(blob.top_speed > 13 and blob.top_speed > other_blob.top_speed)
-    self_expensive = bool(blob.special_ability_cost >= 600)
+    self_expensive = bool(blob.special_ability_cost >= 600) or bool(blob.ability_classification == "held")
     foe_fast = bool(other_blob.top_speed > 13 and other_blob.top_speed > blob.top_speed)
     foe_expensive = bool(other_blob.special_ability_cost >= 600)
     foe_low_hp = bool(other_blob.hp < 6)
@@ -193,6 +193,17 @@ def block_attacks(blob, other_blob, pressed):
     if((other_blob.used_ability == "spire_wait" or other_blob.used_ability == "thunderbolt_wait" or other_blob.used_ability == "starpunch_wait") and random.randint(0, 40 - (other_blob.special_ability_cooldown_max - other_blob.special_ability_timer)) == 0):
         pressed.append('block')
 
+def fire_blob(blob, other_blob, ball, pressed):
+    if(blob.player == 1 and ball.x_speed > 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1605)):
+        pressed.append('ability')
+    elif(blob.player == 2 and ball.x_speed < 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 200)):
+        pressed.append('ability')
+
+def ice_blob(blob, other_blob, ball, pressed):
+    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 400)):
+        pressed.append('ability')
+    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1405)):
+        pressed.append('ability')
 
 # This is the current version of handle_logic, the one that is going to V0.11.0b
 def handle_logic_beta(blob, other_blob, ball, game_score, timer):
@@ -278,7 +289,9 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
                     pressed.append('block')
             else:
                 pressed.append('down')
-    elif(logic_memory['current_play'] == 'opening_4'):
+                if(blob.special_ability_meter > 0.8 * blob.special_ability_max):
+                    logic_memory['current_play'] = 'opening_2'
+    elif(logic_memory['current_play'] == 'opening_4'): # Kick the enemy to death.
         pressed.append('toward')
         if(blob.kick_cooldown == 0 and 150 > abs(blob.x_center - other_blob.x_center)\
             and random.randint(0, 5) == 0):
@@ -328,7 +341,12 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
              and not random.randint(0, 5) and not (self_position == 'away_dz' or self_position == self_position == 'away_mid')):
             pressed.append('boost')
 
-        
+    ability_dict = {
+        'fire': fire_blob,
+        'ice': ice_blob,
+    }
+    if(blob.species in ability_dict):
+        ability_dict[blob.species](blob, other_blob, ball, pressed)
 
     # Convert to Player Specific Move Codes
     if(blob.player == 1):

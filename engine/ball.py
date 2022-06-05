@@ -2,6 +2,7 @@ from cmath import sqrt
 import math
 import os
 import pygame as pg
+from engine.environmental_modifiers import return_environmental_modifiers
 
 from resources.sound_engine.sfx_event import createSFXEvent
 cwd = os.getcwd()
@@ -73,6 +74,10 @@ class Ball:
             'ceiling_collisions': 0,
             'goal_collisions': 0,
         }
+        self.status_effects = {
+            'glued': 0,
+            'zapped': 0,
+        }
     
     ground = 1240
 
@@ -82,6 +87,8 @@ class Ball:
         self.x_pos = 902
         self.y_pos  = 900
         self.image = type_to_image("soccer_ball")
+        for effect in self.status_effects:
+            self.status_effects[effect] = 0
 
     def check_blob_collisions(self, blob):
         #The distance to p1's blob
@@ -249,7 +256,7 @@ class Ball:
             self.y_speed *= (1.05 - (self.y_speed/1000))
         elif(blob.used_ability == "snowball"):
             self.x_speed *= .975
-            self.y_speed *= (.95 - (self.y_speed/1000))
+            self.y_speed *= (.9 - (self.y_speed/1000))
         elif(blob.used_ability == "geyser"):
             try:
                 geyser_power = math.sqrt(Ball.ground - self.y_pos)/4-5
@@ -261,16 +268,11 @@ class Ball:
                     self.y_speed -= 0.8
             except Exception as exception:
                 self.y_speed -= 5
-        elif(blob.used_ability == "spire" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay and self.y_pos >= 900):
-            createSFXEvent('ball_spire_hit')
-            self.y_speed = -50
-        elif(blob.used_ability == "thunderbolt" and blob.special_ability_timer == blob.special_ability_cooldown_max - blob.special_ability_delay):
-            self.y_speed = Ball.ground - self.y_pos
         elif(blob.used_ability == "gale" and not blob.collision_timer):
             if(blob.player == 1 and self.x_speed < 15):
-                self.x_speed += 0.35
+                self.x_speed += 0.4
             elif(blob.player == 2 and self.x_speed > -15):
-                self.x_speed -= 0.35
+                self.x_speed -= 0.4
         elif(blob.used_ability == "stoplight"):
             self.x_speed = 0
             self.y_speed = 0
@@ -314,6 +316,41 @@ class Ball:
                 #self.x_speed += (pull_force_x * pull_sign_x)/20
                 #self.y_speed += (pull_force_y * pull_sign_y)/20
 
+    def check_environmental_collisions(self, environment):
+        
+        for hazard in environment['glue_puddle_1']:
+            #print(hazard.player, hazard.affects)
+            if("ball" in hazard.affects):
+                if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
+                    self.status_effects['glued'] = 2
+                    break
+
+        for hazard in environment['glue_puddle_2']:
+            #print(hazard.player, hazard.affects)
+            if("ball" in hazard.affects):
+                if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
+                    self.status_effects['glued'] = 2
+                    break
+                #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
+        
+        for hazard in environment['spire_glyph']:
+            hazard.x_pos = self.x_pos - 40
+        
+        for hazard in environment['spire_spike']:
+            if("ball" in hazard.affects):
+                if(hazard.lifetime == hazard.max_lifetime - 1 and self.y_pos >= 900):
+                    createSFXEvent('ball_spire_hit')
+                    self.y_speed = -50
+        
+        for hazard in environment['thunder_glyph']:
+            hazard.x_pos = self.x_pos - 40
+
+        for hazard in environment['thunder_bolt']:
+            if("ball" in hazard.affects):
+                if(hazard.lifetime == hazard.max_lifetime - 1):
+                    self.y_speed = Ball.ground - self.y_pos
+                    self.status_effects['zapped'] += 120
+
     def check_ceiling_collisions(self):
         ceiling = 210
         if(self.y_pos < ceiling): #Don't raze the roof!
@@ -340,18 +377,24 @@ class Ball:
 
         #Traction/Friction
         def apply_traction_friction():
+            ball_traction = self.traction
+            if(self.status_effects['glued']):
+                #self.image = type_to_image('kicked_ball')
+                #self.species = "kicked_ball"
+                #self.special_timer = 10
+                ball_traction += 0.2
             if(self.y_pos == ground):
                 self.grounded = True
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.traction) > 0:
+                    if(self.x_speed + ball_traction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.traction #Normal deceleration
+                        self.x_speed += ball_traction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.traction) < 0:
+                    if(self.x_speed - ball_traction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.traction #Normal deceleration
+                        self.x_speed -= ball_traction #Normal deceleration
             else:
                 self.grounded = False
                 if(self.x_speed < 0): #If we're going left, decelerate
@@ -391,19 +434,16 @@ class Ball:
                             self.y_speed = self.y_speed * -0.5
                             if(self.y_speed >= 2):
                                 createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
-                            if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
-                                for previous_location in self.previous_locations:
-                                    if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                                        self.y_speed = self.y_speed * 0.3
-                                        break
+                            if(self.status_effects['zapped']):
+                                self.y_speed = self.y_speed * 0.3
                     else:
                         self.goal_grounded = False
-                    if(goal_top < self.y_pos < goal_top):
+                    if(goal_top < self.y_pos < goal_top + 1 and self.y_speed >= 0):
                         self.y_pos = goal_top - self.gravity
                 
 
                 if(self.x_pos > right_goal): # Right goal
-                    side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)        
+                    side_intersection = lineFromPoints((self.x_pos, self.y_pos), self.previous_locations[-2], right_goal, 0)
                     if(right_goal > right_goal - self.x_speed and goal_top <= self.y_pos <= goal_bottom and goal_top < side_intersection < goal_bottom): #Hit side of goalpoast
                         self.info['goal_collisions'] += 1
                         self.x_pos = right_goal - 1
@@ -425,14 +465,11 @@ class Ball:
                             self.y_speed = self.y_speed * -0.5
                             if(self.y_speed >= 2):
                                 createSFXEvent('ball_metal_bounce', volume_modifier = math.sqrt(abs(self.y_speed/self.y_speed_max)))
-                            if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
-                                for previous_location in self.previous_locations:
-                                    if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
-                                        self.y_speed = self.y_speed * 0.3
-                                        break
+                            if(self.status_effects['zapped']):
+                                self.y_speed = self.y_speed * 0.3
                     else:
                         self.goal_grounded = False
-                    if(goal_top < self.y_pos < goal_top):
+                    if(goal_top < self.y_pos < goal_top + 1 and self.y_speed >= 0):
                         self.y_pos = goal_top - self.gravity
             else:
                 self.goal_grounded = False
@@ -455,10 +492,13 @@ class Ball:
         
         def apply_x_speed_limits():
             #Speed Limits (X)
-            if(self.x_speed > self.x_speed_max):
-                self.x_speed = self.x_speed_max
-            elif(self.x_speed < -1 * self.x_speed_max):
-                self.x_speed = -1 * self.x_speed_max
+            speed_limit = self.x_speed_max
+            if(self.status_effects['glued']):
+                speed_limit -= 10
+            if(self.x_speed > speed_limit):
+                self.x_speed = speed_limit
+            elif(self.x_speed < -1 * speed_limit):
+                self.x_speed = -1 * speed_limit
         self.x_pos += self.x_speed
         self.info['x_distance_moved'] += abs(self.x_speed)
 
@@ -471,6 +511,7 @@ class Ball:
         if(self.y_pos < ground):
             self.y_speed += self.gravity
         elif(self.y_pos >= ground): #Don't go under the floor!
+            self.check_environmental_collisions(return_environmental_modifiers())
             if(2 >= self.y_speed >= 0 or self.species == "blocked_ball"):
                 self.y_speed = 0
             elif(self.y_speed < 0 ):
@@ -479,11 +520,10 @@ class Ball:
                 self.y_speed = -1 * math.floor(self.y_speed * 0.75)
                 createSFXEvent('ball_grass_bounce', volume_modifier=(abs(self.y_speed/self.y_speed_max)))
                 self.info['floor_collisions'] += 1
-                if(p1_blob.species == "lightning" or p2_blob.species == "lightning"):
-                    for previous_location in self.previous_locations:
-                        if(previous_location[4] == "thunderbolt" or previous_location[5] == "thunderbolt"):
+                if(self.status_effects['zapped']):
                             self.y_speed = self.y_speed * 0.3
-                            break
+                if(self.status_effects['glued']):
+                    self.y_speed = self.y_speed * 0.75
                             
 
                 
@@ -513,4 +553,8 @@ class Ball:
             self.blocked_timer -= 1
             if(self.blocked_timer == 0):
                 self.bounciness = 1
+        
+        for effect in self.status_effects:
+            if(self.status_effects[effect] > 0):
+                self.status_effects[effect] -= 1
         

@@ -688,6 +688,10 @@ def get_keypress(detect_new_controllers = True, menu_input = True):
     return pressed_array
 button_timer = 0
 def merge_inputs(pressed, override = False):
+    '''
+    Merges the inputs of two players into one set.
+    Override: forces inputs to be merged regardless of the button timer being active
+    '''
     global button_timer
     merged_press = []
     if not button_timer or override:
@@ -703,6 +707,8 @@ def merge_inputs(pressed, override = False):
             merged_press.append('ability')
         if('p1_kick' in pressed or 'p2_kick' in pressed):
             merged_press.append('kick')
+        if('p1_boost' in pressed or 'p2_boost' in pressed):
+            merged_press.append('boost')
         if('return' in pressed):
             merged_press.append('return')
     if(len(merged_press)):

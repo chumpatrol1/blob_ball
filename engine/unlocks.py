@@ -1,5 +1,6 @@
 from json import loads, dumps
 from copy import deepcopy
+
 # The original selector
 css_selector_list_blobs = [
     ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
@@ -12,7 +13,7 @@ css_selector_list_blobs = [
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
 [["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"],],
-[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
@@ -35,7 +36,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (5, 1): "boxer",
     (6, 1): "mirror",
     (7, 1): "fisher",
-    (1, 2): "coming_soon",
+    (1, 2): "glue",
     (2, 2): "coming_soon",
     (3, 2): "coming_soon",
     (4, 2): "coming_soon",
@@ -73,6 +74,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "boxer": False,
     "mirror": False,
     "fisher": False,
+    "glue": False,
 }
 
 def load_blob_unlocks(cwd):
@@ -93,8 +95,11 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-unlock_milestones = [0, 3, 6, 9, 12, 15, 18, 23, 28, 33, 38, 43, 48, 53, 60, 67, 74, 81, 88,\
-    95, 105, 115, 125, 135, 145, 155, 165, 180, 195, 210, 225, 240, 255, 270]
+unlock_milestones = [0, 2, 4, 6, 8, 10, 12,\
+    15, 20, 25, 30, 35, 40, 45,\
+        52, 59, 66, 74, 82, 90,\
+    100, 110, 120, 130, 140, 150, 160,\
+    165, 180, 195, 210, 225, 240, 255]
 
 def update_css_blobs(cwd):
     global blob_unlock_dict
@@ -131,6 +136,12 @@ def unlock_blob(blob, cwd):
     else:
         raise ValueError("Blob already unlocked!")
 
+def unlock_all_blobs():
+    for blob in blob_unlock_dict:
+        blob_unlock_dict[blob] = True
+    from os import getcwd
+    with open(getcwd() + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(blob_unlock_dict))
 
 def return_blob_unlocks():
     global blob_unlock_dict
@@ -294,14 +305,93 @@ def return_css_display_medals():
     global css_display_list_medals
     return css_display_list_medals
 
+
+'''COSTUMES'''
+costume_unlock_dict = {
+    "quirkless": {"grayscale_1": False},
+    "fire": {"grayscale_1": False},
+    "ice": {"grayscale_1": False},
+    "water": {"grayscale_1": False},
+    "rock": {"grayscale_1": False},
+    "lightning": {"grayscale_1": False},
+    "wind": {"grayscale_1": False},
+    "judge": {"grayscale_1": False},
+    "doctor": {"grayscale_1": False},
+    "king": {"grayscale_1": False},
+    "cop": {"grayscale_1": False},
+    "boxer": {"grayscale_1": False},
+    "mirror": {"grayscale_1": False},
+    "fisher": {"grayscale_1": False},
+    "glue": {"grayscale_1": False},
+}
+
+def load_costume_unlocks(cwd):
+    global costume_unlock_dict
+    try:
+        with open(cwd + "/saves/costume_unlocks.txt", "r") as blobunlockdoc:
+            new_unlock_dict = loads(blobunlockdoc.readline())
+            for blob in blob_unlock_dict:
+                if blob not in new_unlock_dict:
+                    new_unlock_dict[blob] = costume_unlock_dict[blob]
+                    continue
+                for costume in costume_unlock_dict[blob]:
+                    if(costume not in new_unlock_dict[blob]):
+                        new_unlock_dict[blob][costume] = False
+                        continue
+                
+        
+        costume_unlock_dict = new_unlock_dict
+
+        with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(costume_unlock_dict))
+        
+    except:
+        with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+            blobunlockdoc.write(dumps(costume_unlock_dict))
+
+def return_costume_unlocks():
+    global costume_unlock_dict
+    return costume_unlock_dict
+
+available_costumes = dict(return_blob_unlocks())
+
+def update_costumes():
+    global available_costumes
+    for i in available_costumes:
+        available_costumes[i] = [0]
+        for j in costume_unlock_dict[i]:
+            if(costume_unlock_dict[i][j]):
+                available_costumes[i].append(int(j.split("_")[-1]))
+
+def return_available_costumes():
+    global available_costumes
+    return available_costumes
+
+def unlock_costume(blob, costume, cwd):
+    global costume_unlock_dict
+    if blob in costume_unlock_dict:
+        if(costume in costume_unlock_dict[blob] and not costume_unlock_dict[blob][costume]):
+            with open(cwd + "/saves/costume_unlocks.txt", "r") as blobunlockdoc:
+                costume_unlock_dict = loads(blobunlockdoc.readline())
+            costume_unlock_dict[blob][costume] = True
+            with open(cwd + "/saves/costume_unlocks.txt", "w") as blobunlockdoc:
+                blobunlockdoc.write(dumps(costume_unlock_dict))
+            #print(f"Unlocked {blob} {costume}!")
+        else:
+            raise ValueError("Already Unlocked")
+    else:
+        print("Invalid Blob!")
+        raise ValueError("Invalid Blob!")
+
 if __name__ == "__main__":
     from os import getcwd
     cwd = getcwd()
     load_blob_unlocks(cwd)
     #unlock_blob("ice", cwd)
-    update_css_blobs()
+    #update_css_blobs()
 	#unlock_medal("goal", cwd)
-    update_css_medals
+    #update_css_medals()
+    
     load_medals(cwd)
     print(medal_unlock_dict)
     unlock_medal("goal", cwd)
@@ -314,3 +404,6 @@ if __name__ == "__main__":
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print(css_display_list_medals)
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    
+    unlock_costume("quirkless", "grayscale_1", cwd)
+    print(costume_unlock_dict)
