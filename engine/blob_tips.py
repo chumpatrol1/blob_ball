@@ -4,6 +4,8 @@ cwd = getcwd()
 tip_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30) # Load in the font
 text_color = (0, 0, 255) # Set the text color to blue
 
+# Should I put these into loops? -sunken
+
 quirkless_tips = [
     tip_font.render("#1: Quirkless Blob has the highest average stats", False, text_color),
     tip_font.render("in the game, encouraging good fundamentals", False, text_color),
@@ -224,6 +226,23 @@ fisher_tips = [
 ]
 
 glue_tips = [
+    tip_font.render("#1: Glue Gun shoots its pellets", False, text_color),
+    tip_font.render("based on your momentum and direction!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Once a glue puddle is formed, it", False, text_color),
+    tip_font.render("dries up in about three seconds!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Glue Blob synergizes well with its ", False, text_color),
+    tip_font.render("own glue. In fact, you will move slightly", False, text_color),
+    tip_font.render("faster across the field!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: In addition to the slowing effect of", False, text_color),
+    tip_font.render("the glue, you should remember that your", False, text_color),
+    tip_font.render("enemies will have a hard time jumping out", False, text_color),
+    tip_font.render("of the glue, and the ball bounces less too!", False, text_color),
+]
+
+arcade_tips = [
     tip_font.render("#1: Glue Gun shoots its pellets", False, text_color),
     tip_font.render("based on your momentum and direction!", False, text_color),
     tip_font.render("", False, text_color),

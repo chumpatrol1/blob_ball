@@ -38,7 +38,7 @@ import engine.handle_input
 from engine.handle_input import detect_joysticks, get_keypress
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs, load_medal_unlocks, update_css_medals, load_costume_unlocks
+from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs, load_medal_unlocks, update_mam_medals, load_costume_unlocks
 game_state = "control_splash"
 new_game_state = "control_splash"
 

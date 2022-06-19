@@ -1,1 +1,1 @@
-{"total": 0, "goal": false, "ko": false, "parry_this": false, "ball_stop": false, "clash_of_the_blobs": false, "power_up": false, "damage_stacking": false}
+{"total": 0, "goal": false, "ko": false, "parry_this": false, "ball_stop": false, "clash_of_the_blobs": false, "power_up": false, "damage_stacking": false, "rule_breaker": false}

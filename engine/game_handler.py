@@ -15,7 +15,7 @@ import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
-from engine.unlocks import return_available_costumes, update_css_blobs, update_css_medals, update_costumes
+from engine.unlocks import return_available_costumes, update_css_blobs, update_mam_medals, update_costumes
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
