@@ -39,7 +39,7 @@ cwd = os.getcwd()
 # In engine/popup_list.py, add an entry formatted as blob/alt_# - this dictates what the popup screen says and shows
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun', 'teleport']
     if(ability in held_abilities):
         return "held"
     instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
@@ -70,6 +70,7 @@ def species_to_image(species, costume):
         'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png"), 1: (blob_cwd + "mirror_blob_1.png", blob_cwd + "mirror_blob_-1.png")},
         'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png")},
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
+        'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -97,6 +98,7 @@ def species_to_ability_icon(species):
         'mirror': ability_cwd + 'mirror.png',
         'fisher': ability_cwd + 'hook.png',
         'glue': ability_cwd + 'glue.png',
+        'arcade': ability_cwd + 'teleport.png',
         "random": icon_cwd + "boost_icon.png",
     }
     
@@ -718,9 +720,23 @@ class Blob:
                     x_mod = -1
                 else:
                     x_mod = 1
-
                 if(not (self.holding_timer % 4)):
                     create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
+                    #createSFXEvent('water')
+        elif(special_ability == "teleport"):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+                if(self.special_ability_timer > 0):
+                    #If we were holding down the button before
+                    self.used_ability = "teleport"
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
+                    self.holding_timer += 1
+                else:
+                    #If we ignite the ball
+                    self.used_ability = "teleport"           # pay your telelicense (why did i write this here lmao)
+                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
+                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
+                    self.holding_timer = 0
                     #createSFXEvent('water')
 
 

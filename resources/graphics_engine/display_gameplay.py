@@ -321,13 +321,19 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['p1_dead_left'] = pg.transform.scale(pg.image.load(p1_blob.image_death).convert_alpha(), (120, 66))
         image_cache['p1_dead_right'] = pg.transform.flip(image_cache['p1_dead_left'], True, False)
         image_cache['p1_blob_clone'] = p1_blob.image
-        image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        try:
+            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        except:
+            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
         image_cache['p2_blob_left'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
         image_cache['p2_blob_right'] = pg.transform.flip(image_cache['p2_blob_left'], True, False)
         image_cache['p2_dead_left'] = pg.transform.scale(pg.image.load(p2_blob.image_death).convert_alpha(), (120, 66))
         image_cache['p2_dead_right'] = pg.transform.flip(image_cache['p2_dead_left'], True, False)
         image_cache['p2_blob_clone'] = p2_blob.image
-        image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
+        try:
+            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
+        except:
+            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
         image_cache['p2_darkened'] = False
         if(p2_blob.species == p1_blob.species and p2_blob.costume == p1_blob.costume):
             if(not image_cache['p2_darkened']):
@@ -356,11 +362,17 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['ui_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
 
     if(p1_blob.recharge_indicators['ability_swap_b']):
-        image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        try:
+            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+        except:
+            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
         image_cache['ui_initialized'] = False
 
     if(p2_blob.recharge_indicators['ability_swap_b']):
-        image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
+        try:
+            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
+        except:
+            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
         image_cache['ui_initialized'] = False
 
     if not (p1_blob.image == image_cache['p1_blob_clone']):

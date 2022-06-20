@@ -14,6 +14,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'mirror': ['mirror_blob.png', "Mirror Blob", "Shatters as easily as it/is to find a used mirror./Reverses the ball's direction."],
     'fisher': ['fisher_blob.png', "Fisher Blob", "Press and hold your ability button/to reel in your catch!/It seems to always be a soccer ball."],
     'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue pellets!/When they land, the puddles trap/both your enemy and the ball!"],
+    'arcade': ['arcade_blob.png', "Arcade Blob", "Press and hold your ability button/to dictate where you/will teleport, the longer you hold,/the closer you'll teleport to the ball!"],
 }
 
 def find_blob_unlock(key):

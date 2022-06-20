@@ -1318,3 +1318,714 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+15240-ERROR-Game Crash at Tue Apr 12 19:22:24 2022 (Version 0.14.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 111, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 89, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\main.py", line 66, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\game_handler.py", line 51, in update_game_state
+    info_getter, game_state = engine.menus.main_menu.splash_navigator()
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\menus\main_menu.py", line 78, in splash_navigator
+    pressed = engine.handle_input.menu_input()
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\handle_input.py", line 697, in menu_input
+    pressed = get_keypress()
+  File "c:\Users\Xnunu\Documents\GitHub\blob_ball\engine\handle_input.py", line 579, in get_keypress
+    bind_xbox_360_to_player(event, detect_new_controllers, new_controller, controller_name)
+UnboundLocalError: local variable 'new_controller' referenced before assignment
+Game State: control_splash
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15728-ERROR-Game Crash at Mon May  9 17:22:15 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[4]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16168-ERROR-Game Crash at Mon May  9 17:31:01 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_css.py", line 186, in draw_css
+    css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_css.py", line 110, in css_blobs
+    if(not p1_selector_position[4]):
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8552-ERROR-Game Crash at Mon May  9 17:34:05 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[3]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2604-ERROR-Game Crash at Mon May  9 17:36:10 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[2]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1596-ERROR-Game Crash at Mon May  9 17:37:54 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[4]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3632-ERROR-Game Crash at Wed May 18 19:22:29 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 91, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 68, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\game_handler.py", line 178, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\blob_info_menu.py", line 136, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_blob_info.py", line 93, in load_individual_blob
+    costume_unlock = find_costume_unlock(selected_blob[2]+"/"+ i)[3]
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15632-ERROR-Game Crash at Wed May 18 19:31:21 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[4]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: water, is CPU: False
+P2_Blob: rock, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14900-ERROR-Game Crash at Sat Jun 18 10:36:40 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[4]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12528-ERROR-Game Crash at Sat Jun 18 10:47:21 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[3]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14448-ERROR-Game Crash at Sat Jun 18 12:40:57 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    ghost_position = info_getter[3]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12500-ERROR-Game Crash at Sat Jun 18 12:42:05 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 91, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 68, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\game_handler.py", line 165, in update_game_state
+    info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\settings_menu.py", line 222, in settings_navigation
+    game_state, selector_position = settings_selection_right(selector_position, settings, previous_screen, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\settings_menu.py", line 103, in settings_selection_right
+    run_func[selector_position]()
+KeyError: 10
+Game State: settings
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+6960-ERROR-Game Crash at Sat Jun 18 13:04:12 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 88, in handle_graphics
+    draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 321, in draw_gameplay
+    image_cache['p1_dead_left'] = pg.transform.scale(pg.image.load(p1_blob.image_death).convert_alpha(), (120, 66))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/blobs/arcade_blob_-1.png'.
+Game State: casual_match
+P1 Blob: arcade, is CPU: False
+P2_Blob: boxer, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14352-ERROR-Game Crash at Sat Jun 18 13:06:13 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 88, in handle_graphics
+    draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 324, in draw_gameplay
+    image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/ability_icons/teleport.png'.
+Game State: casual_match
+P1 Blob: arcade, is CPU: False
+P2_Blob: king, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4336-ERROR-Game Crash at Sat Jun 18 13:08:55 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 325, in draw_gameplay
+    image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/ability_icons/teleport.png'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 88, in handle_graphics
+    draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 327, in draw_gameplay
+    image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
+FileNotFoundError: No such file or directory: '/resources/images/ui_icons/404.png'.
+Game State: casual_match
+P1 Blob: arcade, is CPU: False
+P2_Blob: king, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1156-ERROR-Game Crash at Sat Jun 18 13:10:23 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 325, in draw_gameplay
+    image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/ability_icons/teleport.png'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 88, in handle_graphics
+    draw_gameplay(screen_size, game_surface, p1_blob, p2_blob, ball, game_score, timer, game_time, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_gameplay.py", line 327, in draw_gameplay
+    image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/ui_icons/404.png'.
+Game State: casual_match
+P1 Blob: arcade, is CPU: False
+P2_Blob: king, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10520-ERROR-Game Crash at Sun Jun 19 12:16:55 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 119, in draw_mam
+    print(info_getter[3])
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10068-ERROR-Game Crash at Sun Jun 19 12:33:11 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 289, in update_mam_medals
+    elif location in mam_location_dict_medals and medal_unlock_dict[mam_location_dict_medals[location]]:
+KeyError: 'rule_breaker'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12076-ERROR-Game Crash at Sun Jun 19 12:35:20 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 289, in update_mam_medals
+    mam_display_list_medals[y][x] = ["/medals/questionMedal.png", "???", "Coming soon!"]
+IndexError: list assignment index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8712-ERROR-Game Crash at Sun Jun 19 12:37:54 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 289, in update_mam_medals
+    mam_display_list_medals[y][x] = ["/medals/questionMedal.png", "???", "Coming soon!"]
+IndexError: list assignment index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5184-ERROR-Game Crash at Sun Jun 19 12:47:15 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 295, in update_mam_medals
+    mam_display_list_medals[x][y] = ["/medals/questionMedal.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12024-ERROR-Game Crash at Sun Jun 19 12:48:27 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 295, in update_mam_medals
+    mam_display_list_medals[x][y] = ["/medals/questionMedal.png", "Unlock Me!", "Find your way."]
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10276-ERROR-Game Crash at Sun Jun 19 14:05:16 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 31, in load_medals
+    update_mam_medals(cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\unlocks.py", line 289, in update_mam_medals
+    mam_display_list_medals[y][x] = ["/medals/questionMedal.png", "???", "Coming soon!"]
+IndexError: list assignment index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+11236-ERROR-Game Crash at Sun Jun 19 14:16:59 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 122, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 66, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 38, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/medals/'.
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13040-ERROR-Game Crash at Sun Jun 19 14:33:13 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 39, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/medals/'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 71, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 43, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/medals/'.
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10800-ERROR-Game Crash at Sun Jun 19 14:33:55 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 39, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/medals/'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 71, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 43, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+"404.png").convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images404.png'.
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14168-ERROR-Game Crash at Sun Jun 19 14:34:19 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 39, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/medals/'.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 71, in mam_medals
+    medal_image_cache, big_image_cache = load_medals(medal_image_cache, big_image_cache, directory)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 43, in load_medals
+    medal_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+"/404.png").convert_alpha(), (91, 91)))
+FileNotFoundError: No such file or directory: 'C:\Users\Xnunu\Documents\Projects\Repositories\blob_ball/resources/images/404.png'.
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10236-ERROR-Game Crash at Sun Jun 19 14:35:05 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 79, in mam_medals
+    token_cache['ghost'] = token_cache['p1_ball'].convert_alpha()
+KeyError: 'p1_ball'
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13656-ERROR-Game Crash at Sun Jun 19 14:35:51 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    mam_medals(game_display, selector_position)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 108, in mam_medals
+    if(selector_position[3] == 1):
+IndexError: list index out of range
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13216-ERROR-Game Crash at Sun Jun 19 14:40:29 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    game_display.blit(p1_ball, ((136 * (medal_selector[0] + 1) + 1366*(1/135)), 100 * (medal_selector[1] + 1) - 25))
+NameError: name 'p1_ball' is not defined
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13088-ERROR-Game Crash at Sun Jun 19 14:42:49 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 91, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 68, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\game_handler.py", line 181, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\medal_milestone_menu.py", line 80, in medal_navigation
+    for i in range(len(mam_menu_buttons)):
+UnboundLocalError: local variable 'mam_menu_buttons' referenced before assignment
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12184-ERROR-Game Crash at Sun Jun 19 14:43:36 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 91, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 68, in get_game_state
+    return ugs(game_state, cwd)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\game_handler.py", line 181, in update_game_state
+    game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\engine\menus\medal_milestone_menu.py", line 78, in medal_navigation
+    mam_menu_buttons = medal_menu_buttons
+NameError: name 'medal_menu_buttons' is not defined
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

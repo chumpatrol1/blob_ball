@@ -19,6 +19,7 @@ def attempt_blob_unlocks(game_stats):
         40: "mirror",
         45: "fisher",
         52: "glue",
+        59: "arcade",
     }
     
     blobs_unlocked = 0
@@ -46,6 +47,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "mirror": {10: "mirror/grayscale_1"},
         "fisher": {10: "fisher/grayscale_1"},
         "glue": {10: "glue/grayscale_1"},
+        "arcade": {10: "arcade/grayscale_1"},
     }
     blobs_unlocked = 0
     try:

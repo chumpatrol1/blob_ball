@@ -16,6 +16,7 @@ settings_buttons = [
     Button(485, 545, 0, 600),
     Button(545, 605, 0, 600),
     Button(605, 665, 0, 600),
+    Button(665, 725, 0, 600),
 ]
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
@@ -77,6 +78,14 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         settings['ui_mode'] = not settings['ui_mode']
         createSFXEvent('select')
 
+    def toggle_gversion():
+        if(settings['graphics'] == 1): # 0 = Legacy, 1 = Normal - I didn't make it a true or false statement in case we add more.
+            settings['graphics'] = 0
+        else:
+            settings['graphics'] += 1
+        createSFXEvent('select')
+        
+
     run_func = {
         0: toggle_background,
         1: toggle_ui_mode,
@@ -84,6 +93,7 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
+        6: toggle_gversion,
         len(settings) + 3: go_back,
         len(settings) + 2: reset_settings,
         len(settings) + 1: reset_inputs,
