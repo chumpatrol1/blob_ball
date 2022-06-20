@@ -1,5 +1,5 @@
 blob_unlock_popups = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
-    'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing Ability instead uses/your boost cooldown!"],
+    'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing your Ability Button/activates your boost instead!"],
     'fire': ["fire_blob.png", "Fire Blob", "Press and hold your ability/button to speed the ball up!"],
     'ice': ["ice_blob.png", "Ice Blob", "Press and hold your ability/button to slow the ball down!"],
     'water': ['water_blob.png', "Water Blob", "Press and hold your ability/button to push the ball up!"],
