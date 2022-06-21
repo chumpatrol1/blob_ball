@@ -51,6 +51,7 @@ costume_unlock_popups = { # Key is
     'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
     'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
     'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'arcade/grayscale_1': ["arcade_blob_1.png", "Grayscale Arcade", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
 }
 
 def find_costume_unlock(key):

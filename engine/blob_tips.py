@@ -277,4 +277,7 @@ def return_selected_blob_tips(selected_blob):
         'fisher': fisher_tips,
         'glue': glue_tips,
     }
-    return tips_dict[selected_blob]
+    try:
+        return tips_dict[selected_blob]
+    except:
+        return []
