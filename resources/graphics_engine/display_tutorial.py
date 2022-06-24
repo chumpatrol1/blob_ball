@@ -1,0 +1,36 @@
+from resources.graphics_engine.background_handler import draw_background as draw_background
+from os import getcwd
+import pygame as pg
+cwd = getcwd()
+
+image_cache = {"initialized": False, "ui_initialized": False}
+
+tutorial_text = {
+    0: "Welcome to Blob Ball, the funnest game around!",
+}
+
+loaded_text = {"page": -1, "content": [], "text_color": (0, 0, 255)}
+
+def draw_tutorial_text(game_display, info_getter, settings):
+    tutorial_font = image_cache["tutorial_font"]
+    if(loaded_text["page"] != info_getter[0]):
+        loaded_text["content"] = []
+        loaded_text["page"] = info_getter[0]
+        for i in tutorial_text[info_getter[0]].split("/"):
+            loaded_text["content"].append(tutorial_font.render(i, False, loaded_text["text_color"]))
+
+    text_y = 20
+    for text_box in loaded_text["content"]:
+        text_rect = text_box.get_rect()
+        text_rect.center = (683, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 50
+
+def draw_tutorial(gameplay_display, info_getter, settings):
+    draw_background(gameplay_display, "casual_match", settings)
+
+    if(not image_cache["initialized"]):
+        image_cache["initialized"] = True
+        image_cache["tutorial_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
+
+    draw_tutorial_text(gameplay_display, info_getter, settings)

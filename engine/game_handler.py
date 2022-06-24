@@ -4,6 +4,7 @@ def set_timer(frames):
 
 from tkinter import N
 from engine.gameplay import clear_info_cache
+import engine.tutorial
 import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
@@ -216,7 +217,7 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
     elif(game_state == "tutorial"):
-        game_state, info_getter = "main_menu", []
+        game_state, info_getter = engine.tutorial.handle_tutorial()
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset

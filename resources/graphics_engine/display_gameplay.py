@@ -20,6 +20,7 @@ def unload_image_cache():
     image_cache['p2_ability_icon'] = None
 
 def draw_blob(game_display, blob):
+    # TODO: Make this do something
     global image_cache
 
 def draw_ball(game_display, ball):
@@ -306,16 +307,16 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
 
 def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
     gameplay_surface = pg.Surface((1366, 768))
-    #TODO: Simplify and remove
+    # TODO: Simplify and remove things from this function
+    # TODO: Make drawing things like blob #'s agnostic to the amount passed
     draw_background(gameplay_surface, "casual_match", settings)
     global cwd
     global image_cache
-    #TODO: Cause different things to be loaded with different blobs
+    # TODO: Cause different things to be loaded with different blobs
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-        # TODO: Death sprites
         image_cache['p1_blob_left'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
         image_cache['p1_blob_right'] = pg.transform.flip(image_cache['p1_blob_left'], True, False)
         image_cache['p1_dead_left'] = pg.transform.scale(pg.image.load(p1_blob.image_death).convert_alpha(), (120, 66))
@@ -358,6 +359,7 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/boost_icon.png"), (70, 70))
         image_cache['heart_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/heart_icon.png"), (70, 70))
         image_cache['judgement'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ability_icons/cnd.png"), (70, 70))
+        # TODO: Why are we loading in the same font twice?
         image_cache['menu_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         image_cache['ui_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
 
