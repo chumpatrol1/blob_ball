@@ -305,42 +305,54 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
         blob_special.set_alpha(255 - 16 * (blob.kick_visualization_max - blob.kick_visualization))
         game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
 
-def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score, timer, game_time, settings):
+def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
+    print(info_getter)
+    blobs = info_getter[0]
+    ball = info_getter[1]
+    game_score = info_getter[2]
+    timer = info_getter[3]
+    game_time = info_getter[4]
+
     # TODO: Simplify and remove things from this function
     # TODO: Make drawing things like blob #'s agnostic to the amount passed
     draw_background(gameplay_surface, "casual_match", settings)
     global cwd
     global image_cache
-    # TODO: Cause different things to be loaded with different blobs
+    # TODO: Cause different things to be loaded with different amounts of blobs
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
         image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
         image_cache['ball_clone'] = ball.image
-        image_cache['p1_blob_left'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
-        image_cache['p1_blob_right'] = pg.transform.flip(image_cache['p1_blob_left'], True, False)
-        image_cache['p1_dead_left'] = pg.transform.scale(pg.image.load(p1_blob.image_death).convert_alpha(), (120, 66))
-        image_cache['p1_dead_right'] = pg.transform.flip(image_cache['p1_dead_left'], True, False)
-        image_cache['p1_blob_clone'] = p1_blob.image
-        try:
-            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
-        except:
-            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
-        image_cache['p2_blob_left'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
-        image_cache['p2_blob_right'] = pg.transform.flip(image_cache['p2_blob_left'], True, False)
-        image_cache['p2_dead_left'] = pg.transform.scale(pg.image.load(p2_blob.image_death).convert_alpha(), (120, 66))
-        image_cache['p2_dead_right'] = pg.transform.flip(image_cache['p2_dead_left'], True, False)
-        image_cache['p2_blob_clone'] = p2_blob.image
-        try:
-            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
-        except:
-            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
-        image_cache['p2_darkened'] = False
-        if(p2_blob.species == p1_blob.species and p2_blob.costume == p1_blob.costume):
-            if(not image_cache['p2_darkened']):
-                image_cache['p2_blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                image_cache['p2_blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                image_cache['p2_darkened'] = True
+        used_pnames = []
+        used_bfx = {'darkened': False, 'brightened': False, 'blackened': False}
+        for blob in blobs.values():
+            pname = "p" + str(blob.player) + "_"
+            used_pnames.append(blob.player)
+            image_cache[pname+'blob_left'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, 66))
+            image_cache[pname+'blob_right'] = pg.transform.flip(image_cache[pname+'blob_left'], True, False)
+            image_cache[pname+'dead_left'] = pg.transform.scale(pg.image.load(blob.image_death).convert_alpha(), (120, 66))
+            image_cache[pname+'dead_right'] = pg.transform.flip(image_cache[pname+'dead_left'], True, False)
+            image_cache[pname+'blob_clone'] = blob.image
+            try:
+                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
+            except:
+                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
+
+
+            # TODO: Duplicate check to darken the blobs
+            for used_blob in used_pnames:
+                if(blob.species == blobs[used_blob].species and blob.costume == blobs[used_blob].costume and blob.player != blobs[used_blob].player):
+                    if not used_bfx['darkened']:
+                        image_cache[pname+'blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+                        image_cache[pname+'blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
+                    elif not used_bfx['brightened']:
+                        image_cache[pname+'blob_right'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
+                        image_cache[pname+'blob_left'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
+                    elif not used_bfx['blackened']:
+                        image_cache[pname+'blob_right'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
+                        image_cache[pname+'blob_left'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
+
         
         image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
         image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()
@@ -363,80 +375,57 @@ def draw_gameplay(screen_size, game_display, p1_blob, p2_blob, ball, game_score,
         image_cache['menu_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         image_cache['ui_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
 
-    if(p1_blob.recharge_indicators['ability_swap_b']):
-        try:
-            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load(p1_blob.ability_icon).convert_alpha(), (70, 70))
-        except:
-            image_cache['p1_ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
-        image_cache['ui_initialized'] = False
+    for blob in blobs.values():
+        pname = "p" + str(blob.player) + "_"
+        if blob.recharge_indicators['ability_swap_b']:
+            try:
+                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
+            except:
+                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
+            image_cache['ui_initialized'] = False
 
-    if(p2_blob.recharge_indicators['ability_swap_b']):
-        try:
-            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load(p2_blob.ability_icon).convert_alpha(), (70, 70))
-        except:
-            image_cache['p2_ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
-        image_cache['ui_initialized'] = False
+        if not (blob.image == image_cache[pname+'blob_clone']):
+            image_cache[pname+'blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, 66))
+            image_cache[pname+'blob_clone'] = blob.image
+        if not("invisible" in blob.image):
+            if(blob.facing == "right"):
+                if(blob.hp > 0):
+                    gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                else:
+                    gameplay_surface.blit(image_cache[pname+'dead_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+            else:
+                if(blob.hp > 0):
+                    gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                else:
+                    gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+        draw_blob_special(blob, gameplay_surface)
+        draw_blob_particles(gameplay_surface, ball, blobs.values()) # TODO: Fix this!
 
-    if not (p1_blob.image == image_cache['p1_blob_clone']):
-        image_cache['p1_blob'] = pg.transform.scale(pg.image.load(p1_blob.image).convert_alpha(), (120, 66))
-        image_cache['p1_blob_clone'] = p1_blob.image
-    if not("invisible" in p1_blob.image):
-        if(p1_blob.facing == "right"):
-            if(p1_blob.hp > 0):
-                gameplay_surface.blit(image_cache['p1_blob_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-            else:
-                gameplay_surface.blit(image_cache['p1_dead_right'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-        else:
-            if(p1_blob.hp > 0):
-                gameplay_surface.blit(image_cache['p1_blob_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-            else:
-                gameplay_surface.blit(image_cache['p1_dead_left'], (p1_blob.x_pos*(1000/1366), (p1_blob.y_pos*(400/768))))
-    draw_blob_special(p1_blob, gameplay_surface)
-    draw_blob_particles(gameplay_surface, ball, p1_blob, p2_blob)
-    
-    if not (p2_blob.image == image_cache['p2_blob_clone']):
-        image_cache['p2_blob'] = pg.transform.scale(pg.image.load(p2_blob.image).convert_alpha(), (120, 66))
-        image_cache['p2_blob_clone'] = p2_blob.image
-        image_cache['p2_darkened'] = False
-
-    if not("invisible" in p2_blob.image):
-        if(p2_blob.facing == "right"):
-            if(p2_blob.hp > 0):
-                gameplay_surface.blit(image_cache['p2_blob_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
-            else:
-                gameplay_surface.blit(image_cache['p2_dead_right'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
-        else:
-            if(p2_blob.hp > 0):
-                gameplay_surface.blit(image_cache['p2_blob_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
-            else:
-                gameplay_surface.blit(image_cache['p2_dead_left'], (p2_blob.x_pos*(1000/1366), (p2_blob.y_pos*(400/768))))
-
-    draw_blob_special(p2_blob, gameplay_surface)
-    draw_blob_particles(gameplay_surface, ball, p2_blob, p1_blob) # Why is it like this again?
 
     #fade_out = 200
-    draw_ball_particles(gameplay_surface, ball, p1_blob, p2_blob)
+    # TODO: Fix this!
+    #draw_ball_particles(gameplay_surface, ball, p1_blob, p2_blob)
     draw_ball(gameplay_surface, ball)
-    draw_ball_overlay(gameplay_surface, ball, p1_blob, p2_blob)
+    #draw_ball_overlay(gameplay_surface, ball, p1_blob, p2_blob)
 
     draw_environmental_modifiers(gameplay_surface)
 
     menu_font = image_cache['menu_font']
     menu_text = menu_font.render("SCORE: "+ str(game_score[0]) + "-" + str(game_score[1]), False, (200, 230, 200))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, 0.75*screen_size[1]//14)
+    text_rect.center = (683, 40.5)
     gameplay_surface.blit(menu_text, text_rect)
     try:
         menu_text = menu_font.render("TIME: "+ '{:.2f}'.format(round(game_time/60, 2)), False, (200, 230, 200))
     except:
         menu_text = menu_font.render("NO TIME LIMIT", False, (0, 0, 255))
     text_rect = menu_text.get_rect()
-    text_rect.center = (screen_size[0]//2, 1.5*screen_size[1]//14)
+    text_rect.center = (683, 81)
     gameplay_surface.blit(menu_text, text_rect)
     
-    draw_ui(screen_size, gameplay_surface, p1_blob, p2_blob)    
+    #draw_ui(screen_size, gameplay_surface, p1_blob, p2_blob)    
 
-    draw_timer(screen_size, gameplay_surface, timer)
+    draw_timer((1366, 768), gameplay_surface, timer)
 
     if settings['ui_mode']:
         game_display.blit(gameplay_surface, (0, 0)) # Default drawing

@@ -37,6 +37,7 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
 initialized = False
 p1_blob = None
 p2_blob = None
+blob_dict = {}
 ball = None
 game_score = [0, 0]
 timer = 180
@@ -154,6 +155,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global goal_limit
     global time_limit
     global replay_inputs
+    global blob_dict
     
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
@@ -178,13 +180,12 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
-        
-        temp_dict = {
+        blob_dict = {
             1: p1_blob,
             2: p2_blob
         }
-        p1_blob.all_blobs = temp_dict
-        p2_blob.all_blobs = temp_dict        
+        p1_blob.all_blobs = blob_dict
+        p2_blob.all_blobs = blob_dict        
         initialized = True
     else:
         if(timer == 0):
@@ -359,8 +360,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             else:
                 game_state = "replay_win"                   
             
-            return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])
-    return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit # TODO: Fix/Parity the Output
+            return game_state, [blob_dict, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
+    return game_state, [blob_dict, ball, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
 def clear_info_cache():
     global game_score

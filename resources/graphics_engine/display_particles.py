@@ -106,7 +106,7 @@ def create_blob_particles(blob, other_blob):
         used_ability_dict[blob.used_ability](blob, other_blob)
 
 
-def draw_blob_particles(game_display, ball, blob, other_blob):
+def draw_blob_particles(game_display, ball, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
     COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
     ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
@@ -117,6 +117,7 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
     ENSURE THAT IT HAS THE CORRECT IMAGE ADDRESS
     ENSURE THAT IT HAS THE CORRECT SCALING (FOR PARTICLES THAT HAVE A SCALING FUNCTION ATTACHED)
     '''
+    # TODO: Handle the particle memory a bit differently.
     global particle_memory
     if not particle_cache['initialized']:
         particle_cache['initialized'] = True
@@ -153,66 +154,68 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
         particle_cache['glue_puddle_2'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_2.png").convert_alpha()
-    
-    blob_speed = blob.top_speed
-    if(blob.status_effects['glued']):
-        blob_speed = 5 + (3 * bool(blob.boost_timer))
-    if(blob.status_effects['buttered']):
-        blob_speed += 2
-    if(blob.status_effects['hypothermia']):
-        blob_speed -= 3
-    
-    if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
-        particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
-        particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
-        particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
-
-    #TODO: Add all of these into an array
-    if(blob.impact_land_frames == 9): #Landing Particles
-        draw_landing_particles(blob)
-        draw_landing_particles(blob)
-        draw_landing_particles(blob)
+    for blob in blobs:
+        blob_speed = blob.top_speed
+        if(blob.status_effects['glued']):
+            blob_speed = 5 + (3 * bool(blob.boost_timer))
+        if(blob.status_effects['buttered']):
+            blob_speed += 2
+        if(blob.status_effects['hypothermia']):
+            blob_speed -= 3
         
-    
-    if(blob.parried):
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+        if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
+            particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
+            particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
+            particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
 
-    if(blob.perfect_parried):
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 100) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) - 1, y_speed = -3, gravity = 0.1))
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 40) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1))
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center + 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) + 1, y_speed = -3, gravity = 0.1))
+        #TODO: Add all of these into an array
+        if(blob.impact_land_frames == 9): #Landing Particles
+            draw_landing_particles(blob)
+            draw_landing_particles(blob)
+            draw_landing_particles(blob)
+            
+        
+        if(blob.parried):
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+        
+        # TODO: Fix Perfect Parrying so it blocks based on the damage source's speed
+        if(blob.perfect_parried):
+            # other_blob.x_speed * (500/1366) is added to x speed
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 100) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed =  -1, y_speed = -3, gravity = 0.1))
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 40) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = 0, y_speed = -3, gravity = 0.1))
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center + 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = 1, y_speed = -3, gravity = 0.1))
 
-    if(blob.clanked):
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-    
-    if(blob.status_effects['judged'] % 5 == 0 and blob.status_effects['judged'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['judgement'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
-    
-    if(blob.status_effects['stunned'] % 5 == 0 and blob.status_effects['stunned'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['stun_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
-    
-    if(blob.status_effects['reflecting'] % 5 == 0 and blob.status_effects['reflecting'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['reflection_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        if(blob.clanked):
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+        
+        if(blob.status_effects['judged'] % 5 == 0 and blob.status_effects['judged'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['judgement'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
+        
+        if(blob.status_effects['stunned'] % 5 == 0 and blob.status_effects['stunned'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['stun_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        
+        if(blob.status_effects['reflecting'] % 5 == 0 and blob.status_effects['reflecting'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['reflection_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-    if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-    if(blob.used_ability == "pill"):
-        ability_icon = pg.image.load(blob.ability_icon)
-        particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
+        if(blob.used_ability == "pill"):
+            ability_icon = pg.image.load(blob.ability_icon)
+            particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
 
-    if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
+        if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
 
-    if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
+        if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
 
-    create_blob_particles(blob, other_blob)
-    #Manages and updates particles
+        #create_blob_particles(blob, other_blob)
+        #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 
 def draw_damage_flash(flash_x):

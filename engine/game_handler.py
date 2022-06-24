@@ -94,10 +94,9 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
-        game_state = info_getter[5]
+        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
         if(game_state == "casual_win"):
-            game_stats = info_getter[6]
+            game_stats = info_getter[5]
             clear_info_cache()
         elif(game_state == "pause"):
             timer = 10
