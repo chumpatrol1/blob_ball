@@ -898,11 +898,12 @@ class Blob:
             if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects):
                 punch_x = self.x_center - 20
                 punch_y = self.y_center - 20
-
-                if(self.x_center > hazard.x_pos + 305):
-                    punch_x = hazard.x_pos + 305
-                elif(hazard.x_pos - 325 > self.x_center):
-                    punch_x = hazard.x_pos - 325
+                # Rightwards Range
+                if(self.x_center > hazard.x_pos + 265):
+                    punch_x = hazard.x_pos + 265
+                # Leftwards Range
+                elif(hazard.x_pos - 285 > self.x_center):
+                    punch_x = hazard.x_pos - 285
                 # Downwards Range
                 if(hazard.y_pos + 180 < self.y_center):
                     punch_y = hazard.y_pos + 180

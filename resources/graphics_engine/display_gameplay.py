@@ -404,9 +404,9 @@ def draw_gameplay(game_display, info_getter, settings):
 
     #fade_out = 200
     # TODO: Fix this!
-    #draw_ball_particles(gameplay_surface, ball, p1_blob, p2_blob)
+    draw_ball_particles(gameplay_surface, ball, blobs.values())
     draw_ball(gameplay_surface, ball)
-    #draw_ball_overlay(gameplay_surface, ball, p1_blob, p2_blob)
+    draw_ball_overlay(gameplay_surface, ball, blobs.values())
 
     draw_environmental_modifiers(gameplay_surface)
 

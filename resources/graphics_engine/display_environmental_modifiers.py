@@ -52,7 +52,7 @@ def draw_environmental_modifiers(game_display, ):
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
         elif(modifier == 'starpunch'):
              for individual in modifiers[modifier]:
-                image = particle_cache[mod_key]
+                image = particle_cache[mod_key].convert_alpha()
                 image.set_alpha(255 * ((individual.lifetime)/(individual.max_lifetime)))
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
         elif(modifier == 'glue_puddle'):

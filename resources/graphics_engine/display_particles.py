@@ -236,73 +236,25 @@ def clear_particle_memory():
 
 ball_particle_memory = []
 
-def draw_ball_particles(game_display, ball, p1_blob, p2_blob):
+def draw_ball_particles(game_display, ball, blobs):
+    '''
+    Draws appropriate particles on the ball based on abilities used by the blobs.
+    '''
     global ball_particle_memory
-    if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
-        ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
-    
-    if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
-    
-    if(p1_blob.used_ability == "geyser" or p2_blob.used_ability == "geyser"):
-        for y in range((1240 - round(ball.y_pos))//40):
-            if(y > 7):
-                particle_cache['water_particle'].set_alpha(100)
-            else:
-                particle_cache['water_particle'].set_alpha(255)
-            game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
-    
-    '''if(p1_blob.species == "rock"):
-        if(p1_blob.used_ability == "spire_wait"):
-            #print(100 * log10(255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))))
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay)), fade = 0, lifetime = 1))
-            #ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 100 * log10(255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))), fade = 0, lifetime = 1))
+    for blob in blobs:
+        if(blob.used_ability == "fireball"):
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
         
-        elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown_max - p1_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
-            for x in range(0, 10):
-                earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
-                ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (ball.x_center * 1000/1366) + random.randint(-50, 50), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+        if(blob.used_ability == "snowball"):
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
         
-'''
-    '''if(p2_blob.species == "rock"):
-        if(p2_blob.used_ability == "spire_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p2_blob.special_ability_cooldown_max - p2_blob.special_ability_timer)/(p2_blob.special_ability_delay)), fade = 0, lifetime = 1))
-            
-        
-        elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown_max - p2_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
-            for x in range(0, 10):
-                earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
-                ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (ball.x_center * 1000/1366) + random.randint(-50, 50), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))'''
-        
-    '''if(p1_blob.species == "lightning"):
-        if(p1_blob.used_ability == "thunderbolt_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay)), fade = 0, lifetime = 1))
-        
-        elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown_max - p1_blob.special_ability_delay):
-            
-            bolt = (1, 2)
-            boltch = random.choice(bolt)
-
-            if boltch == 1:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-            elif boltch == 2:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-
-    if(p2_blob.species == "lightning"):
-        if(p2_blob.used_ability == "thunderbolt_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p2_blob.special_ability_cooldown_max - p2_blob.special_ability_timer)/(p2_blob.special_ability_delay)), fade = 0, lifetime = 1))
-        
-        elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown_max - p2_blob.special_ability_delay):
-            
-            bolt = (1, 2)
-            boltch = random.choice(bolt)
-
-            if boltch == 1:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-            elif boltch == 2:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))'''
+        if(blob.used_ability == "geyser"):
+            for y in range((1240 - round(ball.y_pos))//40):
+                if(y > 7):
+                    particle_cache['water_particle'].set_alpha(100)
+                else:
+                    particle_cache['water_particle'].set_alpha(255)
+                game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
 
     ball_particle_memory = blit_and_update_particles(ball_particle_memory, game_display)
 
