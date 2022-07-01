@@ -4,6 +4,7 @@ def set_timer(frames):
 
 from tkinter import N
 from engine.gameplay import clear_info_cache
+import engine.tutorial
 import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
@@ -93,10 +94,9 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
-        game_state = info_getter[5]
+        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
         if(game_state == "casual_win"):
-            game_stats = info_getter[6]
+            game_stats = info_getter[5]
             clear_info_cache()
         elif(game_state == "pause"):
             timer = 10
@@ -216,7 +216,7 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
     elif(game_state == "tutorial"):
-        game_state, info_getter = "main_menu", []
+        game_state, info_getter = engine.tutorial.handle_tutorial()
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset

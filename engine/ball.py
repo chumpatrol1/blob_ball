@@ -318,20 +318,12 @@ class Ball:
 
     def check_environmental_collisions(self, environment):
         
-        for hazard in environment['glue_puddle_1']:
+        for hazard in environment['glue_puddle']:
             #print(hazard.player, hazard.affects)
             if("ball" in hazard.affects):
                 if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
                     self.status_effects['glued'] = 2
                     break
-
-        for hazard in environment['glue_puddle_2']:
-            #print(hazard.player, hazard.affects)
-            if("ball" in hazard.affects):
-                if(hazard.x_pos - 50 < self.x_pos < hazard.x_pos + 90 and self.y_pos >= Ball.ground):
-                    self.status_effects['glued'] = 2
-                    break
-                #print(hazard.x_pos, hazard.x_pos +70, self.x_pos, self.x_pos + 110)
         
         for hazard in environment['spire_glyph']:
             hazard.x_pos = self.x_pos - 40
