@@ -190,30 +190,30 @@ def draw_blob_particles(game_display, ball, blobs):
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 
-def draw_damage_flash(flash_x):
+def draw_damage_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['damage_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['damage_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_heal_flash(flash_x):
+def draw_heal_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['heal_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['heal_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_recharge_flash(flash_x):
+def draw_recharge_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_block_flash(flash_x):
+def draw_block_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['block_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['block_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_boost_flash(flash_x):
+def draw_boost_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
 
-def draw_energy_flash(flash_x):
+def draw_energy_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = flash_x, y_pos = 75, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
 
 def draw_shatter(flash_x, shatter_timer):
     global particle_memory
@@ -264,7 +264,7 @@ def draw_spire_dirt(spire_x):
         ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (spire_x * 1000/1366) + random.randint(0, 100), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
 
 ball_overlay_memory = []
-def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
+def draw_ball_overlay(game_display, ball, blobs):
     global ball_overlay_memory
     if not overlay_cache['initialized']:
         particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/thunder_particle.png").convert_alpha(), (40, 40))
@@ -280,33 +280,22 @@ def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
             particle_cache['thunder_particle'].set_alpha(alpha)
             blitRotateCenter(game_display, particle_cache['thunder_particle'], (ball.previous_locations[-1][0] * (1000/1366) + randint(-10, 10), ball.previous_locations[-1][1] * (400/768) + randint(-10, 10)), (60 * randint(0, 5)))
             alpha += 10
-        
-    if(p1_blob.used_ability == "stoplight_pfx" or p2_blob.used_ability == "stoplight_pfx"):
-        ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
+    
+    for blob in blobs:
+        if(blob.used_ability == "stoplight_pfx"):
+            ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
 
-    if(p1_blob.used_ability == "hook"):
-        #print("hooka")
-        blob_x = (p1_blob.x_center) * (1000/1366)
-        blob_y = (p1_blob.y_center - 200) * (382/768)
-        ball_x = ball.x_center * (1000/1366)
-        ball_y = ball.y_center * (400/768)
-        if(p1_blob.holding_timer < p1_blob.special_ability_delay):
-            ball_x = (ball_x - blob_x) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_x
-            ball_y = (ball_y - blob_y) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_y
-        pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
-        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
-
-    if(p2_blob.used_ability == "hook"):
-        #print("snooka")
-        blob_x = (p2_blob.x_center) * (1000/1366)
-        blob_y = (p2_blob.y_center - 200) * (382/768)
-        ball_x = ball.x_center * (1000/1366)
-        ball_y = ball.y_center * (400/768)
-        if(p2_blob.holding_timer < p2_blob.special_ability_delay):
-            ball_x = (ball_x - blob_x) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_x
-            ball_y = (ball_y - blob_y) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_y
-        pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
-        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
+        if(blob.used_ability == "hook"):
+            #print("hooka")
+            blob_x = (blob.x_center) * (1000/1366)
+            blob_y = (blob.y_center - 200) * (382/768)
+            ball_x = ball.x_center * (1000/1366)
+            ball_y = ball.y_center * (400/768)
+            if(blob.holding_timer < blob.special_ability_delay):
+                ball_x = (ball_x - blob_x) * (blob.holding_timer/blob.special_ability_delay) + blob_x
+                ball_y = (ball_y - blob_y) * (blob.holding_timer/blob.special_ability_delay) + blob_y
+            pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
+            pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 
     ball_overlay_memory = blit_and_update_particles(ball_overlay_memory, game_display)
 
