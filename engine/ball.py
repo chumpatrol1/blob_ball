@@ -36,9 +36,10 @@ def lineFromPoints(P, Q, D, E):
             return 0
 
 class Ball:
-    def __init__(self, species = "soccer_ball", x_pos = 902, y_pos = 900):
+    def __init__(self, species = "soccer_ball", x_pos = 902, y_pos = 900, id = 0):
         self.species = species
         self.image = type_to_image(species)
+        self.id = id
         self.x_speed = 0
         self.y_speed = 0
         self.speed = 0

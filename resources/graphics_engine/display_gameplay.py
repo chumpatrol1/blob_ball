@@ -26,13 +26,14 @@ def draw_blob(game_display, blob):
 
 def draw_ball(game_display, ball):
     global image_cache
-    if not (ball.image == image_cache['ball_clone']):
-        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
-        image_cache['ball_clone'] = ball.image
+    bname = "ball_" + str(ball.id)
+    if not (ball.image == image_cache[bname + '_clone']):
+        image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
+        image_cache[bname + '_clone'] = ball.image
     y_pos = ball.y_pos
-    if(ball.y_pos < 210):
-        y_pos = 210
-    game_display.blit(image_cache['ball'], (ball.x_pos * (1000/1366),  y_pos * (400/768)))
+    if(ball.y_pos < 210): # Why is this here?
+        y_pos = 210 # TODO: Get to the bottom of this.
+    game_display.blit(image_cache[bname], (ball.x_pos * (1000/1366),  y_pos * (400/768)))
 
 cooldown_species = ['instant', 'delayed']
 
@@ -292,8 +293,10 @@ def draw_gameplay(game_display, info_getter, settings):
     # TODO: Loop over balls
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
-        image_cache['ball'] = pg.transform.scale(pg.image.load(balls[0].image), (40, 40))
-        image_cache['ball_clone'] = balls[0].image
+        for ball in balls.values():
+            bname = "ball_" + str(ball.id)
+            image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
+            image_cache[bname + '_clone'] = ball.image
         used_pnames = []
         used_bfx = {'darkened': False, 'brightened': False, 'blackened': False}
         for blob in blobs.values():
@@ -369,7 +372,7 @@ def draw_gameplay(game_display, info_getter, settings):
                 else:
                     gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
         draw_blob_special(blob, gameplay_surface)
-        draw_blob_particles(gameplay_surface, balls[0], blobs.values()) # TODO: Fix this!
+        draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
 
 
     #fade_out = 200
