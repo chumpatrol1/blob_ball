@@ -134,7 +134,7 @@ def draw_nrg_bar(game_display, blob, align):
     pg.draw.rect(nrg_surface, border_color, (nrg_surface.get_width() - 3, 0, 3, nrg_surface.get_height()))
     game_display.blit(nrg_surface, (x_offset, y_offset))
 
-def draw_ui(screen_size, game_display, blobs):
+def draw_ui(game_display, blobs):
     '''
     Draws all elements of the UI, including the icons, cooldowns, and Energy Bar
     '''
@@ -228,13 +228,13 @@ def draw_ui(screen_size, game_display, blobs):
 
     draw_ui_particles(game_display)
 
-def draw_timer(screen_size, game_display, timer):
+def draw_timer(game_display, timer):
     global image_cache
     if(timer > 0):
             timer_font = image_cache['menu_font']
             timer_text = timer_font.render(str(ceil(timer/6)/10), False, (220, 100, 2))
             text_rect = timer_text.get_rect()
-            text_rect.center = (screen_size[0]//2, 2*screen_size[1]//7)
+            text_rect.center = (683, 218)
             game_display.blit(timer_text, text_rect)
 
 def draw_blob_special(blob, game_display): # Blob special appears when kicking, blocking, boosting or focusing
@@ -278,7 +278,7 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]
-    ball = info_getter[1]
+    balls = info_getter[1]
     game_score = info_getter[2]
     timer = info_getter[3]
     game_time = info_getter[4]
@@ -289,10 +289,11 @@ def draw_gameplay(game_display, info_getter, settings):
     global cwd
     global image_cache
     # TODO: Cause different things to be loaded with different amounts of blobs
+    # TODO: Loop over balls
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
-        image_cache['ball'] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
-        image_cache['ball_clone'] = ball.image
+        image_cache['ball'] = pg.transform.scale(pg.image.load(balls[0].image), (40, 40))
+        image_cache['ball_clone'] = balls[0].image
         used_pnames = []
         used_bfx = {'darkened': False, 'brightened': False, 'blackened': False}
         for blob in blobs.values():
@@ -368,14 +369,15 @@ def draw_gameplay(game_display, info_getter, settings):
                 else:
                     gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
         draw_blob_special(blob, gameplay_surface)
-        draw_blob_particles(gameplay_surface, ball, blobs.values()) # TODO: Fix this!
+        draw_blob_particles(gameplay_surface, balls[0], blobs.values()) # TODO: Fix this!
 
 
     #fade_out = 200
-    # TODO: Fix this!
-    draw_ball_particles(gameplay_surface, ball, blobs.values())
-    draw_ball(gameplay_surface, ball)
-    draw_ball_overlay(gameplay_surface, ball, blobs.values())
+    # TODO: Loop over balls that exist (or don't!)
+    for ball in balls.values():
+        draw_ball_particles(gameplay_surface, ball, blobs.values())
+        draw_ball(gameplay_surface, ball)
+        draw_ball_overlay(gameplay_surface, ball, blobs.values())
 
     draw_environmental_modifiers(gameplay_surface)
 
@@ -392,9 +394,8 @@ def draw_gameplay(game_display, info_getter, settings):
     text_rect.center = (683, 81)
     gameplay_surface.blit(menu_text, text_rect)
     
-    draw_ui((1366, 768), gameplay_surface, blobs.values())    
-
-    draw_timer((1366, 768), gameplay_surface, timer)
+    draw_ui(gameplay_surface, blobs.values())    
+    draw_timer(gameplay_surface, timer)
 
     if settings['ui_mode']:
         game_display.blit(gameplay_surface, (0, 0)) # Default drawing

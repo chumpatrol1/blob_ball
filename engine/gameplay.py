@@ -39,6 +39,7 @@ p1_blob = None
 p2_blob = None
 blob_dict = {}
 ball = None
+ball_dict = {}
 game_score = [0, 0]
 timer = 180
 countdown = 0
@@ -127,6 +128,8 @@ def convert_replay_to_inputs(inputs):
     return decoded_inputs
 
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, pause_timer, is_replay = False):
+    # TODO: For loop that allows you to have variable blobs
+    
     if(is_replay):
         game_state = "replay_match"
         #if(game_info['time'] > 2460):
@@ -156,6 +159,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global time_limit
     global replay_inputs
     global blob_dict
+    global ball_dict
     
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
@@ -185,7 +189,10 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             2: p2_blob
         }
         p1_blob.all_blobs = blob_dict
-        p2_blob.all_blobs = blob_dict        
+        p2_blob.all_blobs = blob_dict
+        ball_dict = {
+            0: ball
+        }        
         initialized = True
     else:
         if(timer == 0):
@@ -360,8 +367,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             else:
                 game_state = "replay_win"                   
             
-            return game_state, [blob_dict, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
-    return game_state, [blob_dict, ball, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
+            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
+    return game_state, [blob_dict, ball_dict, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
 def clear_info_cache():
     global game_score

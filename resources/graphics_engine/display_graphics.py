@@ -69,7 +69,6 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
     global game_stats
     global previous_screen
 
-    screen_size = (1366, 768)
     cwd = main_cwd
     if(game_state == "control_splash"):
         draw_splash_screen(game_surface, info_getter, settings)
