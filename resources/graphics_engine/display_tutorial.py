@@ -1,4 +1,5 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
+from resources.graphics_engine.display_gameplay import draw_gameplay
 from os import getcwd
 import pygame as pg
 cwd = getcwd()
@@ -6,7 +7,9 @@ cwd = getcwd()
 image_cache = {"initialized": False, "ui_initialized": False}
 
 tutorial_text = {
-    0: "Welcome to Blob Ball, the funnest game around!",
+    -1: "Welcome to Blob Ball, the funnest game around!",
+    0: "Initializing... please wait!",
+    1: "Press Left or Right to move sideways!/Push the ball into the opposing/goal to score a point!",
 }
 
 loaded_text = {"page": -1, "content": [], "text_color": (0, 0, 255)}
@@ -27,7 +30,7 @@ def draw_tutorial_text(game_display, info_getter, settings):
         text_y += 50
 
 def draw_tutorial(gameplay_display, info_getter, settings):
-    draw_background(gameplay_display, "casual_match", settings)
+    draw_gameplay(gameplay_display, info_getter[1], settings)
 
     if(not image_cache["initialized"]):
         image_cache["initialized"] = True
