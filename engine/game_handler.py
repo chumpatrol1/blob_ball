@@ -122,10 +122,9 @@ def update_game_state(game_state, cwd):
                 timer = 60
     elif(game_state == "replay_match"):
         update_replay_blobs()
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
-        game_state = info_getter[5] # TODO: Fix/parity the output
+        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
         if(game_state == "replay_win"):
-            game_stats = info_getter[6]
+            game_stats = info_getter[5]
             clear_info_cache()
         elif(game_state == "replay_pause"):
             timer = 10

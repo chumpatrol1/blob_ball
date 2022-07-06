@@ -134,7 +134,7 @@ def create_visualization(number):
 
 class Blob:
     def __init__(self, species = "quirkless", x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = None):
+    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = []):
         self.species = species
         self.player = player #Player 1 or 2
         self.all_blobs = {}
@@ -812,17 +812,8 @@ class Blob:
 
 
                     
-    def check_ability_collision(self, blob, ball):
-        #Hit self with Lightning bolt
-
-        if(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay
-        and ball.x_center - 150 <= blob.x_center <= ball.x_center + 150):
-            blob.take_damage()
-            if(blob.status_effects['reflecting'] > 1):
-                self.take_damage(damage = 1, unblockable=True, unclankable=True)
-                blob.status_effects['reflect_break'] = 68
-                blob.special_ability_cooldown += 180
-        elif((self.used_ability == "gale") or \
+    def check_ability_collision(self, blob):
+        if((self.used_ability == "gale") or \
             (blob.used_ability == "gale")):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
                 if(self.player == 1 and self.used_ability == "gale"): #Airborne

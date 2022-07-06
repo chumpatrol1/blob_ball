@@ -78,7 +78,7 @@ def create_blob_particles(blob):
         used_ability_dict[blob.used_ability](blob)
 
 
-def draw_blob_particles(game_display, ball, blobs):
+def draw_blob_particles(game_display, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
     COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
     ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
