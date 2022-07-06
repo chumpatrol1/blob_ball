@@ -1,6 +1,7 @@
 from engine.blobs import Blob
 from engine.ball import Ball
 from engine.handle_input import gameplay_input
+from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 # Is similar to gameplay.py
 # Step 1: Move Left/Right
 # Step 2: Jumping
@@ -37,6 +38,7 @@ def initialize_scenario(page):
         global balls
         blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball()}
+        balls[1].all_blobs = blobs
     
     page += 1
 
@@ -58,10 +60,37 @@ def handle_tutorial():
 
     # Step 1: 1 Blob. 1 Ball.
     pressed = gameplay_input()
-
+    # TODO: Environmental Modifiers?
     blobs[1].move(pressed)
-    # TODO: Fix the move function!
-    balls[1].move(blobs[1], blobs[1])
+
+    update_environmental_modifiers()
+
+    env_mod = return_environmental_modifiers()
+    for blob in blobs.values():
+        blob.check_environmental_collisions(env_mod)
+
+    for ball in balls.values():
+        ball.check_environmental_collisions(env_mod)
+        ball.check_block_collisions()
+        ball.check_blob_ability()
+
+    for blob in blobs.values():
+        for other_blob in blobs.values():
+            if(blob.kick_timer == 1 and blob.player != other_blob.player):
+                blob.check_blob_collision(other_blob)
+
+    for blob in blobs.values():
+        for other_blob in blobs.values():
+            if(blob.player != other_blob.player):
+                blob.check_ability_collision(other_blob)
+
+    # TODO: Check for Goals
+    for blob in blobs.values():
+        blob.cooldown()
+
+    for ball in balls.values():
+        ball.move()
+        ball.check_blob_collisions()
 
 
     to_draw = [blobs, balls, game_score, timer, time_limit]
