@@ -197,7 +197,7 @@ class Ball:
         self.check_ceiling_collisions()
         return blob
 
-    def check_block_collisions(self, blob, other_blob):
+    def check_block_collisions(self, blob):
         #Checks for block collisions
         if(blob.block_timer >= blob.block_timer_max - 3):
             collision_timer_duration = 30
@@ -211,32 +211,31 @@ class Ball:
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= self.y_center <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
-                        self.get_blocked(collision_timer_duration, blob, other_blob)
+                        self.get_blocked(collision_timer_duration, blob)
                 elif((blob.x_center - blob.collision_distance) - blob.block_outer <= ball_midpoint[0] <= blob.x_center - blob.collision_distance + blob.block_inner):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) + blob.block_upper <= ball_midpoint[1] <= blob.y_center + blob.block_lower):
                         #If the ball is within the y values of the bounding box
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
-                        self.get_blocked(collision_timer_duration, blob, other_blob)
+                        self.get_blocked(collision_timer_duration, blob)
             else:
                 #If the blob is facing right
                 if(blob.x_center + blob.collision_distance - 25 <= self.x_center <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= self.y_center <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
-                        self.get_blocked(collision_timer_duration, blob, other_blob)
+                        self.get_blocked(collision_timer_duration, blob)
                 elif(blob.x_center + blob.collision_distance - 25 <= ball_midpoint[0] <= blob.x_center + blob.collision_distance + 150):
                     #If the ball is within the x values of the bounding box
                     if((blob.y_center - blob.collision_distance) - 200 <= ball_midpoint[1] <= blob.y_center + 200):
                         #If the ball is within the y values of the bounding box
                         self.x_pos = ball_midpoint[0]
                         self.y_pos = ball_midpoint[1]
-                        self.get_blocked(collision_timer_duration, blob, other_blob)
+                        self.get_blocked(collision_timer_duration, blob)
         self.check_ceiling_collisions()
-        return blob, other_blob
 
-    def get_blocked(self, collision_timer_duration, blob, other_blob):
+    def get_blocked(self, collision_timer_duration, blob):
         #If the ball is within the y values of the bounding box
         self.x_speed = 0
         self.y_speed = 0
@@ -244,7 +243,9 @@ class Ball:
         self.species = "blocked_ball"
         self.special_timer = 30
         blob.collision_timer = collision_timer_duration - 20
-        other_blob.collision_timer = collision_timer_duration
+        for other_blob in blob.all_blobs.values():
+            if(other_blob.player != blob.player):
+                other_blob.collision_timer = collision_timer_duration
         #Stops the ball completely
         if(blob.block_timer == blob.block_timer_max - 3):
             self.info['blocked'] += 1
@@ -355,7 +356,7 @@ class Ball:
             createSFXEvent('ball_metal_bounce', volume_modifier=(math.sqrt(abs(self.y_speed/self.y_speed_max))))
             self.y_pos = ceiling
 
-    def move(self, p1_blob, p2_blob): # Also has cooldowns in it.
+    def move(self): # Also has cooldowns in it.
         ground = Ball.ground
         left_wall = 0
         right_wall = 1805
@@ -365,7 +366,7 @@ class Ball:
         goal_top = 825
         goal_bottom = 950
 
-        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.species, p1_blob.used_ability, p2_blob.used_ability))
+        self.previous_locations.append((self.x_pos, self.y_pos, self.speed, self.species))
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction

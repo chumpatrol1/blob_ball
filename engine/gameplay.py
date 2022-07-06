@@ -220,8 +220,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             p2_blob.check_environmental_collisions(return_environmental_modifiers())
             ball.check_environmental_collisions(return_environmental_modifiers())
             # STEP 3: DRAW THE MODIFIERS
-            p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
-            p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
+            ball.check_block_collisions(p1_blob)
+            ball.check_block_collisions(p2_blob)
             ball.check_blob_ability(p1_blob)
             ball.check_blob_ability(p2_blob)
             if(p1_blob.kick_timer == 1):
@@ -230,8 +230,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(p2_blob.kick_timer == 1):
                 p2_blob.check_blob_collision(p1_blob)
 
-            p1_blob.check_ability_collision(p2_blob, ball)
-            p2_blob.check_ability_collision(p1_blob, ball)
+            p1_blob.check_ability_collision(p2_blob)
+            p2_blob.check_ability_collision(p1_blob)
 
             if(p2_blob.hp <= 0):
                     timer = 120
@@ -250,7 +250,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
 
             p1_blob.cooldown()
             p2_blob.cooldown()
-            ball.move(p1_blob, p2_blob)
+            ball.move()
             p1_blob = ball.check_blob_collisions(p1_blob)
             p2_blob = ball.check_blob_collisions(p2_blob)
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
@@ -311,7 +311,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
-                ball.move(p1_blob, p2_blob)
+                ball.move()
                 p1_blob.move([])
                 p2_blob.move([])
                 p1_blob.impact_land_frames = 0

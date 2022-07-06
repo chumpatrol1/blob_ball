@@ -91,7 +91,7 @@ def draw_cooldown(game_display, blob, ui_font, align, blob_function, boost_activ
     game_display.blit(menu_text, text_rect)
 
 def draw_judgement(game_display, blob, ui_font, box_x):
-    game_display.blit(image_cache['judgement'], (box_x, 0))
+    game_display.blit(image_cache['judgement'], box_x)
     # TODO: Blot out the underlying ability, add text and cooldown rectangle
     cooldown_percentage = blob.status_effects['judged']/60
     cooldown_visualization = str(ceil(blob.status_effects['judged']/6)/10)
