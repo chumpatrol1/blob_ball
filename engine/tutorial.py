@@ -25,12 +25,13 @@ from resources.sound_engine.sfx_event import createSFXEvent
 # Stage 12: Ability (Boxer). Shows off delayed abilities. Also touches on Danger Zone.
 # Stage 13: CPU Match. Put it all together!
 
-tutorial_page, countdown, blobs, balls, game_score, timer, time_limit = 0, 0, {}, {}, [0, 0], 0, None
+tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit = 0, 0, 0, {}, {}, [0, 0], 0, None
 
 def reset_tutorial():
-    global tutorial_page, countdown, blobs, balls, game_score, timer, time_limit
+    global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit
     tutorial_page = 0
     countdown = 0
+    countdown2 = 0
     blobs = {}
     balls = {}
     game_score = [0, 0]
@@ -43,7 +44,8 @@ def initialize_scenario(page):
     global blobs
     global balls
     if(page == 0):
-        
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
         blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball()}
         balls[1].all_blobs = blobs
@@ -55,13 +57,31 @@ def initialize_scenario(page):
         blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball(y_pos = 1240)}
         balls[1].all_blobs = blobs
-
+    elif(page == 3):
+        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right'), 2: Blob(species = 'quirkless', player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 2})}
+        balls = {}
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+    elif(page == 4):
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
+        balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
+        balls[1].all_blobs = blobs
+    elif(page == 5):
+        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={"block_cooldown_rate": 11}), 2: Blob(species = 'quirkless', player = 2, x_pos = 1600, facing = 'left', stat_overrides={"kick_cooldown_rate": 9})}
+        balls = {}
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+    elif(page == 6):
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
     page += 1
 
     return page
 
 def check_if_requirements_met(page):
-    global countdown
+    global countdown, countdown2
     return_value = page
     if(page == 0):
         return initialize_scenario(page)
@@ -79,6 +99,36 @@ def check_if_requirements_met(page):
             countdown -= 1
             if(countdown == 0):
                 return initialize_scenario(page)
+        elif(balls[1].x_pos < 60 and balls[1].y_pos > 925):
+            createSFXEvent('chime_error')
+            return initialize_scenario(page - 1)
+    elif(page == 4):
+        if(blobs[2].hp <= 0):
+            blobs[2].blob_ko()
+        if(blobs[2].y_pos >= 1800):
+            createSFXEvent('goal')
+            return initialize_scenario(page)
+    elif(page == 5):
+        if(balls[1].x_pos < 60 and balls[1].y_pos > 925):
+            createSFXEvent('chime_error')
+            return initialize_scenario(page - 1)
+        elif(balls[1].species == "blocked_ball" and balls[1].special_timer == 1):
+            createSFXEvent('goal')
+            return initialize_scenario(page)
+        elif(balls[1].x_speed == 0 and balls[1].y_speed == 0):
+            return initialize_scenario(page - 1)
+    elif(page == 6):
+        if(blobs[1].info['parries'] > 0):
+            countdown2 -= 1
+            if(countdown2 == 0):
+                return initialize_scenario(page)
+        
+        if(blobs[1].hp <= 0):
+            blobs[1].blob_ko()
+
+        if(blobs[1].y_pos >= 1800):
+            createSFXEvent('chime_error')
+            return initialize_scenario(page - 1)
     return return_value
     
 def tutorial_1():
@@ -88,7 +138,7 @@ def tutorial_1():
     # Step 1: 1 Blob. 1 Ball.
     pressed = gameplay_input()
     # TODO: Environmental Modifiers?
-    if(not countdown):
+    if(not countdown and blobs[1].hp > 0):
         blobs[1].move(pressed)
 
     update_environmental_modifiers()
@@ -126,11 +176,24 @@ def tutorial_3():
     if(blobs[1].x_pos > 725):
         blobs[1].x_pos = 725
 
+def tutorial_5():
+    tutorial_1()
+    blobs[1].x_pos, blobs[1].x_speed, blobs[1].facing = 100, 0, "right"
+
+def tutorial_6():
+    global countdown2
+    tutorial_5()
+    blobs[2].move(['p2_left', 'p2_kick'])
+    if(blobs[1].parried == 1 or blobs[1].perfect_parried == 1):
+        countdown2 = 60
 
 stage_dict = {
     1: tutorial_1,
     2: tutorial_1,
     3: tutorial_3,
+    4: tutorial_1,
+    5: tutorial_5,
+    6: tutorial_6,
 }
 
 def handle_tutorial():

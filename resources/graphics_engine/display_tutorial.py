@@ -11,7 +11,10 @@ tutorial_text = {
     0: "Initializing... please wait!",
     1: "Press Left or Right to move sideways!/Push the ball into the opposing/goal to score a point!",
     2: "Press Up to jump, and hold up to go higher!/You can still move while in the air./Push the ball into the blue goal!",
-    3: "There's an invisible wall!/You'll need to press your kick button/to hit the ball and score a goal!"
+    3: "There's an invisible wall!/You'll need to press your kick button/to hit the ball and score a goal!",
+    4: "There is no ball, only an opponent!/Your kicks will do 2 damage to any nearby enemies./You can score a point by reducing enemy HP to 0!",
+    5: "Press your block button to create a forcefield!/Stop the ball as it tries to fly into your goal!",
+    6: "Enemy incoming! Time your block to perform a parry./Standing on the yellow zone near your/goal increases damage taken!"
 }
 
 loaded_text = {"page": -1, "content": [], "text_color": (0, 0, 255)}
