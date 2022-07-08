@@ -10,6 +10,8 @@ tutorial_text = {
     -1: "Welcome to Blob Ball, the funnest game around!",
     0: "Initializing... please wait!",
     1: "Press Left or Right to move sideways!/Push the ball into the opposing/goal to score a point!",
+    2: "Press Up to jump, and hold up to go higher!/You can still move while in the air./Push the ball into the blue goal!",
+    3: "There's an invisible wall!/You'll need to press your kick button/to hit the ball and score a goal!"
 }
 
 loaded_text = {"page": -1, "content": [], "text_color": (0, 0, 255)}
