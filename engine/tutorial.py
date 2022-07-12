@@ -43,6 +43,7 @@ reset_tutorial()
 def initialize_scenario(page):
     global blobs
     global balls
+    global countdown2
     if(page == 0):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
@@ -69,11 +70,46 @@ def initialize_scenario(page):
         balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
         balls[1].all_blobs = blobs
     elif(page == 5):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={"block_cooldown_rate": 11}), 2: Blob(species = 'quirkless', player = 2, x_pos = 1600, facing = 'left', stat_overrides={"kick_cooldown_rate": 9})}
+        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={"block_cooldown_rate": 12}), 2: Blob(species = 'quirkless', player = 2, x_pos = 1450, facing = 'left', stat_overrides={"kick_cooldown_rate": 10})}
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 6):
+        blobs = {1: Blob(species = 'rock', player = 1, x_pos = 100, facing = 'right')}
+        blobs[1].special_ability_meter = 600
+        balls = {1: Ball(x_pos = 1500, y_pos = 1240)}
+        balls[1].all_blobs = blobs
+        countdown2 = 120
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+    elif(page == 7):
+        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={'kick_cooldown_rate': 9}), 2: Blob(species = 'quirkless', player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 3})}
+        blobs[1].special_ability_meter = 840
+        balls = {}
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+    elif(page == 8):
+        countdown2 = 600
+        blobs = {1: Blob(species = 'rock', player = 1, x_pos = 100, facing = 'right')}
+        balls = {}
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+    elif(page == 9):
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+        blobs = {1: Blob(species = 'cop', player = 1, x_pos = 1600, facing = 'left')}
+        blobs[1].special_ability_meter = 900
+        balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
+        balls[1].all_blobs = blobs
+    elif(page == 10):
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
+        blobs = {1: Blob(species = 'wind', player = 1, x_pos = 100, facing = 'right')}
+        balls = {1: Ball(x_pos = 902)}
+        balls[1].all_blobs = blobs
+    elif(page == 11):
+        blobs = {1: Blob(species = 'boxer', player = 1, x_pos = 100, facing = 'right'), 2: Blob(species = 'quirkless', player = 2, x_pos = 1600, facing = 'left')}
+        balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     page += 1
@@ -85,7 +121,7 @@ def check_if_requirements_met(page):
     return_value = page
     if(page == 0):
         return initialize_scenario(page)
-    elif(page == 1 or page == 2 or page == 3):
+    elif(page == 1 or page == 2 or page == 3 or page == 11):
         if(balls[1].x_pos > 1745 and balls[1].y_pos > 925 and not balls[1].species == "goal_ball"): #Left Goal
             createSFXEvent('goal')
             balls[1].image = type_to_image("goal_ball")
@@ -108,7 +144,7 @@ def check_if_requirements_met(page):
         if(blobs[2].y_pos >= 1800):
             createSFXEvent('goal')
             return initialize_scenario(page)
-    elif(page == 5):
+    elif(page == 5 or page == 10):
         if(balls[1].x_pos < 60 and balls[1].y_pos > 925):
             createSFXEvent('chime_error')
             return initialize_scenario(page - 1)
@@ -129,6 +165,45 @@ def check_if_requirements_met(page):
         if(blobs[1].y_pos >= 1800):
             createSFXEvent('chime_error')
             return initialize_scenario(page - 1)
+    elif(page == 7):
+        if(balls[1].x_pos > 1745 and balls[1].y_pos > 925 and not balls[1].species == "goal_ball"): #Left Goal
+            createSFXEvent('goal')
+            balls[1].image = type_to_image("goal_ball")
+            balls[1].species = "goal_ball"
+            countdown = 60
+        elif(balls[1].species == "goal_ball"):
+            balls[1].special_timer = 2
+            for blob in blobs.values():
+                blob.impact_land_frames = 0
+                blob.used_ability = ""
+            countdown -= 1
+            if(countdown == 0):
+                return initialize_scenario(page)
+        elif(countdown2 == 0):
+            createSFXEvent('chime_error')
+            return initialize_scenario(page - 1)
+    elif(page == 8):
+        if(blobs[2].hp <= 0):
+            blobs[2].blob_ko()
+        elif(blobs[2].hp != 3):
+            blobs[2].heal_hp(3-blobs[2].hp)
+        if(blobs[2].y_pos >= 1800):
+            createSFXEvent('goal')
+            return initialize_scenario(page)
+    elif(page == 9):
+        if(countdown2 == 0):
+            createSFXEvent('chime_error')
+            return initialize_scenario(page - 1)
+        if(blobs[1].special_ability_meter >= 1800):
+            createSFXEvent('goal')
+            return initialize_scenario(page)
+    elif(page == 12):
+        if(blobs[2].status_effects['stunned'] == 30):
+            createSFXEvent('goal')
+        if(blobs[2].status_effects['stunned'] == 1):
+            return initialize_scenario(page)
+        if(blobs[2].hp < blobs[2].max_hp and not blobs[2].status_effects['stunned']):
+            blobs[2].heal_hp(5)
     return return_value
     
 def tutorial_1():
@@ -187,6 +262,24 @@ def tutorial_6():
     if(blobs[1].parried == 1 or blobs[1].perfect_parried == 1):
         countdown2 = 60
 
+def tutorial_7():
+    global countdown2
+    tutorial_1()
+    countdown2 -= 1
+
+def tutorial_12():
+    tutorial_1()
+    if(blobs[2].facing == 'left'):
+        blobs[2].move(['p2_left'])
+    else:
+        blobs[2].move(['p2_right'])
+    
+    if(blobs[2].x_pos == 0):
+        blobs[2].move(['p2_right'])
+    elif(blobs[2].x_pos == 1700):
+        blobs[2].move(['p2_left'])
+
+
 stage_dict = {
     1: tutorial_1,
     2: tutorial_1,
@@ -194,6 +287,12 @@ stage_dict = {
     4: tutorial_1,
     5: tutorial_5,
     6: tutorial_6,
+    7: tutorial_7,
+    8: tutorial_1,
+    9: tutorial_7,
+    10: tutorial_1,
+    11: tutorial_5,
+    12: tutorial_12,
 }
 
 def handle_tutorial():
