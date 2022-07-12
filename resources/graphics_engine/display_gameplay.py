@@ -232,11 +232,11 @@ def draw_ui(game_display, blobs):
 def draw_timer(game_display, timer):
     global image_cache
     if(timer > 0):
-            timer_font = image_cache['menu_font']
-            timer_text = timer_font.render(str(ceil(timer/6)/10), False, (220, 100, 2))
-            text_rect = timer_text.get_rect()
-            text_rect.center = (683, 218)
-            game_display.blit(timer_text, text_rect)
+        timer_font = image_cache['menu_font']
+        timer_text = timer_font.render(str(ceil(timer/6)/10), False, (220, 100, 2))
+        text_rect = timer_text.get_rect()
+        text_rect.center = (683, 218)
+        game_display.blit(timer_text, text_rect)
 
 def draw_blob_special(blob, game_display): # Blob special appears when kicking, blocking, boosting or focusing
     '''

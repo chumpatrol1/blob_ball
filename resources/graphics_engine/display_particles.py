@@ -11,6 +11,7 @@ def blit_and_update_particles(memory, game_display):
     temparray = []
     for particle in memory:
         particle.image.set_alpha(particle.alpha)
+        # TODO: Fix the mirror ko particle crash
         game_display.blit(particle.image, (particle.x_pos, particle.y_pos), area = particle.crop)
         particle.update()
         if not (particle.alpha <= 0) and not particle.lifetime <= 0:
@@ -215,14 +216,14 @@ def draw_energy_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
 
-def draw_shatter(flash_x, shatter_timer):
+def draw_shatter(align, shatter_timer):
     global particle_memory
     shatter_timer = (68 - shatter_timer)//4
     original = particle_cache['shatter_spritesheet'].get_rect()
     cropx, cropy = ((shatter_timer-1)%5)*70, ((shatter_timer-1)//5) * 70
     cropRect = (cropx, cropy, 70, 70)
 
-    ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = flash_x, y_pos = 0, lifetime=1, ground_clip = True, crop=cropRect))
+    ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = align[0], y_pos = align[1], lifetime=1, ground_clip = True, crop=cropRect))
 
 def clear_particle_memory():
     global particle_memory
