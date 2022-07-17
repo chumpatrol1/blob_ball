@@ -2,6 +2,7 @@ from engine.blobs import Blob
 from engine.ball import Ball, type_to_image
 from engine.handle_input import gameplay_input
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
+from engine.endgame import save_tutorial_stats
 from resources.sound_engine.sfx_event import createSFXEvent
 # Is similar to gameplay.py
 # Step 1: Move Left/Right
@@ -25,7 +26,7 @@ from resources.sound_engine.sfx_event import createSFXEvent
 # Stage 12: Ability (Boxer). Shows off delayed abilities. Also touches on Danger Zone.
 # Stage 13: CPU Match. Put it all together!
 
-tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit = 0, 0, 0, {}, {}, [0, 0], 0, None
+tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit = 0, 0, 0, {}, {}, [0, 0], 0, 0
 
 def reset_tutorial():
     global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit
@@ -36,7 +37,7 @@ def reset_tutorial():
     balls = {}
     game_score = [0, 0]
     timer = 0
-    time_limit = None
+    time_limit = 0
 
 reset_tutorial()
 
@@ -297,15 +298,21 @@ stage_dict = {
 
 def handle_tutorial():
     global tutorial_page
+    global timer
+    global time_limit
     game_state = "tutorial"
     tutorial_page = check_if_requirements_met(tutorial_page)
     try:
         stage_dict[tutorial_page]()
     except:
+        print("Tutorial completed in", time_limit)
         to_draw = [blobs, balls, game_score, timer, time_limit]
         tutorial_page = 0
+        timer = 0
+        time_limit = 0
+        save_tutorial_stats(to_draw)
         return "main_menu", [1, to_draw]
 
     to_draw = [blobs, balls, game_score, timer, time_limit]
-
+    time_limit += 1
     return game_state, [tutorial_page, to_draw]

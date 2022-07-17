@@ -127,6 +127,9 @@ def draw_almanac_stats(game_display, settings):
         tiny_font.render('Costumes Unlocked: ' + str(game_stats['costumes_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Backgrounds Unlocked: ' + str(game_stats['backgrounds_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Most Played Blob: ' + game_stats['most_played_character'].title(), False, (0, 0, 150)),
+        tiny_font.render('Fastest Tutorial Completion: ' + create_time_string(game_stats['fastest_tutorial_completion']), False, (0, 0, 150)),
+        tiny_font.render('Tutorial Completion Count: ' + str(game_stats['tutorial_completion_count']), False, (0, 0, 150)),
+        
     ]
     match_text = [
         tiny_font.render('Match Statistics', False, (0, 0, 150)),

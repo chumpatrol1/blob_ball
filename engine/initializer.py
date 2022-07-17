@@ -32,6 +32,8 @@ def initialize_game_stats(cwd):
     'costumes_unlocked': 0, #Number of costumes unlocked
     'backgrounds_unlocked': 0, #Number of backgrounds unlocked
     'most_played_character': 'quirkless', #Most played character
+    'tutorial_completion_count': 0,
+    'fastest_tutorial_completion': 360000,
 
     #Stats about game/match info
     'matches_played': 0, #Number of matches completed
@@ -69,7 +71,13 @@ def initialize_game_stats(cwd):
 
     try:
         with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-            game_stat_dict = loads(statsdoc.readline())
+            n_game_stat_dict = loads(statsdoc.readline())
+            for key in game_stat_dict:
+                if not key in n_game_stat_dict:
+                    n_game_stat_dict[key] = game_stat_dict[key]
+            game_stat_dict = n_game_stat_dict
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            statsdoc.write(dumps(game_stat_dict))
     except:
         with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
             statsdoc.write(dumps(game_stat_dict))

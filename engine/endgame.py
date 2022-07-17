@@ -214,3 +214,24 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
 
         game_stats['most_played_character'] = most_played_character
             
+def save_tutorial_stats(info_getter):
+    '''
+    Info_Getter is the output of tutorial.handle_tutorial.
+    Increments tutorial completion by 1, and sets the record of the tutorial.
+
+    Inputs:
+        - info_getter: Array with at least 5 elements. The 5th one represents an integer
+        - game_stats.txt: Text file that stores player statistics
+
+    Outputs:
+        - game_stats.txt: Text file that stores player statistics
+    '''
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+        game_stats = loads(statsdoc.readline())
+    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+        game_stats['tutorial_completion_count'] += 1
+        completion_timer = info_getter[4]
+        if(completion_timer < game_stats['fastest_tutorial_completion']):
+            game_stats['fastest_tutorial_completion'] = completion_timer
+
+        statsdoc.write(dumps(game_stats))
