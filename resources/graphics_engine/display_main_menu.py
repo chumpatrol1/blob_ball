@@ -1,7 +1,7 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd
-from main import get_debug
+from engine.debug import get_debug
 cwd = getcwd()
 
 font_cache = {'cached': False}

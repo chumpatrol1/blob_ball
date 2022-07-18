@@ -53,16 +53,12 @@ load_costume_unlocks(cwd)
 update_css_blobs(cwd)
 update_costumes()
 
-debugVersion = True # Switch this off before release.
 done = False
 
 with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
     start_time = time.time()
     statsdoc.write(dumps(game_stats))
-
-def get_debug():
-    return debugVersion
 
 def handle_input():
     engine.handle_input.get_keypress()

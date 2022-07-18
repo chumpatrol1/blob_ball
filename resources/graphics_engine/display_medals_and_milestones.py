@@ -1,4 +1,3 @@
-from tkinter.tix import Balloon
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_medal_unlocks, return_mam_display_medals, update_mam_medals
 import pygame as pg

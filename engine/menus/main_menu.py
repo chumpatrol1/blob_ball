@@ -4,7 +4,7 @@ from os import getcwd
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
-from main import get_debug
+from engine.debug import get_debug
 cwd = getcwd()
 selector_position = 0
 
