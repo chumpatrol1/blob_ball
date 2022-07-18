@@ -1,3 +1,4 @@
+from tkinter.tix import Balloon
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_medal_unlocks, return_mam_display_medals, update_mam_medals
 import pygame as pg
@@ -99,7 +100,6 @@ def mam_medals(game_display, medal_selector):
     else:
         selected_medal.set_alpha(255)
 
-    selected_medal = pg.transform.flip(selected_medal, True, False)
     if(medal_selector[0] == 0):
         game_display.blit(selected_medal, (191, 576))
     else:
@@ -124,8 +124,8 @@ def draw_mam(game_display, info_getter, settings):
     draw_background(game_display, "mam", settings)
     mam_medals(game_display, medal_selector)
 
-    ball = token_cache['ball']
-    game_display.blit(ball, ((136 * (medal_selector[0] + 1) + 1366*(1/135)), 100 * (medal_selector[1] + 1) - 25))
+    ball = 'ball'
+    game_display.blit(token_cache[ball], ((136 * (medal_selector[0] + 1) + 1366*(1/135)), 100 * (medal_selector[1] + 1) - 25))
     if(ghost_position is not None and not medal_selector[2]):
         ghost = 'ghost'
         game_display.blit(token_cache[ghost], ((136 * (ghost_position[0] + 1) + 1366*(1/135)), 100 * (ghost_position[1] + 1) - 25))

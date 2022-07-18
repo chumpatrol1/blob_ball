@@ -4,6 +4,7 @@ from os import getcwd
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
+from main import get_debug
 cwd = getcwd()
 selector_position = 0
 
@@ -17,6 +18,9 @@ buttons = [
     Button(500, 575, 525, 825),
     Button(575, 650, 525, 825),
 ]
+
+if(get_debug):
+    buttons[8] = Button(650, 725, 600, 900)
 
 def game_state_navigation(selector_position):
     
@@ -32,11 +36,12 @@ def game_state_navigation(selector_position):
         6: "tutorial",
         7: "quit",
     }
-    
+
 
     return game_state[selector_position]
 
 def menu_navigation(timer):
+    global debugMode
     game_state = "main_menu"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -61,7 +66,10 @@ def menu_navigation(timer):
 
             if(mouse[1][0] or mouse[1][2]):
                 createSFXEvent('select')
-                game_state = game_state_navigation(selector_position)
+                if(selector_position != 8):
+                    game_state = game_state_navigation(selector_position)
+                else:
+                    debugMode = True
 
 
     if(game_state == 'almanac'):

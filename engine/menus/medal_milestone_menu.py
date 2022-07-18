@@ -54,26 +54,26 @@ def medal_navigation(timer):
     
     if(medal_selector[2] == 0):
         if('up' in pressed):
-            if medal_selector[1] == 0:
-                medal_selector[1] = 4
+            if ghost_selector[1] == 0:
+                ghost_selector[1] = 4
                 
             else:
-                medal_selector[1] -= 1
+                ghost_selector[1] -= 1
         elif('down' in pressed):
-            if medal_selector[1] == 4:
-                medal_selector[1] = 0
+            if ghost_selector[1] == 4:
+                ghost_selector[1] = 0
             else:
-                medal_selector[1] += 1
+                ghost_selector[1] += 1
         if('left' in pressed):
-            if medal_selector[0] == 0:
-                medal_selector[0] = 7
+            if ghost_selector[0] == 0:
+                ghost_selector[0] = 7
             else:
-                medal_selector[0] -= 1
+                ghost_selector[0] -= 1
         elif('right' in pressed):
-            if medal_selector[0] == 7:
-                medal_selector[0] = 0
+            if ghost_selector[0] == 7:
+                ghost_selector[0] = 0
             else:
-                medal_selector[0] += 1
+                ghost_selector[0] += 1
 
     mam_menu_buttons = medal_menu_buttons
 
@@ -90,11 +90,6 @@ def medal_navigation(timer):
                 # both select: both confirm
                 if(medal_selector[2] >= 1):
                     medal_selector[2] = 2
-                    ghost_selector = None
-                elif(not medal_selector[2]):
-                    medal_selector[0] = i//5
-                    medal_selector[1] = i%5
-                    medal_selector[2] = 1
                     ghost_selector = None
                 
             elif(mouse[1][2]):

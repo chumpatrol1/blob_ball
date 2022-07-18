@@ -2029,3 +2029,22 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+3740-ERROR-Game Crash at Sun Jun 19 16:22:46 2022 (Version 0.15.0a)
+Traceback (most recent call last):
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 113, in <module>
+    game_state = run(game_state)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 92, in run
+    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\main.py", line 71, in display_graphics
+    dg.handle_graphics(game_state, cwd, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_graphics.py", line 123, in handle_graphics
+    draw_mam(game_surface, info_getter, settings)
+  File "c:\Users\Xnunu\Documents\Projects\Repositories\blob_ball\resources\graphics_engine\display_medals_and_milestones.py", line 127, in draw_mam
+    game_display.blit(ghost, ((136 * (medal_selector[0] + 1) + 1366*(1/135)), 100 * (medal_selector[1] + 1) - 25))
+UnboundLocalError: local variable 'ghost' referenced before assignment
+Game State: medals
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
