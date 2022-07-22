@@ -1,5 +1,6 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_gameplay import draw_gameplay
+from resources.graphics_engine.display_almanac import create_time_string
 from os import getcwd
 import pygame as pg
 cwd = getcwd()
@@ -46,5 +47,47 @@ def draw_tutorial(gameplay_display, info_getter, settings):
     if(not image_cache["initialized"]):
         image_cache["initialized"] = True
         image_cache["tutorial_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
-
+        image_cache["big_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
     draw_tutorial_text(gameplay_display, info_getter, settings)
+
+def draw_tutorial_completion(game_display, info_getter, settings):
+    draw_background(game_display, "green_background", settings)
+    
+    menu_font = image_cache['big_font']
+    menu_text = menu_font.render("Tutorial Complete!", False, (0, 0, 255))
+    text_rect = menu_text.get_rect()
+    text_rect.center = (683, 60)
+    game_display.blit(menu_text, text_rect)
+
+    menu_font = image_cache["tutorial_font"]
+    if(info_getter[0] > 45):
+        menu_text = menu_font.render("PRESS ABILITY TO RETURN TO MENU", False, (0, 0, 255))
+        text_rect = menu_text.get_rect()
+        text_rect.center = (683, 150)
+        game_display.blit(menu_text, text_rect)
+
+    
+
+    text_color = (0, 0, 255)
+    text_array = [
+        menu_font.render('Stage 1: {}'.format(create_time_string(info_getter[1][1])), False, text_color),
+        menu_font.render('Stage 2: {}'.format(create_time_string(info_getter[1][2] - info_getter[1][1], smallest = ".")), False, text_color),
+        menu_font.render('Stage 3: {}'.format(create_time_string(info_getter[1][3] - info_getter[1][2], smallest = ".")), False, text_color),
+        menu_font.render('Stage 4: {}'.format(create_time_string(info_getter[1][4] - info_getter[1][3], smallest = ".")), False, text_color),
+        menu_font.render('Stage 5: {}'.format(create_time_string(info_getter[1][5] - info_getter[1][4], smallest = ".")), False, text_color),
+        menu_font.render('Stage 6: {}'.format(create_time_string(info_getter[1][6] - info_getter[1][5], smallest = ".")), False, text_color),
+        menu_font.render('Stage 7: {}'.format(create_time_string(info_getter[1][7] - info_getter[1][6], smallest = ".")), False, text_color),
+        menu_font.render('Stage 8: {}'.format(create_time_string(info_getter[1][8] - info_getter[1][7], smallest = ".")), False, text_color),
+        menu_font.render('Stage 9: {}'.format(create_time_string(info_getter[1][9] - info_getter[1][8], smallest = ".")), False, text_color),
+        menu_font.render('Stage 10: {}'.format(create_time_string(info_getter[1][10] - info_getter[1][9], smallest = ".")), False, text_color),
+        menu_font.render('Stage 11: {}'.format(create_time_string(info_getter[1][11] - info_getter[1][10], smallest = ".")), False, text_color),
+        menu_font.render('Stage 12: {}'.format(create_time_string(info_getter[1][12] - info_getter[1][11], smallest = ".")), False, text_color),
+    ]
+
+    text_y = 230
+    text_x = 50
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (text_x, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40

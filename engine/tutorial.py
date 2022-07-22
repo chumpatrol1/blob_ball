@@ -1,6 +1,6 @@
 from engine.blobs import Blob
 from engine.ball import Ball, type_to_image
-from engine.handle_input import gameplay_input
+from engine.handle_input import gameplay_input, menu_input
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 from engine.endgame import save_tutorial_stats
 from resources.sound_engine.sfx_event import createSFXEvent
@@ -26,10 +26,10 @@ from resources.sound_engine.sfx_event import createSFXEvent
 # Stage 12: Ability (Boxer). Shows off delayed abilities. Also touches on Danger Zone.
 # Stage 13: CPU Match. Put it all together!
 
-tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit = 0, 0, 0, {}, {}, [0, 0], 0, 0
+tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit, completion_times = 0, 0, 0, {}, {}, [0, 0], 0, 0, {}
 
 def reset_tutorial():
-    global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit
+    global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit, completion_times
     tutorial_page = 0
     countdown = 0
     countdown2 = 0
@@ -38,6 +38,7 @@ def reset_tutorial():
     game_score = [0, 0]
     timer = 0
     time_limit = 0
+    completion_times = {}
 
 reset_tutorial()
 
@@ -45,6 +46,7 @@ def initialize_scenario(page):
     global blobs
     global balls
     global countdown2
+
     if(page == 0):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
@@ -205,6 +207,11 @@ def check_if_requirements_met(page):
             return initialize_scenario(page)
         if(blobs[2].hp < blobs[2].max_hp and not blobs[2].status_effects['stunned']):
             blobs[2].heal_hp(5)
+
+    global time_limit
+    global completion_times
+    completion_times[page] = time_limit
+
     return return_value
     
 def tutorial_1():
@@ -311,8 +318,31 @@ def handle_tutorial():
         timer = 0
         time_limit = 0
         save_tutorial_stats(to_draw)
-        return "main_menu", [1, to_draw]
+        return "tutorial_complete", [1, to_draw]
 
     to_draw = [blobs, balls, game_score, timer, time_limit]
     time_limit += 1
     return game_state, [tutorial_page, to_draw]
+
+player_ready = False
+flash_timer = 0
+
+def handle_tutorial_menu(timer):
+    global player_ready
+    global flash_timer
+    global completion_times
+    pressed = menu_input()
+
+    if("p1_ability" in pressed and not timer):
+        player_ready = True
+
+    if(not player_ready):
+        game_state = "tutorial_complete"
+    else:
+        game_state = "main_menu"
+        player_ready = False
+    
+    flash_timer += 1
+    if(flash_timer > 90):
+        flash_timer = 0
+    return game_state, [flash_timer, completion_times]

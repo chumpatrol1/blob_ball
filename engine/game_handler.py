@@ -216,6 +216,10 @@ def update_game_state(game_state, cwd):
         song_playing = "bb_credits_theme"
     elif(game_state == "tutorial"):
         game_state, info_getter = engine.tutorial.handle_tutorial()
+        if(game_state == "tutorial_complete"):
+            timer = 60
+    elif(game_state == "tutorial_complete"):
+        game_state, info_getter = engine.tutorial.handle_tutorial_menu(timer)
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset
