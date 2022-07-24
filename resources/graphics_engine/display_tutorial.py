@@ -48,6 +48,12 @@ def draw_tutorial(gameplay_display, info_getter, settings):
         image_cache["initialized"] = True
         image_cache["tutorial_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         image_cache["big_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
+        image_cache["locked_blob"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/locked_blob.png").convert_alpha(), (100, 55))
+        image_cache["cpu_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (100, 100))
+        image_cache["almanac_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/almanac_icon.png").convert_alpha(), (100, 100))
+        image_cache["rules_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (100, 100))
+        image_cache["gear_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/gear_icon.png").convert_alpha(), (100, 100))
+        
     draw_tutorial_text(gameplay_display, info_getter, settings)
 
 def draw_tutorial_completion(game_display, info_getter, settings):
@@ -70,7 +76,8 @@ def draw_tutorial_completion(game_display, info_getter, settings):
 
     text_color = (0, 0, 255)
     text_array = [
-        menu_font.render('Stage 1: {}'.format(create_time_string(info_getter[1][1])), False, text_color),
+        menu_font.render('Total: {}'.format(create_time_string(info_getter[1][12], smallest = ".")), False, text_color),
+        menu_font.render('Stage 1: {}'.format(create_time_string(info_getter[1][1], smallest = ".")), False, text_color),
         menu_font.render('Stage 2: {}'.format(create_time_string(info_getter[1][2] - info_getter[1][1], smallest = ".")), False, text_color),
         menu_font.render('Stage 3: {}'.format(create_time_string(info_getter[1][3] - info_getter[1][2], smallest = ".")), False, text_color),
         menu_font.render('Stage 4: {}'.format(create_time_string(info_getter[1][4] - info_getter[1][3], smallest = ".")), False, text_color),
@@ -84,10 +91,41 @@ def draw_tutorial_completion(game_display, info_getter, settings):
         menu_font.render('Stage 12: {}'.format(create_time_string(info_getter[1][12] - info_getter[1][11], smallest = ".")), False, text_color),
     ]
 
-    text_y = 230
+    text_y = 200
     text_x = 50
     for text_box in text_array:
         text_rect = text_box.get_rect()
         text_rect.topleft = (text_x, text_y)
         game_display.blit(text_box, text_rect)
         text_y += 40
+
+    text_array = [
+        menu_font.render('Want to learn more? Check out the Almanac!', False, text_color),
+        menu_font.render('', False, text_color),
+        menu_font.render('Want to practice more?', False, text_color),
+        menu_font.render('You can play against a CPU!', False, text_color),
+        menu_font.render('', False, text_color),
+        menu_font.render('Want to unlock more?', False, text_color),
+        menu_font.render('Simply play some matches!', False, text_color),
+        menu_font.render('', False, text_color),
+        menu_font.render('Check out the Rules menu', False, text_color),
+        menu_font.render('to change the rules of the game!', False, text_color),
+        menu_font.render('', False, text_color),
+        menu_font.render('Check out the Settings menu', False, text_color),
+        menu_font.render('to adjust volume, controls, game', False, text_color),
+        menu_font.render('appearance and much more!', False, text_color),
+    ]
+
+    text_y = 200
+    text_x = 550
+    for text_box in text_array:
+        text_rect = text_box.get_rect()
+        text_rect.topleft = (text_x, text_y)
+        game_display.blit(text_box, text_rect)
+        text_y += 40
+
+    game_display.blit(image_cache["almanac_icon"], (425, 170))
+    game_display.blit(image_cache["cpu_icon"], (425, 270))
+    game_display.blit(image_cache["locked_blob"], (425, 410))
+    game_display.blit(image_cache["rules_icon"], (425, 510))
+    game_display.blit(image_cache["gear_icon"], (425, 650))

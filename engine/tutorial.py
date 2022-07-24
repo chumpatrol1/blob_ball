@@ -154,7 +154,7 @@ def check_if_requirements_met(page):
         elif(balls[1].species == "blocked_ball" and balls[1].special_timer == 1):
             createSFXEvent('goal')
             return initialize_scenario(page)
-        elif(balls[1].x_speed == 0 and balls[1].y_speed == 0):
+        elif(balls[1].x_speed == 0 and balls[1].y_speed == 0 and not balls[1].species == "blocked_ball"):
             return initialize_scenario(page - 1)
     elif(page == 6):
         if(blobs[1].info['parries'] > 0):
