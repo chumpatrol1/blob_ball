@@ -15,13 +15,13 @@ tutorial_text = {
     3: "There's an invisible wall!/You'll need to press your kick button/to hit the ball and score a goal!",
     4: "There is no ball, only an opponent!/Your kicks will do 2 damage to any nearby enemies./You can score a point by reducing enemy HP to 0!",
     5: "Press your block button to create a forcefield!/Stop the ball as it tries to fly into your goal!",
-    6: "Enemy incoming! Time your block to perform a parry./Standing on the yellow zone near your/goal increases damage taken!",
-    7: "The meter that's charging up below/is your Energy Meter. You can spend it/by pressing your Boost button, activating a speed boost!",
-    8: "This enemy blob is regenerating HP!/If you kick while your speed boost is active,/you can do enough damage to stop the regeneration!",
-    9: "Your Energy Meter charges passively over/the course of a match./You can charge it faster by/pressing and holding down!/Fill it up completely by the time limit!",
+    6: "Enemy incoming! Time your block/ to perform a parry. Standing on the yellow/zone near your goal increases damage taken!",
+    7: "The meter that's charging up in the UI/is your Energy Meter. You can spend it/by pressing your Boost button,/activating a speed boost!",
+    8: "This enemy blob is regenerating HP!/If you kick while your speed boost/is active, you can do enough/ damage to stop the regeneration!",
+    9: "Your Energy Meter charges passively/over the course of a match./You can charge it faster by/pressing and holding down!/Fill it up completely by the time limit!",
     10: "Every blob has a unique ability!/If you have enough energy, you can/press the ability button to activate it!/Stop the ball using Cop Blob's Ability!",
-    11: "Some abilities need to be held down for maximum effect./Focus your energy and push the ball into/the goal using Wind Blob's Ability!",
-    12: "The enemy blob is moving around the field!/Boxer Blob's Ability is close ranged and has a delay,/so time your ability press carefully!"
+    11: "Some abilities need to be/held down for maximum effect./Focus your energy and push the ball/ into the goal using Wind Blob's Ability!",
+    12: "The enemy blob is moving around the field!/Boxer Blob's Ability is close ranged/and has a delay, so time your/ability press carefully!"
 }
 
 loaded_text = {"page": -1, "content": [], "text_color": (0, 0, 255)}
@@ -33,8 +33,10 @@ def draw_tutorial_text(game_display, info_getter, settings):
         loaded_text["page"] = info_getter[0]
         for i in tutorial_text[info_getter[0]].split("/"):
             loaded_text["content"].append(tutorial_font.render(i, False, loaded_text["text_color"]))
-
     text_y = 20
+    if(settings['ui_mode']):
+        text_y = 130
+    
     for text_box in loaded_text["content"]:
         text_rect = text_box.get_rect()
         text_rect.center = (683, text_y)
