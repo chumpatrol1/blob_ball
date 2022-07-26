@@ -1,7 +1,8 @@
 from engine.blobs import Blob
 from engine.ball import Ball, type_to_image
-from engine.handle_input import gameplay_input
+from engine.handle_input import gameplay_input, menu_input
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
+from engine.endgame import save_tutorial_stats
 from resources.sound_engine.sfx_event import createSFXEvent
 # Is similar to gameplay.py
 # Step 1: Move Left/Right
@@ -25,10 +26,10 @@ from resources.sound_engine.sfx_event import createSFXEvent
 # Stage 12: Ability (Boxer). Shows off delayed abilities. Also touches on Danger Zone.
 # Stage 13: CPU Match. Put it all together!
 
-tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit = 0, 0, 0, {}, {}, [0, 0], 0, None
+tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit, completion_times = 0, 0, 0, {}, {}, [0, 0], 0, 0, {}
 
 def reset_tutorial():
-    global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit
+    global tutorial_page, countdown, countdown2, blobs, balls, game_score, timer, time_limit, completion_times
     tutorial_page = 0
     countdown = 0
     countdown2 = 0
@@ -36,7 +37,8 @@ def reset_tutorial():
     balls = {}
     game_score = [0, 0]
     timer = 0
-    time_limit = None
+    time_limit = 0
+    completion_times = {}
 
 reset_tutorial()
 
@@ -44,6 +46,7 @@ def initialize_scenario(page):
     global blobs
     global balls
     global countdown2
+
     if(page == 0):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
@@ -151,7 +154,7 @@ def check_if_requirements_met(page):
         elif(balls[1].species == "blocked_ball" and balls[1].special_timer == 1):
             createSFXEvent('goal')
             return initialize_scenario(page)
-        elif(balls[1].x_speed == 0 and balls[1].y_speed == 0):
+        elif(balls[1].x_speed == 0 and balls[1].y_speed == 0 and not balls[1].species == "blocked_ball"):
             return initialize_scenario(page - 1)
     elif(page == 6):
         if(blobs[1].info['parries'] > 0):
@@ -204,6 +207,11 @@ def check_if_requirements_met(page):
             return initialize_scenario(page)
         if(blobs[2].hp < blobs[2].max_hp and not blobs[2].status_effects['stunned']):
             blobs[2].heal_hp(5)
+
+    global time_limit
+    global completion_times
+    completion_times[page] = time_limit
+
     return return_value
     
 def tutorial_1():
@@ -297,15 +305,44 @@ stage_dict = {
 
 def handle_tutorial():
     global tutorial_page
+    global timer
+    global time_limit
     game_state = "tutorial"
     tutorial_page = check_if_requirements_met(tutorial_page)
     try:
         stage_dict[tutorial_page]()
     except:
+        print("Tutorial completed in", time_limit)
         to_draw = [blobs, balls, game_score, timer, time_limit]
         tutorial_page = 0
-        return "main_menu", [1, to_draw]
+        timer = 0
+        time_limit = 0
+        save_tutorial_stats(to_draw)
+        return "tutorial_complete", [1, to_draw]
 
     to_draw = [blobs, balls, game_score, timer, time_limit]
-
+    time_limit += 1
     return game_state, [tutorial_page, to_draw]
+
+player_ready = False
+flash_timer = 0
+
+def handle_tutorial_menu(timer):
+    global player_ready
+    global flash_timer
+    global completion_times
+    pressed = menu_input()
+
+    if("p1_ability" in pressed and not timer):
+        player_ready = True
+
+    if(not player_ready):
+        game_state = "tutorial_complete"
+    else:
+        game_state = "main_menu"
+        player_ready = False
+    
+    flash_timer += 1
+    if(flash_timer > 90):
+        flash_timer = 0
+    return game_state, [flash_timer, completion_times]

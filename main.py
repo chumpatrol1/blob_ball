@@ -20,6 +20,7 @@ ZIP the files together for release!
 import os
 
 from engine.get_events import update_events
+from engine.tutorial import reset_tutorial
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -97,6 +98,10 @@ def run(game_state):
     if('escape' in pressed and not escape_timer):
         if(game_state in {"casual_match", "pause", "css", "replay_match", "replay_pause"}):
             escape_timer = 30
+        elif(game_state == "tutorial"):
+            escape_timer = 30
+            game_state = "main_menu"
+            reset_tutorial()
         elif(game_state == "rebind"):
             #game_state = "settings"
             escape_timer = 30
