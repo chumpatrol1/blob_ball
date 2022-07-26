@@ -14,7 +14,12 @@ modifier_images = {
     'thunder_bolt_2': 'thunder_bolt_2', 
     'starpunch_wait': 'star_glove',
     'starpunch': 'star_glove',
-    'starpunch_spring': 'spring_particle'
+    'starpunch_spring': 'spring_particle',
+    'console': 'console',
+    'cartridge': 'cartridge_1',
+    'cartridge_1': 'cartridge_1',
+    'cartridge_2': 'cartridge_2',
+    'cartridge_3': 'cartridge_3',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))
@@ -58,6 +63,10 @@ def draw_environmental_modifiers(game_display, ):
         elif(modifier == 'glue_puddle'):
             for individual in modifiers[modifier]:
                 image = particle_cache['glue_puddle_' + str(individual.random_image)]
+                game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+        elif(modifier == 'cartridge'):
+            for individual in modifiers[modifier]:
+                image = particle_cache['cartridge_' + str(individual.random_image)]
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
         else:
             for individual in modifiers[modifier]:

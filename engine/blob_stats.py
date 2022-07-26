@@ -59,8 +59,8 @@ def species_to_stars(species, stat_overrides):
         'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 810, 25, 0),
         'mirror': create_dict(1, 1, 5, 3, 2, 2, 2, 600, 2, 4, 'mirror', 450, 0, 1800, 300, 0, 60),
         'fisher': create_dict(1, 3, 4, 1, 3, 2, 1, 600, 3, 4, 'hook', 15, 12, 1800, 2, 40, 0),
-        'glue': create_dict(2, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'gluegun', 150, 15, 1800, 2, 40, 0),
-        'arcade': create_dict(2, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'teleport', 150, 15, 1800, 2, 40, 0),
+        'glue': create_dict(2, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'gluegun', 150, 15, 1800, 2, 0, 0),
+        'arcade': create_dict(4, 2, 2, 2, 1, 3, 3, 600, 2, 2, 'teleport', 180, 0, 1800, 180, 0, 0),
     }
 
     blob_dict = full_dict[species]

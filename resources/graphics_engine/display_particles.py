@@ -127,6 +127,10 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
         particle_cache['glue_puddle_2'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_2.png").convert_alpha()
+        particle_cache['console'] = pg.image.load(cwd + "/resources/images/particles/nec.png").convert_alpha()
+        particle_cache['cartridge_1'] = pg.image.load(cwd + "/resources/images/particles/cartridge_quirkio.png").convert_alpha()
+        particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
+        particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
     for blob in blobs:
         blob_speed = blob.top_speed
         if(blob.status_effects['glued']):
@@ -263,6 +267,17 @@ def draw_spire_dirt(spire_x):
     for x in range(0, 10):
         earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
         ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (spire_x * 1000/1366) + random.randint(0, 100), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+
+def draw_console_sparks(console_pos):
+    for x in range(0, 10):
+        spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (console_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = console_pos[1] * (400/768), y_speed = random.randint(-10, -5), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+
+def draw_cartridge_sparks(cart_pos, cart_speed):
+    for x in range(0, 7):
+        spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (cart_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = cart_speed[0] + random.randint(-2, 2), y_pos = cart_pos[1] * (400/768), y_speed = cart_speed[1] + random.randint(-5, 0), gravity = 1, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+
 
 ball_overlay_memory = []
 def draw_ball_overlay(game_display, ball, blobs):

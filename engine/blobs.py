@@ -39,10 +39,10 @@ cwd = os.getcwd()
 # In engine/popup_list.py, add an entry formatted as blob/alt_# - this dictates what the popup screen says and shows
 
 def ability_to_classification(ability):
-    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun', 'teleport']
+    held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -277,6 +277,7 @@ class Blob:
             "judged": 0,
             "pill": None,
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
+            "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
             "stunned": 0,
@@ -297,7 +298,7 @@ class Blob:
                 self.status_effects['pill'] = 'pill_cooldown'
                 cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill'])
                 self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
-    
+
     ground = 1200
     ceiling = 200
 
@@ -726,19 +727,21 @@ class Blob:
                     #createSFXEvent('water')
         elif(special_ability == "teleport"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
-                if(self.special_ability_timer > 0):
-                    #If we were holding down the button before
-                    self.used_ability = "teleport"
-                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
-                    self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
-                    self.holding_timer += 1
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= self.special_ability_cost
+                if(self.facing == 'left'):
+                    x_mod = -1
                 else:
-                    #If we ignite the ball
-                    self.used_ability = "teleport"           # pay your telelicense (why did i write this here lmao)
-                    self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
-                    self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
-                    self.holding_timer = 0
-                    #createSFXEvent('water')
+                    x_mod = 1
+                #if(self.status_effects['teleporter'] == 'console'):
+                '''self.status_effects['teleporter'] = 'cartridge'
+                create_environmental_modifier(self.player, affects = {'self'}, species = 'console', lifetime = 900, hp = 3, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (1*self.x_speed/4) + (2*x_mod), y_speed = (self.y_speed/2) - 9, gravity = 0.25)
+                ''''''else:'''
+                create_environmental_modifier(self.player, affects = {'self'}, species = 'cartridge', lifetime = 600, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (5*x_mod), y_speed = (self.y_speed/2) - 15, gravity = 0.5, random_image = self.status_effects['teleporter'][0])
+                self.status_effects['teleporter'][0] += 1
+                if(self.status_effects['teleporter'][0]) > 3:
+                    self.status_effects['teleporter'][0] = 1
 
 
     def kick(self):
@@ -799,6 +802,8 @@ class Blob:
                         status_effects.append(['hypothermia', 180])
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
+                    elif(self.species == "arcade"):
+                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
@@ -938,7 +943,25 @@ class Blob:
                             self.status_effects['reflect_break'] = 68
                             self.special_ability_cooldown += 180
 
-                
+        for hazard in environment['console']:
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and self.focusing and self.focus_lock <= 20 and hazard.lifetime <= hazard.max_lifetime - 300):
+                self.x_pos = hazard.x_pos
+                self.y_pos = hazard.y_pos  
+                hazard.lifetime = 0
+                self.focusing = False
+                if(self.y_pos > Blob.ground):
+                    self.y_pos = Blob.ground
+                #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+
+        for hazard in environment['cartridge']:
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and self.focusing and self.focus_lock <= 40):
+                self.x_pos = hazard.x_pos
+                self.y_pos = hazard.y_pos 
+                hazard.lifetime = 0
+                self.focusing = False
+                if(self.y_pos > Blob.ground):
+                    self.y_pos = Blob.ground
+                #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\

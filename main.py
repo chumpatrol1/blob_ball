@@ -21,6 +21,7 @@ import os
 
 from engine.get_events import update_events
 from engine.tutorial import reset_tutorial
+from resources.graphics_engine.display_gameplay import unload_image_cache
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
@@ -101,9 +102,11 @@ def run(game_state):
         elif(game_state == "tutorial"):
             escape_timer = 30
             game_state = "main_menu"
+            unload_image_cache()
             reset_tutorial()
         elif(game_state == "rebind"):
             #game_state = "settings"
+            
             escape_timer = 30
         else:
             done = True #Ends the game
