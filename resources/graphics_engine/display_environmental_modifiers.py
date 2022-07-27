@@ -1,5 +1,6 @@
 from engine.environmental_modifiers import return_environmental_modifiers
 from resources.graphics_engine.display_particles import return_particle_cache
+import pygame as pg
 
 modifier_images = {
     'glue_shot': 'glue_shot',
@@ -66,7 +67,27 @@ def draw_environmental_modifiers(game_display, ):
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
         elif(modifier == 'cartridge'):
             for individual in modifiers[modifier]:
-                image = particle_cache['cartridge_' + str(individual.random_image)]
+                tint = {
+                    1: (255, 0, 0, 255),
+                    2: (0, 0, 255, 255),
+                    3: (0, 0, 0, 255), # IDK if green or yellow?
+                    4: (255, 255, 255, 255)
+                }
+                tc = tint[individual.player] if individual.player in tint else (0, 0, 0, 0)
+                image = particle_cache['cartridge_' + str(individual.random_image)].copy()
+                image.fill(tc, special_flags=pg.BLEND_RGBA_MULT)
+                game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+        elif(modifier == 'console'):
+            for individual in modifiers[modifier]:
+                tint = {
+                    1: (255, 0, 0, 255),
+                    2: (0, 0, 255, 255),
+                    3: (0, 0, 0, 255), # IDK if green or yellow?
+                    4: (255, 255, 255, 255)
+                }
+                tc = tint[individual.player] if individual.player in tint else (0, 0, 0, 0)
+                image = particle_cache['console'].copy()
+                image.fill(tc, special_flags=pg.BLEND_RGBA_MULT)
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
         else:
             for individual in modifiers[modifier]:

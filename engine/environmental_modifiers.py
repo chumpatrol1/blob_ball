@@ -48,6 +48,7 @@ class EnvironmentalModifiers:
         if(self.species == 'cartridge'):
             if(self.y_pos > 1270):
                 self.y_speed *= -0.9
+                self.x_speed *= 0.9
                 self.y_pos = 1270
             if(self.x_pos < 0):
                 self.x_pos = 0

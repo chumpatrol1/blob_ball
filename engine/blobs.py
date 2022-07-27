@@ -196,6 +196,7 @@ class Blob:
         self.boost_traction = 0.2 + ((self.stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
         self.boost_friction = 0.2 + ((self.stars['friction'] + 5) * 0.15) 
 
+        self.down_holding_timer = 0
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
         self.focus_lock_max = 60
         self.focusing = False
@@ -738,7 +739,7 @@ class Blob:
                 '''self.status_effects['teleporter'] = 'cartridge'
                 create_environmental_modifier(self.player, affects = {'self'}, species = 'console', lifetime = 900, hp = 3, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (1*self.x_speed/4) + (2*x_mod), y_speed = (self.y_speed/2) - 9, gravity = 0.25)
                 ''''''else:'''
-                create_environmental_modifier(self.player, affects = {'self'}, species = 'cartridge', lifetime = 600, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (5*x_mod), y_speed = (self.y_speed/2) - 15, gravity = 0.5, random_image = self.status_effects['teleporter'][0])
+                create_environmental_modifier(self.player, affects = {'self'}, species = 'cartridge', lifetime = 600, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (4*x_mod), y_speed = (self.y_speed/2) - 12, gravity = 0.4, random_image = self.status_effects['teleporter'][0])
                 self.status_effects['teleporter'][0] += 1
                 if(self.status_effects['teleporter'][0]) > 3:
                     self.status_effects['teleporter'][0] = 1
@@ -800,10 +801,10 @@ class Blob:
                     accumulated_damage += 1
                     if(self.species == "ice"):
                         status_effects.append(['hypothermia', 180])
+                    elif(self.species == "arcade" and not blob.block_timer and not blob.kick_timer):
+                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
-                    elif(self.species == "arcade"):
-                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     accumulated_damage += 1
@@ -943,24 +944,27 @@ class Blob:
                             self.status_effects['reflect_break'] = 68
                             self.special_ability_cooldown += 180
 
+        teleported = False
         for hazard in environment['console']:
-            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and self.focusing and self.focus_lock <= 20 and hazard.lifetime <= hazard.max_lifetime - 300):
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 40 and self.down_holding_timer and hazard.lifetime <= hazard.max_lifetime - 300 and not teleported):
                 self.x_pos = hazard.x_pos
                 self.y_pos = hazard.y_pos  
                 hazard.lifetime = 0
                 self.focusing = False
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
+                teleported = True
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
 
         for hazard in environment['cartridge']:
-            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and self.focusing and self.focus_lock <= 40):
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 20 and self.down_holding_timer and not teleported):
                 self.x_pos = hazard.x_pos
                 self.y_pos = hazard.y_pos 
                 hazard.lifetime = 0
                 self.focusing = False
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
+                teleported = True
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
                 
 
@@ -1233,6 +1237,7 @@ class Blob:
             self.shorthopping = True
         
         if('down' in pressed):
+            self.down_holding_timer += 1
             if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
@@ -1241,6 +1246,8 @@ class Blob:
                     self.focus_lock = self.focus_lock_max
                 elif(self.focusing):
                     self.focusing = True
+        else:
+            self.down_holding_timer = 0
         if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
