@@ -169,18 +169,18 @@ class Blob:
         self.shorthopping = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
-        self.kick_cooldown_rate = 1 #Each star reduces kick cooldown
+        self.kick_cooldown_rate = 2 #Each star reduces kick cooldown
         self.kick_cooldown = 0 #Cooldown timer between kicks
         self.kick_timer = 0 #Active frames of kick
-        self.kick_cooldown_max = 240 + 30 * (5 - self.stars['kick_cooldown_rate'])
+        self.kick_cooldown_max = (240 + 30 * (5 - self.stars['kick_cooldown_rate'])) * 2
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
-        self.block_cooldown_rate = 1 #Each star reduces block cooldown
+        self.block_cooldown_rate = 2 #Each star reduces block cooldown
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
-        self.block_cooldown_max = 300 + 30 * (5 - self.stars['block_cooldown_rate']) #How long the block cooldown lasts
+        self.block_cooldown_max = (300 + 30 * (5 - self.stars['block_cooldown_rate'])) * 2 #How long the block cooldown lasts
 
         self.block_outer = 150
         self.block_inner = -25
@@ -188,7 +188,8 @@ class Blob:
         self.block_lower = 200
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
-        self.boost_cooldown_max = 300 + 30 *  (5 - self.stars['boost_cooldown_max']) #Each star reduces boost cooldown
+        self.boost_cooldown_rate = 2
+        self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * 2 #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
@@ -212,10 +213,11 @@ class Blob:
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = 0 #Cooldown between uses
-        self.special_ability_cooldown_max = self.stars['special_ability_cooldown']
+        self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * 2
         self.special_ability_charge_base = special_ability_charge_base
         self.special_ability_duration = self.stars['special_ability_duration']
         self.special_ability_delay = self.stars['special_ability_delay']
+        self.special_ability_cooldown_rate = 2
         self.used_ability = None
         self.holding_timer = 0 # Used for held abilities
 
@@ -288,6 +290,7 @@ class Blob:
             "buttered": 0,
             "hypothermia": 0,
             "steroided": 0,
+            "overheat": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -381,12 +384,6 @@ class Blob:
 
             if(self.special_ability_timer == 0):
                 self.used_ability = None
-        
-        if(self.special_ability_cooldown > 0):
-            self.special_ability_cooldown -= 1
-            if(self.special_ability_cooldown == 0):
-                self.toggle_recharge_indicator('ability')
-        
 
         for effect in self.status_effects:
             if(self.status_effects[effect]):
@@ -396,12 +393,22 @@ class Blob:
                         if(effect == 'taxing'):
                             createSFXEvent('chime_error')
                         self.set_base_stats(self.stars)
+                    if(effect == 'overheat'):
+                        self.kick_cooldown_rate = 1
+                        self.block_cooldown_rate = 1
+                        self.special_ability_cooldown_rate = 1
+                        self.boost_cooldown_rate = 1
                 except:
                     pass # Typically pass for strings, like current pill
+        
+        if(self.special_ability_cooldown > 0):
+            self.special_ability_cooldown -= self.special_ability_cooldown_rate
+            if(self.special_ability_cooldown <= 0):
+                self.toggle_recharge_indicator('ability')
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
-            if(self.kick_cooldown == 0):
+            if(self.kick_cooldown <= 0):
                 self.toggle_recharge_indicator('kick')
 
         if(self.kick_timer > 0):
@@ -416,9 +423,8 @@ class Blob:
             self.block_timer -= 1
         if(self.block_cooldown > 0):
             self.block_cooldown -= self.block_cooldown_rate
-            if(self.block_cooldown == 0):
+            if(self.block_cooldown <= 0):
                 self.toggle_recharge_indicator('block')
-        
         
         if(self.boost_timer > 0): #Reduces duration of active boost by 1
             self.boost_timer -= 1 
@@ -427,10 +433,14 @@ class Blob:
                 self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
                 self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
         elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
-            self.boost_cooldown_timer -= 1
-            if(self.boost_cooldown_timer == 0):
+            self.boost_cooldown_timer -= self.boost_cooldown_rate
+            if(self.boost_cooldown_timer <= 0):
                 self.toggle_recharge_indicator('boost')
 
+        self.special_ability_cooldown_rate = 2
+        self.kick_cooldown_rate = 2
+        self.block_cooldown_rate = 2
+        self.boost_cooldown_rate = 2
        
         if(self.collision_timer > 0):
             self.collision_timer -=1 
@@ -454,13 +464,13 @@ class Blob:
         if(self.clanked):
             self.clanked -= 1
 
-        self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown)
+        self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown/2)
         self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
         self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
         self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
         self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
         self.block_cooldown_percentage = self.block_cooldown/self.block_cooldown_max
-        self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer)
+        self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer/2)
         self.boost_cooldown_percentage = self.boost_cooldown_timer/self.boost_cooldown_max
         self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
@@ -803,6 +813,8 @@ class Blob:
                         status_effects.append(['hypothermia', 180])
                     elif(self.species == "arcade" and not blob.block_timer and not blob.kick_timer):
                         create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
+                    elif(self.species == "fire"):
+                        status_effects.append(['overheat', 300])
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
@@ -1083,6 +1095,7 @@ class Blob:
         self.status_effects['stunned'] = 0
         self.status_effects['reflecting'] = 0
         self.status_effects['reflect_break'] = 0
+        self.status_effects['overheat'] = 0
         self.set_base_stats(self.stars)
         #self.heal_hp(heal_amt=ruleset['hp_regen'])
         

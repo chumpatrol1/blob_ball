@@ -127,6 +127,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
         particle_cache['glue_puddle_2'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_2.png").convert_alpha()
+        particle_cache['smoke_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/smoke_particle.png").convert_alpha(), (40, 40))
         particle_cache['console'] = pg.image.load(cwd + "/resources/images/particles/nec.png").convert_alpha()
         particle_cache['cartridge_1'] = pg.image.load(cwd + "/resources/images/particles/cartridge_quirkio.png").convert_alpha()
         particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
@@ -190,6 +191,10 @@ def draw_blob_particles(game_display, blobs):
 
         if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
+
+        if(blob.status_effects['overheat'] % 10 == 0 and blob.status_effects['overheat'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['smoke_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+
 
         create_blob_particles(blob)
         #Manages and updates particles
