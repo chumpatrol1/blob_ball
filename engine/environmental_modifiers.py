@@ -35,6 +35,10 @@ class EnvironmentalModifiers:
             create_environmental_modifier(player = self.player, affects = self.affects, species = 'glue_puddle', random_image = self.player, x_pos = self.x_pos - 27.5, y_pos = 1378, lifetime = 180)
             self.lifetime = 0
         
+        if(self.species == 'glue_shot' and (self.x_pos < 0 or self.x_pos > 1835)):
+            self.x_speed *= -0.625
+            self.x_pos += self.x_speed * 2
+        
         if(self.species == 'spire_glyph' and self.lifetime == 0):
             create_environmental_modifier(player = self.player, affects = self.affects, species = 'spire_spike', x_pos = self.x_pos, y_pos = 500, lifetime = 85)
             draw_spire_dirt(self.x_pos)

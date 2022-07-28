@@ -404,11 +404,13 @@ class Blob:
         if(self.special_ability_cooldown > 0):
             self.special_ability_cooldown -= self.special_ability_cooldown_rate
             if(self.special_ability_cooldown <= 0):
+                self.special_ability_cooldown = 0
                 self.toggle_recharge_indicator('ability')
 
         if(self.kick_cooldown > 0):
             self.kick_cooldown -= self.kick_cooldown_rate
             if(self.kick_cooldown <= 0):
+                self.kick_cooldown = 0
                 self.toggle_recharge_indicator('kick')
 
         if(self.kick_timer > 0):
@@ -424,6 +426,7 @@ class Blob:
         if(self.block_cooldown > 0):
             self.block_cooldown -= self.block_cooldown_rate
             if(self.block_cooldown <= 0):
+                self.block_cooldown = 0
                 self.toggle_recharge_indicator('block')
         
         if(self.boost_timer > 0): #Reduces duration of active boost by 1
@@ -435,6 +438,7 @@ class Blob:
         elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
             self.boost_cooldown_timer -= self.boost_cooldown_rate
             if(self.boost_cooldown_timer <= 0):
+                self.boost_cooldown_timer = 0
                 self.toggle_recharge_indicator('boost')
 
         self.special_ability_cooldown_rate = 2
@@ -678,7 +682,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.block_cooldown += 60
+                #self.block_cooldown += 60
                 createSFXEvent('whistle')
         elif(special_ability == "starpunch"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
@@ -737,7 +741,7 @@ class Blob:
                     create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
                     #createSFXEvent('water')
         elif(special_ability == "teleport"):
-            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
+            if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
@@ -761,7 +765,7 @@ class Blob:
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
-            self.collision_timer = 0
+            #self.collision_timer = 0
             self.collision_distance = 175
             self.kick_visualization = self.kick_visualization_max
             self.info['kick_count'] += 1
@@ -855,7 +859,7 @@ class Blob:
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
 
         elif(self.used_ability == "stoplight"):
-            blob.collision_timer = 30
+            blob.collision_timer = 45
 
     def check_environmental_collisions(self, environment):
         for hazard in environment['glue_puddle']:
@@ -932,29 +936,31 @@ class Blob:
 
                 hazard.x_pos, hazard.y_pos = punch_x, punch_y
 
-                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75):
-                    if(self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
-                        accumulated_damage = 3
-                        stun_amount = 30
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    accumulated_damage = 3
+                    stun_amount = 30
 
-                        # TODO: Handle Danger Zone bonus
-                        
-                        if(self.all_blobs[hazard.player].boost_timer):
-                            accumulated_damage += 1
-                        
-                        if(((self.player == 2 and self.x_pos >= self.danger_zone) or (self.player == 1 and self.x_pos <= self.danger_zone)) and self.danger_zone_enabled):
-                            #Take additional damage from kicks if you are hiding by your goal
-                            accumulated_damage += 1
-                        
-                        if(self.block_timer):
-                            accumulated_damage -= 2
-                            stun_amount = 0
+                    # TODO: Handle Danger Zone bonus
+                    
+                    if(self.all_blobs[hazard.player].boost_timer):
+                        accumulated_damage += 1
+                    
+                    if(((self.player == 2 and self.x_pos >= self.danger_zone) or (self.player == 1 and self.x_pos <= self.danger_zone)) and self.danger_zone_enabled):
+                        #Take additional damage from kicks if you are hiding by your goal
+                        accumulated_damage += 1
+                    
+                    if(self.block_timer):
+                        accumulated_damage -= 2
+                        stun_amount = 0
+                    self.all_blobs[hazard.player].kick_cooldown -= 180
+                    self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180
+                else:
+                    self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
-                        self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
-                        if(self.status_effects['reflecting'] > 1):
-                            self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
-                            self.status_effects['reflect_break'] = 68
-                            self.special_ability_cooldown += 180
 
         teleported = False
         for hazard in environment['console']:
@@ -1095,7 +1101,7 @@ class Blob:
         self.status_effects['stunned'] = 0
         self.status_effects['reflecting'] = 0
         self.status_effects['reflect_break'] = 0
-        self.status_effects['overheat'] = 0
+        #self.status_effects['overheat'] = 0
         self.set_base_stats(self.stars)
         #self.heal_hp(heal_amt=ruleset['hp_regen'])
         
@@ -1269,7 +1275,7 @@ class Blob:
             self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
             if(self.y_speed < 0):
                 if(self.shorthopping):
-                    self.y_speed += self.gravity_mod
+                    self.y_speed += self.gravity_stars * 2
                 else:
                     self.y_speed += self.gravity_stars
             else:
