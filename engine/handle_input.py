@@ -255,7 +255,8 @@ def unbind_inputs(mode = 'all'):
     if(mode == 'p1'):
         for button in input_map:
             if 'p1' in button:
-                input_map[button] = 0
+                pass
+                #input_map[button] = 0
         
         for key in input_map:
             if 'p2' in key:
@@ -264,7 +265,8 @@ def unbind_inputs(mode = 'all'):
     elif(mode == 'p2'):
         for button in input_map:
             if 'p2' in button:
-                input_map[button] = 0
+                pass
+                #input_map[button] = 0
         
         for key in input_map:
             if 'p1' in key:
@@ -273,7 +275,8 @@ def unbind_inputs(mode = 'all'):
 
     elif(mode == 'all'):
         for button in input_map:
-            input_map[button] = 0
+            pass
+            #input_map[button] = 0
     
     else:
         input_map[mode] = 0

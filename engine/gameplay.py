@@ -11,6 +11,7 @@ from engine.replays import return_replay_info, save_replay
 from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
+from resources.graphics_engine.display_particles import clear_particle_memory
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
 def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None, p1_costume = 0, p2_costume = 0):
@@ -373,7 +374,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 update_mu_chart(game_score, p1_blob, p2_blob)
             else:
                 game_state = "replay_win"                   
-            
+            clear_particle_memory()
             return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
     return game_state, [blob_dict, ball_dict, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
