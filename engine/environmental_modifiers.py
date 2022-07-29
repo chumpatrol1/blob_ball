@@ -75,7 +75,7 @@ class EnvironmentalModifiers:
             self.y_pos = 1270
             self.y_speed = 0
             self.gravity = 0
-        if(self.species == 'console' and (self.lifetime == self.max_lifetime - 180 or self.lifetime == 180 or self.lifetime == 60)):
+        if(self.species == 'console' and (self.lifetime == self.max_lifetime - 300 or self.lifetime == 180 or self.lifetime == 60)):
             draw_console_sparks([self.x_pos, self.y_pos])
         if(self.species == 'console' and (self.lifetime == 1 or self.hp <= 0)):
             draw_console_sparks([self.x_pos, self.y_pos])

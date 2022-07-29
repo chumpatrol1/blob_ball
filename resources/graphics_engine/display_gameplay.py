@@ -326,6 +326,10 @@ def draw_gameplay(game_display, info_getter, settings):
                         image_cache[pname+'blob_right'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
                         image_cache[pname+'blob_left'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
 
+            image_cache[pname+'damage_left'] = image_cache[pname+'blob_left'].copy()
+            image_cache[pname+'damage_left'].set_alpha(100)
+            image_cache[pname+'damage_right'] = image_cache[pname+'blob_right'].copy()
+            image_cache[pname+'damage_right'].set_alpha(100)
         
         image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
         image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()
@@ -371,6 +375,11 @@ def draw_gameplay(game_display, info_getter, settings):
                     gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
                 else:
                     gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+        else:
+            if(blob.facing == "right"):
+                gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+            else:
+                gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
         draw_blob_special(blob, gameplay_surface)
         draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
 
