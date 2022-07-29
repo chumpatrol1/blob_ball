@@ -243,20 +243,20 @@ glue_tips = [
 ]
 
 arcade_tips = [
-    tip_font.render("#1: Glue Gun shoots its pellets", False, text_color),
+    tip_font.render("#1: Cheat Cartridge's initial speed is", False, text_color),
     tip_font.render("based on your momentum and direction!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#2: Once a glue puddle is formed, it", False, text_color),
-    tip_font.render("dries up in about three seconds!", False, text_color),
+    tip_font.render("#2: Leave a cartridge by your goal so", False, text_color),
+    tip_font.render("you can go on the offensive!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#3: Glue Blob synergizes well with its ", False, text_color),
-    tip_font.render("own glue. In fact, you will move slightly", False, text_color),
-    tip_font.render("faster across the field!", False, text_color),
+    tip_font.render("#3: Boost kicking your opponent will leave", False, text_color),
+    tip_font.render("a console on the ground. They will be", False, text_color),
+    tip_font.render("forcibly teleported after a few seconds,", False, text_color),
+    tip_font.render("or alternatively they can hold down to", False, text_color),
+    tip_font.render("teleport once the console starts sparking.", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#4: In addition to the slowing effect of", False, text_color),
-    tip_font.render("the glue, you should remember that your", False, text_color),
-    tip_font.render("enemies will have a hard time jumping out", False, text_color),
-    tip_font.render("of the glue, and the ball bounces less too!", False, text_color),
+    tip_font.render("#4: Cartridges have a limited lifespan,", False, text_color),
+    tip_font.render("and afterwards Arcade Blob will be teleported.", False, text_color),
 ]
 
 def return_selected_blob_tips(selected_blob):
@@ -276,6 +276,7 @@ def return_selected_blob_tips(selected_blob):
         'mirror': mirror_tips,
         'fisher': fisher_tips,
         'glue': glue_tips,
+        'arcade': arcade_tips,
     }
     try:
         return tips_dict[selected_blob]

@@ -19,7 +19,7 @@ cwd = os.getcwd()
 # If the ability has the potential to impact the ball, update the Ball class' check_blob_ability method
 # In engine/unlocks.py, update css_selector_list and original_css_display_list to allow that blob to be selected
 # In engine/unlocks.py, update css_location_dict with the intended location of that blob
-# In engine/unlocks.py, update blob_unlock_dict
+# In engine/unlocks.py, update blob_unlock_dict with the CSS position of the blob
 # In engine/endgame.py, update attempt_unlocks with the number of games it takes to unlock that blob
 # In engine/popup_list.py, update blob_unlock_popups to include the new blob's unlock text
 # In resources/graphics_engine/almanac_blob_array.py, update the Blob Array there to show your blob in the almanac
