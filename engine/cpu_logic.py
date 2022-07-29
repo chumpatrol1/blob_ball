@@ -220,9 +220,9 @@ def rock_blob(blob, other_blob, ball, pressed):
         pressed.append('ability')
 
 def lightning_blob(blob, other_blob, ball, pressed):
-    if(blob.player == 1 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) > 1605 and ball.y_pos < 800 and ball.x_speed >= 0):
+    if(blob.player == 1 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) > 1405 and ball.y_pos < 800 and ball.x_speed >= 0):
         pressed.append('ability')
-    elif(blob.player == 2 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) < 200 and ball.y_pos < 800 and ball.x_speed <= 0):
+    elif(blob.player == 2 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) < 400 and ball.y_pos < 800 and ball.x_speed <= 0):
         pressed.append('ability')
 
 def wind_blob(blob, other_blob, ball, pressed):

@@ -1193,7 +1193,7 @@ class Blob:
                             if(round(prev_speed) == blob_speed):
                                 self.info['wavebounces'] += 1
                                 createSFXEvent('wavebounce')
-                else:
+                elif('down' in pressed):
                     self.wavedash_lock = 30
                     self.collision_timer = 30
                     self.x_speed = -1 * (15 + (10 * self.traction))
@@ -1222,7 +1222,7 @@ class Blob:
                             if(round(prev_speed) == -1 * blob_speed):
                                 self.info['wavebounces'] += 1
                                 createSFXEvent('wavebounce') 
-                else:
+                elif('down' in pressed):
                     self.wavedash_lock = 30
                     self.collision_timer = 30
                     self.x_speed = 15 + (10 * self.traction)
