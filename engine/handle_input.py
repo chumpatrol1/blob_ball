@@ -710,6 +710,8 @@ def merge_inputs(pressed, override = False):
             merged_press.append('ability')
         if('p1_kick' in pressed or 'p2_kick' in pressed):
             merged_press.append('kick')
+        if('p1_block' in pressed or 'p2_block' in pressed):
+            merged_press.append('block')
         if('p1_boost' in pressed or 'p2_boost' in pressed):
             merged_press.append('boost')
         if('return' in pressed):

@@ -3,6 +3,7 @@ import os
 import random
 from engine.environmental_modifiers import create_environmental_modifier
 from engine.handle_input import merge_inputs
+from resources.graphics_engine.display_particles import draw_teleportation_pfx
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.blob_stats import species_to_stars
 cwd = os.getcwd()
@@ -156,7 +157,7 @@ class Blob:
         self.y_speed = 0
         self.x_pos = x_pos #Where the blob is on the X axis
         self.y_pos = y_pos #Where the blob is on the Y axis, 1200 is grounded
-        self.x_center = x_pos + 80
+        self.x_center = x_pos + 83
         self.y_center = y_pos + 110
         self.facing = facing #Where the blob is currently facing
         self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
@@ -240,6 +241,7 @@ class Blob:
         self.boost_timer_visualization = 0
         self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
+        self.wavedash_lock = 0 #Caused if the blob has wavedashed
         self.danger_zone_enabled = danger_zone_enabled
         self.info = {
             'species': self.species,
@@ -254,6 +256,7 @@ class Blob:
             'clanks': 0,
             'x_distance_moved': 0,
             'wavebounces': 0,
+            'wavedashes': 0,
             'jumps': 0,
             'jump_cancelled_focuses': 0,
             'time_focused': 0,
@@ -458,6 +461,9 @@ class Blob:
         
         if(self.movement_lock > 0):
             self.movement_lock -= 1
+
+        if(self.wavedash_lock > 0):
+            self.wavedash_lock -= 1
 
         if(self.parried):
             self.parried -= 1
@@ -965,6 +971,7 @@ class Blob:
         teleported = False
         for hazard in environment['console']:
             if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 40 and self.down_holding_timer and hazard.lifetime <= hazard.max_lifetime - 300 and not teleported):
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
                 self.x_pos = hazard.x_pos
                 self.y_pos = hazard.y_pos  
                 hazard.lifetime = 0
@@ -972,10 +979,13 @@ class Blob:
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
                 teleported = True
+                createSFXEvent('teleport')
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
 
         for hazard in environment['cartridge']:
             if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 20 and self.down_holding_timer and not teleported):
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
                 self.x_pos = hazard.x_pos
                 self.y_pos = hazard.y_pos 
                 hazard.lifetime = 0
@@ -983,6 +993,8 @@ class Blob:
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
                 teleported = True
+                createSFXEvent('teleport')
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
                 
 
@@ -1092,6 +1104,7 @@ class Blob:
         self.traction = self.base_traction
         self.impact_land_frames = 0
         self.movement_lock = 0
+        self.wavedash_lock = 0
         self.holding_timer = 0
         self.status_effects['hypothermia'] = 0
         self.status_effects['judged'] = 0
@@ -1111,7 +1124,7 @@ class Blob:
         pressed = []
         for button in pressed_buttons:
             if(button in pressed_conversions):
-                if(self.focusing):
+                if(self.focusing and self.focus_lock):
                     if(pressed_conversions[button] == "down"):
                         pressed.append(pressed_conversions[button])
                     elif(pressed_conversions[button] == "up"):
@@ -1119,11 +1132,27 @@ class Blob:
                         self.info['jump_cancelled_focuses'] += 1
                     else:
                         continue
+                elif(self.focusing and not self.focus_lock):
+                    if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    elif(pressed_conversions[button] == "up"):
+                        pressed.append(pressed_conversions[button])
+                        self.info['jump_cancelled_focuses'] += 1
+                    elif(pressed_conversions[button] == "left" or pressed_conversions[button] == "right"):
+                        pressed.append(pressed_conversions[button])
+                        self.info['wavedashes'] += 1
+                    else:
+                        continue
                 else:
                     pressed.append(pressed_conversions[button])
         
         if(self.movement_lock > 0 or self.status_effects['stunned']):
             pressed = []
+        if(self.wavedash_lock):
+            if('up' in pressed):
+                pressed = ['up']
+            else:
+                pressed = []
         if(self.status_effects['judged']):
             if('kick' in pressed):
                 pressed.remove('kick')
@@ -1142,42 +1171,63 @@ class Blob:
             blob_speed += 2
         if(self.status_effects['hypothermia']):
             blob_speed -= 3
+        wavedashed = False
         if(self.y_pos == Blob.ground): #Applies traction if grounded
             if('left' in pressed and not 'right' in pressed): #If holding left but not right
-                self.facing = "left"
-                if(self.x_pos <= 0): #Are we in danger of going off screen?
-                    self.x_speed = 0
-                    self.x_pos = 0
-                else:
-                    if(abs(self.x_speed) < blob_speed):
-                        if(self.x_speed > 0):
-                            self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
-                        else:
-                            self.x_speed -= self.traction # Accelerate based off of traction
+                if(not self.focusing):
+                    self.facing = "left"
+                    if(self.x_pos <= 0): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 0
                     else:
-                        prev_speed = self.x_speed
-                        self.x_speed = -1*blob_speed #If at max speed, maintain it
-                        if(round(prev_speed) == blob_speed):
-                            self.info['wavebounces'] += 1
-                            createSFXEvent('wavebounce')
-                        
+                        if(abs(self.x_speed) < blob_speed):
+                            if(self.x_speed > 0):
+                                self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
+                                self.x_speed -= self.traction
+                            else:
+                                self.x_speed -= self.traction # Accelerate based off of traction
+                        else: # Snap back to top speed
+                            prev_speed = self.x_speed
+                            self.x_speed = -1*blob_speed #If at max speed, maintain it
+                            if(round(prev_speed) == blob_speed):
+                                self.info['wavebounces'] += 1
+                                createSFXEvent('wavebounce')
+                else:
+                    self.wavedash_lock = 30
+                    self.collision_timer = 30
+                    self.x_speed = -1 * (15 + (10 * self.traction))
+                    self.focusing = False
+                    self.focus_lock = 0
+                    wavedashed = True
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
-                self.facing = 'right'
-                if(self.x_pos >= 1700): #Are we in danger of going off screen?
-                    self.x_speed = 0
-                    self.x_pos = 1700
-                else:
-                    if(abs(self.x_speed) < blob_speed):
-                        if(self.x_speed < 0):
-                            self.x_speed += 1.2 * self.traction # Turn around faster by holding left
-                        else:
-                            self.x_speed += self.traction # Accelerate based off of traction
+                if(not self.focusing):
+                    self.facing = 'right'
+                    if(self.x_pos >= 1700): #Are we in danger of going off screen?
+                        self.x_speed = 0
+                        self.x_pos = 1700
                     else:
-                        prev_speed = self.x_speed
-                        self.x_speed = blob_speed #If at max speed, maintain it
-                        if(round(prev_speed) == -1 * blob_speed):
-                            self.info['wavebounces'] += 1
-                            createSFXEvent('wavebounce') 
+                        if(abs(self.x_speed) < blob_speed):
+                            if(self.x_speed < 0):
+                                self.x_speed += 1.2 * self.traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)):
+                                self.x_speed += self.traction
+                            else:
+                                self.x_speed += self.traction # Accelerate based off of traction
+                        elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
+                            self.x_speed -= self.traction
+                        else: # Snap back to top speed
+                            prev_speed = self.x_speed
+                            self.x_speed = blob_speed #If at max speed, maintain it
+                            if(round(prev_speed) == -1 * blob_speed):
+                                self.info['wavebounces'] += 1
+                                createSFXEvent('wavebounce') 
+                else:
+                    self.wavedash_lock = 30
+                    self.collision_timer = 30
+                    self.x_speed = 15 + (10 * self.traction)
+                    self.focusing = False
+                    wavedashed = True
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:
@@ -1198,7 +1248,9 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed > 0):
-                            self.x_speed -= 1.5 * self.friction # Turn around faster by holding left
+                            self.x_speed -= 1.2 * self.friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
+                            self.x_speed -= self.friction
                         else:
                             self.x_speed -= self.friction # Accelerate based off of friction
                     else:
@@ -1206,7 +1258,7 @@ class Blob:
                         self.x_speed = -1*blob_speed #If at max speed, maintain it
                         if(round(prev_speed) == blob_speed):
                             self.info['wavebounces'] += 1
-                            createSFXEvent('wavebounce') 
+                            createSFXEvent('wavebounce')
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
@@ -1215,7 +1267,9 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed < 0):
-                            self.x_speed += 1.5 * self.friction # Turn around faster by holding left
+                            self.x_speed += 1.2 * self.friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
+                            self.x_speed -= self.friction
                         else:
                             self.x_speed += self.friction # Accelerate based off of friction
                     else:
@@ -1248,6 +1302,7 @@ class Blob:
         if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force)
             self.focus_lock = 0
+            self.wavedash_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
         elif('up' in pressed and self.y_speed < 0):
@@ -1260,7 +1315,7 @@ class Blob:
             if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
             else:
-                if(not self.focusing and not self.impact_land_frames):
+                if(not self.focusing and not self.impact_land_frames and not wavedashed):
                     self.focusing = True
                     self.focus_lock = self.focus_lock_max
                 elif(self.focusing):

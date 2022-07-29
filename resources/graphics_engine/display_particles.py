@@ -132,6 +132,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_1'] = pg.image.load(cwd + "/resources/images/particles/cartridge_quirkio.png").convert_alpha()
         particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
+        particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
     for blob in blobs:
         blob_speed = blob.top_speed
         if(blob.status_effects['glued']):
@@ -283,6 +284,10 @@ def draw_cartridge_sparks(cart_pos, cart_speed):
         spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
         ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (cart_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = cart_speed[0] + random.randint(-2, 2), y_pos = cart_pos[1] * (400/768), y_speed = cart_speed[1] + random.randint(-5, 0), gravity = 1, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
 
+def draw_teleportation_pfx(tele_pos):
+    for x in range(0, 7):
+        spark_particles = [particle_cache['glitch_particle_1']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (tele_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = tele_pos[1] * (400/768), y_speed = random.randint(-2, 2), gravity = 0, alpha = 255, fade = 17, ground_clip=True, lifetime = 255))
 
 ball_overlay_memory = []
 def draw_ball_overlay(game_display, ball, blobs):
