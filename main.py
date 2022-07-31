@@ -25,6 +25,7 @@ from engine.tutorial import reset_tutorial
 from resources.graphics_engine.display_gameplay import unload_image_cache
 from resources.graphics_engine.display_particles import clear_particle_memory
 
+
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
 
@@ -106,6 +107,7 @@ def run(game_state):
             game_state = "main_menu"
             clear_particle_memory()
             unload_image_cache()
+
             reset_tutorial()
         elif(game_state == "rebind"):
             reset_rebind()
