@@ -623,22 +623,22 @@ class Blob:
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    self.special_ability_cooldown -= 30
-                    self.kick_cooldown -= 30
-                    self.block_cooldown -= 30
+                    self.special_ability_cooldown -= 60
+                    self.kick_cooldown -= 60
+                    self.block_cooldown -= 60
                     if(self.boost_cooldown_timer > 0):
-                        self.boost_cooldown_timer -= 30
+                        self.boost_cooldown_timer -= 60
                     self.check_cooldown_completion(sac, skc, slc, sbc)
                 elif(self.status_effects['pill'] == 'pill_cooldown'):
                     sac = bool(self.special_ability_cooldown > 0)
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    self.special_ability_cooldown -= 90
-                    self.kick_cooldown -= 90
-                    self.block_cooldown -= 90
+                    self.special_ability_cooldown -= 180
+                    self.kick_cooldown -= 180
+                    self.block_cooldown -= 180
                     if(self.boost_cooldown_timer > 0):
-                        self.boost_cooldown_timer -= 90
+                        self.boost_cooldown_timer -= 180
                     self.check_cooldown_completion(sac, skc, slc, sbc)
 
                 else:
@@ -675,10 +675,10 @@ class Blob:
                 skc = bool(self.kick_cooldown > 0)
                 slc = bool(self.block_cooldown > 0)
                 sbc = bool(self.boost_cooldown_timer > 0)
-                self.kick_cooldown -= 60
-                self.block_cooldown -= 60
+                self.kick_cooldown -= 120
+                self.block_cooldown -= 120
                 if(self.boost_cooldown_timer > 0):
-                    self.boost_cooldown_timer -= 60
+                    self.boost_cooldown_timer -= 120
                 self.check_cooldown_completion(updatedKick=skc, updatedBlock=slc, updatedBoost=sbc)
 
                 createSFXEvent('chime_progress')
@@ -696,7 +696,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown += 60
+                self.kick_cooldown += 120
                 create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = self.special_ability_delay, y_pos = self.y_center)
                 createSFXEvent('boxing_bell')
         elif(special_ability == "mirror"):
@@ -706,9 +706,9 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown += 60
-                self.block_cooldown += 60
-                self.boost_cooldown_timer += 60
+                self.kick_cooldown += 120
+                self.block_cooldown += 120
+                self.boost_cooldown_timer += 120
                 createSFXEvent('chime_progress')
         elif(special_ability == "hook"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
@@ -825,6 +825,10 @@ class Blob:
                         create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                     elif(self.species == "fire"):
                         status_effects.append(['overheat', 300])
+                    elif(self.species == "boxer"):
+                        self.special_ability_cooldown -= 240
+                        if(self.special_ability_cooldown < 0):
+                            self.special_ability_cooldown = 0
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
@@ -836,7 +840,7 @@ class Blob:
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
-                    blob.special_ability_cooldown += 180
+                    blob.special_ability_cooldown += 360
 
 
                     
@@ -887,10 +891,10 @@ class Blob:
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                         self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 180
+                        self.special_ability_cooldown += 360
                 else:
                     self.take_damage(damage=0)
-                    self.block_cooldown += 30
+                    self.block_cooldown += 60
         
         for hazard in environment['thunder_bolt']:
             if(hazard.player == self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'self' in hazard.affects and hazard.x_pos - 110 <= self.x_center <= hazard.x_pos + 240):
@@ -901,7 +905,7 @@ class Blob:
                 if(self.status_effects['reflecting'] > 1):
                     self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                     self.status_effects['reflect_break'] = 68
-                    self.special_ability_cooldown += 180
+                    self.special_ability_cooldown += 360
                 '''if(self.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     self.status_effects['reflect_break'] = 68
@@ -958,12 +962,12 @@ class Blob:
                     if(self.block_timer):
                         accumulated_damage -= 2
                         stun_amount = 0
-                    self.all_blobs[hazard.player].kick_cooldown -= 180
+                    self.all_blobs[hazard.player].kick_cooldown -= 360
                     self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                         self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 180
+                        self.special_ability_cooldown += 360
                 else:
                     self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
@@ -1149,10 +1153,8 @@ class Blob:
         if(self.movement_lock > 0 or self.status_effects['stunned']):
             pressed = []
         if(self.wavedash_lock):
-            if('up' in pressed):
-                pressed = ['up']
-            else:
-                pressed = []
+            if('down' in pressed):
+                pressed.remove('down')
         if(self.status_effects['judged']):
             if('kick' in pressed):
                 pressed.remove('kick')
@@ -1194,8 +1196,8 @@ class Blob:
                                 self.info['wavebounces'] += 1
                                 createSFXEvent('wavebounce')
                 elif('down' in pressed):
-                    self.wavedash_lock = 30
-                    self.collision_timer = 30
+                    self.wavedash_lock = 15
+                    #self.collision_timer = 30
                     self.x_speed = -1 * (15 + (10 * self.traction))
                     self.focusing = False
                     self.focus_lock = 0
@@ -1223,8 +1225,8 @@ class Blob:
                                 self.info['wavebounces'] += 1
                                 createSFXEvent('wavebounce') 
                 elif('down' in pressed):
-                    self.wavedash_lock = 30
-                    self.collision_timer = 30
+                    self.wavedash_lock = 15
+                    #self.collision_timer = 30
                     self.x_speed = 15 + (10 * self.traction)
                     self.focusing = False
                     wavedashed = True
