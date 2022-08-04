@@ -1,6 +1,6 @@
 from engine.blobs import Blob
 from engine.ball import Ball, type_to_image
-from engine.handle_input import gameplay_input, menu_input
+from engine.handle_input import gameplay_input, menu_input, merge_inputs
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 from engine.endgame import save_tutorial_stats
 from resources.sound_engine.sfx_event import createSFXEvent
@@ -78,7 +78,7 @@ def initialize_scenario(page):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 6):
-        blobs = {1: Blob(species = 'rock', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: Blob(species = 'king', player = 1, x_pos = 150, facing = 'right')}
         blobs[1].special_ability_meter = 600
         balls = {1: Ball(x_pos = 1500, y_pos = 1240)}
         balls[1].all_blobs = blobs
@@ -219,7 +219,11 @@ def tutorial_1():
     Horizontal Movement
     '''
     # Step 1: 1 Blob. 1 Ball.
-    pressed = gameplay_input()
+    merged = merge_inputs(gameplay_input(), True)
+    pressed = []
+    for key in merged:
+        pressed.append("p1_" + key)
+
     # TODO: Environmental Modifiers?
     if(not countdown and blobs[1].hp > 0):
         blobs[1].move(pressed)
@@ -331,9 +335,9 @@ def handle_tutorial_menu(timer):
     global player_ready
     global flash_timer
     global completion_times
-    pressed = menu_input()
+    pressed = merge_inputs(menu_input(), True)
 
-    if("p1_ability" in pressed and not timer):
+    if("ability" in pressed and not timer):
         player_ready = True
 
     if(not player_ready):

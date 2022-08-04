@@ -102,7 +102,7 @@ class Ball:
             ball_vector = pg.math.Vector2(self.x_center, self.y_center)
             p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
             
-            if(not blob.collision_timer) or (blob.kick_timer and self.bounciness > 0.1):
+            if(not blob.collision_timer):
                 if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                     if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                         pass
@@ -132,7 +132,7 @@ class Ball:
                 elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                     if(p1_vector.distance_to(ball_vector) < 80):
                         blob.collision_timer = 10
-                    if p1_vector.distance_to(ball_vector) <= blob_collision_distance and blob.kick_timer > 0:#Kicking the ball
+                    if p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded) and blob.kick_timer > 0:#Kicking the ball
                         self.image = type_to_image('kicked_ball')
                         self.info['kicked'] += 1
                         self.species = "kicked_ball"
@@ -140,7 +140,8 @@ class Ball:
                         p1_ball_nv = p1_vector - ball_vector
                         try:
                             # Make this not dependent on ball speed!
-                            p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                            #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                            p1_ball_collision = p1_vector - ball_vector
                             if(self.x_center > blob.x_center):
                                 p1_ball_collision[0] = abs(p1_ball_collision[0])
                                 
@@ -161,6 +162,7 @@ class Ball:
                         createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
                         self.x_speed *= self.bounciness
                         self.y_speed *= self.bounciness
+                        #print("speed", p1_ball_collision, "loc diff", p1_ball_nv)
                     elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                         self.info['blob_standard_collisions'] += 1
                         p1_ball_nv = p1_vector - ball_vector

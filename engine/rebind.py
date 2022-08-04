@@ -1,7 +1,7 @@
 from engine.controller_mappings.gamecube_helper import gamecube_controller_left, gamecube_controller_right
 from engine.controller_mappings.generic_helper import generic_left, generic_right
 from engine.controller_mappings.xbox_360_helper import xbox_360_left, xbox_360_right
-from engine.handle_input import bind_input as bind_input
+from engine.handle_input import bind_input as bind_input, get_keypress
 from engine.handle_input import reset_joystick_map
 from engine.handle_input import return_joystick_mapping
 from engine.handle_input import bind_to_joy
@@ -49,6 +49,10 @@ rebind_number = -1
 rebind_end = 16
 selector_position = 0
 rebind_start = 0
+
+def reset_rebind():
+    global rebind_number
+    rebind_number = -1
 
 def handle_rebinding():
     global rebind_number
@@ -101,10 +105,23 @@ def rebind_menu():
     global rebind_number
     global rebind_start
     mouse = handle_mouse()
+    pressed = merge_inputs(menu_input(), True)
     game_state = "rebind"
     rebind_key = "Click to Rebind!"
 
     if(rebind_number == -1):
+        if('up' in pressed):
+            selector_position -= 1
+        elif('down' in pressed):
+            selector_position += 1
+        elif('left' in pressed or 'right' in pressed):
+            selector_position += 10
+        if(selector_position < 0):
+            selector_position += 20
+        elif(selector_position > 19):
+            selector_position -= 20
+        if('ability' in pressed):
+            game_state, rebind_start = choose_rebinds(selector_position)
         for i in range(len(rebind_buttons)):
             if(rebind_buttons[i].check_hover(mouse)):
                 if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?

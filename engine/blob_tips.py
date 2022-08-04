@@ -38,10 +38,9 @@ fire_tips = [
     tip_font.render("production! It comes at the cost", False, text_color),
     tip_font.render("of mobility, however", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#4: Need even more energy?! Time your block so", False, text_color),
-    tip_font.render("that you parry an incoming blow as early as", False, text_color),
-    tip_font.render("possible, gaining 300 energy! That's about 10", False, text_color),
-    tip_font.render("seconds of gameplay, or about half a boost!", False, text_color),
+    tip_font.render("#4: Fire Blob's boost kick will apply the", False, text_color),
+    tip_font.render("Overheat effect on your enemy for 5 seconds,", False, text_color),
+    tip_font.render("doubling all cooldowns for that time!", False, text_color),
 ]
 
 ice_tips = [
@@ -76,6 +75,11 @@ water_tips = [
     tip_font.render("#4: If you are focusing to charge energy,", False, text_color),
     tip_font.render("remember that you can always jump to cancel", False, text_color),
     tip_font.render("your focus early!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Need even more energy?! Time your block so", False, text_color),
+    tip_font.render("that you parry an incoming blow as early as", False, text_color),
+    tip_font.render("possible, gaining 300 energy! That's about 10", False, text_color),
+    tip_font.render("seconds of gameplay, or about half a boost!", False, text_color),
 ]
 
 rock_tips = [
@@ -88,6 +92,11 @@ rock_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#4: Pressing down in the air will make your", False, text_color),
     tip_font.render("descent a lot faster!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Need a burst of speed, but you're focusing?", False, text_color),
+    tip_font.render("After your focus aura turns grey, you can", False, text_color),
+    tip_font.render("hold left or right for a quick burst of speed", False, text_color),
+    tip_font.render("called a wavedash!", False, text_color),
 ]
 
 lightning_tips = [
@@ -177,16 +186,18 @@ boxer_tips = [
     tip_font.render("damage taken by two and prevents the stun", False, text_color),
     tip_font.render("", False, text_color),
     tip_font.render("#2: Starpunch's damage is increased by", False, text_color),
-    tip_font.render(" boosting or by hitting the enemy in their", False, text_color),
+    tip_font.render("boosting or by hitting the enemy in their", False, text_color),
     tip_font.render("Danger Zone", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#3: Boxer Blob is heavily reliant on KOs and", False, text_color),
-    tip_font.render(" has a hard time scoring goals", False, text_color),
+    tip_font.render("#3: Starpunch cannot be clanked with a kick", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#4: Starpunch cannot be clanked with a kick", False, text_color),
+    tip_font.render("#4: Starpunch increases your kick cooldown", False, text_color),
+    tip_font.render("upon activation, but if you hit your attack", False, text_color),
+    tip_font.render("your kick cooldown decreases. Hitting a boost kick", False, text_color),
+    tip_font.render("decreases your Starpunch cooldown", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#5: Starpunch increases your kick cooldown", False, text_color),
-    tip_font.render("upon activation", False, text_color),
+    tip_font.render("#5: Missing Starpunch applies the Overheat", False, text_color),
+    tip_font.render("effect, doubling your cooldowns for 2 seconds", False, text_color),
 ]
 
 mirror_tips = [
@@ -243,20 +254,20 @@ glue_tips = [
 ]
 
 arcade_tips = [
-    tip_font.render("#1: Glue Gun shoots its pellets", False, text_color),
+    tip_font.render("#1: Cheat Cartridge's initial speed is", False, text_color),
     tip_font.render("based on your momentum and direction!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#2: Once a glue puddle is formed, it", False, text_color),
-    tip_font.render("dries up in about three seconds!", False, text_color),
+    tip_font.render("#2: Leave a cartridge by your goal so", False, text_color),
+    tip_font.render("you can go on the offensive!", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#3: Glue Blob synergizes well with its ", False, text_color),
-    tip_font.render("own glue. In fact, you will move slightly", False, text_color),
-    tip_font.render("faster across the field!", False, text_color),
+    tip_font.render("#3: Boost kicking your opponent will leave", False, text_color),
+    tip_font.render("a console on the ground. They will be", False, text_color),
+    tip_font.render("forcibly teleported after a few seconds,", False, text_color),
+    tip_font.render("or alternatively they can hold down to", False, text_color),
+    tip_font.render("teleport once the console starts sparking.", False, text_color),
     tip_font.render("", False, text_color),
-    tip_font.render("#4: In addition to the slowing effect of", False, text_color),
-    tip_font.render("the glue, you should remember that your", False, text_color),
-    tip_font.render("enemies will have a hard time jumping out", False, text_color),
-    tip_font.render("of the glue, and the ball bounces less too!", False, text_color),
+    tip_font.render("#4: Cartridges have a limited lifespan,", False, text_color),
+    tip_font.render("and afterwards Arcade Blob will be teleported.", False, text_color),
 ]
 
 def return_selected_blob_tips(selected_blob):
@@ -276,6 +287,7 @@ def return_selected_blob_tips(selected_blob):
         'mirror': mirror_tips,
         'fisher': fisher_tips,
         'glue': glue_tips,
+        'arcade': arcade_tips,
     }
     try:
         return tips_dict[selected_blob]
