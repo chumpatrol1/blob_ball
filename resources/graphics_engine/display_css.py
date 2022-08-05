@@ -3,8 +3,9 @@ from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs
 import pygame as pg
-from os import getcwd
+from os import getcwd, getenv
 cwd = getcwd()
+appcwd = getenv('APPDATA')+"/BlobBall"
 
 blob_array = return_css_display_blobs()
 
@@ -30,8 +31,8 @@ def unload_css():
     token_cache = {}
 
 def load_blobs(blob_image_cache, big_image_cache, directory):
-    load_blob_unlocks(cwd)
-    update_css_blobs(cwd)
+    load_blob_unlocks(appcwd)
+    update_css_blobs(appcwd)
     blob_array = return_css_display_blobs()
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])

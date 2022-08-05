@@ -179,6 +179,9 @@ def check_existing_directory(cwd):
     '''
     Checks to see if the following folders exist. If they don't, create them!
     '''
+    if not(os.path.isdir(cwd)): # Blob Ball Roaming
+        print(cwd)
+        os.mkdir(cwd)
     if not(os.path.isdir(cwd + '/config')): # Config folder
         os.mkdir(cwd+'/config') 
     if not(os.path.isdir(cwd + '/saves')): # Saves folder

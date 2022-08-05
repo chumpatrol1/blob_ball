@@ -21,8 +21,9 @@ import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
 import resources.graphics_engine.display_css
-from os import getcwd
+from os import getcwd, getenv
 cwd = getcwd()
+appcwd = getenv('APPDATA')+'/BlobBall/'
 
 ruleset = initialize_ruleset(cwd)
 settings = initialize_settings(cwd)
@@ -152,16 +153,16 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
         if(game_state != "pop_up"):
-            update_css_blobs(cwd)
+            update_css_blobs(appcwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):
-        info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
+        info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, appcwd)
         game_state = info_getter[1]
         ruleset = info_getter[2]
     elif(game_state == "p1_mods" or game_state == "p2_mods"):
-        game_state, info_getter = engine.menus.rules_menu.player_mods_navigation(timer, ruleset, game_state, cwd)
+        game_state, info_getter = engine.menus.rules_menu.player_mods_navigation(timer, ruleset, game_state, appcwd)
     elif(game_state == "settings"):
-        info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
+        info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, appcwd)
         game_state = info_getter[1]
     elif(game_state == "rebind"):
         game_state, info_getter = engine.rebind.rebind_menu()

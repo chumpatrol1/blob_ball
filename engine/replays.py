@@ -1,4 +1,5 @@
 from bz2 import decompress
+from os import getcwd
 import time
 from json import dumps, loads
 import zlib
@@ -36,13 +37,13 @@ def save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob):
     current_time = time.localtime()
     time_str = f"{current_time.tm_year}-{current_time.tm_mon}-{current_time.tm_mday} {current_time.tm_hour}.{current_time.tm_min}.{current_time.tm_sec}_"
     identifier = 1
-    from os import getcwd
-    file_str = getcwd() + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
+    from os import getenv
+    file_str = getenv('APPDATA')+'/BlobBall' + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
     from os.path import exists
     
     while exists(file_str + ".bbr"):
         identifier += 1
-        file_str = getcwd() + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
+        file_str = getenv('APPDATA')+'/BlobBall' + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
 
     combined_inputs = ""
     for i in replay_inputs:

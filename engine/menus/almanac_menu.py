@@ -3,7 +3,7 @@ from engine.replays import decompress_replay_file, return_replay_info
 from resources.graphics_engine.display_controller_pop_up import create_generic_pop_up
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button
-from os import getcwd
+from os import getenv
 import tkinter
 import tkinter.filedialog
 
@@ -11,7 +11,7 @@ def prompt_file():
     """Create a Tk file dialog and cleanup when finished"""
     top = tkinter.Tk()
     top.withdraw()  # hide window
-    file_name = tkinter.filedialog.askopenfilename(parent=top, title = "Open Blob Ball Replay", filetypes=[("Blob Ball Replay Files", ".bbr")], initialdir=getcwd()+"/replays")
+    file_name = tkinter.filedialog.askopenfilename(parent=top, title = "Open Blob Ball Replay", filetypes=[("Blob Ball Replay Files", ".bbr")], initialdir=getenv('APPDATA')+"/BlobBall"+"/replays")
     top.destroy()
     return file_name
 

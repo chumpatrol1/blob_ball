@@ -2,10 +2,10 @@ import engine.handle_input
 from json import dumps
 from engine.menus.main_menu import game_state_navigation
 from resources.sound_engine.sfx_event import createSFXEvent
-from os import getcwd
+from os import getenv
 from engine.button import Button
 selector_position = 0
-cwd = getcwd()
+cwd = getenv('APPDATA')+"/BlobBall"
 
 pause_buttons = [
     Button(125, 200, 525, 825),

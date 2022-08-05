@@ -140,8 +140,8 @@ def unlock_blob(blob, cwd):
 def unlock_all_blobs():
     for blob in blob_unlock_dict:
         blob_unlock_dict[blob] = True
-    from os import getcwd
-    with open(getcwd() + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
+    from os import getenv
+    with open(getenv('APPDATA')+"/BlobBall" + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
 def return_blob_unlocks():
@@ -387,8 +387,8 @@ def unlock_costume(blob, costume, cwd):
         raise ValueError("Invalid Blob!")
 
 if __name__ == "__main__":
-    from os import getcwd
-    cwd = getcwd()
+    from os import getenv
+    cwd = getenv('APPDATA')+"/BlobBall"
     load_blob_unlocks(cwd)
     #unlock_blob("ice", cwd)
     #update_css_blobs()

@@ -1,7 +1,7 @@
 from json import loads, dumps
-from os import getcwd
+from os import getenv
 from engine.popup_event import createPopUpEvent
-cwd = getcwd()
+cwd = getenv('APPDATA')+'/BlobBall'
 
 def attempt_blob_unlocks(game_stats):
     blob_unlock_requirements = {

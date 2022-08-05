@@ -18,6 +18,10 @@ ZIP the files together for release!
 #python setup.py bdist_msi
 
 import os
+cwd = os.getcwd()
+appcwd = os.getenv('APPDATA')+'/BlobBall'
+from engine.initializer import check_folders, initialize_ruleset, initialize_game_stats, load_matchup_chart, check_existing_directory
+check_existing_directory(appcwd)
 
 from engine.get_events import update_events
 from engine.rebind import reset_rebind
@@ -30,12 +34,10 @@ def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(get_script_path())
-cwd = os.getcwd()
+
 print("MAIN",cwd)
 
 import pygame as pg
-from engine.initializer import check_folders, initialize_ruleset, initialize_game_stats, load_matchup_chart, check_existing_directory
-check_existing_directory(cwd)
 from engine.game_handler import update_game_state as ugs
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
@@ -47,20 +49,20 @@ from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs,
 game_state = "control_splash"
 new_game_state = "control_splash"
 
-check_folders(cwd)
-game_stats = initialize_game_stats(cwd)
-initialize_ruleset(cwd)
-load_matchup_chart(cwd)
+check_folders(appcwd)
+game_stats = initialize_game_stats(appcwd)
+initialize_ruleset(appcwd)
+load_matchup_chart(appcwd)
 
-load_blob_unlocks(cwd)
-load_medal_unlocks(cwd)
-load_costume_unlocks(cwd)
-update_css_blobs(cwd)
+load_blob_unlocks(appcwd)
+load_medal_unlocks(appcwd)
+load_costume_unlocks(appcwd)
+update_css_blobs(appcwd)
 update_costumes()
 
 done = False
 
-with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+with open(appcwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
     start_time = time.time()
     statsdoc.write(dumps(game_stats))
@@ -126,9 +128,9 @@ try:
         game_state = run(game_state)
     else:
         print("All done!")
-        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+        with open(appcwd+'/saves/game_stats.txt', 'r') as statsdoc:
                 game_stats = loads(statsdoc.readline())
-        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+        with open(appcwd+'/saves/game_stats.txt', 'w') as statsdoc:
                 game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
                 statsdoc.write(dumps(game_stats))
         pg.quit()
