@@ -117,7 +117,7 @@ def update_game_state(game_state, cwd):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
-            resources.graphics_engine.display_css.update_css_blobs(cwd)
+            resources.graphics_engine.display_css.update_css_blobs(appcwd)
             update_costumes()
             if(game_state == "pop_up"):
                 timer = 60
