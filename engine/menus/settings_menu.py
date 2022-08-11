@@ -2,6 +2,8 @@ import engine.handle_input
 from resources.sound_engine.sfx_event import createSFXEvent
 from json import dumps
 
+from updatechecker_dist import check_for_game_updates
+
 selector_position = 0
 
 from engine.button import Button
@@ -84,6 +86,9 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         else:
             settings['graphics'] += 1
         createSFXEvent('select')
+    
+    def check_game_update():
+        check_for_game_updates()
         
 
     run_func = {
@@ -93,8 +98,9 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        6: toggle_gversion,
-        len(settings) + 3: go_back,
+        #6: toggle_gversion,
+        len(settings) + 4: go_back,
+        len(settings) + 3: check_game_update,
         len(settings) + 2: reset_settings,
         len(settings) + 1: reset_inputs,
         len(settings): enter_joystick,

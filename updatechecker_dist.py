@@ -2,6 +2,8 @@ from urllib import request
 from engine.initializer import return_game_version
 import re
 import os
+
+from resources.graphics_engine.display_controller_pop_up import create_generic_pop_up
 def currentVer():
     '''
     Outputs:
@@ -32,38 +34,45 @@ def compare(game_ver, site_ver):
 
     for v in zip(game_split, site_split):
         if(v[0] < v[1]):
-            return "New Version Available"
+            return True # New Version Available!
         elif(v[0] > v[1]):
-            return "Up to Date"
+            return False # Up to Date!
     
-    return "Up to Date"
+    return False # Up to Date!
+def check_for_game_updates():
+    try:
+        resp = request.urlopen("http://blobball.com/")
+        if(resp.code == 200):
+            data = resp.read()
+            html = data.decode("UTF-8")
+            extract_flag = False
+            extraction = []
+            for line in html.split("\n"):
+                if("<!--" in line):
+                    extract_flag = True
+                elif(extract_flag):
+                    if("-->" in line):
+                        extract_flag = False
+                        break
+                    else:
+                        extraction.append(line)
 
-resp = request.urlopen("http://blobball.com/")
-if(resp.code == 200):
-    data = resp.read()
-    html = data.decode("UTF-8")
-    extract_flag = False
-    extraction = []
-    for line in html.split("\n"):
-        if("<!--" in line):
-            extract_flag = True
-        elif(extract_flag):
-            if("-->" in line):
-                extract_flag = False
-                break
+            site_ver = "0.0.1a"
+            for extracted in extraction:
+                if("GAMEVER" in extracted):
+                    site_ver = extracted.split("= ")[1]
+
+            game_ver = currentVer()
+            if(compare(game_ver, site_ver)):
+                create_generic_pop_up(1)
             else:
-                extraction.append(line)
-
-    site_ver = "0.0.1a"
-    for extracted in extraction:
-        if("GAMEVER" in extracted):
-            site_ver = extracted.split("= ")[1]
-
-    game_ver = currentVer()
-    print(compare(game_ver, site_ver))
-    
-else:
-    print("Something went wrong connecting, CODE: ",resp.code)
+                create_generic_pop_up(2)
+            
+        else:
+            create_generic_pop_up(3)
+            print("Something went wrong connecting, CODE: ",resp.code)
+    except:
+        create_generic_pop_up(3)
 
 if(__name__ == "__main__"):
     assert compare("0.0.1a", "0.0.1a") == "Up to Date"
