@@ -7,11 +7,12 @@ Slime Soccer type game
 * Casual Matches!
 * 20 of the exact same blob!
 * 15 unique blobs!
+
 * Physics system that works 99.99% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
 * A nifty UI that displays the things you need to know at a glance!
-* Rebindable keys for those who don't like the default controls!
+* Rebindable keys for those who don't like the default controls, and controller support!
 * Beautiful graphics, courtesy of Ellexium! Check out his YT channel: https://www.youtube.com/channel/UCNYthNCVDDovhbhTXVzMM4A
 * A cool soundtrack, courtesy of BoingK! Check out his YT channel: https://www.youtube.com/channel/UCJ7nlCXY1HmiGhwi0seyzAA
 * Full screen toggle!
@@ -48,4 +49,3 @@ Slime Soccer type game
 * Improved Key Rebinding
 * Changed save data location and added an update checker
 * Added UI Toggle, which determines whether or not the UI appears on the top or bottom
-
