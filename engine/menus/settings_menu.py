@@ -200,11 +200,11 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = len(settings) + 3
+            selector_position = len(settings) + 4
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == len(settings) + 3:
+        if selector_position == len(settings) + 4:
             selector_position = 0
         else:
             selector_position += 1

@@ -1,14 +1,13 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.13.0b**
+**v0.16.0b**
 
 **Features:**
 * Casual Matches!
-* 23 of the exact same blob!
-* 12 unique blobs!
-
-* Physics system that works 99.65% of the time!
+* 20 of the exact same blob!
+* 15 unique blobs!
+* Physics system that works 99.99% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
 * A nifty UI that displays the things you need to know at a glance!
@@ -19,7 +18,7 @@ Slime Soccer type game
 * Adjustable gameplay rules for more varied games!
 * A glossary can be found here: https://docs.google.com/document/d/1pBm3NZczNl7L7mupscWfpWABMAau6Hw6TZptCThz_rA/edit?usp=sharing
 
-**Controls:**
+**Default Controls:**
 
 *P1:*
 * Movement: WASD
@@ -42,10 +41,11 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Mirror Blob
-* Buffed Rock Blob and Nerfed Water Blob
-* Added Blob Info to the Almanac!
+* Added Arcade Blob
+* Buffed Fire Blob, Cop Blob, Glue Blob and Changed Boxer Blob
+* Added wavedashing (Focus for a second, then press left or right for a speed boost!)
+* Added an interactive tutorial!
 * Improved Key Rebinding
-* Added several game rules
+* Changed save data location and added an update checker
 * Added UI Toggle, which determines whether or not the UI appears on the top or bottom
 
