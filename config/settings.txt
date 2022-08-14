@@ -1,1 +1,0 @@
-{"hd_backgrounds": true, "hd_blobs": true, "smooth_scaling": true, "music_volume": 1, "sound_volume": 4, "ui_mode": true}

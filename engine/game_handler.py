@@ -25,8 +25,8 @@ from os import getcwd, getenv
 cwd = getcwd()
 appcwd = getenv('APPDATA')+'/BlobBall/'
 
-ruleset = initialize_ruleset(cwd)
-settings = initialize_settings(cwd)
+ruleset = initialize_ruleset(appcwd)
+settings = initialize_settings(appcwd)
 replay_ruleset = None
 
 
