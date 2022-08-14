@@ -1,22 +1,26 @@
-BLOB BALL V0.13.0b
+BLOB BALL V0.16.0b
 
 For a full list of changes visit the official Changelog Document: https://docs.google.com/document/d/1M0mxPMobF79kyU8XHRvIrWKbIk6v8WotAPLwUnbOuFg/edit
 
 New Features!
-- Pause during matches using ESCAPE! You can adjust game volume, take screenshots and return to the menu!
-- Almanac Blob Info! View stats and tips relating to your favorite blobs!
-- New Game Setting - UI Positioning! The game UI can now appear at the top or at the bottom of the screen
-- New Game Rule - HP Regeneration! Adjustable setting which regenerates a bit of HP after each goal!
-- Improved Key Binding! Bind individual keys, a player's keys, or all keys at once!
+- Interactive tutorial to teach you the basics! Access it from the main menu.
+- Improved Key Binding yet again! You can navigate using your controller or keyboard and exit using ESCAPE!
+- Update checker! Press the button in the settings menu to ping blobball.com!
+- Better save location! The game will now save your config, stats and more in User/Appdata/BlobBall so your saves will be preserved between updates!
+- Added ability functions for Water, Rock, Lightning and Wind blobs!
 
 Aesthetics!
-- Blobs that are locked or unreleased are now marked appropriately
-- Added Sunken/XNunuAZ to the credits as a programmer - thanks Sunken!
-- Fixed a small visual error in Field Alpha's background
-- Added SFX for Rock, Lightning and Cop Blob
+- Damaged blobs are now partially instead of fully transparent
+- Particles will not persist between games/goals
 
 Balance Changes!
-- Reduced ball bounciness on block
-- Buffed Doctor Blob to prioritize pills that haven't been pulled in a while
-- Nerfed Water Blob (Geyser Activation Cost 120 --> 210)
-- Buffed Rock Blob (Spire Cost 400 --> 360) (Boost Duration 4 --> 5)
+- Fixed kicks for real this time
+- Changed the short hop and fast falling formula
+- Added wavedashing - Focus for a second and press left/right to get a burst of speed
+- Buffed Fire Blob (Boost kick now applies "Overheat" effect which decreases cooldown rate)
+- Buffed Cop Blob (Stoplight Cost 900 -> 240)
+- Buffed Cop Blob (Stoplight CD 750f -> 360f)
+- Buffed Cop Blob (Ball Intangibility Effect 30f -> 45f)
+- Buffed Glue Blob (Glue pellets bounce off of walls)
+- Changed Boxer Blob (Hitting Starpunch reduces Kick CD by 3 seconds, missing applies 2 seconds of Overheat)
+- Changed Boxer Blob (Hitting Boost Kick reduces Starpunch CD by 2 seconds)
