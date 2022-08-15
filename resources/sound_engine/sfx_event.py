@@ -35,6 +35,7 @@ name_to_file = {
     'ball_spire_hit': ['ball_spire_hit.wav'],
     'wavebounce': ['wavebounce.wav'],
     'camera': ['camera.wav'],
+    'teleport': ['teleport.wav'],
 }
 
 suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)

@@ -83,6 +83,42 @@ def create_generic_popup(pop_up):
             text_rect.midtop = (225, text_y)
             pop_up_surface2.blit(text_box, text_rect)
             text_y += 50
+    elif(pop_up.entry.event_id == 1):
+        text_array = [
+            menu_font.render("Update available!", False, (0, 0, 255)),
+            menu_font.render("Download at blobball.com", False, (0, 0, 255)),
+            menu_font.render("New Blob + Online Mode", False, (0, 0, 255)),
+        ]
+        text_y = 10
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface2.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 2):
+        text_array = [
+            menu_font.render("Up to date!", False, (0, 0, 255)),
+            menu_font.render("Check back later.", False, (0, 0, 255)),
+            menu_font.render("New Blob + Online Mode Soon!", False, (0, 0, 255)),
+        ]
+        text_y = 10
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface2.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 3):
+        text_array = [
+            menu_font.render("", False, (0, 0, 0)),
+            menu_font.render("Failed to connect to", False, (255, 0, 0)),
+            menu_font.render("blobball.com", False, (255, 0, 0)),
+        ]
+        text_y = 10
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface2.blit(text_box, text_rect)
+            text_y += 50
 
     pop_up_surface.set_alpha(10)
     pop_up_surface2.set_alpha(10)

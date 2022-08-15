@@ -205,11 +205,44 @@ def ice_blob(blob, other_blob, ball, pressed):
     elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1405)):
         pressed.append('ability')
 
+def water_blob(blob, other_blob, ball, pressed):
+    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 300)):
+        pressed.append('ability')
+        blob.cpu_memory['press_queue'].append('ability')
+    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1505)):
+        pressed.append('ability')
+        blob.cpu_memory['press_queue'].append('ability')
+
+def rock_blob(blob, other_blob, ball, pressed):
+    if(blob.player == 1 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) < 100 and ball.y_pos + (ball.y_speed * blob.special_ability_timer) > 925):
+        pressed.append('ability')
+    elif(blob.player == 2 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) > 1705 and ball.y_pos + (ball.y_speed * blob.special_ability_timer) > 925):
+        pressed.append('ability')
+
+def lightning_blob(blob, other_blob, ball, pressed):
+    if(blob.player == 1 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) > 1405 and ball.y_pos < 800 and ball.x_speed >= 0):
+        pressed.append('ability')
+    elif(blob.player == 2 and ball.x_pos + (ball.x_speed * blob.special_ability_delay) < 400 and ball.y_pos < 800 and ball.x_speed <= 0):
+        pressed.append('ability')
+
+def wind_blob(blob, other_blob, ball, pressed):
+    # IF the ball is close to your goal
+    # IF the ball is behind the enemy
+    # IF SA Meter is 3x
+    # IF we are already using ability
+    if(blob.player == 1 and (ball.x_pos < 400 or (ball.x_pos > 1405 and other_blob.x_center < ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed > -10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.holding_timer > 0)):
+        pressed.append('ability')
+        blob.cpu_memory['press_queue'].append('ability')
+    elif(blob.player == 1 and (ball.x_pos > 1405 or (ball.x_pos < 400 and other_blob.x_center > ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed < 10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.holding_timer > 0)):
+        pressed.append('ability')
+        blob.cpu_memory['press_queue'].append('ability')
+
 # This is the current version of handle_logic, the one that is going to V0.11.0b
 def handle_logic_beta(blob, other_blob, ball, game_score, timer):
 
     pressed = []
     logic_memory = dict(blob.cpu_memory) # TODO: Remove this at some point
+    blob.cpu_memory['press_queue'] = []
     '''
     Logic Memory:
     game_state: What state is the game currently in?
@@ -344,6 +377,10 @@ def handle_logic_beta(blob, other_blob, ball, game_score, timer):
     ability_dict = {
         'fire': fire_blob,
         'ice': ice_blob,
+        'water': water_blob,
+        'rock': rock_blob,
+        'lightning': lightning_blob,
+        'wind': wind_blob,
     }
     if(blob.species in ability_dict):
         ability_dict[blob.species](blob, other_blob, ball, pressed)

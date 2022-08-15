@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.15.0a'
+game_version = '0.16.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -32,6 +32,8 @@ def initialize_game_stats(cwd):
     'costumes_unlocked': 0, #Number of costumes unlocked
     'backgrounds_unlocked': 0, #Number of backgrounds unlocked
     'most_played_character': 'quirkless', #Most played character
+    'tutorial_completion_count': 0,
+    'fastest_tutorial_completion': 360000,
 
     #Stats about game/match info
     'matches_played': 0, #Number of matches completed
@@ -69,7 +71,13 @@ def initialize_game_stats(cwd):
 
     try:
         with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
-            game_stat_dict = loads(statsdoc.readline())
+            n_game_stat_dict = loads(statsdoc.readline())
+            for key in game_stat_dict:
+                if not key in n_game_stat_dict:
+                    n_game_stat_dict[key] = game_stat_dict[key]
+            game_stat_dict = n_game_stat_dict
+        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+            statsdoc.write(dumps(game_stat_dict))
     except:
         with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
             statsdoc.write(dumps(game_stat_dict))
@@ -171,6 +179,9 @@ def check_existing_directory(cwd):
     '''
     Checks to see if the following folders exist. If they don't, create them!
     '''
+    if not(os.path.isdir(cwd)): # Blob Ball Roaming
+        print(cwd)
+        os.mkdir(cwd)
     if not(os.path.isdir(cwd + '/config')): # Config folder
         os.mkdir(cwd+'/config') 
     if not(os.path.isdir(cwd + '/saves')): # Saves folder

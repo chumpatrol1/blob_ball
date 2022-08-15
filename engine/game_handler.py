@@ -4,6 +4,7 @@ def set_timer(frames):
 
 from tkinter import N
 from engine.gameplay import clear_info_cache
+import engine.tutorial
 import engine.menus.pause_menu
 from engine.initializer import initialize_ruleset, initialize_settings
 import engine.menus.main_menu
@@ -15,16 +16,17 @@ import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
-from engine.unlocks import return_available_costumes, update_css_blobs, update_css_medals, update_costumes
+from engine.unlocks import return_available_costumes, update_css_blobs, update_mam_medals, update_costumes
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
 import resources.graphics_engine.display_css
-from os import getcwd
+from os import getcwd, getenv
 cwd = getcwd()
+appcwd = getenv('APPDATA')+'/BlobBall/'
 
-ruleset = initialize_ruleset(cwd)
-settings = initialize_settings(cwd)
+ruleset = initialize_ruleset(appcwd)
+settings = initialize_settings(appcwd)
 replay_ruleset = None
 
 
@@ -93,10 +95,9 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
-        game_state = info_getter[5]
+        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
         if(game_state == "casual_win"):
-            game_stats = info_getter[6]
+            game_stats = info_getter[5]
             clear_info_cache()
         elif(game_state == "pause"):
             timer = 10
@@ -116,16 +117,15 @@ def update_game_state(game_state, cwd):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
-            resources.graphics_engine.display_css.update_css_blobs(cwd)
+            resources.graphics_engine.display_css.update_css_blobs(appcwd)
             update_costumes()
             if(game_state == "pop_up"):
                 timer = 60
     elif(game_state == "replay_match"):
         update_replay_blobs()
-        info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
-        game_state = info_getter[5] # TODO: Fix/parity the output
+        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
         if(game_state == "replay_win"):
-            game_stats = info_getter[6]
+            game_stats = info_getter[5]
             clear_info_cache()
         elif(game_state == "replay_pause"):
             timer = 10
@@ -153,16 +153,16 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
         song_playing = ""
         if(game_state != "pop_up"):
-            update_css_blobs(cwd)
+            update_css_blobs(appcwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):
-        info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, cwd)
+        info_getter = engine.menus.rules_menu.rules_navigation(timer, ruleset, previous_screen, appcwd)
         game_state = info_getter[1]
         ruleset = info_getter[2]
     elif(game_state == "p1_mods" or game_state == "p2_mods"):
-        game_state, info_getter = engine.menus.rules_menu.player_mods_navigation(timer, ruleset, game_state, cwd)
+        game_state, info_getter = engine.menus.rules_menu.player_mods_navigation(timer, ruleset, game_state, appcwd)
     elif(game_state == "settings"):
-        info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, cwd)
+        info_getter = engine.menus.settings_menu.settings_navigation(timer, settings, previous_screen, appcwd)
         game_state = info_getter[1]
     elif(game_state == "rebind"):
         game_state, info_getter = engine.rebind.rebind_menu()
@@ -216,7 +216,11 @@ def update_game_state(game_state, cwd):
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
     elif(game_state == "tutorial"):
-        game_state, info_getter = "main_menu", []
+        game_state, info_getter = engine.tutorial.handle_tutorial()
+        if(game_state == "tutorial_complete"):
+            timer = 60
+    elif(game_state == "tutorial_complete"):
+        game_state, info_getter = engine.tutorial.handle_tutorial_menu(timer)
     elif(game_state == "quit"):
         info_getter = []
     return game_state, info_getter, song_playing, settings, ruleset

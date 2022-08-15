@@ -147,3 +147,6 @@ controller_popup_queue = Queue()
 
 # Generic Popups
 # > 0: Replay failed to load (incompatible version)
+# > 1: Update available (available to download, that is!)
+# > 2: Update unavailable (we are somehow on a developer build or are up to date)
+# > 3: Failed to check for update (network connection error)

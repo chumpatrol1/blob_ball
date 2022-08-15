@@ -2,6 +2,8 @@ import engine.handle_input
 from resources.sound_engine.sfx_event import createSFXEvent
 from json import dumps
 
+from updatechecker_dist import check_for_game_updates
+
 selector_position = 0
 
 from engine.button import Button
@@ -16,6 +18,7 @@ settings_buttons = [
     Button(485, 545, 0, 600),
     Button(545, 605, 0, 600),
     Button(605, 665, 0, 600),
+    Button(665, 725, 0, 600),
 ]
 
 def settings_selection_right(selector_position, settings, previous_screen, cwd, limit = None):
@@ -77,6 +80,17 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         settings['ui_mode'] = not settings['ui_mode']
         createSFXEvent('select')
 
+    def toggle_gversion():
+        if(settings['graphics'] == 1): # 0 = Legacy, 1 = Normal - I didn't make it a true or false statement in case we add more.
+            settings['graphics'] = 0
+        else:
+            settings['graphics'] += 1
+        createSFXEvent('select')
+    
+    def check_game_update():
+        check_for_game_updates()
+        
+
     run_func = {
         0: toggle_background,
         1: toggle_ui_mode,
@@ -84,7 +98,9 @@ def settings_selection_right(selector_position, settings, previous_screen, cwd, 
         3: adjust_music,
         4: adjust_sound,
         5: enter_rebind,
-        len(settings) + 3: go_back,
+        #6: toggle_gversion,
+        len(settings) + 4: go_back,
+        len(settings) + 3: check_game_update,
         len(settings) + 2: reset_settings,
         len(settings) + 1: reset_inputs,
         len(settings): enter_joystick,
@@ -184,11 +200,11 @@ def settings_navigation(timer, settings, previous_screen, cwd):
     global selector_position
     if('p1_up' in pressed or 'p2_up' in pressed):
         if selector_position == 0:
-            selector_position = len(settings) + 3
+            selector_position = len(settings) + 4
         else:
             selector_position -= 1
     elif('p1_down' in pressed or 'p2_down' in pressed):
-        if selector_position == len(settings) + 3:
+        if selector_position == len(settings) + 4:
             selector_position = 0
         else:
             selector_position += 1

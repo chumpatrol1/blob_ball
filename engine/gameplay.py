@@ -11,6 +11,7 @@ from engine.replays import return_replay_info, save_replay
 from resources.graphics_engine.display_graphics import capture_screen
 import engine.cpu_logic
 import random
+from resources.graphics_engine.display_particles import clear_particle_memory
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
 def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None, p1_costume = 0, p2_costume = 0):
@@ -37,7 +38,9 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
 initialized = False
 p1_blob = None
 p2_blob = None
+blob_dict = {}
 ball = None
+ball_dict = {}
 game_score = [0, 0]
 timer = 180
 countdown = 0
@@ -126,6 +129,8 @@ def convert_replay_to_inputs(inputs):
     return decoded_inputs
 
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, pause_timer, is_replay = False):
+    # TODO: For loop that allows you to have variable blobs
+    
     if(is_replay):
         game_state = "replay_match"
         #if(game_info['time'] > 2460):
@@ -154,6 +159,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     global goal_limit
     global time_limit
     global replay_inputs
+    global blob_dict
+    global ball_dict
     
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
@@ -169,6 +176,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
     def blob_ko(blob):
         blob.blob_ko()
 
+    # TODO: For loopify everything so the game will run regardless of blobs + balls loaded
 
     if not initialized:
         if(is_replay):
@@ -178,13 +186,16 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
         p1_blob = blobs[0]
         p2_blob = blobs[1]
         ball = blobs[2]
-        
-        temp_dict = {
+        blob_dict = {
             1: p1_blob,
             2: p2_blob
         }
-        p1_blob.all_blobs = temp_dict
-        p2_blob.all_blobs = temp_dict        
+        p1_blob.all_blobs = blob_dict
+        p2_blob.all_blobs = blob_dict
+        ball_dict = {
+            0: ball
+        }        
+        ball.all_blobs = blob_dict
         initialized = True
     else:
         if(timer == 0):
@@ -204,27 +215,29 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             replay_inputs[-1] += "/"
             if(game_info['time'] % 1200 == 1199):
                 replay_inputs.append("")
-            # TODO: Check environmental collisions FIRST (like glue patches)
-            # STEP 1: UPDATE EXISTING ENV
+
             update_environmental_modifiers()
-            # STEP 2: CHECK COLLISIONS FOR EACH BLOB, THEN BALL
-            p1_blob.check_environmental_collisions(return_environmental_modifiers())
-            p2_blob.check_environmental_collisions(return_environmental_modifiers())
-            ball.check_environmental_collisions(return_environmental_modifiers())
-            # STEP 3: DRAW THE MODIFIERS
-            p1_blob, p2_blob = ball.check_block_collisions(p1_blob, p2_blob)
-            p2_blob, p1_blob = ball.check_block_collisions(p2_blob, p1_blob)
-            ball.check_blob_ability(p1_blob)
-            ball.check_blob_ability(p2_blob)
-            if(p1_blob.kick_timer == 1):
-                p1_blob.check_blob_collision(p2_blob)
-                   
-            if(p2_blob.kick_timer == 1):
-                p2_blob.check_blob_collision(p1_blob)
 
-            p1_blob.check_ability_collision(p2_blob, ball)
-            p2_blob.check_ability_collision(p1_blob, ball)
+            env_mod = return_environmental_modifiers()
+            for blob in blob_dict.values():
+                blob.check_environmental_collisions(env_mod)
 
+            for sball in ball_dict.values():
+                sball.check_environmental_collisions(env_mod)
+                sball.check_block_collisions()
+                sball.check_blob_ability()
+
+            for blob in blob_dict.values():
+                for other_blob in blob_dict.values():
+                    if(blob.kick_timer == 1 and blob.player != other_blob.player):
+                        blob.check_blob_collision(other_blob)
+
+            for blob in blob_dict.values():
+                for other_blob in blob_dict.values():
+                    if(blob.player != other_blob.player):
+                        blob.check_ability_collision(other_blob)
+
+            # TODO: Figure out how to loopify this
             if(p2_blob.hp <= 0):
                     timer = 120
                     p2_ko = True
@@ -239,12 +252,14 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                     p2_blob.info['points_from_kos'] += 1
                     p1_blob.damage_flash_timer = 0
 
+            for blob in blob_dict.values():
+                blob.cooldown()
 
-            p1_blob.cooldown()
-            p2_blob.cooldown()
-            ball.move(p1_blob, p2_blob)
-            p1_blob = ball.check_blob_collisions(p1_blob)
-            p2_blob = ball.check_blob_collisions(p2_blob)
+            for sball in ball_dict.values():
+                sball.move()
+                sball.check_blob_collisions()
+
+            # TODO: Figure out how to handle goals
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
                 createSFXEvent('goal')
                 goal_scorer = 1
@@ -274,6 +289,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             game_info['time'] += 1
             
         else:
+            # TODO: Figure out how to handle KO's
             if(p1_ko and not p2_ko):
                 blob_ko(p1_blob)
                 if(p1_blob.y_pos >= 1800):
@@ -303,7 +319,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             if(goal_scored):
                 ball.image = engine.ball.type_to_image("goal_ball")
                 ball.special_timer = 2
-                ball.move(p1_blob, p2_blob)
+                ball.move()
                 p1_blob.move([])
                 p2_blob.move([])
                 p1_blob.impact_land_frames = 0
@@ -358,9 +374,9 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 update_mu_chart(game_score, p1_blob, p2_blob)
             else:
                 game_state = "replay_win"                   
-            
-            return p1_blob, p2_blob, ball, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])
-    return p1_blob, p2_blob, ball, game_score, timer, game_state, time_limit # TODO: Fix/Parity the Output
+            clear_particle_memory()
+            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
+    return game_state, [blob_dict, ball_dict, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
 def clear_info_cache():
     global game_score

@@ -2,7 +2,7 @@ from engine.blobs import Blob
 from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
-from os import getcwd
+from os import getcwd, getenv
 
 blob_array = load_almanac_blob_array()
 
@@ -77,6 +77,7 @@ def load_blobs(blob_image_cache, directory):
     return blob_image_cache
 
 cwd = getcwd()
+appcwd = getenv('APPDATA')+"/BlobBall"
 
 def draw_almanac_main(game_display, selector_position, settings):
     global ball_76
@@ -95,7 +96,16 @@ def draw_almanac_main(game_display, selector_position, settings):
         game_display.blit(text_box, text_rect)
         text_y += 76
 
-def create_time_string(time):
+def create_time_string(time, smallest = ":"):
+    '''
+    Takes an integer and outputs a string representing time elapsed
+    Inputs:
+        - time: Integer value
+        - smallest: The character representing the separation between the smallest and second smallest unit of time
+
+    Outputs:
+        - time_string: String representing time elapsed
+    '''
     hours = time//3600
     time -= hours * 3600
     minutes = time//60
@@ -108,13 +118,13 @@ def create_time_string(time):
     if(seconds < 10):
         s = "0"
 
-    return str(hours) + ":" + m + str(minutes) + ":" + s + str(seconds)
+    return str(hours) + ":" + m + str(minutes) + smallest + s + str(seconds)
 
 def draw_almanac_stats(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
     tiny_font = menu_font = font_cache['tiny_font']
     from json import loads
-    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+    with open(appcwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
     text_array = [
         menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
@@ -127,6 +137,9 @@ def draw_almanac_stats(game_display, settings):
         tiny_font.render('Costumes Unlocked: ' + str(game_stats['costumes_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Backgrounds Unlocked: ' + str(game_stats['backgrounds_unlocked']), False, (0, 0, 150)),
         tiny_font.render('Most Played Blob: ' + game_stats['most_played_character'].title(), False, (0, 0, 150)),
+        tiny_font.render('Fastest Tutorial Completion: ' + create_time_string(game_stats['fastest_tutorial_completion'], smallest = '.'), False, (0, 0, 150)),
+        tiny_font.render('Tutorial Completion Count: ' + str(game_stats['tutorial_completion_count']), False, (0, 0, 150)),
+        
     ]
     match_text = [
         tiny_font.render('Match Statistics', False, (0, 0, 150)),
@@ -180,7 +193,7 @@ def draw_almanac_stats_2(game_display, settings):
     draw_background(game_display, 'almanac_stats', settings)
     menu_font = tiny_font = font_cache['tiny_font']
     from json import loads
-    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+    with open(appcwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
     text_array = [
         menu_font.render('Lifetime Statistics', False, (0, 0, 150)),
@@ -244,7 +257,7 @@ def draw_almanac_stats_2(game_display, settings):
 def load_mu_chart():
     global mu_chart
     from json import loads
-    with open(cwd+'/saves/matchup_chart.txt', 'r') as muchart:
+    with open(appcwd+'/saves/matchup_chart.txt', 'r') as muchart:
         mu_chart = loads(muchart.readline())
     return mu_chart
 

@@ -18,19 +18,26 @@ ZIP the files together for release!
 #python setup.py bdist_msi
 
 import os
+cwd = os.getcwd()
+appcwd = os.getenv('APPDATA')+'/BlobBall'
+from engine.initializer import check_folders, initialize_ruleset, initialize_game_stats, load_matchup_chart, check_existing_directory
+check_existing_directory(appcwd)
 
 from engine.get_events import update_events
+from engine.rebind import reset_rebind
+from engine.tutorial import reset_tutorial
+from resources.graphics_engine.display_gameplay import unload_image_cache
+from resources.graphics_engine.display_particles import clear_particle_memory
+
 
 def get_script_path():
     return os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(get_script_path())
-cwd = os.getcwd()
+
 print("MAIN",cwd)
 
 import pygame as pg
-from engine.initializer import check_folders, initialize_ruleset, initialize_game_stats, load_matchup_chart, check_existing_directory
-check_existing_directory(cwd)
 from engine.game_handler import update_game_state as ugs
 import resources.graphics_engine.display_graphics as dg
 import resources.sound_engine.handle_sound as hs
@@ -38,24 +45,24 @@ import engine.handle_input
 from engine.handle_input import detect_joysticks, get_keypress
 from json import loads, dumps
 import time
-from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs, load_medal_unlocks, update_css_medals, load_costume_unlocks
+from engine.unlocks import load_blob_unlocks, update_costumes, update_css_blobs, load_medal_unlocks, update_mam_medals, load_costume_unlocks
 game_state = "control_splash"
 new_game_state = "control_splash"
 
-check_folders(cwd)
-game_stats = initialize_game_stats(cwd)
-initialize_ruleset(cwd)
-load_matchup_chart(cwd)
+check_folders(appcwd)
+game_stats = initialize_game_stats(appcwd)
+initialize_ruleset(appcwd)
+load_matchup_chart(appcwd)
 
-load_blob_unlocks(cwd)
-load_medal_unlocks(cwd)
-load_costume_unlocks(cwd)
-update_css_blobs(cwd)
+load_blob_unlocks(appcwd)
+load_medal_unlocks(appcwd)
+load_costume_unlocks(appcwd)
+update_css_blobs(appcwd)
 update_costumes()
 
 done = False
 
-with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+with open(appcwd+'/saves/game_stats.txt', 'w') as statsdoc:
     game_stats['times_bb_started'] += 1
     start_time = time.time()
     statsdoc.write(dumps(game_stats))
@@ -97,8 +104,16 @@ def run(game_state):
     if('escape' in pressed and not escape_timer):
         if(game_state in {"casual_match", "pause", "css", "replay_match", "replay_pause"}):
             escape_timer = 30
+        elif(game_state == "tutorial"):
+            escape_timer = 30
+            game_state = "main_menu"
+            clear_particle_memory()
+            unload_image_cache()
+
+            reset_tutorial()
         elif(game_state == "rebind"):
-            #game_state = "settings"
+            reset_rebind()
+            game_state = "settings"
             escape_timer = 30
         else:
             done = True #Ends the game
@@ -113,9 +128,9 @@ try:
         game_state = run(game_state)
     else:
         print("All done!")
-        with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+        with open(appcwd+'/saves/game_stats.txt', 'r') as statsdoc:
                 game_stats = loads(statsdoc.readline())
-        with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+        with open(appcwd+'/saves/game_stats.txt', 'w') as statsdoc:
                 game_stats['time_open'] = game_stats['time_open'] + round(time.time() - start_time)
                 statsdoc.write(dumps(game_stats))
         pg.quit()

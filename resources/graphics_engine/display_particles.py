@@ -11,6 +11,7 @@ def blit_and_update_particles(memory, game_display):
     temparray = []
     for particle in memory:
         particle.image.set_alpha(particle.alpha)
+        # TODO: Fix the mirror ko particle crash
         game_display.blit(particle.image, (particle.x_pos, particle.y_pos), area = particle.crop)
         particle.update()
         if not (particle.alpha <= 0) and not particle.lifetime <= 0:
@@ -61,52 +62,24 @@ def draw_landing_particles(blob):
     particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 25) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-2, 0), y_speed = randint(-4, -2), gravity = 0.1))
     particle_memory.append(dpc.Particle(image = particle_cache['landing_particle'], x_pos = (blob.x_center - 50) * (1000/1366), y_pos = (blob.y_center - 25), alpha = 15 * randint(10, 17), x_speed = 0.5 * randint(-3, -1), y_speed = randint(-4, -2), gravity = 0.1))
 
-def create_blob_particles(blob, other_blob):
+def create_blob_particles(blob):
     global particle_memory
-    def draw_gale(blob, other_blob):
+    def draw_gale(blob):
         random_number = randint(0,2)
         if(random_number):
             if(blob.player == 1):
                 particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(150, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = 3))
             elif(blob.player == 2):
-                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(150, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))
-    
-    def draw_starpunch_wait(blob, other_blob): #Bad location
-        particle_memory.append(dpc.Particle(image = particle_cache['star_glove'], x_pos = blob.x_center * (1000/1366) - 20, y_pos = blob.y_center * (382/768), alpha = 255, lifetime = 1))
-    
-    def draw_starpunch(blob, other_blob):
-        punch_x = other_blob.x_center
-        punch_y = other_blob.y_center
-        if(other_blob.x_center > blob.x_center + 255):
-            punch_x = blob.x_center + 255
-        elif(blob.x_center - 315 > other_blob.x_center):
-            punch_x = blob.x_center - 315
-
-        if(blob.y_center + 330 < other_blob.y_center):
-            punch_y = blob.y_center + 330
-        elif(blob.y_center - 300 > other_blob.y_center):
-            punch_y = blob.y_center - 300
-
-        x_midpoint = (punch_x + blob.x_center)/2
-        y_midpoint = (punch_y + blob.y_center)/2
-
-        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = blob.x_center * (1000/1366), y_pos = blob.y_center * 382/768, alpha = 255, lifetime = 60, fade = 10))
-        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = ((blob.x_center + x_midpoint)/2) * (1000/1366), y_pos = (blob.y_center + y_midpoint)/2 * 382/768, alpha = 255, lifetime = 60, fade = 10))
-        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = x_midpoint * (1000/1366), y_pos = y_midpoint * 382/768, alpha = 255, lifetime = 60, fade = 10))
-        particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = (punch_x + x_midpoint)/2 * (1000/1366), y_pos = (punch_y + y_midpoint)/2 * 382/768, alpha = 255, lifetime = 60, fade = 10))
-        particle_memory.append(dpc.Particle(image = particle_cache['star_glove'], x_pos = punch_x * (1000/1366), y_pos = punch_y * 382/768, alpha = 255, lifetime = 60, fade = 10))
-        
+                particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = randint(-100, 1466), y_pos = randint(150, 600), alpha = 15 * randint(10, 17), fade = 1, x_speed = -3))      
     used_ability_dict = {
         'gale': draw_gale,
-        'starpunch_wait': draw_starpunch_wait,
-        'starpunch': draw_starpunch,
     }
 
     if blob.used_ability in used_ability_dict:
-        used_ability_dict[blob.used_ability](blob, other_blob)
+        used_ability_dict[blob.used_ability](blob)
 
 
-def draw_blob_particles(game_display, ball, blob, other_blob):
+def draw_blob_particles(game_display, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
     COPY AND PASTE A PREVIOUS PARTICLE TO A NEW LINE
     ENSURE THAT IT HAS A UNIQUE NAME (OTHERWISE IT WILL OVERWRITE A PREVIOUS PARTICLE)
@@ -117,6 +90,7 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
     ENSURE THAT IT HAS THE CORRECT IMAGE ADDRESS
     ENSURE THAT IT HAS THE CORRECT SCALING (FOR PARTICLES THAT HAVE A SCALING FUNCTION ATTACHED)
     '''
+    # TODO: Handle the particle memory a bit differently.
     global particle_memory
     if not particle_cache['initialized']:
         particle_cache['initialized'] = True
@@ -153,101 +127,113 @@ def draw_blob_particles(game_display, ball, blob, other_blob):
         particle_cache['glue_shot'] = pg.image.load(cwd + "/resources/images/particles/glue_shot.png").convert_alpha()
         particle_cache['glue_puddle_1'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_1.png").convert_alpha()
         particle_cache['glue_puddle_2'] = pg.image.load(cwd + "/resources/images/particles/glue_puddle_2.png").convert_alpha()
-    
-    blob_speed = blob.top_speed
-    if(blob.status_effects['glued']):
-        blob_speed = 5 + (3 * bool(blob.boost_timer))
-    if(blob.status_effects['buttered']):
-        blob_speed += 2
-    if(blob.status_effects['hypothermia']):
-        blob_speed -= 3
-    
-    if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
-        particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
-        particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
-        particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
-
-    #TODO: Add all of these into an array
-    if(blob.impact_land_frames == 9): #Landing Particles
-        draw_landing_particles(blob)
-        draw_landing_particles(blob)
-        draw_landing_particles(blob)
+        particle_cache['smoke_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/smoke_particle.png").convert_alpha(), (40, 40))
+        particle_cache['console'] = pg.image.load(cwd + "/resources/images/particles/nec.png").convert_alpha()
+        particle_cache['cartridge_1'] = pg.image.load(cwd + "/resources/images/particles/cartridge_quirkio.png").convert_alpha()
+        particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
+        particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
+        particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
+    for blob in blobs:
+        blob_speed = blob.top_speed
+        if(blob.status_effects['glued']):
+            blob_speed = 5 + (3 * bool(blob.boost_timer))
+        if(blob.status_effects['buttered']):
+            blob_speed += 2
+        if(blob.status_effects['hypothermia']):
+            blob_speed -= 3
         
-    
-    if(blob.parried):
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+        if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
+            particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
+            particle_memory = draw_top_speed_particles(blob.x_center, particle_memory)
+            particle_memory = draw_top_speed_particles(blob.x_center - 50, particle_memory)
 
-    if(blob.perfect_parried):
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 100) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) - 1, y_speed = -3, gravity = 0.1))
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 40) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1))
-        particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center + 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = other_blob.x_speed * (500/1366) + 1, y_speed = -3, gravity = 0.1))
+        #TODO: Add all of these into an array
+        if(blob.impact_land_frames == 9): #Landing Particles
+            draw_landing_particles(blob)
+            draw_landing_particles(blob)
+            draw_landing_particles(blob)
+            
+        
+        if(blob.parried):
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.1, y_speed = -3))
+        
+        # TODO: Fix Perfect Parrying so it blocks based on the damage source's speed
+        if(blob.perfect_parried):
+            # other_blob.x_speed * (500/1366) is added to x speed
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 100) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed =  -1, y_speed = -3, gravity = 0.1))
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center - 40) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = 0, y_speed = -3, gravity = 0.1))
+            particle_memory.append(dpc.Particle(image = particle_cache['shield_particle'], x_pos = (blob.x_center + 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = 1, y_speed = -3, gravity = 0.1))
 
-    if(blob.clanked):
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-        particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
-    
-    if(blob.status_effects['judged'] % 5 == 0 and blob.status_effects['judged'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['judgement'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
-    
-    if(blob.status_effects['stunned'] % 5 == 0 and blob.status_effects['stunned'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['stun_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
-    
-    if(blob.status_effects['reflecting'] % 5 == 0 and blob.status_effects['reflecting'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['reflection_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        if(blob.clanked):
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 65) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center - 20) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+            particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = (blob.x_center + 25) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, x_speed = blob.x_speed * (500/1366), y_speed = blob.y_speed * (400/768), gravity = 0.3))
+        
+        if(blob.status_effects['judged'] % 5 == 0 and blob.status_effects['judged'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['judgement'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
+        
+        if(blob.status_effects['stunned'] % 5 == 0 and blob.status_effects['stunned'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['stun_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        
+        if(blob.status_effects['reflecting'] % 5 == 0 and blob.status_effects['reflecting'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['reflection_particle'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-    if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
+        if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-    if(blob.used_ability == "pill"):
-        ability_icon = pg.image.load(blob.ability_icon)
-        particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
+        if(blob.used_ability == "pill"):
+            ability_icon = pg.image.load(blob.ability_icon)
+            particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
 
-    if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
+        if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
 
-    if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
-        particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
+        if(blob.status_effects['hypothermia'] % 5 == 0 and blob.status_effects['hypothermia'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = 1, gravity = 0, lifetime = 130))
 
-    create_blob_particles(blob, other_blob)
-    #Manages and updates particles
+        if(blob.status_effects['overheat'] % 10 == 0 and blob.status_effects['overheat'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['smoke_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+
+
+        create_blob_particles(blob)
+        #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
 
-def draw_damage_flash(flash_x):
+def draw_damage_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['damage_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['damage_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_heal_flash(flash_x):
+def draw_heal_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['heal_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['heal_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_recharge_flash(flash_x):
+def draw_recharge_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['recharge_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_block_flash(flash_x):
+def draw_block_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['block_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['block_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-def draw_boost_flash(flash_x):
+def draw_boost_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = flash_x, y_pos = 0, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
 
-def draw_energy_flash(flash_x):
+def draw_energy_flash(align):
     global particle_memory
-    ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = flash_x, y_pos = 75, fade = 15, ground_clip = True))
+    ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
 
-def draw_shatter(flash_x, shatter_timer):
+def draw_shatter(align, shatter_timer):
     global particle_memory
     shatter_timer = (68 - shatter_timer)//4
     original = particle_cache['shatter_spritesheet'].get_rect()
     cropx, cropy = ((shatter_timer-1)%5)*70, ((shatter_timer-1)//5) * 70
     cropRect = (cropx, cropy, 70, 70)
 
-    ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = flash_x, y_pos = 0, lifetime=1, ground_clip = True, crop=cropRect))
+    ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = align[0], y_pos = align[1], lifetime=1, ground_clip = True, crop=cropRect))
 
 def clear_particle_memory():
     global particle_memory
@@ -261,73 +247,25 @@ def clear_particle_memory():
 
 ball_particle_memory = []
 
-def draw_ball_particles(game_display, ball, p1_blob, p2_blob):
+def draw_ball_particles(game_display, ball, blobs):
+    '''
+    Draws appropriate particles on the ball based on abilities used by the blobs.
+    '''
     global ball_particle_memory
-    if(p1_blob.used_ability == "fireball" or p2_blob.used_ability == "fireball"):
-        ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
-    
-    if(p1_blob.used_ability == "snowball" or p2_blob.used_ability == "snowball"):
-        ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
-    
-    if(p1_blob.used_ability == "geyser" or p2_blob.used_ability == "geyser"):
-        for y in range((1240 - round(ball.y_pos))//40):
-            if(y > 7):
-                particle_cache['water_particle'].set_alpha(100)
-            else:
-                particle_cache['water_particle'].set_alpha(255)
-            game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
-    
-    '''if(p1_blob.species == "rock"):
-        if(p1_blob.used_ability == "spire_wait"):
-            #print(100 * log10(255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))))
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay)), fade = 0, lifetime = 1))
-            #ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 100 * log10(255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))), fade = 0, lifetime = 1))
+    for blob in blobs:
+        if(blob.used_ability == "fireball"):
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
         
-        elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown_max - p1_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
-            for x in range(0, 10):
-                earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
-                ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (ball.x_center * 1000/1366) + random.randint(-50, 50), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+        if(blob.used_ability == "snowball"):
+            ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
         
-'''
-    '''if(p2_blob.species == "rock"):
-        if(p2_blob.used_ability == "spire_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p2_blob.special_ability_cooldown_max - p2_blob.special_ability_timer)/(p2_blob.special_ability_delay)), fade = 0, lifetime = 1))
-            
-        
-        elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown_max - p2_blob.special_ability_delay):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['rock_spire'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 500, alpha = 255, fade = 7.25, ground_clip=True))
-            for x in range(0, 10):
-                earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
-                ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (ball.x_center * 1000/1366) + random.randint(-50, 50), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))'''
-        
-    '''if(p1_blob.species == "lightning"):
-        if(p1_blob.used_ability == "thunderbolt_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay)), fade = 0, lifetime = 1))
-        
-        elif(p1_blob.special_ability_timer == p1_blob.special_ability_cooldown_max - p1_blob.special_ability_delay):
-            
-            bolt = (1, 2)
-            boltch = random.choice(bolt)
-
-            if boltch == 1:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-            elif boltch == 2:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-
-    if(p2_blob.species == "lightning"):
-        if(p2_blob.used_ability == "thunderbolt_wait"):
-            ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_glyph'], x_pos = ball.x_center * (1000/1366) - 50, y_pos = 700, alpha = 255 * ((p2_blob.special_ability_cooldown_max - p2_blob.special_ability_timer)/(p2_blob.special_ability_delay)), fade = 0, lifetime = 1))
-        
-        elif(p2_blob.special_ability_timer == p2_blob.special_ability_cooldown_max - p2_blob.special_ability_delay):
-            
-            bolt = (1, 2)
-            boltch = random.choice(bolt)
-
-            if boltch == 1:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))
-            elif boltch == 2:
-                ball_particle_memory.append(dpc.Particle(image = particle_cache['thunder_bolt_2'], x_pos = (ball.x_center * 1000/1366) - 50, y_pos = 112, alpha = 255, fade = 7.25))'''
+        if(blob.used_ability == "geyser"):
+            for y in range((1240 - round(ball.y_pos))//40):
+                if(y > 7):
+                    particle_cache['water_particle'].set_alpha(100)
+                else:
+                    particle_cache['water_particle'].set_alpha(255)
+                game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
 
     ball_particle_memory = blit_and_update_particles(ball_particle_memory, game_display)
 
@@ -336,8 +274,23 @@ def draw_spire_dirt(spire_x):
         earth_particles = [particle_cache['landing_particle'], particle_cache['landing_particle_2'], particle_cache['landing_particle_3']]
         ball_particle_memory.append(dpc.Particle(image = random.choice(earth_particles), x_pos = (spire_x * 1000/1366) + random.randint(0, 100), x_speed = random.randint(-2, 2), y_pos = 675, y_speed = random.randint(-20, -15), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
 
+def draw_console_sparks(console_pos):
+    for x in range(0, 10):
+        spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (console_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = console_pos[1] * (400/768), y_speed = random.randint(-10, -5), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+
+def draw_cartridge_sparks(cart_pos, cart_speed):
+    for x in range(0, 7):
+        spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (cart_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = cart_speed[0] + random.randint(-2, 2), y_pos = cart_pos[1] * (400/768), y_speed = cart_speed[1] + random.randint(-5, 0), gravity = 1, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+
+def draw_teleportation_pfx(tele_pos):
+    for x in range(0, 7):
+        spark_particles = [particle_cache['glitch_particle_1']]
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (tele_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = tele_pos[1] * (400/768), y_speed = random.randint(-2, 2), gravity = 0, alpha = 255, fade = 17, ground_clip=True, lifetime = 255))
+
 ball_overlay_memory = []
-def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
+def draw_ball_overlay(game_display, ball, blobs):
     global ball_overlay_memory
     if not overlay_cache['initialized']:
         particle_cache['thunder_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/thunder_particle.png").convert_alpha(), (40, 40))
@@ -353,33 +306,22 @@ def draw_ball_overlay(game_display, ball, p1_blob, p2_blob):
             particle_cache['thunder_particle'].set_alpha(alpha)
             blitRotateCenter(game_display, particle_cache['thunder_particle'], (ball.previous_locations[-1][0] * (1000/1366) + randint(-10, 10), ball.previous_locations[-1][1] * (400/768) + randint(-10, 10)), (60 * randint(0, 5)))
             alpha += 10
-        
-    if(p1_blob.used_ability == "stoplight_pfx" or p2_blob.used_ability == "stoplight_pfx"):
-        ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
+    
+    for blob in blobs:
+        if(blob.used_ability == "stoplight_pfx"):
+            ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
 
-    if(p1_blob.used_ability == "hook"):
-        #print("hooka")
-        blob_x = (p1_blob.x_center) * (1000/1366)
-        blob_y = (p1_blob.y_center - 200) * (382/768)
-        ball_x = ball.x_center * (1000/1366)
-        ball_y = ball.y_center * (400/768)
-        if(p1_blob.holding_timer < p1_blob.special_ability_delay):
-            ball_x = (ball_x - blob_x) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_x
-            ball_y = (ball_y - blob_y) * (p1_blob.holding_timer/p1_blob.special_ability_delay) + blob_y
-        pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
-        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
-
-    if(p2_blob.used_ability == "hook"):
-        #print("snooka")
-        blob_x = (p2_blob.x_center) * (1000/1366)
-        blob_y = (p2_blob.y_center - 200) * (382/768)
-        ball_x = ball.x_center * (1000/1366)
-        ball_y = ball.y_center * (400/768)
-        if(p2_blob.holding_timer < p2_blob.special_ability_delay):
-            ball_x = (ball_x - blob_x) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_x
-            ball_y = (ball_y - blob_y) * (p2_blob.holding_timer/p2_blob.special_ability_delay) + blob_y
-        pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
-        pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
+        if(blob.used_ability == "hook"):
+            #print("hooka")
+            blob_x = (blob.x_center) * (1000/1366)
+            blob_y = (blob.y_center - 200) * (382/768)
+            ball_x = ball.x_center * (1000/1366)
+            ball_y = ball.y_center * (400/768)
+            if(blob.holding_timer < blob.special_ability_delay):
+                ball_x = (ball_x - blob_x) * (blob.holding_timer/blob.special_ability_delay) + blob_x
+                ball_y = (ball_y - blob_y) * (blob.holding_timer/blob.special_ability_delay) + blob_y
+            pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
+            pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 
     ball_overlay_memory = blit_and_update_particles(ball_overlay_memory, game_display)
 

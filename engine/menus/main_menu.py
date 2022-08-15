@@ -28,8 +28,7 @@ def game_state_navigation(selector_position):
         4: "settings",
         #5: "medals",
         5: "main_menu",
-        6: "main_menu",
-        #6: "tutorial",
+        6: "tutorial",
         7: "quit",
     }
     

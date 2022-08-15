@@ -31,6 +31,7 @@ def draw_settings_screen(game_display, settings, selector_position):
         menu_font.render("Remap Joystick", False, text_color),
         menu_font.render("Default Controls", False, text_color),
         menu_font.render("Reset to Default", False, text_color),
+        menu_font.render("Check for Game Update", False, text_color),
         menu_font.render("<-- Back", False, text_color),
     ]
     text_y = 76

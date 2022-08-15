@@ -1,7 +1,7 @@
 from json import loads, dumps
-from os import getcwd
+from os import getenv
 from engine.popup_event import createPopUpEvent
-cwd = getcwd()
+cwd = getenv('APPDATA')+'/BlobBall'
 
 def attempt_blob_unlocks(game_stats):
     blob_unlock_requirements = {
@@ -19,6 +19,7 @@ def attempt_blob_unlocks(game_stats):
         40: "mirror",
         45: "fisher",
         52: "glue",
+        59: "arcade",
     }
     
     blobs_unlocked = 0
@@ -46,6 +47,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "mirror": {10: "mirror/grayscale_1"},
         "fisher": {10: "fisher/grayscale_1"},
         "glue": {10: "glue/grayscale_1"},
+        "arcade": {10: "arcade/grayscale_1"},
     }
     blobs_unlocked = 0
     try:
@@ -212,3 +214,24 @@ def update_mu_chart(game_score, p1_blob, p2_blob):
 
         game_stats['most_played_character'] = most_played_character
             
+def save_tutorial_stats(info_getter):
+    '''
+    Info_Getter is the output of tutorial.handle_tutorial.
+    Increments tutorial completion by 1, and sets the record of the tutorial.
+
+    Inputs:
+        - info_getter: Array with at least 5 elements. The 5th one represents an integer
+        - game_stats.txt: Text file that stores player statistics
+
+    Outputs:
+        - game_stats.txt: Text file that stores player statistics
+    '''
+    with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
+        game_stats = loads(statsdoc.readline())
+    with open(cwd+'/saves/game_stats.txt', 'w') as statsdoc:
+        game_stats['tutorial_completion_count'] += 1
+        completion_timer = info_getter[4]
+        if(completion_timer < game_stats['fastest_tutorial_completion']):
+            game_stats['fastest_tutorial_completion'] = completion_timer
+
+        statsdoc.write(dumps(game_stats))

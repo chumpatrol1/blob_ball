@@ -1,6 +1,7 @@
 import pygame as pg
-from os import getcwd
+from os import getcwd, getenv
 cwd = getcwd()
+appcwd = getenv('APPDATA')+"/BlobBall"
 snapshot = None
 ball = pg.transform.scale(pg.image.load(cwd + "/resources/images/balls/soccer_ball.png"), (76, 76))
 shader = pg.Surface((1366, 768), pg.SRCALPHA)
@@ -16,11 +17,11 @@ def take_screenshot():
     current_time = time.localtime()
     time_str = f"{current_time.tm_year}-{current_time.tm_mon}-{current_time.tm_mday} {current_time.tm_hour}.{current_time.tm_min}.{current_time.tm_sec}_"
     identifier = 1
-    file_str = cwd + '/screenshots/Blob Ball Screenshot ' + time_str + str(identifier)
+    file_str = appcwd + '/screenshots/Blob Ball Screenshot ' + time_str + str(identifier)
     from os.path import exists
     while exists(file_str + ".png"):
         identifier += 1
-        file_str = cwd + '/screenshots/Blob Ball Screenshot ' + time_str + str(identifier)
+        file_str = appcwd + '/screenshots/Blob Ball Screenshot ' + time_str + str(identifier)
     
     pg.image.save(snapshot, file_str + ".png")
 

@@ -1,6 +1,6 @@
 import pygame as pg
 import sys
-from os import getcwd
+from os import getenv
 from json import loads, dumps
 
 from pygame.constants import K_KP_ENTER
@@ -135,21 +135,21 @@ joystick_map = {}
 def reset_joystick_map():
     global joystick_map
     joystick_map = copy.deepcopy(original_joystick_mapping)
-    with open(getcwd()+"/config/joysticks.txt", "w") as joy_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "w") as joy_file:
         joy_file.write(dumps(joystick_map))
     #print(joystick_map)
 
 reset_joystick_map()
 
 try:
-    controls = open(getcwd()+"/config/controls.txt", "r+")
+    controls = open(getenv('APPDATA')+"/BlobBall"+"/config/controls.txt", "r+")
 except:
-    with open(getcwd()+"/config/controls.txt", "w") as controls:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/controls.txt", "w") as controls:
         controls.write(dumps(input_map))
-    controls = open(getcwd()+"/config/controls.txt", "r+")
+    controls = open(getenv('APPDATA')+"/BlobBall"+"/config/controls.txt", "r+")
 
 try:
-    with open(getcwd()+"/config/joysticks.txt", "r+") as joy_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "r+") as joy_file:
         n_joystick_mapping = loads(joy_file.readlines()[0])
 
     for key in original_joystick_mapping:
@@ -162,14 +162,14 @@ try:
                     n_joystick_mapping[key][joy_button] = original_joystick_mapping[key][joy_button]
 
     joystick_map = n_joystick_mapping
-    with open(getcwd()+"/config/joysticks.txt", "w") as joy_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "w") as joy_file:
         joy_file.write(dumps(joystick_map))
 
 except Exception as ex:
-    with open(getcwd()+"/config/joysticks.txt", "w") as joystick_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "w") as joystick_file:
         joystick_file.write(dumps(original_joystick_mapping))
     
-    with open(getcwd()+"/config/joysticks.txt", "r+") as joy_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "r+") as joy_file:
         joystick_map = loads(joy_file.readlines()[0])
 
 forbidden_keys = [pg.K_ESCAPE, pg.K_LCTRL, pg.K_RCTRL, pg.K_RETURN]
@@ -185,7 +185,7 @@ def return_joystick_mapping():
 def bind_to_joy(player, controller, key, value):
     global joystick_map
     joystick_map[player][controller][key] = value
-    with open(getcwd()+"/config/joysticks.txt", "w") as joystick_file:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/joysticks.txt", "w") as joystick_file:
         joystick_file.write(dumps(joystick_map))
     
 
@@ -255,7 +255,8 @@ def unbind_inputs(mode = 'all'):
     if(mode == 'p1'):
         for button in input_map:
             if 'p1' in button:
-                input_map[button] = 0
+                pass
+                #input_map[button] = 0
         
         for key in input_map:
             if 'p2' in key:
@@ -264,7 +265,8 @@ def unbind_inputs(mode = 'all'):
     elif(mode == 'p2'):
         for button in input_map:
             if 'p2' in button:
-                input_map[button] = 0
+                pass
+                #input_map[button] = 0
         
         for key in input_map:
             if 'p1' in key:
@@ -273,7 +275,8 @@ def unbind_inputs(mode = 'all'):
 
     elif(mode == 'all'):
         for button in input_map:
-            input_map[button] = 0
+            pass
+            #input_map[button] = 0
     
     else:
         input_map[mode] = 0
@@ -295,7 +298,7 @@ def bind_input(key_to_rebind, last_key):
                 print(temp_binding)
                 if(key_to_rebind == last_key):
                     temp_binding = []
-                    with open(getcwd()+"/config/controls.txt", "w") as control_list:
+                    with open(getenv('APPDATA')+"/BlobBall"+"/config/controls.txt", "w") as control_list:
                         control_list.write(dumps(input_map))
                 else:
                     createSFXEvent('chime_progress')
@@ -326,7 +329,7 @@ def reset_inputs():
     'p2_boost': pg.K_PERIOD,
     }
     update_mapkey_names(input_map)
-    with open(getcwd()+"/config/controls.txt", "w") as control_list:
+    with open(getenv('APPDATA')+"/BlobBall"+"/config/controls.txt", "w") as control_list:
                     control_list.write(dumps(input_map))
 
 def bind_gcca_to_player(event, detect_new_controllers, new_controller, controller_name):
@@ -707,6 +710,8 @@ def merge_inputs(pressed, override = False):
             merged_press.append('ability')
         if('p1_kick' in pressed or 'p2_kick' in pressed):
             merged_press.append('kick')
+        if('p1_block' in pressed or 'p2_block' in pressed):
+            merged_press.append('block')
         if('p1_boost' in pressed or 'p2_boost' in pressed):
             merged_press.append('boost')
         if('return' in pressed):
