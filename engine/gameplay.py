@@ -125,7 +125,7 @@ def convert_replay_to_inputs(inputs):
     global input_to_code
     decoded_inputs = []
     for rinput in inputs:
-            decoded_inputs.append(code_to_input[rinput])
+        decoded_inputs.append(code_to_input[rinput])
     return decoded_inputs
 
 def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, pause_timer, is_replay = False):
@@ -139,6 +139,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             pressed = return_replay_info()[6][game_info['time']]
         except:
             print(game_info['time'])
+            clear_particle_memory()
             raise KeyError
         pressed = convert_replay_to_inputs(pressed)
     else:
@@ -212,9 +213,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 replay_inputs[-1] += convert_inputs_to_replay(p2_blob.move(cpu_logic), 2)
             else:
                 replay_inputs[-1] += convert_inputs_to_replay(p2_blob.move(pressed), 2)
-            replay_inputs[-1] += "/"
-            if(game_info['time'] % 1200 == 1199):
-                replay_inputs.append("")
+            
+            replay_inputs.append("")
 
             update_environmental_modifiers()
 
@@ -369,7 +369,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 bbr.write("\n")
                 '''
             if(is_replay == False):
-                save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob)
+                save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob, game_info)
                 update_game_stats(game_info, p1_blob, p2_blob, ball)
                 update_mu_chart(game_score, p1_blob, p2_blob)
             else:
