@@ -1,6 +1,6 @@
 # Handles events like achieving milestones, earning medals and unlocking things
 
-from os import getcwd
+from os import getenv
 from time import time
 from engine.milestones import add_milestone
 from engine.popup_list import find_blob_unlock, find_medal_unlock, find_costume_unlock
@@ -42,18 +42,18 @@ class PopUpEvent():
     def unlock(self):
         if(self.pop_up_type == 0):
             try:
-                unlock_blob(self.name, getcwd())
+                unlock_blob(self.name, getenv('APPDATA')+"/BlobBall")
             except ValueError:
                 raise ValueError("Already Unlocked!")
         elif(self.pop_up_type == 1):
             try:
-                unlock_medal(self.name, getcwd())
+                unlock_medal(self.name, getenv('APPDATA')+"/BlobBall")
             except ValueError:
                 raise ValueError("Already Unlocked!")
         elif(self.pop_up_type == 2):
             #print(self.name)
             try:
-                unlock_costume(self.name.split("/")[0], self.name.split("/")[1], getcwd())
+                unlock_costume(self.name.split("/")[0], self.name.split("/")[1], getenv('APPDATA')+"/BlobBall")
             except ValueError:
                 raise ValueError("Already Unlocked!")
 
