@@ -34,6 +34,7 @@ name_to_file = {
 	'goal': ['goal.wav'],
     'ball_spire_hit': ['ball_spire_hit.wav'],
     'wavebounce': ['wavebounce.wav'],
+    'wavedash': ['wavedash.wav'],
     'camera': ['camera.wav'],
     'teleport': ['teleport.wav'],
 }

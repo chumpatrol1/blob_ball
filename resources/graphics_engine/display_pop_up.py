@@ -71,7 +71,19 @@ def create_generic_popup(pop_up):
     pop_up_surface2 = pg.Surface((450, 200), pg.SRCALPHA)
     pg.draw.rect(pop_up_surface, (150, 150, 0), (0, 0, 450, 200), border_top_left_radius = 20, border_top_right_radius=20, border_bottom_left_radius=20, border_bottom_right_radius=20)
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
-    if(pop_up.entry.event_id == 0):
+    if(pop_up.entry.event_id == -1):
+        text_array = [
+            menu_font.render("", False, (0, 0, 0)),
+            menu_font.render("Likely Corruption", False, (0, 0, 0)),
+            menu_font.render("of Replay", False, (0, 0, 0)),
+        ]
+        text_y = 10
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.midtop = (225, text_y)
+            pop_up_surface2.blit(text_box, text_rect)
+            text_y += 50
+    elif(pop_up.entry.event_id == 0):
         text_array = [
             menu_font.render("", False, (0, 0, 0)),
             menu_font.render("Failed to Load Replay", False, (0, 0, 0)),

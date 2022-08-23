@@ -390,11 +390,13 @@ if __name__ == "__main__":
     from os import getenv
     cwd = getenv('APPDATA')+"/BlobBall"
     load_blob_unlocks(cwd)
+    load_costume_unlocks(cwd)
+    print(available_costumes)
     #unlock_blob("ice", cwd)
     #update_css_blobs()
 	#unlock_medal("goal", cwd)
     #update_css_medals()
-    print(mam_display_list_medals)
+    #print(mam_display_list_medals)
     '''
     load_medals(cwd)
     print(medal_unlock_dict)
@@ -408,6 +410,6 @@ if __name__ == "__main__":
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     print(mam_display_list_medals)
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-    
+    '''
     unlock_costume("quirkless", "grayscale_1", cwd)
-    print(costume_unlock_dict)'''
+    print(costume_unlock_dict)

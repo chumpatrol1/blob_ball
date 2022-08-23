@@ -122,13 +122,20 @@ def update_game_state(game_state, cwd):
             if(game_state == "pop_up"):
                 timer = 60
     elif(game_state == "replay_match"):
-        update_replay_blobs()
-        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
-        if(game_state == "replay_win"):
-            game_stats = info_getter[5]
+        try:
+            update_replay_blobs()
+            game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, replay_ruleset, settings, False, False, p1_costume, p2_costume, timer, is_replay = True)
+            if(game_state == "replay_win"):
+                game_stats = info_getter[5]
+                clear_info_cache()
+            elif(game_state == "replay_pause"):
+                timer = 10
+        except KeyError:
             clear_info_cache()
-        elif(game_state == "replay_pause"):
-            timer = 10
+            engine.win_screen_handler.reset_ready()
+            resources.graphics_engine.display_gameplay.unload_image_cache()
+            resources.graphics_engine.display_win_screen.unload_win_screen()
+            game_state, info_getter = 1, "almanac"
     elif(game_state == "replay_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats, is_replay = True)
         song_playing = "bb_win_theme"
