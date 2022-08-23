@@ -1202,6 +1202,7 @@ class Blob:
                     self.focusing = False
                     self.focus_lock = 0
                     wavedashed = True
+                    createSFXEvent('wavedash')
             elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
                 if(not self.focusing):
                     self.facing = 'right'
@@ -1230,6 +1231,8 @@ class Blob:
                     self.x_speed = 15 + (10 * self.traction)
                     self.focusing = False
                     wavedashed = True
+                    createSFXEvent('wavedash')
+
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:

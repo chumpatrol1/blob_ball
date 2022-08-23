@@ -146,6 +146,7 @@ controller_popup_queue = Queue()
 # > Display the Surface at the position specified by the timer
 
 # Generic Popups
+# > -1: Replay possibly corrupt
 # > 0: Replay failed to load (incompatible version)
 # > 1: Update available (available to download, that is!)
 # > 2: Update unavailable (we are somehow on a developer build or are up to date)
