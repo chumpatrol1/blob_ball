@@ -131,6 +131,7 @@ def update_game_state(game_state, cwd):
             elif(game_state == "replay_pause"):
                 timer = 10
         except KeyError:
+            print("Short Replay Error")
             clear_info_cache()
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
