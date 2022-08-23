@@ -1232,6 +1232,7 @@ class Blob:
                     self.focusing = False
                     wavedashed = True
                     createSFXEvent('wavedash')
+
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
                     if(self.x_speed + self.traction) > 0:

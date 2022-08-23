@@ -412,4 +412,4 @@ if __name__ == "__main__":
     print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
     '''
     unlock_costume("quirkless", "grayscale_1", cwd)
-    print(costume_unlock_dict)
+    print(costume_unlock_dict)'''

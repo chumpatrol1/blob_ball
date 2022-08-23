@@ -226,7 +226,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 sball.check_environmental_collisions(env_mod)
                 sball.check_block_collisions()
                 sball.check_blob_ability()
-
+                
             for blob in blob_dict.values():
                 for other_blob in blob_dict.values():
                     if(blob.kick_timer == 1 and blob.player != other_blob.player):
@@ -234,6 +234,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
 
             for blob in blob_dict.values():
                 for other_blob in blob_dict.values():
+
                     if(blob.player != other_blob.player):
                         blob.check_ability_collision(other_blob)
 
@@ -258,7 +259,7 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
             for sball in ball_dict.values():
                 sball.move()
                 sball.check_blob_collisions()
-
+                
             # TODO: Figure out how to handle goals
             if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
                 createSFXEvent('goal')
