@@ -36,22 +36,22 @@ def find_medal_unlock(key):
         print("Cannot find medal")
 
 costume_unlock_popups = { # Key is 
-    'quirkless/grayscale_1': ["quirkless_blob_1.png", "Grayscale Quirkless", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'fire/grayscale_1': ["fire_blob_1.png", "Grayscale Fire", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'ice/grayscale_1': ["ice_blob_1.png", "Grayscale Ice", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'water/grayscale_1': ["water_blob_1.png", "Grayscale Water", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'rock/grayscale_1': ["rock_blob_1.png", "Grayscale Rock", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'lightning/grayscale_1': ["lightning_blob_1.png", "Grayscale Lightning", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'wind/grayscale_1': ["wind_blob_1.png", "Grayscale Wind", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'judge/grayscale_1': ["judge_blob_1.png", "Grayscale Judge", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'doctor/grayscale_1': ["doctor_blob_1.png", "Grayscale Doctor", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'king/grayscale_1': ["king_blob_1.png", "Grayscale King", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'cop/grayscale_1': ["cop_blob_1.png", "Grayscale Cop", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
-    'arcade/grayscale_1': ["arcade_blob_1.png", "Grayscale Arcade", "Press block after selecting/this blob to toggle costumes!", "Win 10 Matches"],
+    'quirkless/grayscale_1': ["quirkless_blob_1.png", "Grayscale Quirkless", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'fire/grayscale_1': ["fire_blob_1.png", "Grayscale Fire", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'ice/grayscale_1': ["ice_blob_1.png", "Grayscale Ice", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'water/grayscale_1': ["water_blob_1.png", "Grayscale Water", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'rock/grayscale_1': ["rock_blob_1.png", "Grayscale Rock", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'lightning/grayscale_1': ["lightning_blob_1.png", "Grayscale Lightning", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'wind/grayscale_1': ["wind_blob_1.png", "Grayscale Wind", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'judge/grayscale_1': ["judge_blob_1.png", "Grayscale Judge", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'doctor/grayscale_1': ["doctor_blob_1.png", "Grayscale Doctor", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'king/grayscale_1': ["king_blob_1.png", "Grayscale King", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'cop/grayscale_1': ["cop_blob_1.png", "Grayscale Cop", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'arcade/grayscale_1': ["arcade_blob_1.png", "Grayscale Arcade", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
 }
 
 def find_costume_unlock(key):
