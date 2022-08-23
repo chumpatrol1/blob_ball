@@ -1,7 +1,7 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.16.0b**
+**v0.16.1b**
 
 **Features:**
 * Casual Matches!
@@ -11,7 +11,7 @@ Slime Soccer type game
 * High Octane Matches!
 * Lots of advanced tech!
 * A nifty UI that displays the things you need to know at a glance!
-* Rebindable keys for those who don't like the default controls!
+* Rebindable keys for those who don't like the default controls, and controller support!
 * Beautiful graphics, courtesy of Ellexium! Check out his YT channel: https://www.youtube.com/channel/UCNYthNCVDDovhbhTXVzMM4A
 * A cool soundtrack, courtesy of BoingK! Check out his YT channel: https://www.youtube.com/channel/UCJ7nlCXY1HmiGhwi0seyzAA
 * Full screen toggle!
@@ -49,3 +49,7 @@ Slime Soccer type game
 * Changed save data location and added an update checker
 * Added UI Toggle, which determines whether or not the UI appears on the top or bottom
 
+**Hotfix**
+* Fixed unlocks not unlocking
+* Fixed replays sometimes corrupting
+* Added wavedash sfx
