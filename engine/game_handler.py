@@ -235,7 +235,7 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
         song_playing = "bb_credits_theme"
     elif(game_state == "almanac_stats"):
-        info_getter = engine.menus.almanac_menu.almanac_stats_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_1(timer)
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats"):
