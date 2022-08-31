@@ -159,13 +159,13 @@ def update_game_state(game_state, cwd):
     elif(game_state == "casual_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
         song_playing = "bb_win_theme"
-        if(game_state == "css" or game_state == "pop_up"):
+        if(game_state == "css" or game_state == "unlock_splash"):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
             resources.graphics_engine.display_css.update_css_blobs(appcwd)
             update_costumes()
-            if(game_state == "pop_up"):
+            if(game_state == "unlock_splash"):
                 timer = 60
     elif(game_state == "replay_match"):
         try:
@@ -203,10 +203,10 @@ def update_game_state(game_state, cwd):
             timer = 10
         else:
             game_state = "replay_pause"
-    elif(game_state == "pop_up"):
-        game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
+    elif(game_state == "unlock_splash"):
+        game_state, info_getter = engine.menus.css_menu.unlock_splash_handler(timer)
         song_playing = ""
-        if(game_state != "pop_up"):
+        if(game_state != "unlock_splash"):
             update_css_blobs(appcwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):

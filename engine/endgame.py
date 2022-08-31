@@ -1,6 +1,6 @@
 from json import loads, dumps
 from os import getenv
-from engine.popup_event import createPopUpEvent
+from engine.unlock_event import createUnlockEvent
 cwd = getenv('APPDATA')+'/BlobBall'
 
 def attempt_blob_unlocks(game_stats):
@@ -25,7 +25,7 @@ def attempt_blob_unlocks(game_stats):
     blobs_unlocked = 0
     for dict_key in blob_unlock_requirements:
         if(game_stats['matches_played'] >= dict_key):
-            if(createPopUpEvent(blob_unlock_requirements[dict_key], 0)):
+            if(createUnlockEvent(blob_unlock_requirements[dict_key], 0)):
                 blobs_unlocked += 1
 
     return blobs_unlocked
@@ -53,7 +53,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
     try:
         for dict_key in costume_unlock_requirements[p1_blob.species]:
             if(mu_chart[p1_blob.species]['total'] >= dict_key):
-                if(createPopUpEvent(costume_unlock_requirements[p1_blob.species][dict_key], 2)):
+                if(createUnlockEvent(costume_unlock_requirements[p1_blob.species][dict_key], 2)):
                     blobs_unlocked += 1
     except KeyError:
         print("No Costumes Available")
@@ -61,7 +61,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
     try:
         for dict_key in costume_unlock_requirements[p2_blob.species]:
             if(mu_chart[p2_blob.species]['total'] >= dict_key):
-                if(createPopUpEvent(costume_unlock_requirements[p2_blob.species][dict_key], 2)):
+                if(createUnlockEvent(costume_unlock_requirements[p2_blob.species][dict_key], 2)):
                     blobs_unlocked += 1
     except KeyError:
         print("No Costumes Available")

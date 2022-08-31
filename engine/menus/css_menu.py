@@ -1,7 +1,16 @@
-from pygame.display import Info
+'''
+engine/menus/css_menu.py
+
+File that handles the character select screen, albeit a little messily. Should be rewritten at some point.
+
+> css_navigation():
+> css_handler():
+> popup_handler():
+'''
+
 import engine.handle_input
 from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
-from engine.popup_event import clear_pop_up_events, get_pop_up_events
+from engine.unlock_event import clear_unlock_events, get_unlock_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.graphics_engine.display_css import force_load_blobs
@@ -253,18 +262,18 @@ def css_handler():
     return game_state, [p1_selector_position, p2_selector_position, p1_blob, p2_blob, p1_ghost_position, p2_ghost_position]
 
 pop_up_counter = 0
-def popup_handler(timer):
+def unlock_splash_handler(timer):
     global pop_up_counter
     global blob_list
-    game_state = "pop_up"
-    if(pop_up_counter >= len(get_pop_up_events())):
+    game_state = "unlock_splash"
+    if(pop_up_counter >= len(get_unlock_events())):
         pop_up_counter = 0
-        last_info = get_pop_up_events()[-1].info
-        clear_pop_up_events()
+        last_info = get_unlock_events()[-1].info
+        clear_unlock_events()
         blob_list = return_css_selector_blobs()
         return "css", last_info
     
-    pop_up = get_pop_up_events()[pop_up_counter].info
+    pop_up = get_unlock_events()[pop_up_counter].info
     
     pressed = engine.handle_input.get_keypress()
     mouse = engine.handle_input.handle_mouse()
@@ -272,7 +281,7 @@ def popup_handler(timer):
     if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed or mouse[1][0] or mouse[1][2]) and timer <= 0:
         pop_up_counter += 1
         set_timer(60)
-        if(pop_up_counter < len(get_pop_up_events())):
+        if(pop_up_counter < len(get_unlock_events())):
             createSFXEvent("chime_milestone")
 
     return game_state, pop_up

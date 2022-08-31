@@ -1,4 +1,4 @@
-blob_unlock_popups = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
+blob_unlock_splashes = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
     'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing your Ability Button/activates your boost instead!"],
     'fire': ["fire_blob.png", "Fire Blob", "Press and hold your ability/button to speed the ball up!"],
     'ice': ["ice_blob.png", "Ice Blob", "Press and hold your ability/button to slow the ball down!"],
@@ -19,7 +19,7 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
 
 def find_blob_unlock(key):
     try:
-        return blob_unlock_popups[key]
+        return blob_unlock_splashes[key]
     except:
         print("Cannot find blob")
 
@@ -35,7 +35,7 @@ def find_medal_unlock(key):
     except:
         print("Cannot find medal")
 
-costume_unlock_popups = { # Key is 
+costume_unlock_splashes = { # Key is 
     'quirkless/grayscale_1': ["quirkless_blob_1.png", "Grayscale Quirkless", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'fire/grayscale_1': ["fire_blob_1.png", "Grayscale Fire", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'ice/grayscale_1': ["ice_blob_1.png", "Grayscale Ice", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
@@ -56,6 +56,6 @@ costume_unlock_popups = { # Key is
 
 def find_costume_unlock(key):
     try:
-        return costume_unlock_popups[key]
+        return costume_unlock_splashes[key]
     except:
         print("Cannot find costume")

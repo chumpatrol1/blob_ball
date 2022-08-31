@@ -10,7 +10,7 @@ old_pop_up = None
 pop_up_image = None
 pop_up_timer = 0
 
-def draw_pop_up(game_display, info_getter, settings):
+def draw_unlock_splash(game_display, info_getter, settings):
     draw_background(game_display, 'green_background', settings)
     global old_pop_up
     global pop_up_image
