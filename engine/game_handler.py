@@ -1,4 +1,24 @@
+'''
+engine/game_handler.py
+
+Updates the game state and some important global variables every frame. Calls basically every other function
+
+> set_timer(): Sets the button lockout timer to a specific amount
+> update_game_state(): Takes the game state, and calls the appropriate function to return a new game state, the info getter (used for the display), bgm, settings and ruleset
+> update_replay_blobs(): Extracts information from the currently loaded replay file to use in the replay and its display
+> return_blobs(): Returns the blobs and their CPU status for use in crash reports
+'''
+
 def set_timer(frames):
+    '''
+    Sets the button lockout timer
+
+    Inputs:
+        - frames [int]: The number that the lockout timer should be set to
+
+    Outputs:
+        - timer [int] (global): The lockout timer
+    '''
     global timer
     timer = frames
 
@@ -40,6 +60,32 @@ p1_costume = 0
 p2_costume = 0
 game_stats = []
 def update_game_state(game_state, cwd):
+    '''
+    Takes in the current game state, and then calls the appropriate function that handles the game state.
+    Updates the game state, info getter (used for the display), background music, ruleset and settings
+
+    Inputs:
+        - game_state [string]: The current game state, which tells which screen we are currently on (String)
+        - cwd [string]: The current directory. Use unknown.
+        - timer [int] (global): A lockout timer that prevents people from menuing too quickly
+        - previous_screen [string] (global): This keeps track of our previous screen in certain circumstances, used mostly for ruleset, settings and almanac (you can navigate to these through the css and the main menu)
+        - p1_blob [varies] (global): Keeps track of the current selected blob of P1
+        - p2_blob [varies] (global): Keeps track of the current selected blob of P2 
+        - p1_is_cpu [bool] (global): Keeps track of P1's status as a CPU or human player
+        - p2_is_cpu [bool] (global): Keeps track of P2's status as a CPU or human player
+        - p1_costume [int] (global): Keeps track of P1's selected costume
+        - p2_costume [int] (global): Keeps track of P2's selected costume
+        - ruleset [dict] (global): Keeps track of the current state of the ruleset, a dictionary
+        - settings [dict] (global): Keeps track of the game settings, like volume and quality, a dictionary
+        - game_stats [dict] (global): Keeps track of the current game stats, which can be viewed in the almanac
+    
+    Outputs:
+        - game_state: The updated game_state, which tells which screen we are now on
+        - info_getter: Usually an array filled with various elements. Contain necessary information to draw dynamic elements like characters and selector positions
+        - song_playing: A string with the name of the background track to play
+        - ruleset: Keeps track of the current state of the ruleset, a dictionary
+        - settings: Keeps track of the game settings, like volume and quality, a dictionary
+    '''
     global timer
     global previous_screen
     global p1_blob
@@ -234,6 +280,17 @@ def update_game_state(game_state, cwd):
     return game_state, info_getter, song_playing, settings, ruleset
 
 def update_replay_blobs():
+    '''
+    Updates several global variables for use in replays
+
+    Inputs/Outputs
+        - replay_ruleset [dict] (global): Keeps track of the ruleset of that particular replay
+        - p1_blob [varies] (global): Keeps track of the current selected blob of P1
+        - p2_blob [varies] (global): Keeps track of the current selected blob of P2 
+        - p1_costume [int] (global): Keeps track of P1's selected costume
+        - p2_costume [int] (global): Keeps track of P2's selected costume
+
+    '''
     global replay_ruleset
     global p1_blob
     global p2_blob
@@ -247,4 +304,13 @@ def update_replay_blobs():
     p2_costume = extracted_info[5]
 
 def return_blobs():
+    '''
+    Returns the blobs and whether or not they are CPUs by pulling globals. Used when the game crashes
+
+    Outputs:
+        - p1_blob (global): Keeps track of the current selected blob of P1
+        - p2_blob (global): Keeps track of the current selected blob of P2 
+        - p1_is_cpu (global): Keeps track of P1's status as a CPU or human player
+        - p2_is_cpu (global): Keeps track of P2's status as a CPU or human player 
+    '''
     return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

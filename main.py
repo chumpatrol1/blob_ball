@@ -41,6 +41,12 @@ from resources.graphics_engine.display_particles import clear_particle_memory
 
 
 def get_script_path():
+    '''
+    Changes the current working directory
+
+    Outputs:
+        os.path.dirname: The current working directory based on the location of main.py
+    '''
     return os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(get_script_path())
@@ -84,15 +90,15 @@ def run(game_state):
     Runs the game, calling the essential functions to handle gameplay, display and sound.
 
     Inputs:
-        - game_state: The current game state, or screen that we're on (such as the main menu, character select, etc.)
-        - done (global): Global variable that determines whether or not the game loop will run.
+        - game_state [string]: A string representing the current game state, or screen that we're on (such as the main menu, character select, etc.)
+        - done [bool] (global): Global variable that determines whether or not the game loop will run.
         - clock (global): Locks the game's frame rate at 60 fps
-        - cwd (global): The working directory, allowing the game to open files and resources.
-        - escape_timer (global): Timer that prevents escape from being spammed and accidentally closing the game
+        - cwd [string] (global): The working directory, allowing the game to open files and resources.
+        - escape_timer [int] (global): Timer that prevents escape from being spammed and accidentally closing the game
 
     Outputs:
-        - game_state (global): Updates every frame to use in the next
-        - done (global): If this is set to True, the game will quit
+        - game_state [string] (global): Updates every frame to use in the next
+        - done [bool] (global): If this is set to True, the game will quit
         - dg.handle_graphics(): Displays graphics
         - hs.handle_sound(): Handles SFX and BGM
     '''
