@@ -17,7 +17,7 @@ from resources.graphics_engine.display_almanac import draw_almanac_art, draw_alm
 from resources.graphics_engine.display_medals_and_milestones import draw_mam
 from resources.graphics_engine.display_almanac import draw_almanac_credits as draw_almanac_credits
 from resources.graphics_engine.display_splash import draw_splash_screen as draw_splash_screen
-from resources.graphics_engine.display_pop_up import draw_pop_up as draw_pop_up, process_controller_popups
+from resources.graphics_engine.display_pop_up import draw_unlock_splash as draw_unlock_splash, process_controller_popups
 from resources.graphics_engine.display_debug import draw_debug
 from engine.handle_input import toggle_fullscreen
 
@@ -91,8 +91,8 @@ def handle_graphics(game_state, main_cwd, info_getter, settings):
         draw_pause_screen(game_surface, info_getter, settings)
     elif(game_state == "casual_win" or game_state == "replay_win"):
         draw_win_screen(game_surface, info_getter, settings)
-    elif(game_state == "pop_up"):
-        draw_pop_up(game_surface, info_getter, settings)
+    elif(game_state == "unlock_splash"):
+        draw_unlock_splash(game_surface, info_getter, settings)
     elif(game_state == "rules"):
         selector_position = info_getter[0]
         game_state = info_getter[1]

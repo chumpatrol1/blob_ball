@@ -1,5 +1,5 @@
 import engine.handle_input
-import engine.popup_event
+import engine.unlock_event
 from resources.sound_engine.sfx_event import createSFXEvent
 
 p1_ready = False
@@ -48,9 +48,9 @@ def handle_win_screen(game_stats, is_replay = False):
     
     if(p1_ready and p2_ready):
         game_state = "css"
-        if not (engine.popup_event.get_pop_up_events() == []):
+        if not (engine.unlock_event.get_unlock_events() == []):
             createSFXEvent("chime_milestone")
-            game_state = "pop_up"
+            game_state = "unlock_splash"
         if(is_replay):
             game_state = "almanac"
 

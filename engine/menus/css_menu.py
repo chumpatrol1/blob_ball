@@ -1,7 +1,16 @@
-from pygame.display import Info
+'''
+engine/menus/css_menu.py
+
+File that handles the character select screen, albeit a little messily. Should be rewritten at some point.
+
+> css_navigation(): Takes keyboard and mouse inputs to move the selectors
+> css_handler(): Handles the selector position itself and updates the game state/selected blobs depending on the state of each selector.
+> popup_handler(): Handles the splash screen for unlocks. Mostly it just needs to detect a click or button press to move on
+'''
+
 import engine.handle_input
 from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
-from engine.popup_event import clear_pop_up_events, get_pop_up_events
+from engine.unlock_event import clear_unlock_events, get_unlock_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.graphics_engine.display_css import force_load_blobs
@@ -30,6 +39,26 @@ p2_blob = "quirkless"
 blob_list = return_css_selector_blobs()
 
 def css_navigation(player, selector, timer, other_selector, ghost_selector, other_ghost):
+    '''
+    Takes keyboard and mouse inputs to move the selectors
+
+    Inputs:
+        - player [int]: The player's number passed. Primarily used to prevent controllers from being detected twice in a frame
+        - selector [array]: Array with 3 elements indicating position and selection status
+        - timer [int]: The player's timer, which prevents the selectors from moving too quickly
+        - other_selector [array]: Same as selector, but for the other player
+        - ghost_selector [array]: Array with 2 elements for using with mouse hovering 
+        - other_ghost: Same as ghost_selector, but for the other player
+
+    Ouputs
+        - selector [array]: Array with 3 elements indicating position and selection status
+        - timer [int]: The player's timer, which prevents the selectors from moving too quickly
+        - other_selector [array]: Same as selector, but for the other player
+        - ghost_selector [array]: Array with 2 elements for using with mouse hovering 
+        - other_ghost: Same as ghost_selector, but for the other player
+    '''
+    
+    # Convert player controls
     pressed_conversions = engine.handle_input.player_to_controls(player)
     detect_new_controllers = True
     if(player == 2):
@@ -166,6 +195,31 @@ def css_navigation(player, selector, timer, other_selector, ghost_selector, othe
 p1_timer = 0
 p2_timer = 0
 def css_handler():
+    '''
+    Handles the selector position itself and updates the game state/selected blobs depending on the state of each selector.
+
+    Inputs:
+        - p1_selector_position [array]: Array with 3 elements indicating position and selection status
+        - p2_selector_position [array]: Array with 3 elements indicating position and selection status
+        - p1_ghost_position [array]: Array with 2 elements used for mouse hovering
+        - p2_ghost_position [array]: Array with 2 elements used for mouse hovering
+        - p1_blob [string]: The player's selected blob, such as "quirkless" or "fire"
+        - p2_blob [string]: The player's selected blob, such as "quirkless" or "fire"
+        - p1_timer [int]: The player's timer, which prevents the selectors from moving too quickly
+        - p2_timer [int]: The player's timer, which prevents the selectors from moving too quickly
+
+    Outputs:
+        - game_state [string]: The updated game state. Defaults to "css"
+        - info_getter [array]
+            - p1_selector_position: Array with 3 elements indicating position and selection status.
+            - p2_selector_position: Array with 3 elements indicating position and selection status
+            - p1_blob: The player's selected blob, such as "quirkless" or "fire"
+            - p2_blob: The player's selected blob, such as "quirkless" or "fire"
+            - p1_ghost_position: Array with 2 elements used for mouse hovering
+            - p2_ghost_position: Array with 2 elements used for mouse hovering
+    '''
+
+    # Import globals
     global p1_selector_position
     global p2_selector_position
     global p1_ghost_position
@@ -175,10 +229,16 @@ def css_handler():
     global p1_timer
     global p2_timer
     game_state = "css"
+
+    # TODO: We need to refactor the things below to get 3 and 4 player support to work
+
+    # Navigate through the CSS 
+    # TODO: Verify below
     # Controller failure - cannot swap players here
     p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position)
     p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position)
     
+    # Depending on the selection state, do something!
     if(p1_selector_position[2] == 1):
         if(p1_selector_position[0] == 0):
             unload_almanac_static_text()
@@ -238,12 +298,16 @@ def css_handler():
     if(p2_selector_position[0] > 0):
         p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
 
+    # If Both players have confirmed, start the match
+
     if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
         game_state = "casual_match"
         p1_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
         p2_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
         p1_ghost_position = None
         p2_ghost_position = None
+
+    # Reduce player timers
 
     if(p1_timer > 0):
         p1_timer -= 1
@@ -252,27 +316,41 @@ def css_handler():
 
     return game_state, [p1_selector_position, p2_selector_position, p1_blob, p2_blob, p1_ghost_position, p2_ghost_position]
 
-pop_up_counter = 0
-def popup_handler(timer):
-    global pop_up_counter
+unlock_counter = 0
+def unlock_splash_handler(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the splash screen for unlocks. Mostly it just needs to detect a click or button press to move on
+
+    Inputs:
+        - timer [int]: Prevents the player from skipping the unlockables too quickly!
+        - unlock_counter [int] (global): The current unlock we're looking at
+        - blob_list [array] (global): A 2D array of strings that lets us know which blob we're selecting
+        - get_unlock_events [array]: A function call which looks at what unlocks we got from this particular game
+
+    Outputs:
+        - game_state [string]: The updated game state. Defaults to "unlock_splash"
+        - unlock_splash: An UnlockEvent class item containing important things like the unlock's name and description
+    '''
+    global unlock_counter
     global blob_list
-    game_state = "pop_up"
-    if(pop_up_counter >= len(get_pop_up_events())):
-        pop_up_counter = 0
-        last_info = get_pop_up_events()[-1].info
-        clear_pop_up_events()
+    game_state = "unlock_splash"
+    if(unlock_counter >= len(get_unlock_events())):
+        unlock_counter = 0
+        last_info = get_unlock_events()[-1].info
+        clear_unlock_events()
         blob_list = return_css_selector_blobs()
         return "css", last_info
     
-    pop_up = get_pop_up_events()[pop_up_counter].info
+    unlock_splash = get_unlock_events()[unlock_counter].info
     
     pressed = engine.handle_input.get_keypress()
     mouse = engine.handle_input.handle_mouse()
 
     if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed or mouse[1][0] or mouse[1][2]) and timer <= 0:
-        pop_up_counter += 1
+        unlock_counter += 1
         set_timer(60)
-        if(pop_up_counter < len(get_pop_up_events())):
+        if(unlock_counter < len(get_unlock_events())):
             createSFXEvent("chime_milestone")
 
-    return game_state, pop_up
+    return game_state, unlock_splash
