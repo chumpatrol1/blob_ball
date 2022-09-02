@@ -123,10 +123,14 @@ def blob_info_navigation(pressed, mouse):
     Inputs:
         - pressed [array]: Array of strings representing actions delivered via keyboard or controller. We specifically care about 'up', 'down', 'ability' and 'return'
         - mouse [array]: Array of arrays representing the state of the mouse. See documentation in engine/handle_input/handle_mouse 
-        - selector_position [array] (global): 
+        - selector_position [array] (global): 3 element array of ints representing location (blob selected) and select status
         - blob_tab [int] (global): An integer representing the tab that we are currently viewing
         - ghost_tab [int] (global): An integer representing the tab we are currently hovering
     
+    Outputs:
+        - selector_position [array]: Updated selector position (selected or deselected)
+        - blob_tab [int]: Updated integer representing the tab that we are currently viewing
+        - ghost_tab [int]: Updated integer representing the tab we are currently hovering
     '''
     global selector_position
     global blob_tab
