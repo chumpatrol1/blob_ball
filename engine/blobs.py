@@ -173,7 +173,7 @@ class Blob:
         self.kick_cooldown_rate = 2 #Each star reduces kick cooldown
         self.kick_cooldown = 0 #Cooldown timer between kicks
         self.kick_timer = 0 #Active frames of kick
-        self.kick_cooldown_max = (240 + 30 * (5 - self.stars['kick_cooldown_rate'])) * 2
+        self.kick_cooldown_max = (300 + 15 * (5 - self.stars['kick_cooldown_rate'])) * Blob.timer_multiplier
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
@@ -181,7 +181,7 @@ class Blob:
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
-        self.block_cooldown_max = (300 + 30 * (5 - self.stars['block_cooldown_rate'])) * 2 #How long the block cooldown lasts
+        self.block_cooldown_max = (360 + 15 * (5 - self.stars['block_cooldown_rate'])) * Blob.timer_multiplier #How long the block cooldown lasts
 
         self.block_outer = 150
         self.block_inner = -25
@@ -190,7 +190,7 @@ class Blob:
 
         self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
         self.boost_cooldown_rate = 2
-        self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * 2 #Each star reduces boost cooldown
+        self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * Blob.timer_multiplier #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
@@ -214,7 +214,7 @@ class Blob:
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = 0 #Cooldown between uses
-        self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * 2
+        self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * Blob.timer_multiplier
         self.special_ability_charge_base = special_ability_charge_base
         self.special_ability_duration = self.stars['special_ability_duration']
         self.special_ability_delay = self.stars['special_ability_delay']
@@ -308,6 +308,7 @@ class Blob:
 
     ground = 1200
     ceiling = 200
+    timer_multiplier = 2
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
@@ -444,10 +445,10 @@ class Blob:
                 self.boost_cooldown_timer = 0
                 self.toggle_recharge_indicator('boost')
 
-        self.special_ability_cooldown_rate = 2
-        self.kick_cooldown_rate = 2
-        self.block_cooldown_rate = 2
-        self.boost_cooldown_rate = 2
+        self.special_ability_cooldown_rate = Blob.timer_multiplier
+        self.kick_cooldown_rate = Blob.timer_multiplier
+        self.block_cooldown_rate = Blob.timer_multiplier
+        self.boost_cooldown_rate = Blob.timer_multiplier
        
         if(self.collision_timer > 0):
             self.collision_timer -=1 
@@ -623,22 +624,22 @@ class Blob:
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    self.special_ability_cooldown -= 60
-                    self.kick_cooldown -= 60
-                    self.block_cooldown -= 60
+                    self.special_ability_cooldown -= 30 * Blob.timer_multiplier
+                    self.kick_cooldown -= 30 * Blob.timer_multiplier
+                    self.block_cooldown -= 30 * Blob.timer_multiplier
                     if(self.boost_cooldown_timer > 0):
-                        self.boost_cooldown_timer -= 60
+                        self.boost_cooldown_timer -= 30 * Blob.timer_multiplier
                     self.check_cooldown_completion(sac, skc, slc, sbc)
                 elif(self.status_effects['pill'] == 'pill_cooldown'):
                     sac = bool(self.special_ability_cooldown > 0)
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    self.special_ability_cooldown -= 180
-                    self.kick_cooldown -= 180
-                    self.block_cooldown -= 180
+                    self.special_ability_cooldown -= 90 * Blob.timer_multiplier
+                    self.kick_cooldown -= 90 * Blob.timer_multiplier
+                    self.block_cooldown -= 90 * Blob.timer_multiplier
                     if(self.boost_cooldown_timer > 0):
-                        self.boost_cooldown_timer -= 180
+                        self.boost_cooldown_timer -= 90 * Blob.timer_multiplier
                     self.check_cooldown_completion(sac, skc, slc, sbc)
 
                 else:
@@ -675,8 +676,8 @@ class Blob:
                 skc = bool(self.kick_cooldown > 0)
                 slc = bool(self.block_cooldown > 0)
                 sbc = bool(self.boost_cooldown_timer > 0)
-                self.kick_cooldown -= 120
-                self.block_cooldown -= 120
+                self.kick_cooldown -= 60 * Blob.timer_multiplier
+                self.block_cooldown -= 60 * Blob.timer_multiplier
                 if(self.boost_cooldown_timer > 0):
                     self.boost_cooldown_timer -= 120
                 self.check_cooldown_completion(updatedKick=skc, updatedBlock=slc, updatedBoost=sbc)
@@ -696,7 +697,7 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown += 120
+                #self.kick_cooldown += 120
                 create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = self.special_ability_delay, y_pos = self.y_center)
                 createSFXEvent('boxing_bell')
         elif(special_ability == "mirror"):
@@ -706,9 +707,9 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
-                self.kick_cooldown += 120
-                self.block_cooldown += 120
-                self.boost_cooldown_timer += 120
+                self.kick_cooldown += 60 * Blob.timer_multiplier
+                self.block_cooldown += 60 * Blob.timer_multiplier
+                self.boost_cooldown_timer += 60 * Blob.timer_multiplier
                 createSFXEvent('chime_progress')
         elif(special_ability == "hook"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
@@ -826,7 +827,7 @@ class Blob:
                     elif(self.species == "fire"):
                         status_effects.append(['overheat', 300])
                     elif(self.species == "boxer"):
-                        self.special_ability_cooldown -= 240
+                        self.special_ability_cooldown -= 120 * Blob.timer_multiplier
                         if(self.special_ability_cooldown < 0):
                             self.special_ability_cooldown = 0
                     #elif(self.species == "doctor"):
@@ -840,7 +841,7 @@ class Blob:
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
-                    blob.special_ability_cooldown += 360
+                    blob.special_ability_cooldown += 180 * Blob.timer_multiplier
 
 
                     
@@ -891,10 +892,10 @@ class Blob:
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                         self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 360
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 else:
                     self.take_damage(damage=0)
-                    self.block_cooldown += 60
+                    self.block_cooldown += 30 * Blob.timer_multiplier
         
         for hazard in environment['thunder_bolt']:
             if(hazard.player == self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'self' in hazard.affects and hazard.x_pos - 110 <= self.x_center <= hazard.x_pos + 240):
@@ -905,7 +906,7 @@ class Blob:
                 if(self.status_effects['reflecting'] > 1):
                     self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                     self.status_effects['reflect_break'] = 68
-                    self.special_ability_cooldown += 360
+                    self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 '''if(self.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     self.status_effects['reflect_break'] = 68
@@ -962,12 +963,12 @@ class Blob:
                     if(self.block_timer):
                         accumulated_damage -= 2
                         stun_amount = 0
-                    self.all_blobs[hazard.player].kick_cooldown -= 360
+                    self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
                     self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
                         self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 360
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 else:
                     self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
