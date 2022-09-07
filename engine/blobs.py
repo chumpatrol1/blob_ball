@@ -165,7 +165,7 @@ class Blob:
         self.base_traction = self.traction #Non-boosted
         self.base_friction = self.friction #No boost
         self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = round(.3 + (self.stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
+        self.gravity_mod = self.gravity_stars * 3 #Fastfalling increases gravity
         self.fastfalling = False
         self.shorthopping = False
         self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
@@ -1392,7 +1392,7 @@ class Blob:
         self.base_traction = self.traction #Non-boosted
         self.base_friction = self.friction #No boost
         self.gravity_stars = round(.3 + (stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = round(.3 + (stars['gravity'] + 5) * .15, 3) #Fastfalling increases gravity
+        self.gravity_mod = self.gravity_stars * 3 #Fastfalling increases gravity
         self.jump_force = 14.5 + (stars['gravity'] * 2) #Initial velocity is based off of gravity
         self.boost_top_speed = 10+(1*stars['top_speed'] + 3) #This stat is increased by 3 stars
         self.boost_traction = 0.2 + ((stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
