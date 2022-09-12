@@ -1199,7 +1199,8 @@ class Blob:
                 elif('down' in pressed):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    self.x_speed = -1 * (15 + (10 * self.traction))
+                    #self.x_speed = -1 * (15 + (10 * self.traction))
+                    self.x_speed = -20
                     self.focusing = False
                     self.focus_lock = 0
                     wavedashed = True
@@ -1229,7 +1230,8 @@ class Blob:
                 elif('down' in pressed):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    self.x_speed = 15 + (10 * self.traction)
+                    #self.x_speed = 15 + (10 * self.traction)
+                    self.x_speed = 20
                     self.focusing = False
                     wavedashed = True
                     createSFXEvent('wavedash')
