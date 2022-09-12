@@ -294,6 +294,7 @@ class Blob:
             "hypothermia": 0,
             "steroided": 0,
             "overheat": 0,
+            'stoplit': 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -870,7 +871,7 @@ class Blob:
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
 
         elif(self.used_ability == "stoplight"):
-            blob.collision_timer = 45
+            blob.status_effects['stoplit'] = 60
 
     def check_environmental_collisions(self, environment):
         for hazard in environment['glue_puddle']:
