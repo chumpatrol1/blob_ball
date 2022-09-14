@@ -636,7 +636,7 @@ class Blob:
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    self.special_ability_cooldown -= 90 * Blob.timer_multiplier
+                    #self.special_ability_cooldown -= 90 * Blob.timer_multiplier
                     self.kick_cooldown -= 90 * Blob.timer_multiplier
                     self.block_cooldown -= 90 * Blob.timer_multiplier
                     if(self.boost_cooldown_timer > 0):
@@ -720,12 +720,15 @@ class Blob:
                     self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
                     self.holding_timer += 1
+                    self.status_effects['overheat'] += 3
+                    print(self.status_effects['overheat'])
                 else:
                     #If we ignite the ball
                     self.used_ability = "hook"
                     self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0
+                    self.status_effects['overheat'] += 3
                     #createSFXEvent('water')
         elif(special_ability == "gluegun"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
@@ -871,7 +874,7 @@ class Blob:
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
 
         elif(self.used_ability == "stoplight"):
-            blob.status_effects['stoplit'] = 60
+            blob.status_effects['stoplit'] = 30
 
     def check_environmental_collisions(self, environment):
         for hazard in environment['glue_puddle']:
@@ -1055,7 +1058,8 @@ class Blob:
         if(damage_taken):
             # Increase damage by 1 if using hook
             # Decrease damage by 1 if using reflect
-            self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
+            # self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
+            self.hp -= damage - bool(self.status_effects['reflecting'] > 0)
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount

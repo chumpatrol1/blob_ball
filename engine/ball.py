@@ -138,8 +138,6 @@ class Ball:
                         self.species = "kicked_ball"
                         self.special_timer = 30
                         p1_ball_nv = p1_vector - ball_vector
-                        for blobbo in self.all_blobs.values():
-                            print(blobbo.player, blobbo.collision_timer)
 
                         try:
                             # Make this not dependent on ball speed!
@@ -198,7 +196,7 @@ class Ball:
                 elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded and p1_vector.distance_to(ball_vector) <= blob_collision_distance:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
-                        print('warp')
+                        #print('warp')
                         self.y_pos = self.y_pos + (p1_center_distance - 160)
                         self.y_speed = -5
                         self.x_speed = 0
@@ -312,7 +310,7 @@ class Ball:
                     t_dist = math.sqrt(x_dist + y_dist)
                     #print(t_dist)
                     if(t_dist < 500):
-                        blob.holding_timer += 3
+                        blob.holding_timer += 1
                     '''
                     pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                     try:
