@@ -294,7 +294,9 @@ class Blob:
             "hypothermia": 0,
             "steroided": 0,
             "overheat": 0,
-            'stoplit': 0,
+            "stoplit": 0,
+            "loaned": 0,
+            "hyped": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -403,6 +405,16 @@ class Blob:
                         self.block_cooldown_rate = 1
                         self.special_ability_cooldown_rate = 1
                         self.boost_cooldown_rate = 1
+                    if(effect == 'loaned'):
+                        self.kick_cooldown_rate += 4
+                        self.block_cooldown_rate += 4
+                        self.special_ability_cooldown_rate += 4
+                        self.boost_cooldown_rate += 4
+                    if(effect == 'hyped'):
+                        self.kick_cooldown_rate += 1
+                        self.block_cooldown_rate += 1
+                        self.special_ability_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1
                 except:
                     pass # Typically pass for strings, like current pill
         
@@ -677,10 +689,10 @@ class Blob:
                 skc = bool(self.kick_cooldown > 0)
                 slc = bool(self.block_cooldown > 0)
                 sbc = bool(self.boost_cooldown_timer > 0)
-                self.kick_cooldown -= 60 * Blob.timer_multiplier
-                self.block_cooldown -= 60 * Blob.timer_multiplier
+                self.kick_cooldown -= 30 * Blob.timer_multiplier
+                self.block_cooldown -= 30 * Blob.timer_multiplier
                 if(self.boost_cooldown_timer > 0):
-                    self.boost_cooldown_timer -= 120
+                    self.boost_cooldown_timer -= 30 * Blob.timer_multiplier
                 self.check_cooldown_completion(updatedKick=skc, updatedBlock=slc, updatedBoost=sbc)
 
                 createSFXEvent('chime_progress')
@@ -834,6 +846,9 @@ class Blob:
                         self.special_ability_cooldown -= 120 * Blob.timer_multiplier
                         if(self.special_ability_cooldown < 0):
                             self.special_ability_cooldown = 0
+                    elif(self.species == "king" and not blob.block_timer and not blob.kick_timer):
+                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'royal_loan', lifetime = 360, hp = 0, x_pos = self.x_center - 20, y_pos = self.y_center - 150, gravity = 0, random_image=self.player)
+                        
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
@@ -1005,6 +1020,27 @@ class Blob:
                 createSFXEvent('teleport')
                 draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+        
+        for hazard in environment['royal_loan']:
+            if(hazard.player == self.player and hazard.lifetime == 1):
+                self.status_effects['overheat'] += (hazard.hp * 180) + 90
+                print("Punished for", self.status_effects['overheat'], "frames!")
+                print("Accumulated", hazard.hp, "worth of debt!")
+            elif(hazard.random_image == self.player and hazard.lifetime == 1):
+                self.status_effects['hyped'] += (hazard.hp * 60) + 30
+                print("Hyped for", self.status_effects['hyped'], "frames!")
+                
+            elif(hazard.player == self.player):
+                self.status_effects['loaned'] += 2
+                hazard.x_pos, hazard.y_pos = self.x_center - 20, self.y_center - 150
+                if(self.kick_timer == 2):
+                    hazard.hp += 1
+                if(self.block_timer == 15):
+                    hazard.hp += 1
+                if(self.boost_timer == self.boost_duration):
+                    hazard.hp += 1
+                if(self.special_ability_cooldown == self.special_ability_cooldown_max):
+                    hazard.hp += 1
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
@@ -1121,6 +1157,7 @@ class Blob:
         self.status_effects['steroided'] = 0
         self.status_effects['taxed'] = 0
         self.status_effects['taxing'] = 0
+        self.status_effects['loaned'] = 0
         self.status_effects['stunned'] = 0
         self.status_effects['reflecting'] = 0
         self.status_effects['reflect_break'] = 0
