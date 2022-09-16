@@ -9,18 +9,6 @@ Update the Changelog
 ZIP the files together for release!
 '''
 
-def happy_number(n):
-    square_sum = 0
-    while n >= 10:
-        while n > 0:
-            square_sum += (n % 10) ** 2
-            n = n//10
-        n = square_sum
-        square_sum = 0
-        print(n)   
-
-happy_number(99999)
-
 # COMMAND TO RUN THE GAME IN NOTEPAD ++: D:\Python\python.exe -i "$(FULL_CURRENT_PATH)"
 
 '''OPTIMIZING'''

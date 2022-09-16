@@ -297,6 +297,7 @@ class Blob:
             "stoplit": 0,
             "loaned": 0,
             "hyped": 0,
+            "silenced": 0,
         }
 
         if(self.species == "doctor" or self.species == "joker"):
@@ -488,13 +489,13 @@ class Blob:
         if(self.clanked):
             self.clanked -= 1
 
-        self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown/2)
+        self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown/Blob.timer_multiplier)
         self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
         self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
         self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
         self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
         self.block_cooldown_percentage = self.block_cooldown/self.block_cooldown_max
-        self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer/2)
+        self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer/Blob.timer_multiplier)
         self.boost_cooldown_percentage = self.boost_cooldown_timer/self.boost_cooldown_max
         self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
@@ -732,15 +733,15 @@ class Blob:
                     self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_maintenance #Remove some SA meter
                     self.holding_timer += 1
-                    self.status_effects['overheat'] += 3
-                    print(self.status_effects['overheat'])
+                    self.status_effects['overheat'] += 5
+                    #print(self.status_effects['overheat'])
                 else:
                     #If we ignite the ball
                     self.used_ability = "hook"
                     self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                     self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
                     self.holding_timer = 0
-                    self.status_effects['overheat'] += 3
+                    self.status_effects['overheat'] += 5
                     #createSFXEvent('water')
         elif(special_ability == "gluegun"):
             if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 2):
@@ -1103,6 +1104,8 @@ class Blob:
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
+            if(self.special_ability == "hook" and self.special_ability_timer):
+                self.status_effects['silenced'] += 360
             for status_effect in status_effects:
                 self.status_effects[status_effect[0]] += status_effect[1]
 
@@ -1205,6 +1208,9 @@ class Blob:
                 pressed.remove('block')
             if('boost' in pressed):
                 pressed.remove('boost')
+            if('ability' in pressed):
+                pressed.remove('ability')
+        if(self.status_effects['silenced']):
             if('ability' in pressed):
                 pressed.remove('ability')
 

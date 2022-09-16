@@ -199,11 +199,14 @@ def draw_ui(game_display, blobs):
             draw_judgement(game_display, blob, ui_font, bl_align)
             draw_judgement(game_display, blob, ui_font, boo_align)
         else:
-            if(blob.ability_classification in cooldown_species):
+            if(blob.status_effects['silenced']):
+                draw_cooldown(game_display, blob, ui_font, ab_align, (blob.status_effects['silenced']/360, ceil(blob.status_effects['silenced']/6)/10))
+            elif(blob.ability_classification in cooldown_species):
                 if(blob.special_ability_cooldown):
                     draw_cooldown(game_display, blob, ui_font, ab_align, blob.get_ability_visuals())
                 elif(blob.recharge_indicators['ability']):
                     draw_recharge_flash(ab_align)
+            
             if(blob.kick_cooldown_visualization > 0):
                 draw_cooldown(game_display, blob, ui_font, k_align, blob.get_kick_visuals())
                 
