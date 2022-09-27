@@ -102,7 +102,7 @@ class Ball:
             ball_vector = pg.math.Vector2(self.x_center, self.y_center)
             p1_vector = pg.math.Vector2(blob.x_center, blob.y_center)
             
-            if(not blob.collision_timer):
+            if(not blob.collision_timer and not blob.status_effects['stoplit']):
                 if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                     if(abs(blob.x_center - self.x_center) < blob_collision_distance):
                         pass
@@ -138,6 +138,7 @@ class Ball:
                         self.species = "kicked_ball"
                         self.special_timer = 30
                         p1_ball_nv = p1_vector - ball_vector
+
                         try:
                             # Make this not dependent on ball speed!
                             #p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
@@ -162,6 +163,9 @@ class Ball:
                         createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
                         self.x_speed *= self.bounciness
                         self.y_speed *= self.bounciness
+                        for other_blob in blob.all_blobs.values():
+                            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+                                other_blob.status_effects['silenced'] += 360
                         #print("speed", p1_ball_collision, "loc diff", p1_ball_nv)
                     elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                         self.info['blob_standard_collisions'] += 1
@@ -186,6 +190,8 @@ class Ball:
                         pass
                     else:
                         self.image = type_to_image("soccer_ball")
+            elif(blob.status_effects['stoplit']):
+                pass
             else:
                 if(blob.y_center < (self.y_center - 35)): #Is the slime way above the ball?
                     if(abs(blob.x_center - self.x_center) < blob_collision_distance):
@@ -193,6 +199,7 @@ class Ball:
                 elif(abs(blob.x_center - self.x_center) < blob_collision_distance) and not self.grounded and p1_vector.distance_to(ball_vector) <= blob_collision_distance:
                     #True if x is close enough, and ball is airborne.
                     if(self.y_speed < 0): #Are we moving upwards?
+                        #print('warp')
                         self.y_pos = self.y_pos + (p1_center_distance - 160)
                         self.y_speed = -5
                         self.x_speed = 0
@@ -250,6 +257,8 @@ class Ball:
         for other_blob in blob.all_blobs.values():
             if(other_blob.player != blob.player):
                 other_blob.collision_timer = collision_timer_duration
+            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+                other_blob.status_effects['silenced'] += 360
         #Stops the ball completely
         if(blob.block_timer == blob.block_timer_max - 3):
             self.info['blocked'] += 1
@@ -286,6 +295,9 @@ class Ball:
                 self.image = type_to_image("blocked_ball")
                 self.species = "blocked_ball"
                 self.special_timer = 30
+                for other_blob in blob.all_blobs.values():
+                    if(other_blob.special_ability == "hook" and blob.special_ability_timer):
+                        other_blob.special_ability_timer = 1
             elif(blob.used_ability == "mirror"):
                 self.x_speed *= -0.9
                 self.y_speed *= -0.5
@@ -295,10 +307,26 @@ class Ball:
                     # process, meaning that the ball won't get jerked in a certain
                     # direction and it also allows for the ball to be body blocked
                     #print((blob.x_center - 25 - self.x_pos)//150)
-                    self.x_speed += (blob.x_center - self.x_pos)//150 
-                    self.y_speed += (blob.y_center - 200 - self.y_pos)//200
-                    if(abs(self.x_speed) > 15):
-                        self.x_speed *= 0.95
+                    x_dir = 0
+                    hook_dir = 0
+
+                    if(blob.x_center - self.x_pos != 0):
+                        hook_dir = abs(blob.x_center - self.x_pos)/(blob.x_center - self.x_pos)
+                    else:
+                        hook_dir = 1
+
+                    if(self.x_speed != 0):
+                        x_dir = abs(self.x_speed)/self.x_speed
+                    else:
+                        x_dir = hook_dir
+                    
+                    if(x_dir != hook_dir or abs(self.x_speed) < 15):
+                        self.x_speed += (blob.x_center - self.x_pos)//150
+
+                    if(self.y_speed < 5):
+                        self.y_speed += (blob.y_center - 200 - self.y_pos)//200
+                    '''if(abs(self.x_speed) > 5):
+                        self.x_speed *= 0.95'''
                     # Change the number after // - bigger means the pulling force is weaker
                 elif(not self.species == "blocked_ball"):
                     x_dist = (self.x_center - blob.x_center)**2
@@ -306,7 +334,7 @@ class Ball:
                     t_dist = math.sqrt(x_dist + y_dist)
                     #print(t_dist)
                     if(t_dist < 500):
-                        blob.holding_timer += 3
+                        blob.holding_timer += 1
                     '''
                     pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                     try:

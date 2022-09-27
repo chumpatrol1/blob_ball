@@ -21,6 +21,7 @@ modifier_images = {
     'cartridge_1': 'cartridge_1',
     'cartridge_2': 'cartridge_2',
     'cartridge_3': 'cartridge_3',
+    'royal_loan': 'star_glove',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))
@@ -89,6 +90,12 @@ def draw_environmental_modifiers(game_display, ):
                 image = particle_cache['console'].copy()
                 image.fill(tc, special_flags=pg.BLEND_RGBA_MULT)
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+        elif(modifier == 'royal_loan'):
+            for individual in modifiers[modifier]:
+                x_tilt = individual.hp * 10
+                for hitpoint in range(individual.hp + 1):
+                        game_display.blit(particle_cache[mod_key], (individual.x_pos * (1000/1366) + (20 * hitpoint) - x_tilt, individual.y_pos * (382/768)))
+
         else:
             for individual in modifiers[modifier]:
                 game_display.blit(particle_cache[mod_key], (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))

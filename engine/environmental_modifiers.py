@@ -94,6 +94,7 @@ environmental_modifiers = {
     'starpunch_spring': [],
     'console': [],
     'cartridge': [],
+    'royal_loan': [],
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
@@ -119,6 +120,7 @@ def return_environmental_modifiers():
 
 def clear_environmental_modifiers():
     global environmental_modifiers
+    unpaid_loans = environmental_modifiers['royal_loan']
     environmental_modifiers = {
     'glue_shot': [],
     'glue_puddle': [],
@@ -132,4 +134,5 @@ def clear_environmental_modifiers():
     'starpunch_spring': [],
     'console': [],
     'cartridge': [],
+    'royal_loan': unpaid_loans,
 }
