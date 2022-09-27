@@ -407,6 +407,7 @@ class Blob:
                         self.special_ability_cooldown_rate = 1
                         self.boost_cooldown_rate = 1
                     if(effect == 'loaned'):
+                        print(self.status_effects['loaned'])
                         self.kick_cooldown_rate += 4
                         self.block_cooldown_rate += 4
                         self.special_ability_cooldown_rate += 4
@@ -1032,7 +1033,7 @@ class Blob:
                 print("Hyped for", self.status_effects['hyped'], "frames!")
                 
             elif(hazard.player == self.player):
-                self.status_effects['loaned'] += 2
+                self.status_effects['loaned'] += 1
                 hazard.x_pos, hazard.y_pos = self.x_center - 20, self.y_center - 150
                 if(self.kick_timer == 2):
                     hazard.hp += 1
