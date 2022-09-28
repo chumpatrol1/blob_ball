@@ -6,6 +6,10 @@ from resources.graphics_engine.display_particles import clear_particle_memory as
 from resources.graphics_engine.display_particles import draw_recharge_flash, draw_ui_particles, draw_damage_flash, draw_heal_flash, draw_energy_flash, draw_block_flash, draw_boost_flash
 from resources.graphics_engine.display_environmental_modifiers import draw_environmental_modifiers
 from math import ceil
+
+from engine.blobs import ability_image_dict
+from engine.blob_stats import species_to_stars
+
 import pygame as pg
 cwd = getcwd()
 
@@ -19,6 +23,16 @@ def unload_image_cache():
     image_cache = {"initialized": False, "ui_initialized": False}
     image_cache['p1_ability_icon'] = None
     image_cache['p2_ability_icon'] = None
+    image_cache['icons'] = {}
+    for icon in ability_image_dict:
+        print(icon)
+        try:
+            ability_key = species_to_stars(icon, {})['special_ability']
+            image_cache['icons'][ability_key] = pg.transform.scale(pg.image.load(ability_image_dict[icon]), (70, 70))
+        except:
+            image_cache['icons'][icon] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png"), (70, 70))
+
+unload_image_cache()
 
 def draw_blob(game_display, blob):
     # TODO: Make this do something
@@ -279,6 +293,14 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
         blob_special.set_alpha(255 - 16 * (blob.kick_visualization_max - blob.kick_visualization))
         game_display.blit(blob_special, ((blob.x_pos - 42)*(1000/1366), (blob.y_pos*(382/768))))
 
+def draw_menu(game_display, blob):
+    #print("1", blob.status_effects['cards']['pulled'][0])
+    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
+    #print("3", blob.status_effects['cards']['pulled'][2])
+    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos) * (1000/1366), ((blob.y_pos - 200) *(382/768))))
+    #print("2", blob.status_effects['cards']['pulled'][1])
+    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 150) * (1000/1366), (blob.y_pos*(382/768))))
+
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]
@@ -383,8 +405,12 @@ def draw_gameplay(game_display, info_getter, settings):
                 gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
             else:
                 gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+
         draw_blob_special(blob, gameplay_surface)
         draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
+
+        if(blob.status_effects['menu']['open']):
+            draw_menu(gameplay_surface, blob)
 
 
     #fade_out = 200

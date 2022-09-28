@@ -80,11 +80,9 @@ def species_to_image(species, costume):
 
     return image_dict[species][costume]
 
-def species_to_ability_icon(species):
-    global cwd
-    icon_cwd = cwd + "/resources/images/ui_icons/"
-    ability_cwd = cwd + "/resources/images/ability_icons/"
-    image_dict = {
+icon_cwd = cwd + "/resources/images/ui_icons/"
+ability_cwd = cwd + "/resources/images/ability_icons/"
+ability_image_dict = {
         "quirkless": icon_cwd + "boost_icon.png",
         "fire": ability_cwd + "fireball.png",
         "ice": ability_cwd + "snowball.png",
@@ -104,8 +102,9 @@ def species_to_ability_icon(species):
         'arcade': ability_cwd + 'teleport.png',
         "random": icon_cwd + "boost_icon.png",
     }
-    
-    return image_dict[species]
+
+def species_to_ability_icon(species):
+    return ability_image_dict[species]
 
 def player_to_controls(player):
     if(player == 1):
@@ -285,6 +284,8 @@ class Blob:
             "judged": 0,
             "pill": None,
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
+            "menu": {'open': False, 'type': ''},
+            "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': []},
             "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
@@ -789,6 +790,25 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= self.special_ability_cost
+                self.status_effects['menu']['open'] = True
+                self.status_effects['menu']['type'] = 'cardpack'
+
+                print("RECHARGE", self.status_effects['cards']['recharge'])
+
+                self.status_effects['cards']['pulled'] = random.sample(self.status_effects['cards']['pool'], 3)
+                for card in self.status_effects['cards']['pulled']:
+                    self.status_effects['cards']['pool'].remove(card)
+                for card in self.status_effects['cards']['recharge']:
+                    self.status_effects['cards']['pool'].add(card)
+                self.status_effects['cards']['recharge'] = set()
+
+                print("POOL", self.status_effects['cards']['pool'])
+                print("PULLED", self.status_effects['cards']['pulled'])
+                print("POST RECHARGE", self.status_effects['cards']['recharge'])
+                # Pull cards from pool
+                # Move cards from recharge to pool
+                # 
+
 
 
     def kick(self):
@@ -1231,8 +1251,11 @@ class Blob:
         if(self.status_effects['hypothermia']):
             blob_speed -= 3
         wavedashed = False
+
+        menu_open = self.status_effects['menu']['open']
+
         if(self.y_pos == Blob.ground): #Applies traction if grounded
-            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+            if('left' in pressed and not 'right' in pressed and not menu_open): #If holding left but not right
                 if(not self.focusing):
                     self.facing = "left"
                     if(self.x_pos <= 0): #Are we in danger of going off screen?
@@ -1261,7 +1284,7 @@ class Blob:
                     self.focus_lock = 0
                     wavedashed = True
                     createSFXEvent('wavedash')
-            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+            elif(not 'left' in pressed and 'right' in pressed and not menu_open): #If holding right but not left
                 if(not self.focusing):
                     self.facing = 'right'
                     if(self.x_pos >= 1700): #Are we in danger of going off screen?
@@ -1283,7 +1306,7 @@ class Blob:
                             if(round(prev_speed) == -1 * blob_speed):
                                 self.info['wavebounces'] += 1
                                 createSFXEvent('wavebounce') 
-                elif('down' in pressed):
+                elif('down' in pressed and not menu_open):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
                     #self.x_speed = 15 + (10 * self.traction)
@@ -1304,7 +1327,7 @@ class Blob:
                     else:
                         self.x_speed -= self.traction #Normal deceleration
         else: #Applies friction if airborne
-            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+            if('left' in pressed and not 'right' in pressed and not menu_open): #If holding left but not right
                 self.facing = "left"
                 if(self.x_pos <= 0): #Are we in danger of going off screen?
                     self.x_speed = 0
@@ -1323,7 +1346,7 @@ class Blob:
                         if(round(prev_speed) == blob_speed):
                             self.info['wavebounces'] += 1
                             createSFXEvent('wavebounce')
-            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+            elif(not 'left' in pressed and 'right' in pressed and not menu_open): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
                     self.x_speed = 0
@@ -1363,18 +1386,18 @@ class Blob:
             self.x_pos = 1700
         
         #VERTICAL MOVEMENT
-        if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
+        if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force)
             self.focus_lock = 0
             self.wavedash_lock = 0
             self.focusing = False
             self.info['jumps'] += 1
-        elif('up' in pressed and self.y_speed < 0):
+        elif('up' in pressed and self.y_speed < 0 and not menu_open):
             self.shorthopping = False
-        elif('up' not in pressed and self.y_speed < 0):
+        elif(('up' not in pressed or menu_open) and self.y_speed < 0):
             self.shorthopping = True
         
-        if('down' in pressed):
+        if('down' in pressed and not menu_open):
             self.down_holding_timer += 1
             if(self.y_pos < Blob.ground): #If you are above ground and press down
                 self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
@@ -1386,7 +1409,7 @@ class Blob:
                     self.focusing = True
         else:
             self.down_holding_timer = 0
-        if(not 'down' in pressed and self.focus_lock == 0 and self.focusing):
+        if((not 'down' in pressed or menu_open) and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
         if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
@@ -1419,18 +1442,94 @@ class Blob:
             self.impact_land_frames = 10
         
         #ABILITY
-        if('ability' in pressed):
+        if('ability' in pressed and not menu_open):
             self.ability()
 
         # BOOST
-        if('boost' in pressed):
+        if('boost' in pressed and not menu_open):
             self.boost()
         
         #Kick
-        if('kick' in pressed):
+        if('kick' in pressed and not menu_open):
             self.kick()
-        elif('block' in pressed):
+        elif('block' in pressed and not menu_open):
             self.block()
+
+        if(menu_open):
+            menu_direction = 'neutral'
+            menu_action = 'neutral'
+            if('up' in pressed):
+                menu_direction = 'up'
+            elif('down' in pressed):
+                menu_direction = 'down'
+            elif('left' in pressed):
+                menu_direction = 'left'
+            elif('right' in pressed):
+                menu_direction = 'right'
+            
+            
+            if(self.status_effects['menu']['type'] == 'cardpack'):
+                if('ability' in pressed):
+                    menu_action = 'ability'
+                elif('kick' in pressed):
+                    menu_action = 'kick'
+                elif('block' in pressed):
+                    menu_action = 'block'
+                elif('boost' in pressed):
+                    menu_action = 'boost'
+                
+                selected_card = ''
+                other_card_1 = ''
+                other_card_2 = ''
+                if(menu_direction == 'left'):
+                    selected_card = self.status_effects['cards']['pulled'][0]
+                    other_card_1 = self.status_effects['cards']['pulled'][1]
+                    other_card_2 = self.status_effects['cards']['pulled'][2]
+                elif(menu_direction == 'up'):
+                    other_card_1 = self.status_effects['cards']['pulled'][0]
+                    selected_card = self.status_effects['cards']['pulled'][1]
+                    other_card_2 = self.status_effects['cards']['pulled'][2]
+                elif(menu_direction == 'right'):
+                    other_card_1 = self.status_effects['cards']['pulled'][0]
+                    other_card_2 = self.status_effects['cards']['pulled'][1]
+                    selected_card = self.status_effects['cards']['pulled'][2]
+
+                if(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction != 'neutral'):
+                    
+                    if(self.status_effects['cards'][menu_action]):
+                        self.status_effects['cards']['recharge'].add(self.status_effects['cards'][menu_action])
+                        self.status_effects['cards']['equipped'].remove(self.status_effects['cards'][menu_action])
+
+                    self.status_effects['cards'][menu_action] = selected_card
+                    self.status_effects['cards']['equipped'].add(selected_card)
+                    self.status_effects['menu']['open'] = False
+                    self.status_effects['cards']['recharge'].add(other_card_1)
+                    self.status_effects['cards']['recharge'].add(other_card_2)
+                    if(menu_action == 'ability'):
+                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                    elif('kick' in pressed):
+                        self.kick_cooldown += 60 * Blob.timer_multiplier
+                    elif('block' in pressed):
+                        self.block_cooldown += 60 * Blob.timer_multiplier
+                    elif('boost' in pressed):
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+
+                elif(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction == 'neutral'):
+                    self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][0])
+                    self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][1])
+                    self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][2])
+                    self.status_effects['menu']['open'] = False
+
+                    if(menu_action == 'ability'):
+                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                    elif('kick' in pressed):
+                        self.kick_cooldown += 60 * Blob.timer_multiplier
+                    elif('block' in pressed):
+                        self.block_cooldown += 60 * Blob.timer_multiplier
+                    elif('boost' in pressed):
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+
+
     
         self.x_center = self.x_pos + 83 #Rough estimate :)
         self.y_center = self.y_pos + 110 #Rough estimate :)
