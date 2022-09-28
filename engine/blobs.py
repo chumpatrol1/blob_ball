@@ -1454,7 +1454,6 @@ class Blob:
             self.kick()
         elif('block' in pressed and not menu_open):
             self.block()
-
         if(menu_open):
             menu_direction = 'neutral'
             menu_action = 'neutral'
@@ -1513,6 +1512,8 @@ class Blob:
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
                         self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                    
+                    self.recharge_indicators['ability_swap'] = True
 
                 elif(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction == 'neutral'):
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][0])
