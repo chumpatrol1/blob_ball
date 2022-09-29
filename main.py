@@ -116,7 +116,7 @@ def run(game_state):
     # Having things lag behind a frame is a weird design decision - why did I write it this way?
     new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
     dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
-    hs.handle_sound(game_state, settings)
+    hs.handle_sound(bgm_song, settings)
     game_state = new_game_state
     pressed = get_keypress(detect_new_controllers = False)
     if('escape' in pressed and not escape_timer):
