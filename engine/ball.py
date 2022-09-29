@@ -267,13 +267,13 @@ class Ball:
 
     def check_blob_ability(self):
         for blob in self.all_blobs.values():
-            if(blob.used_ability == "fireball"):
+            if("fireball" in blob.used_ability):
                 self.x_speed *= (1.05 - (self.x_speed/1000))
                 self.y_speed *= (1.05 - (self.y_speed/1000))
-            elif(blob.used_ability == "snowball"):
+            elif("snowball" in blob.used_ability):
                 self.x_speed *= .975
                 self.y_speed *= (.9 - (self.y_speed/1000))
-            elif(blob.used_ability == "geyser"):
+            elif("geyser" in blob.used_ability):
                 try:
                     geyser_power = math.sqrt(Ball.ground - self.y_pos)/4-5
                     if(geyser_power < 0.8 and self.y_speed > -25):
@@ -284,12 +284,12 @@ class Ball:
                         self.y_speed -= 0.8
                 except Exception as exception:
                     self.y_speed -= 5
-            elif(blob.used_ability == "gale" and not blob.collision_timer):
+            elif("gale" in blob.used_ability and not blob.collision_timer):
                 if(blob.player == 1 and self.x_speed < 15):
                     self.x_speed += 0.4
                 elif(blob.player == 2 and self.x_speed > -15):
                     self.x_speed -= 0.4
-            elif(blob.used_ability == "stoplight"):
+            elif("stoplight" in blob.used_ability):
                 self.x_speed = 0
                 self.y_speed = 0
                 self.image = type_to_image("blocked_ball")
@@ -298,10 +298,10 @@ class Ball:
                 for other_blob in blob.all_blobs.values():
                     if(other_blob.special_ability == "hook" and blob.special_ability_timer):
                         other_blob.special_ability_timer = 1
-            elif(blob.used_ability == "mirror"):
+            elif("mirror" in blob.used_ability):
                 self.x_speed *= -0.9
                 self.y_speed *= -0.5
-            elif(blob.used_ability == "hook"):
+            elif("hook" in blob.used_ability):
                 if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
                     # After the delay, start reeling the ball in. This is a gradual
                     # process, meaning that the ball won't get jerked in a certain
