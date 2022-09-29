@@ -220,8 +220,8 @@ class Blob:
         self.special_ability_duration = self.stars['special_ability_duration']
         self.special_ability_delay = self.stars['special_ability_delay']
         self.special_ability_cooldown_rate = 2
-        self.used_ability = None
-        self.holding_timer = 0 # Used for held abilities
+        self.used_ability = {}
+        self.ability_holding_timer = 0 # Used for held abilities
 
         self.collision_distance = 104 #Used for calculating ball collisions
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
@@ -355,46 +355,49 @@ class Blob:
 
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
-            if(self.holding_timer % 18 == 17 and self.used_ability == "fireball"):
+            if(self.ability_holding_timer % 18 == 17 and "fireball" in self.used_ability):
                 createSFXEvent('fire')
-            elif(self.holding_timer % 20 == 19 and self.used_ability == "snowball"):
+            elif(self.ability_holding_timer % 20 == 19 and "snowball" in self.used_ability):
                 createSFXEvent('ice')
-            elif(self.holding_timer % 12 == 11 and self.used_ability == "geyser"):
+            elif(self.ability_holding_timer % 12 == 11 and "geyser" in self.used_ability):
                 createSFXEvent('water')
-            elif(self.holding_timer % 60 == 59 and self.used_ability == "gale"):
+            elif(self.ability_holding_timer % 60 == 59 and "gale" in self.used_ability):
                 createSFXEvent('gale')
-            if(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "spire_wait"):
-                createSFXEvent('spire')
-                self.used_ability = "spire"
-            elif(self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1) and self.used_ability == "thunderbolt_wait"):
-                self.used_ability = "thunderbolt"
-                createSFXEvent('electricity')
-            elif(self.used_ability == "thunderbolt" and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
-                self.used_ability = None
-                '''elif(self.used_ability == "gale"): # Move me back later i guess!
-                if (self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_duration):
-                    self.used_ability = None
-                elif (self.special_ability_cooldown_max - self.special_ability_timer) % 60 == 0:
-                    createSFXEvent('gale')'''
-            elif(self.used_ability == "c&d" and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == "joker")):
-                self.used_ability = None
-            elif(self.used_ability == "pill" and (self.special_ability_timer == self.special_ability_cooldown_max - 2 or (self.species == 'joker'))):
-                self.used_ability = None
-            elif(self.used_ability == "tax" and self.special_ability_timer == self.special_ability_cooldown_max - 1):
-                self.used_ability = None
-            elif(self.used_ability == "stoplight" and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == 'joker')):
-                self.used_ability = "stoplight_pfx"
-            elif(self.used_ability == "stoplight_pfx"):
-                self.used_ability = None
-            elif(self.used_ability == "starpunch_wait" and self.special_ability_timer == self.special_ability_cooldown_max - (self.special_ability_delay - 1)):
-                self.used_ability = "starpunch"
-            elif(self.used_ability == "starpunch"):
-                self.used_ability = None
-            elif(self.used_ability == "mirror" and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == 'joker')):
-                self.used_ability = None
+            '''elif("thunderbolt" in self.used_ability and self.special_ability_timer == self.special_ability_cooldown_max - self.special_ability_delay - self.special_ability_duration):
+                self.used_ability = {}
+            elif("c&d" in self.used_ability and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == "joker")):
+                self.used_ability = {}
+            elif("pill" in self.used_ability):
+                if(self.used_ability["pill"] == 2):
+                    self.used_ability["pill"] -= 1
+                else:
+                    self.used_ability = {}
+            elif("tax" in self.used_ability and self.special_ability_timer == self.special_ability_cooldown_max - 1):
+                self.used_ability = {}
+            elif("stoplight" in self.used_ability and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == 'joker')):
+                self.used_ability["stoplight_pfx"] = 2
+                self.used_ability.pop("stoplight")
+            
+            if("stoplight_pfx" in self.used_ability):
+                if(self.used_ability["stoplight_pfx"] == 2):
+                    self.used_ability["stoplight_pfx"] -= 1
+                else:
+                    self.used_ability = {}
+            elif("starpunch" in self.used_ability):
+                self.used_ability = {}
+            elif("mirror" in self.used_ability and (self.special_ability_timer == self.special_ability_cooldown_max - 1 or self.species == 'joker')):
+                self.used_ability = {}'''
 
-            if(self.special_ability_timer == 0):
-                self.used_ability = None
+            new_dict = {}
+
+            for ability in self.used_ability:
+                if(self.used_ability[ability] > 0):
+                    new_dict[ability] = self.used_ability[ability] - 1
+            
+            self.used_ability = new_dict
+
+            '''if(self.ability_holding_timer == 0):
+                self.used_ability = {}'''
 
         for effect in self.status_effects:
             if(self.status_effects[effect]):
@@ -541,50 +544,50 @@ class Blob:
         if(special_ability == 'boost'):
             self.boost()
         elif(special_ability == 'fireball'):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('fireball' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "fireball"
+                self.used_ability["fireball"] += 1
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "fireball"
+                self.used_ability["fireball"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0
+                self.ability_holding_timer = 0
                 createSFXEvent('fire')
             else:
                 return
         elif(special_ability == 'snowball'):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('snowball' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "snowball"
+                self.used_ability["snowball"] += 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "snowball"
+                self.used_ability["snowball"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0 # Reset holding timer
+                self.ability_holding_timer = 0 # Reset holding timer
                 createSFXEvent('ice')
             else:
                 return
         elif(special_ability == 'geyser'):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('geyser' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "geyser"
+                self.used_ability["geyser"] += 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "geyser"
+                self.used_ability["geyser"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0
+                self.ability_holding_timer = 0
                 createSFXEvent('water')
             else:
                 return
@@ -621,25 +624,25 @@ class Blob:
             else:
                 return
         elif(special_ability == "gale"):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('gale' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "gale"
+                self.used_ability["gale"] += 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "gale"
+                self.used_ability["gale"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0
+                self.ability_holding_timer = 0
                 createSFXEvent('gale')
             else:
                 return
         elif(special_ability == "c&d"):
             # TODO: Joker
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.used_ability = "c&d"
+                self.used_ability["c&d"] = 2
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
@@ -653,13 +656,13 @@ class Blob:
                     self.used_ability = "c&d"
                     self.special_ability_timer = cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= cost #Remove some SA meter
-                    self.holding_timer += 1
+                    self.ability_holding_timer += 1
                 elif(self.special_ability_meter > cost):
                     #If we ignite the ball
                     self.used_ability = "c&d"
                     self.special_ability_timer = cooldown #Set the cooldown between uses timer
                     self.special_ability_meter -= cost #Remove some SA meter
-                    self.holding_timer = 0
+                    self.ability_holding_timer = 0
                 else:
                     return
             '''
@@ -671,7 +674,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown
                 self.special_ability_meter -= cost
-                self.used_ability = "pill"
+                self.used_ability["pill"] = 1
 
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
@@ -727,7 +730,7 @@ class Blob:
                 return
         elif(special_ability == "tax"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.used_ability = "tax"
+                self.used_ability["tax"] = 2
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
@@ -746,7 +749,7 @@ class Blob:
                 return
         elif(special_ability == "stoplight"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.used_ability = "stoplight"
+                self.used_ability["stoplight"] = 1
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
@@ -771,7 +774,7 @@ class Blob:
                 return
         elif(special_ability == "mirror"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.used_ability = "mirror"
+                self.used_ability["mirror"] = 2
                 if(self.special_ability != "mirror"):
                     duration = 60
                 else:
@@ -787,44 +790,44 @@ class Blob:
             else:
                 return
         elif(special_ability == "hook"):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('hook' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "hook"
+                self.used_ability["hook"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
                 self.status_effects['overheat'] += 5
                 #print(self.status_effects['overheat'])
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "hook"
+                self.used_ability["hook"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0
+                self.ability_holding_timer = 0
                 self.status_effects['overheat'] += 5
                 #createSFXEvent('water')
             else:
                 return
         elif(special_ability == "gluegun"):
-            if(self.special_ability_timer > 0 and self.special_ability_meter > maintenance):
+            if('gluegun' in self.used_ability and self.special_ability_meter > maintenance):
                 #If we were holding down the button before
-                self.used_ability = "gluegun"
+                self.used_ability["gluegun"] += 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
-                self.holding_timer += 1
+                self.ability_holding_timer += 1
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
-                self.used_ability = "gluegun"
+                self.used_ability["gluegun"] = 1
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                self.holding_timer = 0
+                self.ability_holding_timer = 0
             else:
                 return
             if(self.facing == 'left'):
                 x_mod = -1
             else:
                 x_mod = 1
-            if(not (self.holding_timer % 4)):
+            if(not (self.ability_holding_timer % 4)):
                 create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
                 #createSFXEvent('water')
         elif(special_ability == "teleport"):
@@ -998,18 +1001,23 @@ class Blob:
 
                     
     def check_ability_collision(self, blob):
-        if((self.used_ability == "gale") or \
-            (blob.used_ability == "gale")):
+        if(("gale" in self.used_ability) or \
+            ("gale" in blob.used_ability)):
             if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
-                if(self.player == 1 and self.used_ability == "gale"): #Airborne
+                if(self.player == 1 and "gale" in self.used_ability): #Airborne
                     blob.x_pos += 7
-                elif(self.player == 2 and self.used_ability == "gale"):
+                elif(self.player == 2 and "gale" in self.used_ability):
                     blob.x_pos -= 7
-        elif(self.used_ability == "c&d"):
+        elif("c&d" in self.used_ability):
             blob.status_effects['judged'] = self.special_ability_duration
-        elif(self.used_ability == "tax"):
+            if(self.species != "judge"):
+                blob.status_effects['judged'] = 90
+        elif("tax" in self.used_ability):
             self.status_effects['taxing'] = self.special_ability_duration
             blob.status_effects['taxed'] = self.special_ability_duration
+            if(self.species != "king"):
+                self.status_effects['taxing'] = 240
+                blob.status_effects['taxed'] = 240
             self.set_base_stats(blob.return_stars())
             blob.set_base_stats(self.return_stars())
             '''if(blob.kick_cooldown < self.kick_cooldown):
@@ -1021,7 +1029,7 @@ class Blob:
             if(blob.boost_cooldown_timer < self.boost_cooldown_timer):
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
 
-        elif(self.used_ability == "stoplight"):
+        elif("stoplight" in self.used_ability):
             blob.status_effects['stoplit'] = 30
 
     def check_environmental_collisions(self, environment):
@@ -1279,14 +1287,14 @@ class Blob:
         self.damage_flash_timer = 0
         self.image = species_to_image(self.species, self.costume)[0]
         self.special_ability_timer = 0
-        self.used_ability = None
+        self.used_ability = {}
         self.top_speed = self.base_top_speed
         self.friction = self.base_friction
         self.traction = self.base_traction
         self.impact_land_frames = 0
         self.movement_lock = 0
         self.wavedash_lock = 0
-        self.holding_timer = 0
+        self.ability_holding_timer = 0
         self.status_effects['hypothermia'] = 0
         self.status_effects['judged'] = 0
         self.status_effects['steroided'] = 0
@@ -1513,6 +1521,7 @@ class Blob:
                     self.focusing = True
         else:
             self.down_holding_timer = 0
+
         if((not 'down' in pressed or menu_open) and self.focus_lock == 0 and self.focusing):
             #True if we're not holding down, focus lock is done and we're focusing
             self.focusing = False
