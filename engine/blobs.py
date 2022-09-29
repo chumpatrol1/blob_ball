@@ -772,7 +772,11 @@ class Blob:
         elif(special_ability == "mirror"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
                 self.used_ability = "mirror"
-                self.status_effects['reflecting'] = self.special_ability_duration
+                if(self.special_ability != "mirror"):
+                    duration = 60
+                else:
+                    duration = self.special_ability_duration
+                self.status_effects['reflecting'] = duration
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
@@ -914,9 +918,9 @@ class Blob:
         elif(self.block_cooldown <= 0 and self.status_effects['cards']['block']):
             self.ability(card = self.status_effects['cards']['block'])
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
-            self.special_ability_cooldown += 5 * Blob.timer_multiplier
-            self.kick_cooldown += 5 * Blob.timer_multiplier
-            self.boost_cooldown_timer += 5 * Blob.timer_multiplier
+            self.special_ability_cooldown += 10 * Blob.timer_multiplier
+            self.kick_cooldown += 10 * Blob.timer_multiplier
+            self.boost_cooldown_timer += 10 * Blob.timer_multiplier
             print(self.status_effects['cards']['block'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['block'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['block'])
@@ -946,9 +950,9 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
         elif(self.boost_cooldown_timer <= 0 and self.status_effects['cards']['boost']):
             self.ability(card = self.status_effects['cards']['boost'])
-            self.block_cooldown = self.block_cooldown_max #Set block cooldown
-            self.special_ability_cooldown += 5 * Blob.timer_multiplier
-            self.kick_cooldown += 5 * Blob.timer_multiplier
+            self.block_cooldown += 10 * Blob.timer_multiplier
+            self.special_ability_cooldown += 10 * Blob.timer_multiplier
+            self.kick_cooldown += 10 * Blob.timer_multiplier
             self.boost_cooldown_timer += self.boost_cooldown_max
             print(self.status_effects['cards']['boost'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
