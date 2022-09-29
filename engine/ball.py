@@ -302,7 +302,7 @@ class Ball:
                 self.x_speed *= -0.9
                 self.y_speed *= -0.5
             elif("hook" in blob.used_ability):
-                if(blob.holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
+                if(blob.ability_holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
                     # After the delay, start reeling the ball in. This is a gradual
                     # process, meaning that the ball won't get jerked in a certain
                     # direction and it also allows for the ball to be body blocked
@@ -334,7 +334,7 @@ class Ball:
                     t_dist = math.sqrt(x_dist + y_dist)
                     #print(t_dist)
                     if(t_dist < 500):
-                        blob.holding_timer += 1
+                        blob.ability_holding_timer += 1
                     '''
                     pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                     try:

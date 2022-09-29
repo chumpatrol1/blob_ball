@@ -311,7 +311,7 @@ def draw_ball_overlay(game_display, ball, blobs):
             alpha += 10
     
     for blob in blobs:
-        if("stoplight_pfx" in blob.used_ability):
+        if("stoplight" in blob.used_ability):
             ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
 
         if("hook" in blob.used_ability):
@@ -320,9 +320,9 @@ def draw_ball_overlay(game_display, ball, blobs):
             blob_y = (blob.y_center - 200) * (382/768)
             ball_x = ball.x_center * (1000/1366)
             ball_y = ball.y_center * (400/768)
-            if(blob.holding_timer < blob.special_ability_delay):
-                ball_x = (ball_x - blob_x) * (blob.holding_timer/blob.special_ability_delay) + blob_x
-                ball_y = (ball_y - blob_y) * (blob.holding_timer/blob.special_ability_delay) + blob_y
+            if(blob.ability_holding_timer < blob.special_ability_delay):
+                ball_x = (ball_x - blob_x) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_x
+                ball_y = (ball_y - blob_y) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_y
             pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
             pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 
