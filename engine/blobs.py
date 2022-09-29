@@ -243,6 +243,7 @@ class Blob:
         self.boost_timer_percentage = 0
         self.movement_lock = 0 #Caused if the blob has its movement blocked
         self.wavedash_lock = 0 #Caused if the blob has wavedashed
+        self.jump_lock = 0 #Caused by certain abilities and prevents jumps
         self.danger_zone_enabled = danger_zone_enabled
         self.info = {
             'species': self.species,
@@ -284,7 +285,7 @@ class Blob:
             "judged": 0,
             "pill": 'pill_cooldown',
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
-            "menu": {'open': False, 'type': '', 'direction': 'neutral'},
+            "menu": {'open': False, 'type': '', 'direction': 'neutral', 'time': 0},
             "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': []},
             "teleporter": [1],
             "taxing": 0,
@@ -486,6 +487,9 @@ class Blob:
 
         if(self.wavedash_lock > 0):
             self.wavedash_lock -= 1
+        
+        if(self.jump_lock > 0):
+            self.jump_lock -= 1
 
         if(self.parried):
             self.parried -= 1
@@ -850,11 +854,12 @@ class Blob:
                 return
         elif(special_ability == "cardpack"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.special_ability_cooldown = 30 * Blob.timer_multiplier
+                #self.special_ability_cooldown = 30 * Blob.timer_multiplier
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
                 self.status_effects['menu']['open'] = True
                 self.status_effects['menu']['type'] = 'cardpack'
+                self.status_effects['menu']['time'] = 0
 
                 #print("RECHARGE", self.status_effects['cards']['recharge'])
 
@@ -1353,6 +1358,9 @@ class Blob:
         if(self.wavedash_lock):
             if('down' in pressed):
                 pressed.remove('down')
+        if(self.jump_lock):
+            if('up' in pressed):
+                pressed.remove('up')
         if(self.status_effects['judged']):
             if('kick' in pressed):
                 pressed.remove('kick')
@@ -1619,7 +1627,9 @@ class Blob:
                     other_card_2 = self.status_effects['cards']['pulled'][1]
                     selected_card = self.status_effects['cards']['pulled'][2]
 
-                if(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction != 'neutral'):
+                self.status_effects['menu']['time'] += 1
+
+                if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral' and menu_direction != 'down'):
                     
                     if(self.status_effects['cards'][menu_action]):
                         self.status_effects['cards']['recharge'].add(self.status_effects['cards'][menu_action])
@@ -1630,24 +1640,25 @@ class Blob:
                     self.status_effects['menu']['open'] = False
                     self.status_effects['cards']['recharge'].add(other_card_1)
                     self.status_effects['cards']['recharge'].add(other_card_2)
-                    '''if(menu_action == 'ability'):
+                    if(menu_action == 'ability'):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):
                         self.kick_cooldown += 60 * Blob.timer_multiplier
                     elif('block' in pressed):
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
-                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
-                    
-                    self.status_effects['stunned'] += 15
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                    if(menu_direction == "up"):
+                        self.jump_lock = 15
 
                     self.recharge_indicators['ability_swap'] = True
 
-                elif(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction == 'neutral'):
+                elif(menu_direction == 'down' and self.status_effects['menu']['time'] > 10):
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][0])
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][1])
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][2])
                     self.status_effects['menu']['open'] = False
+                    self.wavedash_lock = 15
 
                     if(menu_action == 'ability'):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
