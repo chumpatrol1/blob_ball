@@ -98,7 +98,7 @@ ability_image_dict = {
         'mirror': ability_cwd + 'mirror.png',
         'fisher': ability_cwd + 'hook.png',
         'glue': ability_cwd + 'glue.png',
-        'joker': ability_cwd + 'pill.png', 
+        'joker': ability_cwd + 'card.png', 
         'arcade': ability_cwd + 'teleport.png',
         "random": icon_cwd + "boost_icon.png",
     }
@@ -282,9 +282,9 @@ class Blob:
         }
         self.status_effects = {
             "judged": 0,
-            "pill": None,
+            "pill": 'pill_cooldown',
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
-            "menu": {'open': False, 'type': ''},
+            "menu": {'open': False, 'type': '', 'direction': 'neutral'},
             "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': []},
             "teleporter": [1],
             "taxing": 0,
@@ -303,7 +303,7 @@ class Blob:
             "silenced": 0,
         }
 
-        if(self.species == "doctor" or self.species == "joker"):
+        if(self.species == "doctor"):
             random_number = random.randint(0,1)
             if(random_number):
                 self.status_effects['pill'] = 'pill_boost'
@@ -640,7 +640,6 @@ class Blob:
             else:
                 return
         elif(special_ability == "c&d"):
-            # TODO: Joker
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
                 self.used_ability["c&d"] = 2
                 self.special_ability_cooldown = cooldown
@@ -723,8 +722,8 @@ class Blob:
                     self.status_effects['pill_weights'][current_pill] -= 3 # Effectively subtracting 2
                 #print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
-
-                self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
+                if(self.species == 'doctor'):
+                    self.update_ability_icon(cwd + "/resources/images/ability_icons/{}.png".format(self.status_effects['pill']))
                 createSFXEvent('crunch')
             else:
                 return
@@ -851,7 +850,7 @@ class Blob:
                 return
         elif(special_ability == "cardpack"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
-                self.special_ability_cooldown = cooldown
+                self.special_ability_cooldown = 30 * Blob.timer_multiplier
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
                 self.status_effects['menu']['open'] = True
@@ -878,9 +877,12 @@ class Blob:
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['ability'])
             self.status_effects['cards']['ability'] = None
             self.recharge_indicators['ability_swap'] = True
-            self.kick_cooldown += 10 * Blob.timer_multiplier
-            self.block_cooldown += 10 * Blob.timer_multiplier
-            self.boost_cooldown_timer += 10 * Blob.timer_multiplier
+            if(self.kick_cooldown < 10 * Blob.timer_multiplier):
+                self.kick_cooldown = 10 * Blob.timer_multiplier
+            if(self.block_cooldown < 10 * Blob.timer_multiplier):
+                self.block_cooldown = 10 * Blob.timer_multiplier
+            if(self.boost_cooldown_timer < 10 * Blob.timer_multiplier):
+                self.boost_cooldown_timer = 10 * Blob.timer_multiplier
                 
 
 
@@ -897,11 +899,15 @@ class Blob:
             self.info['kick_count'] += 1
         elif(self.kick_cooldown <= 0 and self.status_effects['cards']['kick']):
             self.ability(card = self.status_effects['cards']['kick'])
-            self.special_ability_cooldown += 10 * Blob.timer_multiplier
+            
             self.kick_cooldown = self.kick_cooldown_max
-            self.block_cooldown += 10 * Blob.timer_multiplier
-            self.boost_cooldown_timer += 10 * Blob.timer_multiplier
-            print(self.status_effects['cards']['kick'])
+            if(self.special_ability_cooldown < 10 * Blob.timer_multiplier):
+                self.special_ability_cooldown = 10 * Blob.timer_multiplier
+            if(self.block_cooldown < 10 * Blob.timer_multiplier):
+                self.block_cooldown = 10 * Blob.timer_multiplier
+            if(self.boost_cooldown_timer < 10 * Blob.timer_multiplier):
+                self.boost_cooldown_timer = 10 * Blob.timer_multiplier
+            #print(self.status_effects['cards']['kick'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['kick'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['kick'])
             self.status_effects['cards']['kick'] = None
@@ -921,10 +927,13 @@ class Blob:
         elif(self.block_cooldown <= 0 and self.status_effects['cards']['block']):
             self.ability(card = self.status_effects['cards']['block'])
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
-            self.special_ability_cooldown += 10 * Blob.timer_multiplier
-            self.kick_cooldown += 10 * Blob.timer_multiplier
-            self.boost_cooldown_timer += 10 * Blob.timer_multiplier
-            print(self.status_effects['cards']['block'])
+            if(self.special_ability_cooldown < 10 * Blob.timer_multiplier):
+                self.special_ability_cooldown = 10 * Blob.timer_multiplier
+            if(self.kick_cooldown < 10 * Blob.timer_multiplier):
+                self.kick_cooldown = 10 * Blob.timer_multiplier
+            if(self.boost_cooldown_timer < 10 * Blob.timer_multiplier):
+                self.boost_cooldown_timer = 10 * Blob.timer_multiplier
+            #print(self.status_effects['cards']['block'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['block'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['block'])
             self.status_effects['cards']['block'] = None
@@ -953,11 +962,14 @@ class Blob:
                 self.special_ability_cooldown = self.special_ability_cooldown_max
         elif(self.boost_cooldown_timer <= 0 and self.status_effects['cards']['boost']):
             self.ability(card = self.status_effects['cards']['boost'])
-            self.block_cooldown += 10 * Blob.timer_multiplier
-            self.special_ability_cooldown += 10 * Blob.timer_multiplier
-            self.kick_cooldown += 10 * Blob.timer_multiplier
-            self.boost_cooldown_timer += self.boost_cooldown_max
-            print(self.status_effects['cards']['boost'])
+            if(self.special_ability_cooldown < 10 * Blob.timer_multiplier):
+                self.special_ability_cooldown = 10 * Blob.timer_multiplier
+            if(self.kick_cooldown < 10 * Blob.timer_multiplier):
+                self.kicck_cooldown = 10 * Blob.timer_multiplier
+            if(self.block_cooldown < 10 * Blob.timer_multiplier):
+                self.boost_cooldown = 10 * Blob.timer_multiplier
+            self.boost_cooldown_timer = self.boost_cooldown_max
+            #print(self.status_effects['cards']['boost'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
             self.status_effects['cards']['boost'] = None
@@ -1578,6 +1590,7 @@ class Blob:
                 menu_direction = 'left'
             elif('right' in pressed):
                 menu_direction = 'right'
+            self.status_effects['menu']['direction'] = menu_direction
             
             
             if(self.status_effects['menu']['type'] == 'cardpack'):
@@ -1617,15 +1630,17 @@ class Blob:
                     self.status_effects['menu']['open'] = False
                     self.status_effects['cards']['recharge'].add(other_card_1)
                     self.status_effects['cards']['recharge'].add(other_card_2)
-                    if(menu_action == 'ability'):
+                    '''if(menu_action == 'ability'):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):
                         self.kick_cooldown += 60 * Blob.timer_multiplier
                     elif('block' in pressed):
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
-                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
                     
+                    self.status_effects['stunned'] += 15
+
                     self.recharge_indicators['ability_swap'] = True
 
                 elif(menu_action != 'neutral' and self.special_ability_cooldown == 0 and menu_direction == 'neutral'):

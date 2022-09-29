@@ -23,6 +23,7 @@ def unload_image_cache():
     image_cache = {"initialized": False, "ui_initialized": False}
     image_cache['p1_ability_icon'] = None
     image_cache['p2_ability_icon'] = None
+    image_cache['joker_card'] = None
     image_cache['icons'] = {}
     for icon in ability_image_dict:
         try:
@@ -312,11 +313,26 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
 
 def draw_menu(game_display, blob):
     #print("1", blob.status_effects['cards']['pulled'][0])
-    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
+    if(blob.status_effects['menu']['direction'] == 'left'):
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos - 20) *(382/768))))
+    else:
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
     #print("3", blob.status_effects['cards']['pulled'][2])
-    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos) * (1000/1366), ((blob.y_pos - 200) *(382/768))))
+    if(blob.status_effects['menu']['direction'] == 'up'):
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 225) *(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 220) *(382/768))))
+    else:
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 205) *(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 200) *(382/768))))
     #print("2", blob.status_effects['cards']['pulled'][1])
-    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 150) * (1000/1366), (blob.y_pos*(382/768))))
+    if(blob.status_effects['menu']['direction'] == 'right'):
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))))
+    else:
+        game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+        game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 165) * (1000/1366), (blob.y_pos*(382/768))))
 
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
@@ -385,6 +401,7 @@ def draw_gameplay(game_display, info_getter, settings):
         image_cache['blob_special_kick'] = image_cache['blob_special'].convert_alpha()
         image_cache['blob_special_kick'].fill((255, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
 
+        image_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
         image_cache['kick_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/kick_icon.png"), (70, 70))
         image_cache['block_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/block_icon.png"), (70, 70))
         image_cache['boost_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/boost_icon.png"), (70, 70))
