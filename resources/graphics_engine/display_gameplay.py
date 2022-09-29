@@ -25,7 +25,6 @@ def unload_image_cache():
     image_cache['p2_ability_icon'] = None
     image_cache['icons'] = {}
     for icon in ability_image_dict:
-        print(icon)
         try:
             ability_key = species_to_stars(icon, {})['special_ability']
             image_cache['icons'][ability_key] = pg.transform.scale(pg.image.load(ability_image_dict[icon]), (70, 70))
@@ -57,7 +56,6 @@ def create_ui_icons(ui_font, blob):
     The surface generally doesn't change frame to frame
     Returns the surface created with the parameters
     '''
-    print("UPDATING")
     game_display = pg.Surface((390, 70), pg.SRCALPHA)
     if(blob.player == 1):
         ability_icon = image_cache['p1_ability_icon']
