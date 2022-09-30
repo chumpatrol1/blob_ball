@@ -893,6 +893,7 @@ class Blob:
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['ability'])
             self.status_effects['cards']['ability'] = None
             self.recharge_indicators['ability_swap'] = True
+            self.special_ability_cooldown = 180 * Blob.timer_multiplier
             if(self.kick_cooldown < 10 * Blob.timer_multiplier):
                 self.kick_cooldown = 10 * Blob.timer_multiplier
             if(self.block_cooldown < 10 * Blob.timer_multiplier):
@@ -916,7 +917,7 @@ class Blob:
         elif(self.kick_cooldown <= 0 and self.status_effects['cards']['kick']):
             self.ability(card = self.status_effects['cards']['kick'])
             
-            self.kick_cooldown = self.kick_cooldown_max
+            self.kick_cooldown = self.kick_cooldown_max//2
             if(self.special_ability_cooldown < 10 * Blob.timer_multiplier):
                 self.special_ability_cooldown = 10 * Blob.timer_multiplier
             if(self.block_cooldown < 10 * Blob.timer_multiplier):
@@ -942,7 +943,7 @@ class Blob:
             self.info['block_count'] += 1
         elif(self.block_cooldown <= 0 and self.status_effects['cards']['block']):
             self.ability(card = self.status_effects['cards']['block'])
-            self.block_cooldown = self.block_cooldown_max #Set block cooldown
+            self.block_cooldown = self.block_cooldown_max//2 #Set block cooldown
             if(self.special_ability_cooldown < 10 * Blob.timer_multiplier):
                 self.special_ability_cooldown = 10 * Blob.timer_multiplier
             if(self.kick_cooldown < 10 * Blob.timer_multiplier):
@@ -984,7 +985,7 @@ class Blob:
                 self.kicck_cooldown = 10 * Blob.timer_multiplier
             if(self.block_cooldown < 10 * Blob.timer_multiplier):
                 self.boost_cooldown = 10 * Blob.timer_multiplier
-            self.boost_cooldown_timer = self.boost_cooldown_max
+            self.boost_cooldown_timer = self.boost_cooldown_max//2
             #print(self.status_effects['cards']['boost'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
@@ -1670,6 +1671,7 @@ class Blob:
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][2])
                     self.status_effects['menu']['open'] = False
                     self.wavedash_lock = 15
+                    self.special_ability_cooldown = self.special_ability_cooldown_max
 
                     if(menu_action == 'ability'):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
