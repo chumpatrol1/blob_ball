@@ -677,7 +677,8 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown
                 self.special_ability_meter -= cost
-                self.used_ability["pill"] = 1
+                if(self.species == 'doctor'):
+                    self.used_ability["pill"] = 1
 
                 # Activate the correct effect based on self.status_effects['pill']
                 if(self.status_effects['pill'] == 'pill_heal'):
@@ -709,21 +710,31 @@ class Blob:
                     self.status_effects['steroided'] += 180
                     self.boost(boost_cost = 0, boost_duration=180, boost_cooldown=0, ignore_cooldown=True)
 
-                
-                pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
-                pill_weights = [0 if x <= 0 else x for x in self.status_effects['pill_weights'].values()]
-                #print("PRE", self.status_effects['pill_weights'])
-                current_pill = random.choices(pill_list, weights = pill_weights)[0]
-                self.status_effects['pill'] = current_pill
-                #print("CHOSEN", current_pill)
+                if(self.species == 'doctor'):
+                    pill_list = ['pill_boost', 'pill_cooldown', 'pill_heal']
+                    pill_weights = [0 if x <= 0 else x for x in self.status_effects['pill_weights'].values()]
+                    #print("PRE", self.status_effects['pill_weights'])
+                    current_pill = random.choices(pill_list, weights = pill_weights)[0]
+                    self.status_effects['pill'] = current_pill
+                    #print("CHOSEN", current_pill)
 
-                if(self.hp <= self.max_hp//2):
-                    self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
-                    self.status_effects['pill_weights'][current_pill] -= 2
+                    if(self.hp <= self.max_hp//2):
+                        self.status_effects['pill_weights']['pill_heal'] += 2 # Prioritize healing
+                        self.status_effects['pill_weights'][current_pill] -= 2
+                    else:
+                        for pill in self.status_effects['pill_weights']:
+                            self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
+                        self.status_effects['pill_weights'][current_pill] -= 3 # Effectively subtracting 2
                 else:
-                    for pill in self.status_effects['pill_weights']:
-                        self.status_effects['pill_weights'][pill] += 1 # Add 1 to each
-                    self.status_effects['pill_weights'][current_pill] -= 3 # Effectively subtracting 2
+                    if(self.hp <= self.max_hp//2):
+                        self.status_effects['pill'] = 'pill_heal'
+                    else:
+                        if(self.status_effects['pill'] == 'pill_cooldown'):
+                            self.status_effects['pill'] = 'pill_boost'
+                        elif(self.status_effects['pill'] == 'pill_boost'):
+                            self.status_effects['pill'] = 'pill_heal'
+                        else:
+                            self.status_effects['pill'] = 'pill_cooldown'
                 #print("~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
                 if(self.species == 'doctor'):
