@@ -42,8 +42,8 @@ def load_blobs(blob_image_cache, big_image_cache, directory):
                     blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 91)))
                     big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (100, 100)))
                 else:
-                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, 51)))
-                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, 109)))
+                    blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, round(pg.image.load(directory+icon[0]).get_height()*.4636))))
+                    big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, pg.image.load(directory+icon[0]).get_height())))
     return blob_image_cache, big_image_cache
 
 def force_load_blobs():
@@ -101,11 +101,12 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
         y += 1
         for icon in row:
             x += 1
+            x_align = 1366*(x/10)+(1366*(20/1366))
             blob = blob_image_cache[y-1][x-1]
             if(x == 1):
-                game_display.blit(blob, (1366*(x/10)+(1366*(20/1366)), 768*(y * (100/768)) - (768*(45/768))))
+                game_display.blit(blob, (x_align, 768*(y * (100/768)) - (768*(45/768))))
             else:
-                game_display.blit(blob, (1366*(x/10)+(1366*(20/1366)), 768*(y * (100/768)) - (768*(20/768))))
+                game_display.blit(blob, (x_align, 768*(y * (100/768)) - (768*(20/768)) - (blob.get_height() - 51)/2))
         x = 0
 
     if(not p1_selector_position[4]):
@@ -115,7 +116,7 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
         temp_loaded = species_to_image(p1_blob, return_available_costumes()[p1_blob][p1_selector_position[4]])[0]
         if(costume_cache[0][0] != temp_loaded):
             costume_cache[0][0] = temp_loaded
-            costume_cache[0][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, 109))
+            costume_cache[0][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, pg.image.load(temp_loaded).get_height()))
         p1_selected_blob = costume_cache[0][1]
     p1_selected_blob = p1_selected_blob.convert_alpha()
     if(p1_selector_position[2] == 0):
@@ -127,7 +128,7 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
     if(p1_selector_position[0] == 0):
         game_display.blit(p1_selected_blob, (191, 576))
     else:
-        game_display.blit(p1_selected_blob, (136, 576))
+        game_display.blit(p1_selected_blob, (136, 576 - (p1_selected_blob.get_height()-110)/2))
 
     if(p1_selector_position[3] == 1):
         game_display.blit(token_cache['cpu_icon'], (75, 575))
@@ -139,7 +140,7 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
         temp_loaded = species_to_image(p2_blob, return_available_costumes()[p2_blob][p2_selector_position[4]])[0]
         if(costume_cache[1][0] != temp_loaded):
             costume_cache[1][0] = temp_loaded
-            costume_cache[1][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, 109))
+            costume_cache[1][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, pg.image.load(temp_loaded).get_height()))
         p2_selected_blob = costume_cache[1][1]
     p2_selected_blob = p2_selected_blob.convert_alpha()
     if(p2_selector_position[2] == 0):
@@ -150,7 +151,7 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
     if(p2_selector_position[0] == 0):
         game_display.blit(p2_selected_blob, (1079, 576))
     else:
-        game_display.blit(p2_selected_blob, (1024, 576))
+        game_display.blit(p2_selected_blob, (1024, 576 - (p2_selected_blob.get_height()-110)/2))
 
     if(p2_selector_position[3] == 1):
         game_display.blit(token_cache['cpu_icon'], (1225, 575))
