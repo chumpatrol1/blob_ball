@@ -429,8 +429,6 @@ def draw_gameplay(game_display, info_getter, settings):
             image_cache[pname+'blob_clone'] = blob.image
         if not("invisible" in blob.image):
             blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
-            if(image_cache[pname+'blob_right'].get_height() > 66):
-                blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
             if(blob.facing == "right"):
                 if(blob.hp > 0):
                     gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
@@ -442,6 +440,7 @@ def draw_gameplay(game_display, info_getter, settings):
                 else:
                     gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
         else:
+            blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
             if(blob.facing == "right"):
                 gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
             else:
