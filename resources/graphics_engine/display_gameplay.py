@@ -360,9 +360,12 @@ def draw_gameplay(game_display, info_getter, settings):
         for blob in blobs.values():
             pname = "p" + str(blob.player) + "_"
             used_pnames.append(blob.player)
-            image_cache[pname+'blob_left'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, 66))
+
+            blob_height = round(pg.image.load(blob.image).get_height() * 0.6)
+
+            image_cache[pname+'blob_left'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
             image_cache[pname+'blob_right'] = pg.transform.flip(image_cache[pname+'blob_left'], True, False)
-            image_cache[pname+'dead_left'] = pg.transform.scale(pg.image.load(blob.image_death).convert_alpha(), (120, 66))
+            image_cache[pname+'dead_left'] = pg.transform.scale(pg.image.load(blob.image_death).convert_alpha(), (120, blob_height))
             image_cache[pname+'dead_right'] = pg.transform.flip(image_cache[pname+'dead_left'], True, False)
             image_cache[pname+'blob_clone'] = blob.image
             try:
@@ -421,24 +424,28 @@ def draw_gameplay(game_display, info_getter, settings):
             image_cache['ui_initialized'] = False
 
         if not (blob.image == image_cache[pname+'blob_clone']):
-            image_cache[pname+'blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, 66))
+            blob_height = round(pg.image.load(blob.image).get_height()*0.6)
+            image_cache[pname+'blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
             image_cache[pname+'blob_clone'] = blob.image
         if not("invisible" in blob.image):
+            blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
+            if(image_cache[pname+'blob_right'].get_height() > 66):
+                blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
             if(blob.facing == "right"):
                 if(blob.hp > 0):
-                    gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                    gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
                 else:
-                    gameplay_surface.blit(image_cache[pname+'dead_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                    gameplay_surface.blit(image_cache[pname+'dead_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
             else:
                 if(blob.hp > 0):
-                    gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                    gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
                 else:
-                    gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                    gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
         else:
             if(blob.facing == "right"):
-                gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
             else:
-                gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob.y_pos*(400/768))))
+                gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
 
         draw_blob_special(blob, gameplay_surface)
         draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
