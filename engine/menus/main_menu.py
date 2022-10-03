@@ -19,8 +19,8 @@ buttons = [
     Button(575, 650, 525, 825),
 ]
 
-if(get_debug):
-    buttons[8] = Button(650, 725, 600, 900)
+if(get_debug()):
+    buttons.append(Button(650, 725, 600, 900))
 
 def game_state_navigation(selector_position):
     

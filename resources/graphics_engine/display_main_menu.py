@@ -23,8 +23,8 @@ def draw_main_menu(game_display, info_getter, settings):
         menu_font.render('Tutorial', False, (0, 0, 150)),
         menu_font.render('Quit', False, (0, 0, 150))
         ]
-        if(get_debug):
-            text_array[8] = menu_font.render('Debug', False, (150, 0, 0))
+        if(get_debug()):
+            text_array.append(menu_font.render('Debug', False, (150, 0, 0)))
     menu_font = font_cache['menu_font']
     selector_position = info_getter[0]
     ruleset = info_getter[1]
