@@ -78,3 +78,32 @@ def species_to_stars(species, stat_overrides):
                 blob_dict[key] = stat_overrides[key]
 
     return blob_dict
+
+from os import getcwd
+cwd = getcwd()
+icon_cwd = cwd + "/resources/images/ui_icons/"
+ability_cwd = cwd + "/resources/images/ability_icons/"
+
+ability_image_dict = {
+        "quirkless": icon_cwd + "boost_icon.png",
+        "fire": ability_cwd + "fireball.png",
+        "ice": ability_cwd + "snowball.png",
+        'water': ability_cwd + "geyser.png",
+        'rock': ability_cwd + "spire.png",
+        'lightning': ability_cwd + "thunderbolt.png",
+        'wind': ability_cwd + "gale.png",
+        'judge': ability_cwd + "cnd.png",
+        'doctor': ability_cwd + "pill.png",
+        'king': ability_cwd + "tax.png",
+        'cop': ability_cwd + "block_icon.png",
+        'boxer': ability_cwd + 'starpunch.png',
+        'mirror': ability_cwd + 'mirror.png',
+        'fisher': ability_cwd + 'hook.png',
+        'glue': ability_cwd + 'glue.png',
+        'joker': ability_cwd + 'card.png', 
+        'arcade': ability_cwd + 'teleport.png',
+        "random": icon_cwd + "boost_icon.png",
+    }
+
+def species_to_ability_icon(species):
+    return ability_image_dict[species]

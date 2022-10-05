@@ -79,6 +79,7 @@ def create_blob_particles(blob):
         if ability in used_ability_dict:
             used_ability_dict[ability](blob)
 
+from engine.blob_stats import species_to_stars, ability_image_dict
 
 def draw_blob_particles(game_display, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
@@ -134,6 +135,15 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
+        particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
+        
+        particle_cache['icons'] = {}
+        for icon in ability_image_dict:
+            try:
+                ability_key = species_to_stars(icon, {})['special_ability']
+                particle_cache['icons'][ability_key] = pg.transform.scale(pg.image.load(ability_image_dict[icon]), (70, 70))
+            except:
+                particle_cache['icons'][icon] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png"), (70, 70))
     for blob in blobs:
         blob_speed = blob.top_speed
         if(blob.status_effects['glued']):
@@ -200,6 +210,10 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['hyped'] % 10 == 0 and blob.status_effects['hyped'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['thunder_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
 
+        if(blob.status_effects['cards']['joker_particle']):
+            draw_card_selection(*blob.status_effects['cards']['joker_particle'])
+            blob.status_effects['cards']['joker_particle'] = None
+
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
@@ -224,7 +238,6 @@ def draw_boost_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-
 def draw_energy_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
@@ -237,6 +250,11 @@ def draw_shatter(align, shatter_timer):
     cropRect = (cropx, cropy, 70, 70)
 
     ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = align[0], y_pos = align[1], lifetime=1, ground_clip = True, crop=cropRect))
+
+def draw_card_selection(position, icon):
+    particle_memory.append(dpc.Particle(image = particle_cache['joker_card'], x_pos = position[0]*(1000/1366), y_pos = position[1]*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+    particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+
 
 def clear_particle_memory():
     global particle_memory

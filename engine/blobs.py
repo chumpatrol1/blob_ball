@@ -5,7 +5,7 @@ from engine.environmental_modifiers import create_environmental_modifier
 from engine.handle_input import merge_inputs
 from resources.graphics_engine.display_particles import draw_teleportation_pfx
 from resources.sound_engine.sfx_event import createSFXEvent
-from engine.blob_stats import species_to_stars
+from engine.blob_stats import species_to_stars, species_to_ability_icon
 cwd = os.getcwd()
 
 # INSTRUCTIONS FOR ADDING A BLOB TO THE GAME
@@ -79,32 +79,6 @@ def species_to_image(species, costume):
     }
 
     return image_dict[species][costume]
-
-icon_cwd = cwd + "/resources/images/ui_icons/"
-ability_cwd = cwd + "/resources/images/ability_icons/"
-ability_image_dict = {
-        "quirkless": icon_cwd + "boost_icon.png",
-        "fire": ability_cwd + "fireball.png",
-        "ice": ability_cwd + "snowball.png",
-        'water': ability_cwd + "geyser.png",
-        'rock': ability_cwd + "spire.png",
-        'lightning': ability_cwd + "thunderbolt.png",
-        'wind': ability_cwd + "gale.png",
-        'judge': ability_cwd + "cnd.png",
-        'doctor': ability_cwd + "pill.png",
-        'king': ability_cwd + "tax.png",
-        'cop': ability_cwd + "block_icon.png",
-        'boxer': ability_cwd + 'starpunch.png',
-        'mirror': ability_cwd + 'mirror.png',
-        'fisher': ability_cwd + 'hook.png',
-        'glue': ability_cwd + 'glue.png',
-        'joker': ability_cwd + 'card.png', 
-        'arcade': ability_cwd + 'teleport.png',
-        "random": icon_cwd + "boost_icon.png",
-    }
-
-def species_to_ability_icon(species):
-    return ability_image_dict[species]
 
 def player_to_controls(player):
     if(player == 1):
@@ -286,7 +260,7 @@ class Blob:
             "pill": 'pill_cooldown',
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
             "menu": {'open': False, 'type': '', 'direction': 'neutral', 'time': 0},
-            "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': []},
+            "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': [], 'joker_particle': False},
             "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
@@ -1649,6 +1623,14 @@ class Blob:
 
                     self.status_effects['cards'][menu_action] = selected_card
                     self.status_effects['cards']['equipped'].add(selected_card)
+                    card_pos = (0, 0)
+                    if(menu_direction == "left"):
+                        card_pos = (self.x_pos - 105, self.y_pos - 25)
+                    elif(menu_direction == "up"):
+                        card_pos = (self.x_pos + 20, self.y_pos - 225)
+                    elif(menu_direction == "right"):
+                        card_pos = (self.x_pos + 160, self.y_pos - 25)
+                    self.status_effects['cards']['joker_particle'] = (card_pos, selected_card)
                     self.status_effects['menu']['open'] = False
                     self.status_effects['cards']['recharge'].add(other_card_1)
                     self.status_effects['cards']['recharge'].add(other_card_2)

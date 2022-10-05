@@ -7,8 +7,7 @@ from resources.graphics_engine.display_particles import draw_recharge_flash, dra
 from resources.graphics_engine.display_environmental_modifiers import draw_environmental_modifiers
 from math import ceil
 
-from engine.blobs import ability_image_dict
-from engine.blob_stats import species_to_stars
+from engine.blob_stats import species_to_stars, ability_image_dict
 
 import pygame as pg
 cwd = getcwd()
@@ -451,6 +450,7 @@ def draw_gameplay(game_display, info_getter, settings):
 
         if(blob.status_effects['menu']['open']):
             draw_menu(gameplay_surface, blob)
+        
 
 
     #fade_out = 200
