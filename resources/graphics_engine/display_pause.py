@@ -34,7 +34,7 @@ def draw_pause_screen(game_display, info_getter, settings):
     game_display.blit(shader, (0, 0))
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
     text_array = [
-        menu_font.render('Resume', False, (0, 0, 150)),
+        menu_font.render('Press Escape/Home/Pause to Resume', False, (0, 0, 150)),
         menu_font.render('Screenshot', False, (0, 0, 150)),
         menu_font.render('Music Volume: ' + str(settings['music_volume']), False, (0, 0, 150)),
         menu_font.render('Sound Volume: ' + str(settings['sound_volume']), False, (0, 0, 150)),

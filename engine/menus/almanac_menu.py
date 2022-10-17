@@ -1,3 +1,19 @@
+'''
+engine/menus/almanac_menu.py
+
+File that handles the almanac menu and many submenus
+
+> prompt_file(): Creates a Tkinter file dialog and opens a replay. Cleans up when finished
+> almanac_navigation(): Handles the "top level" of the almanac menu
+> almanac_stats_navigation_1(): Handles the first page of the "Game Statistics" submenu (Match Statistics)
+> almanac_stats_navigation_2(): Handles the second page of the "Game Statistics" submenu (General Statistics)
+> almanac_stats_navigation_3(): Handles the third page of the "Game Statistics" submenu (Matchup Chart)
+> almanac_art_navigation(): Handles the art submenu of the almanac.
+> almanac_art_backgrounds_navigation(): Handles the background reel in the art submenu of the almanac.
+> almanac_art_blobs_navigation(): Handles the blob reel in the art submenu of the almanac.
+> credits_navigation(): Handles the credits screen of the almanac
+'''
+
 import engine.handle_input
 from engine.replays import decompress_replay_file, return_replay_info
 from resources.graphics_engine.display_controller_pop_up import create_generic_pop_up
@@ -8,7 +24,12 @@ import tkinter
 import tkinter.filedialog
 
 def prompt_file():
-    """Create a Tk file dialog and cleanup when finished"""
+    '''
+    Creates a Tkinter file dialog and opens a replay. Cleans up when finished. Called by almanac_navigation.
+
+    Output:
+        - file_name [str]: The path to a specified replay that we have selected
+    '''
     top = tkinter.Tk()
     top.withdraw()  # hide window
     file_name = tkinter.filedialog.askopenfilename(parent=top, title = "Open Blob Ball Replay", filetypes=[("Blob Ball Replay Files", ".bbr")], initialdir=getenv('APPDATA')+"/BlobBall"+"/replays")
@@ -25,6 +46,20 @@ almanac_main_buttons = [
     Button(425, 500, 400, 950),
 ]
 def almanac_navigation(timer, previous_screen, ruleset):
+    '''
+    TODO: Standardize return!
+    Handles the "top level" of the almanac menu. This can be accessed from the main menu or the character select screen
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+        - previous_screen [str]: A string representing the game_state we previously came from, either "main_menu" or "css"
+        - ruleset [dict]: A dictionary. We pull the game version from here - if the replay version is not the same as the ruleset version we won't open the file
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+
+    Outputs:
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+        - game_state [str]: The updated game state. Defaults to "almanac"
+    '''
     game_state = "almanac"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -41,12 +76,20 @@ def almanac_navigation(timer, previous_screen, ruleset):
             selector_position += 1
 
     def update_gamestate():
+        '''
+        Updates the game state when we detect a click or button press.
+
+        Inputs:
+            - selector_position [int] (global): The position of the selector, ranging from 0-5
+        
+        Outputs:
+            - game_state [str]: The updated game state. Game will crash if selector position is not an int between 0-5 inclusive.
+        '''
         global selector_position
         createSFXEvent('select')
         if(selector_position == 0): #Blobs
             game_state = "blob_info"
         elif(selector_position == 1):
-            #game_state = "medals" #... may not be medals for long
             game_state = "almanac"
             replay_file = prompt_file()
             
@@ -86,7 +129,17 @@ def almanac_navigation(timer, previous_screen, ruleset):
                 
     return selector_position, game_state
 
-def almanac_stats_navigation(timer):
+def almanac_stats_navigation_1(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the first page of the "Game Statistics" submenu (Match Statistics)
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+    
+    Outputs:
+        - game_state [str]: The updated game state. Defaults to "almanac_stats"
+    '''
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
     game_state = "almanac_stats"
@@ -96,6 +149,16 @@ def almanac_stats_navigation(timer):
     return [game_state]
 
 def almanac_stats_navigation_2(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the first page of the "Game Statistics" submenu (General Statistics)
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+    
+    Outputs:
+        - game_state [str]: The updated game state. Defaults to "almanac_stats_page_2"
+    '''
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
     game_state = "almanac_stats_page_2"
@@ -115,6 +178,19 @@ for i in range(7): # 7 columns
         
 
 def almanac_stats_navigation_3():
+    '''
+    Handles the first page of the "Game Statistics" submenu (Matchup Chart)
+
+    Inputs:
+        - almanac_mu_chart_selector [array]: Array of ints - first one is x pos, second is y pos, third is whether or not we selected the blob
+        - almanac_mu_chart_ghost [array]: Array of ints - first one is x pos, second is y pos, third is whether or not we selected the blob. Ghost is used for mouse hovering
+    
+    Outputs:
+        - game_state [str]: The updated game state. Defaults to "almanac_stats_page_3"
+        - info_getter [array]
+            - almanac_mu_chart_selector [array]: 
+            - almanac_mu_chart_ghost [array]:
+    '''
     global almanac_mu_chart_selector
     game_state = "almanac_stats_page_3"
     pressed = engine.handle_input.css_input()
@@ -184,6 +260,18 @@ def almanac_stats_navigation_3():
 almanac_art_buttons = list(almanac_main_buttons)
 
 def almanac_art_navigation(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the art submenu of the almanac.
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+
+    Outputs:
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+        - game_state [str]: The updated game state. Defaults to "almanac_art"
+    '''
     game_state = "almanac_art"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -229,6 +317,18 @@ def almanac_art_navigation(timer):
     return selector_position, game_state
 
 def almanac_art_backgrounds_navigation(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the background reel in the art submenu of the almanac.
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+
+    Outputs:
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+        - game_state [str]: The updated game state. Defaults to "almanac_art_backgrounds"
+    '''
     game_state = "almanac_art_backgrounds"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -250,6 +350,18 @@ def almanac_art_backgrounds_navigation(timer):
     return selector_position, game_state
 
 def almanac_art_blobs_navigation(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the blob reel in the art submenu of the almanac.
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+
+    Outputs:
+        - selector_position [int] (global): Represents the position of the selector, and ranges from 0 to 5.
+        - game_state [str]: The updated game state. Defaults to "almanac_art_blobs"
+    '''
     game_state = "almanac_art_blobs"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -271,6 +383,16 @@ def almanac_art_blobs_navigation(timer):
     return selector_position, game_state
 
 def credits_navigation(timer):
+    '''
+    # TODO: Standardize return!
+    Handles the credits screen of the almanac
+
+    Inputs:
+        - timer [int]: A lockout timer which prevents menus from navigating too quickly
+
+    Outputs:
+        - game_state [str]: The updated game state. Defaults to "credits"
+    '''
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
     game_state = "credits"

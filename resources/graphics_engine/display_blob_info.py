@@ -167,8 +167,8 @@ def draw_blob_selector(game_display, info_getter, settings):
     for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
         for icon in row:
             blob = blob_image_cache[y][x]
-            blob = pg.transform.scale(blob, (122, 68))
-            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100)))
+            blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
+            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1
@@ -194,9 +194,11 @@ def draw_blob_selector(game_display, info_getter, settings):
             text_y += 100
             text_x = 170
     game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
+    # Draw the ghost
     if(ghost_position is not None and ghost_position != selector_position[:2]):
         game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
-    game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
+    # Draw the blob itself
+    game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575 - (blob_image_cache[selector_position[1]][selector_position[0]].get_height()-110)/2))
 
     text_array = static_text['selector_instructions']
 

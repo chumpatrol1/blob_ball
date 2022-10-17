@@ -1,7 +1,7 @@
 from pygame.display import Info
 import engine.handle_input
 from engine.unlocks import load_medal_unlocks, return_medal_unlocks, return_mam_selector_medals, update_mam_medals
-from engine.popup_event import clear_pop_up_events, get_pop_up_events
+from engine.unlock_event import clear_unlock_events, get_unlock_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.graphics_engine.display_medals_and_milestones import force_load_medals
@@ -143,14 +143,14 @@ def popup_handler(timer):
     global pop_up_counter
     global medal_list
     game_state = "pop_up"
-    if(pop_up_counter >= len(get_pop_up_events())):
+    if(pop_up_counter >= len(get_unlock_events())):
         pop_up_counter = 0
-        last_info = get_pop_up_events()[-1].info
-        clear_pop_up_events()
+        last_info = get_unlock_events()[-1].info
+        clear_unlock_events()
         medal_list = return_mam_selector_medals()
         return "mam", last_info
     
-    pop_up = get_pop_up_events()[pop_up_counter].info
+    pop_up = get_unlock_events()[pop_up_counter].info
     
     pressed = engine.handle_input.get_keypress()
     mouse = engine.handle_input.handle_mouse()
@@ -158,7 +158,7 @@ def popup_handler(timer):
     if("p1_ability" in pressed or "p2_ability" in pressed or "return" in pressed or mouse[1][0] or mouse[1][2]) and timer <= 0:
         pop_up_counter += 1
         set_timer(60)
-        if(pop_up_counter < len(get_pop_up_events())):
+        if(pop_up_counter < len(get_unlock_events())):
             createSFXEvent("chime_milestone")
 
     return game_state, pop_up

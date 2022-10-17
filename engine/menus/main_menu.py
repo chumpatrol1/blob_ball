@@ -1,3 +1,12 @@
+'''
+engine/menus/main_menu.py
+
+Handles the splash screen and main menu navigation functions
+
+> game_state_navigation(): Takes a selector position and tells what game state that translates to
+> menu_navigation(): Handles the mouse and keyboard navigation of the main menu
+> splash_navigator(): Handles the splash screen menu and its flashing
+'''
 import engine.handle_input
 from json import dumps
 from os import getcwd
@@ -19,7 +28,15 @@ buttons = [
 ]
 
 def game_state_navigation(selector_position):
-    
+    '''
+    Takes a selector position and tells what game state that translates to
+
+    Inputs
+        - selector_position [int]: An integer representing the selector location, ranging from 0-7
+
+    Outputs
+        - game_state [string]: String representing the updated game state, which is pulled from the dictionary
+    '''
     game_state = {
         0: "css",
         1: "main_menu",
@@ -36,6 +53,15 @@ def game_state_navigation(selector_position):
     return game_state[selector_position]
 
 def menu_navigation(timer):
+    '''
+    Handles the mouse and keyboard navigation of the main menu
+
+    Inputs:
+        - timer [int]: The timer, which prevents the player from navigating too quickly
+
+    Outputs:
+        - game_state [string]: String representing the updated game state, which is pulled from the dictionary. Defaults to "main_menu"
+    '''
     game_state = "main_menu"
     pressed = engine.handle_input.menu_input()
     mouse = engine.handle_input.handle_mouse()
@@ -73,6 +99,18 @@ def menu_navigation(timer):
 
 splash_flash_timer = 60
 def splash_navigator():
+    '''
+    # TODO: Standardize return!
+    Handles the splash screen menu and its flashing
+
+    Inputs:
+        - splash_flash_timer [int]: Number telling the game whether or not to display a certain text splash
+    
+    Outputs:
+        - game_state [string]: String representing the updated game state, which is pulled from the dictionary. Defaults to "control_splash"
+        - info_getter [array]
+            - splash_flash_timer [int]: Number telling the game whether or not to display a certain text splash
+    '''
     global splash_flash_timer
     game_state = "control_splash"
     pressed = engine.handle_input.menu_input()
