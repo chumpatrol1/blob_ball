@@ -299,6 +299,7 @@ class Ball:
                     if(other_blob.special_ability == "hook" and blob.special_ability_timer):
                         other_blob.special_ability_timer = 1
             elif("mirror" in blob.used_ability):
+
                 self.x_speed *= -0.9
                 self.y_speed *= -0.5
             elif("hook" in blob.used_ability):
@@ -335,6 +336,7 @@ class Ball:
                     #print(t_dist)
                     if(t_dist < 500):
                         blob.ability_holding_timer += 1
+
                     '''
                     pull_force_x = math.sqrt(abs(blob.x_center - 25 - self.x_pos))
                     try:

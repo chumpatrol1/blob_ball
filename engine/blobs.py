@@ -757,6 +757,7 @@ class Blob:
                 self.special_ability_meter -= cost
                 #self.kick_cooldown += 120
                 create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = special_ability_delay, y_pos = self.y_center)
+
                 createSFXEvent('boxing_bell')
             else:
                 return
@@ -1031,8 +1032,8 @@ class Blob:
 
             if(blob.boost_cooldown_timer < self.boost_cooldown_timer):
                 self.boost_cooldown_timer = (self.boost_cooldown_timer + blob.boost_cooldown_timer)//2'''
-
         elif("stoplight" in self.used_ability):
+
             blob.status_effects['stoplit'] = 30
 
     def check_environmental_collisions(self, environment):
