@@ -307,8 +307,8 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
     for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
         for icon in row:
             blob = blob_image_cache[y][x]
-            blob = pg.transform.scale(blob, (122, 68))
-            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100)))
+            blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
+            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1

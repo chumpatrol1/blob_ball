@@ -134,7 +134,7 @@ def check_if_requirements_met(page):
             balls[1].special_timer = 2
             for blob in blobs.values():
                 blob.impact_land_frames = 0
-                blob.used_ability = ""
+                blob.used_ability = {}
             countdown -= 1
             if(countdown == 0):
                 return initialize_scenario(page)
@@ -178,7 +178,7 @@ def check_if_requirements_met(page):
             balls[1].special_timer = 2
             for blob in blobs.values():
                 blob.impact_land_frames = 0
-                blob.used_ability = ""
+                blob.used_ability = {}
             countdown -= 1
             if(countdown == 0):
                 return initialize_scenario(page)

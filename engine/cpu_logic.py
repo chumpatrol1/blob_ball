@@ -194,22 +194,22 @@ def block_attacks(blob, other_blob, pressed):
         pressed.append('block')
 
 def fire_blob(blob, other_blob, ball, pressed):
-    if(blob.player == 1 and ball.x_speed > 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1605)):
+    if(blob.player == 1 and ball.x_speed > 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos > 1605)):
         pressed.append('ability')
-    elif(blob.player == 2 and ball.x_speed < 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 200)):
+    elif(blob.player == 2 and ball.x_speed < 0 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos < 200)):
         pressed.append('ability')
 
 def ice_blob(blob, other_blob, ball, pressed):
-    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 400)):
+    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos < 400)):
         pressed.append('ability')
-    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1405)):
+    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos > 1405)):
         pressed.append('ability')
 
 def water_blob(blob, other_blob, ball, pressed):
-    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos < 300)):
+    if(blob.player == 1 and ball.x_speed < -10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos < 300)):
         pressed.append('ability')
         blob.cpu_memory['press_queue'].append('ability')
-    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.holding_timer > 0 or ball.x_pos > 1505)):
+    elif(blob.player == 2 and ball.x_speed > 10 and (ball.y_speed > -15 or ball.y_pos > 925) and (blob.special_ability_meter > blob.special_ability_cost * 2.5 or blob.ability_holding_timer > 0 or ball.x_pos > 1505)):
         pressed.append('ability')
         blob.cpu_memory['press_queue'].append('ability')
 
@@ -230,10 +230,10 @@ def wind_blob(blob, other_blob, ball, pressed):
     # IF the ball is behind the enemy
     # IF SA Meter is 3x
     # IF we are already using ability
-    if(blob.player == 1 and (ball.x_pos < 400 or (ball.x_pos > 1405 and other_blob.x_center < ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed > -10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.holding_timer > 0)):
+    if(blob.player == 1 and (ball.x_pos < 400 or (ball.x_pos > 1405 and other_blob.x_center < ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed > -10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.ability_holding_timer > 0)):
         pressed.append('ability')
         blob.cpu_memory['press_queue'].append('ability')
-    elif(blob.player == 1 and (ball.x_pos > 1405 or (ball.x_pos < 400 and other_blob.x_center > ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed < 10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.holding_timer > 0)):
+    elif(blob.player == 1 and (ball.x_pos > 1405 or (ball.x_pos < 400 and other_blob.x_center > ball.x_center)) and  (ball.y_speed > -15 or ball.y_pos > 925) and (ball.x_speed < 10) and (blob.special_ability_meter > blob.special_ability_cost * 3 or blob.ability_holding_timer > 0)):
         pressed.append('ability')
         blob.cpu_memory['press_queue'].append('ability')
 

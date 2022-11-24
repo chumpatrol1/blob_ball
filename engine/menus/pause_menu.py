@@ -133,7 +133,7 @@ def handle_pause_menu(timer, settings):
         game_state = pause_menu_selection(selector_position, game_state, settings, left_mode=True)
 
     if(game_state != 'pause'):
-        selector_position = 0
+        selector_position = 1
 
     for i in range(len(pause_buttons)):
         if(pause_buttons[i].check_hover(mouse)):

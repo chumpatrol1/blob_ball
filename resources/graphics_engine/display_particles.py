@@ -75,9 +75,11 @@ def create_blob_particles(blob):
         'gale': draw_gale,
     }
 
-    if blob.used_ability in used_ability_dict:
-        used_ability_dict[blob.used_ability](blob)
+    for ability in blob.used_ability:
+        if ability in used_ability_dict:
+            used_ability_dict[ability](blob)
 
+from engine.blob_stats import species_to_stars, ability_image_dict
 
 def draw_blob_particles(game_display, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
@@ -133,6 +135,15 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
+        particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
+        
+        particle_cache['icons'] = {}
+        for icon in ability_image_dict:
+            try:
+                ability_key = species_to_stars(icon, {})['special_ability']
+                particle_cache['icons'][ability_key] = pg.transform.scale(pg.image.load(ability_image_dict[icon]), (70, 70))
+            except:
+                particle_cache['icons'][icon] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png"), (70, 70))
     for blob in blobs:
         blob_speed = blob.top_speed
         if(blob.status_effects['glued']):
@@ -183,7 +194,7 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-        if(blob.used_ability == "pill"):
+        if("pill" in blob.used_ability):
             ability_icon = pg.image.load(blob.ability_icon)
             particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
 
@@ -198,6 +209,10 @@ def draw_blob_particles(game_display, blobs):
 
         if(blob.status_effects['hyped'] % 10 == 0 and blob.status_effects['hyped'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['thunder_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+
+        if(blob.status_effects['cards']['joker_particle']):
+            draw_card_selection(*blob.status_effects['cards']['joker_particle'])
+            blob.status_effects['cards']['joker_particle'] = None
 
         create_blob_particles(blob)
         #Manages and updates particles
@@ -223,7 +238,6 @@ def draw_boost_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-
 def draw_energy_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
@@ -236,6 +250,11 @@ def draw_shatter(align, shatter_timer):
     cropRect = (cropx, cropy, 70, 70)
 
     ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = align[0], y_pos = align[1], lifetime=1, ground_clip = True, crop=cropRect))
+
+def draw_card_selection(position, icon):
+    particle_memory.append(dpc.Particle(image = particle_cache['joker_card'], x_pos = position[0]*(1000/1366), y_pos = position[1]*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+    particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+
 
 def clear_particle_memory():
     global particle_memory
@@ -255,13 +274,13 @@ def draw_ball_particles(game_display, ball, blobs):
     '''
     global ball_particle_memory
     for blob in blobs:
-        if(blob.used_ability == "fireball"):
+        if("fireball" in blob.used_ability):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
         
-        if(blob.used_ability == "snowball"):
+        if("snowball" in blob.used_ability):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
         
-        if(blob.used_ability == "geyser"):
+        if("geyser" in blob.used_ability):
             for y in range((1240 - round(ball.y_pos))//40):
                 if(y > 7):
                     particle_cache['water_particle'].set_alpha(100)
@@ -310,18 +329,18 @@ def draw_ball_overlay(game_display, ball, blobs):
             alpha += 10
     
     for blob in blobs:
-        if(blob.used_ability == "stoplight_pfx"):
+        if("stoplight" in blob.used_ability):
             ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
 
-        if(blob.used_ability == "hook"):
+        if("hook" in blob.used_ability):
             #print("hooka")
             blob_x = (blob.x_center) * (1000/1366)
             blob_y = (blob.y_center - 200) * (382/768)
             ball_x = ball.x_center * (1000/1366)
             ball_y = ball.y_center * (400/768)
-            if(blob.holding_timer < blob.special_ability_delay):
-                ball_x = (ball_x - blob_x) * (blob.holding_timer/blob.special_ability_delay) + blob_x
-                ball_y = (ball_y - blob_y) * (blob.holding_timer/blob.special_ability_delay) + blob_y
+            if(blob.ability_holding_timer < blob.special_ability_delay):
+                ball_x = (ball_x - blob_x) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_x
+                ball_y = (ball_y - blob_y) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_y
             pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
             pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 

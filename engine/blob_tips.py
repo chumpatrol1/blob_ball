@@ -270,6 +270,10 @@ arcade_tips = [
     tip_font.render("and afterwards Arcade Blob will be teleported.", False, text_color),
 ]
 
+joker_tips = [
+
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -288,6 +292,7 @@ def return_selected_blob_tips(selected_blob):
         'fisher': fisher_tips,
         'glue': glue_tips,
         'arcade': arcade_tips,
+        'joker': joker_tips,
     }
     try:
         return tips_dict[selected_blob]
