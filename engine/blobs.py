@@ -401,8 +401,21 @@ class Blob:
                         self.block_cooldown_rate += 1
                         self.special_ability_cooldown_rate += 1
                         self.boost_cooldown_rate += 1
-                    if(effect == 'monado' and self.status_effects[effect] == 1):
+                    if(effect == 'monado_timer' and self.status_effects[effect] == 1):
                         self.status_effects['monado_effect'] = None
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "CHILL"):
+                        self.kick_cooldown_rate += 1
+                        self.block_cooldown_rate += 1
+                        self.special_ability_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SHIELD"):
+                        self.block_cooldown_rate += 5
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
+                        self.block_cooldown_rate += 3
+
+                    
                 except:
                     pass # Typically pass for strings, like current pill
         
@@ -1008,6 +1021,12 @@ class Blob:
                     accumulated_damage += 1
                 if(self.status_effects['steroided']):
                     pierce += 1
+                if(self.status_effects['monado_effect'] == "SMASH"):
+                    pierce += 1
+                    accumulated_damage += 1
+                if(self.status_effects['monado_effect'] == "CHILL" or self.status_effects['monado_effect'] == "SPEED"):
+                    accumulated_damage -= 1
+                
                 blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
@@ -1202,6 +1221,9 @@ class Blob:
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True, status_effects = [], pierce = 0):
         damage_taken = False
+        pierced = False
+        if(self.status_effects['monado_effect'] == "SMASH"):
+            pierce += 1
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
                 if(show_parry):
@@ -1244,14 +1266,18 @@ class Blob:
                 damage_taken = True
         
         if(not damage_taken and pierce):
-            damage = pierce
+            damage = pierce - bool(self.status_effects['monado_effect'] == "SMASH") - bool(self.status_effects['monado_effect'] == "SHIELD")
             damage_taken = True
+            pierced = True
 
         if(damage_taken):
             # Increase damage by 1 if using hook
             # Decrease damage by 1 if using reflect
+            # Increase damage by 1 if using SPEED
+            # Increase damage by 2 if using SMASH
+            # Decrease damage by 1 if using SHIELD
             # self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
-            self.hp -= damage - bool(self.status_effects['reflecting'] > 0)
+            self.hp -= damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") + (2 * bool(self.status_effects['monado_effect'] == "SMASH")) - bool(self.status_effects['monado_effect'] == "SHIELD")
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
