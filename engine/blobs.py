@@ -1715,6 +1715,7 @@ class Blob:
             elif(self.status_effects['menu']['type'] == 'monado'):
                 if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
                     menu_action = 'ability'
+
                 
                 self.status_effects['menu']['time'] += 1
                 selected_card = ''
@@ -1736,7 +1737,8 @@ class Blob:
                 elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 10):
                     self.status_effects['menu']['open'] = False
                     self.special_ability_cooldown = self.special_ability_cooldown_max
-
+                
+                if(not self.status_effects['menu']['open']):
                     if('ability' in pressed):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):

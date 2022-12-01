@@ -24,6 +24,12 @@ def unload_image_cache():
     image_cache['p2_ability_icon'] = None
     image_cache['joker_card'] = None
     image_cache['icons'] = {}
+    image_cache['monado'] = {
+        "SPEED": pg.transform.scale(pg.image.load(cwd+"/resources/images/ui_icons/boost_icon.png"), (70, 70)),
+        "SMASH": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70)),
+        "SHIELD": pg.transform.scale(pg.image.load(cwd+"/resources/images/particles/shield_particle.png"), (70, 70)),
+        "CHILL": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/snowball_v2.png"), (70, 70)),
+    }
     for icon in ability_image_dict:
         try:
             ability_key = species_to_stars(icon, {})['special_ability']
@@ -336,23 +342,31 @@ def draw_menu(game_display, blob):
     elif(blob.status_effects['menu']['type'] == 'monado'):
         if(blob.status_effects['menu']['direction'] == 'left'):
             game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+            game_display.blit(image_cache['monado']["SMASH"], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos - 20) *(382/768))))
         else:
             game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+            game_display.blit(image_cache['monado']["SMASH"], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
         #print("3", blob.status_effects['cards']['pulled'][2])
         if(blob.status_effects['menu']['direction'] == 'up'):
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 225) *(382/768))))
+            game_display.blit(image_cache['monado']["SHIELD"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 220) *(382/768))))
         else:
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 205) *(382/768))))
+            game_display.blit(image_cache['monado']["SHIELD"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 200) *(382/768))))
         #print("2", blob.status_effects['cards']['pulled'][1])
         if(blob.status_effects['menu']['direction'] == 'right'):
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+            game_display.blit(image_cache['monado']["SPEED"], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))))
         else:
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+            game_display.blit(image_cache['monado']["SPEED"], ((blob.x_pos + 165) * (1000/1366), (blob.y_pos*(382/768))))
 
         if(blob.status_effects['menu']['direction'] == 'down'):
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 185) *(382/768))))
+            game_display.blit(image_cache['monado']["CHILL"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+190)*(382/768))))
         else:
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 205) *(382/768))))
+            game_display.blit(image_cache['monado']["CHILL"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+210)*(382/768))))
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]
