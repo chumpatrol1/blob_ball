@@ -43,7 +43,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'stuffing']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -262,6 +262,8 @@ class Blob:
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
             "menu": {'open': False, 'type': '', 'direction': 'neutral', 'time': 0},
             "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': [], 'joker_particle': False},
+            "monado_timer": 0,
+            "monado_effect": None,
             "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
@@ -861,8 +863,14 @@ class Blob:
                 #print("POST RECHARGE", self.status_effects['cards']['recharge'])
             else:
                 return
-        elif(special_ability == "stuffing"):
-            pass
+        elif(special_ability == "monado"):
+            if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
+                #self.special_ability_cooldown = 30 * Blob.timer_multiplier
+                self.special_ability_timer = self.special_ability_cooldown
+                self.special_ability_meter -= cost
+                self.status_effects['menu']['open'] = True
+                self.status_effects['menu']['type'] = 'monado'
+                self.status_effects['menu']['time'] = 0
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])
@@ -1665,6 +1673,39 @@ class Blob:
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
                         self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+            elif(self.status_effects['menu']['type'] == 'monado'):
+                if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
+                    menu_action = 'ability'
+                
+                self.status_effects['menu']['time'] += 1
+                selected_card = ''
+                if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral'):
+                    self.status_effects['monado_timer'] = 120
+                    self.movement_lock = 5
+                    if(menu_direction == "up"):
+                        self.jump_lock = 15
+                        self.status_effects['monado_effect'] = "SHIELD"
+                    elif(menu_direction == "down"):
+                        self.wavedash_lock = 15
+                        self.status_effects['monado_effect'] = "CHILL"
+                    elif(menu_direction == "left"):
+                        self.status_effects['monado_effect'] = "SMASH"
+                    elif(menu_direction == "right"):
+                        self.status_effects['monado_effect'] = "SPEED"
+                    
+                elif(menu_direction == 'neutral' and self.status_effects['menu']['time'] > 10):
+                    self.status_effects['menu']['open'] = False
+                    self.special_ability_cooldown = self.special_ability_cooldown_max
+
+                    if(menu_action == 'ability'):
+                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                    elif('kick' in pressed):
+                        self.kick_cooldown += 60 * Blob.timer_multiplier
+                    elif('block' in pressed):
+                        self.block_cooldown += 60 * Blob.timer_multiplier
+                    elif('boost' in pressed):
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                
 
 
     

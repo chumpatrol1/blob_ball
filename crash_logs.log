@@ -2371,3 +2371,22 @@ P2_Blob: taco, is CPU: True
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+13804-ERROR-Game Crash at Thu Dec  1 11:33:58 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 452, in draw_gameplay
+    draw_menu(gameplay_surface, blob)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 320, in draw_menu
+    game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
+IndexError: list index out of range
+Game State: casual_match
+P1 Blob: taco, is CPU: False
+P2_Blob: taco, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
