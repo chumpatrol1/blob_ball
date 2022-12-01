@@ -401,6 +401,8 @@ class Blob:
                         self.block_cooldown_rate += 1
                         self.special_ability_cooldown_rate += 1
                         self.boost_cooldown_rate += 1
+                    if(effect == 'monado' and self.status_effects[effect] == 1):
+                        self.status_effects['monado_effect'] = None
                 except:
                     pass # Typically pass for strings, like current pill
         
@@ -1370,14 +1372,25 @@ class Blob:
             if('ability' in pressed):
                 pressed.remove('ability')
 
-            #HORIZONTAL MOVEMENT
+        #HORIZONTAL MOVEMENT
         blob_speed = self.top_speed
+        blob_traction = self.traction
+        blob_friction = self.friction
         if(self.status_effects['glued']):
             blob_speed = 5 + (3 * bool(self.boost_timer))
         if(self.status_effects['buttered']):
             blob_speed += 2
         if(self.status_effects['hypothermia']):
             blob_speed -= 3
+        if(self.status_effects['monado_effect']):
+            if(self.status_effects['monado_effect'] == "CHILL"):
+                blob_speed -= 3
+            if(self.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+                blob_traction += 1
+                blob_friction += 1
+            if(self.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 5
         wavedashed = False
 
         menu_open = self.status_effects['menu']['open']
@@ -1392,11 +1405,11 @@ class Blob:
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed > 0):
-                                self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
-                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
-                                self.x_speed -= self.traction
+                                self.x_speed -= 1.2 * blob_traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)): # Ease back into top speed if we're above it
+                                self.x_speed -= blob_traction
                             else:
-                                self.x_speed -= self.traction # Accelerate based off of traction
+                                self.x_speed -= blob_traction # Accelerate based off of traction
                         else: # Snap back to top speed
                             prev_speed = self.x_speed
                             self.x_speed = -1*blob_speed #If at max speed, maintain it
@@ -1406,7 +1419,7 @@ class Blob:
                 elif('down' in pressed):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    #self.x_speed = -1 * (15 + (10 * self.traction))
+                    #self.x_speed = -1 * (15 + (10 * blob_traction))
                     self.x_speed = -20
                     self.focusing = False
                     self.focus_lock = 0
@@ -1421,13 +1434,13 @@ class Blob:
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed < 0):
-                                self.x_speed += 1.2 * self.traction # Turn around faster by holding left
-                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)):
-                                self.x_speed += self.traction
+                                self.x_speed += 1.2 * blob_traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)):
+                                self.x_speed += blob_traction
                             else:
-                                self.x_speed += self.traction # Accelerate based off of traction
-                        elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
-                            self.x_speed -= self.traction
+                                self.x_speed += blob_traction # Accelerate based off of traction
+                        elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)): # Ease back into top speed if we're above it
+                            self.x_speed -= blob_traction
                         else: # Snap back to top speed
                             prev_speed = self.x_speed
                             self.x_speed = blob_speed #If at max speed, maintain it
@@ -1437,7 +1450,7 @@ class Blob:
                 elif('down' in pressed and not menu_open):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    #self.x_speed = 15 + (10 * self.traction)
+                    #self.x_speed = 15 + (10 * blob_traction)
                     self.x_speed = 20
                     self.focusing = False
                     wavedashed = True
@@ -1445,15 +1458,15 @@ class Blob:
 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.traction) > 0:
+                    if(self.x_speed + blob_traction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.traction #Normal deceleration
+                        self.x_speed += blob_traction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.traction) < 0:
+                    if(self.x_speed - blob_traction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.traction #Normal deceleration
+                        self.x_speed -= blob_traction #Normal deceleration
         else: #Applies friction if airborne
             if('left' in pressed and not 'right' in pressed and not menu_open): #If holding left but not right
                 self.facing = "left"
@@ -1463,11 +1476,11 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed > 0):
-                            self.x_speed -= 1.2 * self.friction # Turn around faster by holding left
-                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
-                            self.x_speed -= self.friction
+                            self.x_speed -= 1.2 * blob_friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (blob_friction * 2)):
+                            self.x_speed -= blob_friction
                         else:
-                            self.x_speed -= self.friction # Accelerate based off of friction
+                            self.x_speed -= blob_friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*blob_speed #If at max speed, maintain it
@@ -1482,11 +1495,11 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed < 0):
-                            self.x_speed += 1.2 * self.friction # Turn around faster by holding left
-                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
-                            self.x_speed -= self.friction
+                            self.x_speed += 1.2 * blob_friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (blob_friction * 2)):
+                            self.x_speed -= blob_friction
                         else:
-                            self.x_speed += self.friction # Accelerate based off of friction
+                            self.x_speed += blob_friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = blob_speed #If at max speed, maintain it
@@ -1495,15 +1508,15 @@ class Blob:
                             createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.friction) > 0:
+                    if(self.x_speed + blob_friction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.friction #Normal deceleration
+                        self.x_speed += blob_friction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.friction) < 0:
+                    if(self.x_speed - blob_friction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.friction #Normal deceleration
+                        self.x_speed -= blob_friction #Normal deceleration
         self.x_pos += self.x_speed #This ensures that we are always adjusting our position
         self.info['x_distance_moved'] += abs(self.x_speed)
         if(self.x_pos <= 0): #Don't move off screen!
@@ -1680,7 +1693,8 @@ class Blob:
                 self.status_effects['menu']['time'] += 1
                 selected_card = ''
                 if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral'):
-                    self.status_effects['monado_timer'] = 120
+                    self.status_effects['menu']['open'] = False
+                    self.status_effects['monado_timer'] = 300
                     self.movement_lock = 5
                     if(menu_direction == "up"):
                         self.jump_lock = 15
@@ -1693,11 +1707,11 @@ class Blob:
                     elif(menu_direction == "right"):
                         self.status_effects['monado_effect'] = "SPEED"
                     
-                elif(menu_direction == 'neutral' and self.status_effects['menu']['time'] > 10):
+                elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 10):
                     self.status_effects['menu']['open'] = False
                     self.special_ability_cooldown = self.special_ability_cooldown_max
 
-                    if(menu_action == 'ability'):
+                    if('ability' in pressed):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):
                         self.kick_cooldown += 60 * Blob.timer_multiplier

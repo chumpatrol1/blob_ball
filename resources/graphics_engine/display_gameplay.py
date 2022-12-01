@@ -334,7 +334,25 @@ def draw_menu(game_display, blob):
             game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
             game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 165) * (1000/1366), (blob.y_pos*(382/768))))
     elif(blob.status_effects['menu']['type'] == 'monado'):
-        pass
+        if(blob.status_effects['menu']['direction'] == 'left'):
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+        else:
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+        #print("3", blob.status_effects['cards']['pulled'][2])
+        if(blob.status_effects['menu']['direction'] == 'up'):
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 225) *(382/768))))
+        else:
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 205) *(382/768))))
+        #print("2", blob.status_effects['cards']['pulled'][1])
+        if(blob.status_effects['menu']['direction'] == 'right'):
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
+        else:
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
+
+        if(blob.status_effects['menu']['direction'] == 'down'):
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 185) *(382/768))))
+        else:
+            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 205) *(382/768))))
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]
