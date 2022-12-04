@@ -264,6 +264,11 @@ class Blob:
             "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': [], 'joker_particle': False},
             "monado_timer": 0,
             "monado_effect": None,
+            "monado_smash_cooldown": 0,
+            "monado_shield_cooldown": 0,
+            "monado_speed_cooldown": 0,
+            "monado_chill_cooldown": 0,
+
             "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
@@ -1720,19 +1725,30 @@ class Blob:
                 self.status_effects['menu']['time'] += 1
                 selected_card = ''
                 if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral'):
-                    self.status_effects['menu']['open'] = False
-                    self.status_effects['monado_timer'] = 300
-                    self.movement_lock = 5
-                    if(menu_direction == "up"):
+                    monado_activated = False
+                    if(menu_direction == "up" and self.status_effects['monado_shield_cooldown'] <= 0):
                         self.jump_lock = 15
                         self.status_effects['monado_effect'] = "SHIELD"
-                    elif(menu_direction == "down"):
+                        self.status_effects['monado_shield_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "down" and self.status_effects['monado_chill_cooldown'] <= 0):
                         self.wavedash_lock = 15
                         self.status_effects['monado_effect'] = "CHILL"
-                    elif(menu_direction == "left"):
+                        self.status_effects['monado_chill_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "left" and self.status_effects['monado_smash_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SMASH"
-                    elif(menu_direction == "right"):
+                        self.status_effects['monado_smash_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "right" and self.status_effects['monado_speed_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SPEED"
+                        self.status_effects['monado_speed_cooldown'] = 900
+                        monado_activated = True
+                    
+                    if(monado_activated):
+                        self.status_effects['menu']['open'] = False
+                        self.status_effects['monado_timer'] = 300
+                        self.movement_lock = 5
                     
                 elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 10):
                     self.status_effects['menu']['open'] = False
