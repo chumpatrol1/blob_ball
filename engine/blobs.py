@@ -267,7 +267,7 @@ class Blob:
             "monado_smash_cooldown": 0,
             "monado_shield_cooldown": 0,
             "monado_speed_cooldown": 0,
-            "monado_chill_cooldown": 0,
+            "monado_jump_cooldown": 0,
 
             "teleporter": [1],
             "taxing": 0,
@@ -408,11 +408,11 @@ class Blob:
                         self.boost_cooldown_rate += 1
                     if(effect == 'monado_timer' and self.status_effects[effect] == 1):
                         self.status_effects['monado_effect'] = None
-                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "CHILL"):
-                        self.kick_cooldown_rate += 1
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "JUMP"):
+                        '''self.kick_cooldown_rate += 1
                         self.block_cooldown_rate += 1
                         self.special_ability_cooldown_rate += 1
-                        self.boost_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1'''
                     
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SHIELD"):
                         self.block_cooldown_rate += 5
@@ -1027,8 +1027,8 @@ class Blob:
                 if(self.status_effects['monado_effect'] == "SMASH"):
                     pierce += 1
                     accumulated_damage += 1
-                if(self.status_effects['monado_effect'] == "CHILL" or self.status_effects['monado_effect'] == "SPEED"):
-                    accumulated_damage -= 1
+                if(self.status_effects['monado_effect'] == "JUMP" or self.status_effects['monado_effect'] == "SPEED"):
+                    accumulated_damage += 1
                 
                 blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce)
                 if(blob.status_effects['reflecting'] > 1):
@@ -1412,8 +1412,8 @@ class Blob:
         if(self.status_effects['hypothermia']):
             blob_speed -= 3
         if(self.status_effects['monado_effect']):
-            if(self.status_effects['monado_effect'] == "CHILL"):
-                blob_speed -= 3
+            if(self.status_effects['monado_effect'] == "JUMP"):
+                blob_friction += 3
             if(self.status_effects['monado_effect'] == "SPEED"):
                 blob_speed += 5
                 blob_traction += 1
@@ -1557,7 +1557,7 @@ class Blob:
         
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
-            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force)
+            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
             self.focus_lock = 0
             self.wavedash_lock = 0
             self.focusing = False
@@ -1724,15 +1724,15 @@ class Blob:
                 selected_card = ''
                 if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral'):
                     monado_activated = False
-                    if(menu_direction == "up" and self.status_effects['monado_shield_cooldown'] <= 0):
+                    if(menu_direction == "up" and self.status_effects['monado_jump_cooldown'] <= 0):
                         self.jump_lock = 15
+                        self.status_effects['monado_effect'] = "JUMP"
+                        self.status_effects['monado_jump_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "down" and self.status_effects['monado_shield_cooldown'] <= 0):
+                        self.wavedash_lock = 15
                         self.status_effects['monado_effect'] = "SHIELD"
                         self.status_effects['monado_shield_cooldown'] = 900
-                        monado_activated = True
-                    elif(menu_direction == "down" and self.status_effects['monado_chill_cooldown'] <= 0):
-                        self.wavedash_lock = 15
-                        self.status_effects['monado_effect'] = "CHILL"
-                        self.status_effects['monado_chill_cooldown'] = 900
                         monado_activated = True
                     elif(menu_direction == "left" and self.status_effects['monado_smash_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SMASH"
@@ -1740,7 +1740,7 @@ class Blob:
                         monado_activated = True
                     elif(menu_direction == "right" and self.status_effects['monado_speed_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SPEED"
-                        self.status_effects['monado_speed_cooldown'] = 900
+                        self.status_effects['monado_speed_cooldown'] = 1200
                         monado_activated = True
                     
                     if(monado_activated):

@@ -154,7 +154,7 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['hypothermia']):
             blob_speed -= 3
         if(blob.status_effects['monado_effect']):
-            if(blob.status_effects['monado_effect'] == "CHILL"):
+            if(blob.status_effects['monado_effect'] == "JUMP"):
                 blob_speed -= 3
             if(blob.status_effects['monado_effect'] == "SPEED"):
                 blob_speed += 5
@@ -229,7 +229,7 @@ def draw_blob_particles(game_display, blobs):
                 monado_image = particle_cache['earth_particle_4']
             elif(blob.status_effects['monado_effect'] == "SHIELD"):
                 monado_image = particle_cache['water_particle']
-            elif(blob.status_effects['monado_effect'] == "CHILL"):
+            elif(blob.status_effects['monado_effect'] == "JUMP"):
                 monado_image = particle_cache['thunder_particle']
 
             for i in range(blob.status_effects['monado_timer'] // 50):
