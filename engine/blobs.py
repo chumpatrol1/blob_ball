@@ -886,8 +886,6 @@ class Blob:
         elif(special_ability == "monado"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
                 #self.special_ability_cooldown = 30 * Blob.timer_multiplier
-                self.special_ability_timer = self.special_ability_cooldown
-                self.special_ability_meter -= cost
                 self.status_effects['menu']['open'] = True
                 self.status_effects['menu']['type'] = 'monado'
                 self.status_effects['menu']['time'] = 0
@@ -1746,9 +1744,12 @@ class Blob:
                         monado_activated = True
                     
                     if(monado_activated):
+                        createSFXEvent('crunch')
                         self.status_effects['menu']['open'] = False
                         self.status_effects['monado_timer'] = 300
                         self.movement_lock = 5
+                        self.special_ability_timer = self.special_ability_cooldown
+                        self.special_ability_meter -= self.special_ability_cost
                     
                 elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 10):
                     self.status_effects['menu']['open'] = False
