@@ -153,6 +153,13 @@ def draw_blob_particles(game_display, blobs):
             blob_speed += 2
         if(blob.status_effects['hypothermia']):
             blob_speed -= 3
+        if(blob.status_effects['monado_effect']):
+            if(blob.status_effects['monado_effect'] == "CHILL"):
+                blob_speed -= 3
+            if(blob.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+            if(blob.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 4
         
         if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
             particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)

@@ -418,7 +418,7 @@ class Blob:
                         self.block_cooldown_rate += 5
                     
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
-                        self.block_cooldown_rate += 3
+                        self.kick_cooldown_rate += 3
 
                     
                 except:
@@ -1419,7 +1419,7 @@ class Blob:
                 blob_traction += 1
                 blob_friction += 1
             if(self.status_effects['monado_effect'] == "SHIELD"):
-                blob_speed -= 5
+                blob_speed -= 4
         wavedashed = False
 
         menu_open = self.status_effects['menu']['open']
