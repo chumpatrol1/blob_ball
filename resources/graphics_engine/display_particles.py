@@ -107,6 +107,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_2.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_3.png").convert_alpha(), (20, 20))
+        particle_cache['earth_particle_4'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_4.png").convert_alpha(), (40, 40))
         particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_2.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_3.png").convert_alpha(), (30, 30))
@@ -152,6 +153,13 @@ def draw_blob_particles(game_display, blobs):
             blob_speed += 2
         if(blob.status_effects['hypothermia']):
             blob_speed -= 3
+        if(blob.status_effects['monado_effect']):
+            if(blob.status_effects['monado_effect'] == "JUMP"):
+                blob_speed -= 3
+            if(blob.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+            if(blob.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 4
         
         if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
             particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
@@ -214,6 +222,19 @@ def draw_blob_particles(game_display, blobs):
             draw_card_selection(*blob.status_effects['cards']['joker_particle'])
             blob.status_effects['cards']['joker_particle'] = None
 
+        if(blob.status_effects['monado_timer'] % 10 == 0 and blob.status_effects['monado_timer'] > 0):
+            if(blob.status_effects['monado_effect'] == "SPEED"):
+                monado_image = particle_cache['fire_particle']
+            elif(blob.status_effects['monado_effect'] == "SMASH"):
+                monado_image = particle_cache['earth_particle_4']
+            elif(blob.status_effects['monado_effect'] == "SHIELD"):
+                monado_image = particle_cache['water_particle']
+            elif(blob.status_effects['monado_effect'] == "JUMP"):
+                monado_image = particle_cache['thunder_particle']
+
+            for i in range(blob.status_effects['monado_timer'] // 50):
+                particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+        
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)

@@ -43,7 +43,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -73,6 +73,7 @@ def species_to_image(species, costume):
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
         'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png")},
+        'taco': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -261,6 +262,13 @@ class Blob:
             "pill_weights": {'pill_boost': 3, 'pill_cooldown': 3, 'pill_heal': 3},
             "menu": {'open': False, 'type': '', 'direction': 'neutral', 'time': 0},
             "cards": {'ability': None, 'kick': None, 'block': None, 'boost': None, 'equipped': set(), 'pool': {'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'spire', 'thunderbolt', 'starpunch'}, 'recharge': set(), 'pulled': [], 'joker_particle': False},
+            "monado_timer": 0,
+            "monado_effect": None,
+            "monado_smash_cooldown": 0,
+            "monado_shield_cooldown": 0,
+            "monado_speed_cooldown": 0,
+            "monado_jump_cooldown": 0,
+
             "teleporter": [1],
             "taxing": 0,
             "taxed": 0,
@@ -398,6 +406,21 @@ class Blob:
                         self.block_cooldown_rate += 1
                         self.special_ability_cooldown_rate += 1
                         self.boost_cooldown_rate += 1
+                    if(effect == 'monado_timer' and self.status_effects[effect] == 1):
+                        self.status_effects['monado_effect'] = None
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "JUMP"):
+                        '''self.kick_cooldown_rate += 1
+                        self.block_cooldown_rate += 1
+                        self.special_ability_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1'''
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SHIELD"):
+                        self.block_cooldown_rate += 5
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
+                        self.kick_cooldown_rate += 3
+
+                    
                 except:
                     pass # Typically pass for strings, like current pill
         
@@ -860,6 +883,12 @@ class Blob:
                 #print("POST RECHARGE", self.status_effects['cards']['recharge'])
             else:
                 return
+        elif(special_ability == "monado"):
+            if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
+                #self.special_ability_cooldown = 30 * Blob.timer_multiplier
+                self.status_effects['menu']['open'] = True
+                self.status_effects['menu']['type'] = 'monado'
+                self.status_effects['menu']['time'] = 0
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])
@@ -995,6 +1024,12 @@ class Blob:
                     accumulated_damage += 1
                 if(self.status_effects['steroided']):
                     pierce += 1
+                if(self.status_effects['monado_effect'] == "SMASH"):
+                    pierce += 1
+                    accumulated_damage += 1
+                if(self.status_effects['monado_effect'] == "JUMP" or self.status_effects['monado_effect'] == "SPEED"):
+                    accumulated_damage += 1
+                
                 blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce)
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
@@ -1189,6 +1224,9 @@ class Blob:
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
         show_parry = True, status_effects = [], pierce = 0):
         damage_taken = False
+        pierced = False
+        if(self.status_effects['monado_effect'] == "SMASH"):
+            pierce += 1
         def check_block():  # Returns true if the hit goes through
             if(self.block_timer):  # Blocking?
                 if(show_parry):
@@ -1231,14 +1269,18 @@ class Blob:
                 damage_taken = True
         
         if(not damage_taken and pierce):
-            damage = pierce
+            damage = pierce - bool(self.status_effects['monado_effect'] == "SMASH") - bool(self.status_effects['monado_effect'] == "SHIELD")
             damage_taken = True
+            pierced = True
 
         if(damage_taken):
             # Increase damage by 1 if using hook
             # Decrease damage by 1 if using reflect
+            # Increase damage by 1 if using SPEED
+            # Increase damage by 2 if using SMASH
+            # Decrease damage by 1 if using SHIELD
             # self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
-            self.hp -= damage - bool(self.status_effects['reflecting'] > 0)
+            self.hp -= damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") + (2 * bool(self.status_effects['monado_effect'] == "SMASH")) - bool(self.status_effects['monado_effect'] == "SHIELD")
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
@@ -1359,14 +1401,25 @@ class Blob:
             if('ability' in pressed):
                 pressed.remove('ability')
 
-            #HORIZONTAL MOVEMENT
+        #HORIZONTAL MOVEMENT
         blob_speed = self.top_speed
+        blob_traction = self.traction
+        blob_friction = self.friction
         if(self.status_effects['glued']):
             blob_speed = 5 + (3 * bool(self.boost_timer))
         if(self.status_effects['buttered']):
             blob_speed += 2
         if(self.status_effects['hypothermia']):
             blob_speed -= 3
+        if(self.status_effects['monado_effect']):
+            if(self.status_effects['monado_effect'] == "JUMP"):
+                blob_friction += 3
+            if(self.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+                blob_traction += 1
+                blob_friction += 1
+            if(self.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 4
         wavedashed = False
 
         menu_open = self.status_effects['menu']['open']
@@ -1381,11 +1434,11 @@ class Blob:
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed > 0):
-                                self.x_speed -= 1.2 * self.traction # Turn around faster by holding left
-                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
-                                self.x_speed -= self.traction
+                                self.x_speed -= 1.2 * blob_traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)): # Ease back into top speed if we're above it
+                                self.x_speed -= blob_traction
                             else:
-                                self.x_speed -= self.traction # Accelerate based off of traction
+                                self.x_speed -= blob_traction # Accelerate based off of traction
                         else: # Snap back to top speed
                             prev_speed = self.x_speed
                             self.x_speed = -1*blob_speed #If at max speed, maintain it
@@ -1395,7 +1448,7 @@ class Blob:
                 elif('down' in pressed):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    #self.x_speed = -1 * (15 + (10 * self.traction))
+                    #self.x_speed = -1 * (15 + (10 * blob_traction))
                     self.x_speed = -20
                     self.focusing = False
                     self.focus_lock = 0
@@ -1410,13 +1463,13 @@ class Blob:
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed < 0):
-                                self.x_speed += 1.2 * self.traction # Turn around faster by holding left
-                            elif(abs(self.x_speed) > blob_speed + (self.traction * 2)):
-                                self.x_speed += self.traction
+                                self.x_speed += 1.2 * blob_traction # Turn around faster by holding left
+                            elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)):
+                                self.x_speed += blob_traction
                             else:
-                                self.x_speed += self.traction # Accelerate based off of traction
-                        elif(abs(self.x_speed) > blob_speed + (self.traction * 2)): # Ease back into top speed if we're above it
-                            self.x_speed -= self.traction
+                                self.x_speed += blob_traction # Accelerate based off of traction
+                        elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)): # Ease back into top speed if we're above it
+                            self.x_speed -= blob_traction
                         else: # Snap back to top speed
                             prev_speed = self.x_speed
                             self.x_speed = blob_speed #If at max speed, maintain it
@@ -1426,7 +1479,7 @@ class Blob:
                 elif('down' in pressed and not menu_open):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
-                    #self.x_speed = 15 + (10 * self.traction)
+                    #self.x_speed = 15 + (10 * blob_traction)
                     self.x_speed = 20
                     self.focusing = False
                     wavedashed = True
@@ -1434,15 +1487,15 @@ class Blob:
 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.traction) > 0:
+                    if(self.x_speed + blob_traction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.traction #Normal deceleration
+                        self.x_speed += blob_traction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.traction) < 0:
+                    if(self.x_speed - blob_traction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.traction #Normal deceleration
+                        self.x_speed -= blob_traction #Normal deceleration
         else: #Applies friction if airborne
             if('left' in pressed and not 'right' in pressed and not menu_open): #If holding left but not right
                 self.facing = "left"
@@ -1452,11 +1505,11 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed > 0):
-                            self.x_speed -= 1.2 * self.friction # Turn around faster by holding left
-                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
-                            self.x_speed -= self.friction
+                            self.x_speed -= 1.2 * blob_friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (blob_friction * 2)):
+                            self.x_speed -= blob_friction
                         else:
-                            self.x_speed -= self.friction # Accelerate based off of friction
+                            self.x_speed -= blob_friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = -1*blob_speed #If at max speed, maintain it
@@ -1471,11 +1524,11 @@ class Blob:
                 else:
                     if(abs(self.x_speed) < blob_speed):
                         if(self.x_speed < 0):
-                            self.x_speed += 1.2 * self.friction # Turn around faster by holding left
-                        elif(abs(self.x_speed) > blob_speed + (self.friction * 2)):
-                            self.x_speed -= self.friction
+                            self.x_speed += 1.2 * blob_friction # Turn around faster by holding left
+                        elif(abs(self.x_speed) > blob_speed + (blob_friction * 2)):
+                            self.x_speed -= blob_friction
                         else:
-                            self.x_speed += self.friction # Accelerate based off of friction
+                            self.x_speed += blob_friction # Accelerate based off of friction
                     else:
                         prev_speed = self.x_speed
                         self.x_speed = blob_speed #If at max speed, maintain it
@@ -1484,15 +1537,15 @@ class Blob:
                             createSFXEvent('wavebounce') 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
-                    if(self.x_speed + self.friction) > 0:
+                    if(self.x_speed + blob_friction) > 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed += self.friction #Normal deceleration
+                        self.x_speed += blob_friction #Normal deceleration
                 elif(self.x_speed > 0):
-                    if(self.x_speed - self.friction) < 0:
+                    if(self.x_speed - blob_friction) < 0:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
-                        self.x_speed -= self.friction #Normal deceleration
+                        self.x_speed -= blob_friction #Normal deceleration
         self.x_pos += self.x_speed #This ensures that we are always adjusting our position
         self.info['x_distance_moved'] += abs(self.x_speed)
         if(self.x_pos <= 0): #Don't move off screen!
@@ -1504,7 +1557,7 @@ class Blob:
         
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
-            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force)
+            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
             self.focus_lock = 0
             self.wavedash_lock = 0
             self.focusing = False
@@ -1662,6 +1715,56 @@ class Blob:
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
                         self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+            elif(self.status_effects['menu']['type'] == 'monado'):
+                if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
+                    menu_action = 'ability'
+
+                
+                self.status_effects['menu']['time'] += 1
+                selected_card = ''
+                if(self.status_effects['menu']['time'] > 15 and menu_direction != 'neutral'):
+                    monado_activated = False
+                    if(menu_direction == "up" and self.status_effects['monado_jump_cooldown'] <= 0):
+                        self.jump_lock = 15
+                        self.status_effects['monado_effect'] = "JUMP"
+                        self.status_effects['monado_jump_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "down" and self.status_effects['monado_shield_cooldown'] <= 0):
+                        self.wavedash_lock = 15
+                        self.status_effects['monado_effect'] = "SHIELD"
+                        self.status_effects['monado_shield_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "left" and self.status_effects['monado_smash_cooldown'] <= 0):
+                        self.status_effects['monado_effect'] = "SMASH"
+                        self.status_effects['monado_smash_cooldown'] = 900
+                        monado_activated = True
+                    elif(menu_direction == "right" and self.status_effects['monado_speed_cooldown'] <= 0):
+                        self.status_effects['monado_effect'] = "SPEED"
+                        self.status_effects['monado_speed_cooldown'] = 1200
+                        monado_activated = True
+                    
+                    if(monado_activated):
+                        createSFXEvent('crunch')
+                        self.status_effects['menu']['open'] = False
+                        self.status_effects['monado_timer'] = 300
+                        self.movement_lock = 5
+                        self.special_ability_timer = self.special_ability_cooldown
+                        self.special_ability_meter -= self.special_ability_cost
+                    
+                elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 15):
+                    self.status_effects['menu']['open'] = False
+                    self.special_ability_cooldown = self.special_ability_cooldown_max
+                
+                '''if(not self.status_effects['menu']['open']):
+                    if('ability' in pressed):
+                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                    elif('kick' in pressed):
+                        self.kick_cooldown += 60 * Blob.timer_multiplier
+                    elif('block' in pressed):
+                        self.block_cooldown += 60 * Blob.timer_multiplier
+                    elif('boost' in pressed):
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
+                
 
 
     

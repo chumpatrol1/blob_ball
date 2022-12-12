@@ -274,6 +274,10 @@ joker_tips = [
 
 ]
 
+taco_tips = [
+
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -293,6 +297,7 @@ def return_selected_blob_tips(selected_blob):
         'glue': glue_tips,
         'arcade': arcade_tips,
         'joker': joker_tips,
+        'taco': taco_tips,
     }
     try:
         return tips_dict[selected_blob]
