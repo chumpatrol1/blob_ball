@@ -1557,7 +1557,7 @@ class Blob:
         
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
-            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
+            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
             self.focus_lock = 0
             self.wavedash_lock = 0
             self.focusing = False
@@ -1722,7 +1722,7 @@ class Blob:
                 
                 self.status_effects['menu']['time'] += 1
                 selected_card = ''
-                if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral'):
+                if(self.status_effects['menu']['time'] > 15 and menu_direction != 'neutral'):
                     monado_activated = False
                     if(menu_direction == "up" and self.status_effects['monado_jump_cooldown'] <= 0):
                         self.jump_lock = 15
@@ -1751,11 +1751,11 @@ class Blob:
                         self.special_ability_timer = self.special_ability_cooldown
                         self.special_ability_meter -= self.special_ability_cost
                     
-                elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 10):
+                elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 15):
                     self.status_effects['menu']['open'] = False
                     self.special_ability_cooldown = self.special_ability_cooldown_max
                 
-                if(not self.status_effects['menu']['open']):
+                '''if(not self.status_effects['menu']['open']):
                     if('ability' in pressed):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):
@@ -1763,7 +1763,7 @@ class Blob:
                     elif('block' in pressed):
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
-                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
                 
 
 
