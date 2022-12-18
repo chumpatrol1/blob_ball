@@ -380,25 +380,36 @@ class Ball:
         
         for hazard in environment['spike']:
             if("ball" in hazard.affects):
+
+                print("X", hazard.x_pos, self.x_pos)
+                print("Y", hazard.y_pos, self.y_pos)
                 if hazard.x_pos > self.x_pos:
-                    if(hazard.x_pos - self.x_pos > 20):
-                        hazard.x_pos -= 10
+                    if(hazard.x_pos - self.x_pos > 150):
+                        hazard.x_pos -= 30
+                    elif(hazard.x_pos - self.x_pos > 30):
+                        hazard.x_pos -= 15
                 else:
-                    if(hazard.x_pos - self.x_pos < -20):
-                        hazard.x_pos += 10
+                    if(hazard.x_pos - self.x_pos < -150):
+                        hazard.x_pos += 30
+                    elif(hazard.x_pos - self.x_pos < -30):
+                        hazard.x_pos += 15
 
 
                 if hazard.y_pos > self.y_pos + 50:
-                    if(hazard.y_pos - (self.y_pos + 50) > 20):
-                        hazard.y_pos -= 10
+                    if(hazard.y_pos - (self.y_pos + 50) > 150):
+                        hazard.y_pos -= 30
+                    elif(hazard.y_pos - (self.y_pos + 50) > 30):
+                        hazard.y_pos -= 15
                 else:
-                    if(hazard.y_pos - (self.y_pos + 50) < -20):
-                        hazard.y_pos += 10
+                    if(hazard.y_pos - (self.y_pos + 50) < -150):
+                        hazard.y_pos += 30
+                    elif(hazard.y_pos - (self.y_pos + 50) < -30):
+                        hazard.y_pos += 15
                 
-                if(-20 < hazard.y_pos - (self.y_pos + 50) < 20 and -20 < hazard.x_pos - self.x_pos < 20):
+                if(-30 <= hazard.y_pos - (self.y_pos + 50) < 30 and -30 <= hazard.x_pos - self.x_pos < 30):
                     hazard.lifetime = 0
-                    self.x_speed = hazard.x_pos - self.x_pos
-                    self.y_speed = hazard.y_pos - (self.y_pos + 50)
+                    self.x_speed = self.x_pos - hazard.x_pos
+                    self.y_speed = (self.y_pos + 50) - hazard.y_pos
 
                 
 
