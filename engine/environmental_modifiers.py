@@ -136,4 +136,5 @@ def clear_environmental_modifiers():
     'console': [],
     'cartridge': [],
     'royal_loan': unpaid_loans,
+    'spike': [],
 }
