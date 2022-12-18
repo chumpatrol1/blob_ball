@@ -165,7 +165,7 @@ class Blob:
         self.block_upper = -200
         self.block_lower = 200
 
-        self.boost_cost = self.stars['boost_cost'] #How much SA meter must be spent to boost
+        self.boost_cost = self.stars['boost_cost'] * Blob.nrg_multiplier #How much SA meter must be spent to boost
         self.boost_cooldown_rate = 2
         self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * Blob.timer_multiplier #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
@@ -183,16 +183,16 @@ class Blob:
 
         self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
         self.ability_classification = ability_to_classification(self.special_ability)
-        self.special_ability_max = self.stars['special_ability_max'] #Highest that the SA gauge can go
-        self.special_ability_cost = self.stars['special_ability_cost'] #Price to activate SA
-        self.special_ability_maintenance = self.stars['special_ability_maintenance'] #Price to maintain SA
-        self.special_ability_charge = 1 #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
+        self.special_ability_max = self.stars['special_ability_max'] * Blob.nrg_multiplier #Highest that the SA gauge can go
+        self.special_ability_cost = self.stars['special_ability_cost'] * Blob.nrg_multiplier #Price to activate SA
+        self.special_ability_maintenance = self.stars['special_ability_maintenance'] * Blob.nrg_multiplier #Price to maintain SA
+        self.special_ability_charge = 1 * Blob.nrg_multiplier #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
         self.special_ability_meter = 0 #Amount of SA charge stored up
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = 0 #Cooldown between uses
         self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * Blob.timer_multiplier
-        self.special_ability_charge_base = special_ability_charge_base
+        self.special_ability_charge_base = special_ability_charge_base * Blob.nrg_multiplier
         self.special_ability_duration = self.stars['special_ability_duration']
         self.special_ability_delay = self.stars['special_ability_delay']
         self.special_ability_cooldown_rate = 2
@@ -285,6 +285,7 @@ class Blob:
             "loaned": 0,
             "hyped": 0,
             "silenced": 0,
+            "nrg_drain": 0,
         }
 
         if(self.species == "doctor"):
@@ -300,17 +301,18 @@ class Blob:
     ground = 1200
     ceiling = 200
     timer_multiplier = 2
+    nrg_multiplier = 5
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
-            self.special_ability_charge = self.special_ability_charge_base * 5
+            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3)) * 5 
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
             if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
-            self.special_ability_charge = self.special_ability_charge_base
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3)
 
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
@@ -898,7 +900,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, x_pos = self.x_pos, y_pos = self.y_pos, affects = {'enemy', 'ball'}, species = 'spike', lifetime = 300)
+                create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'spike', lifetime = 300)
             else:
                 return
         
@@ -1181,7 +1183,6 @@ class Blob:
                 else:
                     self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
-
         teleported = False
         for hazard in environment['console']:
             if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 40 and self.down_holding_timer and hazard.lifetime <= hazard.max_lifetime - 300 and not teleported):
@@ -1231,6 +1232,20 @@ class Blob:
                     hazard.hp += 1
                 if(self.special_ability_cooldown == self.special_ability_cooldown_max):
                     hazard.hp += 1
+        
+        for hazard in environment['spike']:
+            if(hazard.player != self.player and 'enemy' in hazard.affects and self.player not in hazard.affects):
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    stun_amount = 30
+                    if(self.block_timer):
+                        stun_amount = 0
+                    self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
+                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_drain', 300]])
+                    hazard.affects.add(self.player)
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 
 
     def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
