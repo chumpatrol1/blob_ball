@@ -1,4 +1,4 @@
-#import pygame as pg
+import pygame as pg
 from os import getcwd
 cwd = getcwd()
 tip_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30) # Load in the font

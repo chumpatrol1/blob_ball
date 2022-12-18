@@ -377,6 +377,30 @@ class Ball:
                 if(hazard.lifetime == hazard.max_lifetime - 1):
                     self.y_speed = Ball.ground - self.y_pos
                     self.status_effects['zapped'] += 120
+        
+        for hazard in environment['spike']:
+            if("ball" in hazard.affects):
+                if hazard.x_pos > self.x_pos:
+                    if(hazard.x_pos - self.x_pos > 50):
+                        hazard.x_pos += 50
+                    else:
+                        hazard.x_pos = self.x_pos
+                else:
+                    if(hazard.x_pos - self.x_pos < -50):
+                        hazard.x_pos -= 50
+                    else:
+                        hazard.x_pos = self.x_pos
+
+                if hazard.y_pos > self.y_pos:
+                    if(hazard.y_pos - self.y_pos > 50):
+                        hazard.y_pos += 50
+                    else:
+                        hazard.y_pos = self.y_pos
+                else:
+                    if(hazard.y_pos - self.y_pos < -50):
+                        hazard.y_pos -= 50
+                    else:
+                        hazard.y_pos = self.y_pos
 
     def check_ceiling_collisions(self):
         ceiling = 210

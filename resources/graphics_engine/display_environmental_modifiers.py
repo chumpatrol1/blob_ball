@@ -22,6 +22,7 @@ modifier_images = {
     'cartridge_2': 'cartridge_2',
     'cartridge_3': 'cartridge_3',
     'royal_loan': 'star_glove',
+    'spike': 'star_glove',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))
@@ -95,7 +96,6 @@ def draw_environmental_modifiers(game_display, ):
                 x_tilt = individual.hp * 10
                 for hitpoint in range(individual.hp + 1):
                         game_display.blit(particle_cache[mod_key], (individual.x_pos * (1000/1366) + (20 * hitpoint) - x_tilt, individual.y_pos * (382/768)))
-
         else:
             for individual in modifiers[modifier]:
                 game_display.blit(particle_cache[mod_key], (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))

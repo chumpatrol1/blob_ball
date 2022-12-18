@@ -898,7 +898,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spike', lifetime = special_ability_delay, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spike', lifetime = 300, y_pos = 700)
             else:
                 return
         

@@ -125,7 +125,8 @@ def update_css_blobs(cwd):
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
                 css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
-            unlock_slot += 1
+            if(location != (4, 2)):
+                unlock_slot += 1
             #if location in if_blob_shadow:
                 #css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "Bug", "Coming soon!"]
 

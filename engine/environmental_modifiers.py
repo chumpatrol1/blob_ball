@@ -95,6 +95,7 @@ environmental_modifiers = {
     'console': [],
     'cartridge': [],
     'royal_loan': [],
+    'spike': [],
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
