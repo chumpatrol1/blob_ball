@@ -16,7 +16,8 @@ blob_unlock_splashes = { # Key is Blob name, first value is image, second is blo
     'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue pellets!/When they land, the puddles trap/both your enemy and the ball!"],
     'arcade': ['arcade_blob.png', "Arcade Blob", "Press your ability button to/throw out a cheat cartridge!/Press and hold down to teleport to it."],
     'joker': ['joker_blob.png', "Joker Blob", "Press your ability button to/look at your deck of cards!/Press a direction and press an action button/to swap out an action with an Ability Card!"],
-    'taco': ['random_blob.png', "Taco Blob", "Press your ability button to/look at your menu!/Press a direction and press an action button/to change your stats mid-battle!"]
+    'taco': ['random_blob.png', "Taco Blob", "Press your ability button to/look at your menu!/Press a direction and press an action button/to change your stats mid-battle!"],
+    'cactus': ['random_blob.png', "Cactus Blob", "Press your ability button to/shoot out a spike!/It targets the ball, draining energy/ from enemies as it travels!"],
 }
 
 def find_blob_unlock(key):

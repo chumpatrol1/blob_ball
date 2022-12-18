@@ -1,4 +1,4 @@
-import pygame as pg
+#import pygame as pg
 from os import getcwd
 cwd = getcwd()
 tip_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30) # Load in the font
@@ -278,6 +278,10 @@ taco_tips = [
 
 ]
 
+cactus_tips = [
+
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -298,6 +302,7 @@ def return_selected_blob_tips(selected_blob):
         'arcade': arcade_tips,
         'joker': joker_tips,
         'taco': taco_tips,
+        'cactus': cactus_tips,
     }
     try:
         return tips_dict[selected_blob]
