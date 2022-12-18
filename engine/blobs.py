@@ -1030,7 +1030,11 @@ class Blob:
                             self.special_ability_cooldown = 0
                     elif(self.species == "king" and not blob.block_timer and not blob.kick_timer):
                         create_environmental_modifier(blob.player, affects = {'self'}, species = 'royal_loan', lifetime = 360, hp = 0, x_pos = self.x_center - 20, y_pos = self.y_center - 150, gravity = 0, random_image=self.player)
-                        
+                    elif(self.species == "cactus" and not blob.block_timer and not blob.kick_timer):
+                        self.special_ability_meter += 900 if blob.special_ability_meter > 900 else blob.special_ability_meter
+                        blob.special_ability_meter -= 900 if blob.special_ability_meter > 900 else blob.special_ability_meter
+                        if(self.special_ability_meter > self.special_ability_max):
+                            self.special_ability_meter = self.special_ability_max
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
