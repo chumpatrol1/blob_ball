@@ -22,7 +22,7 @@ modifier_images = {
     'cartridge_2': 'cartridge_2',
     'cartridge_3': 'cartridge_3',
     'royal_loan': 'star_glove',
-    'spike': 'star_glove',
+    'cactus_spike': 'star_glove',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))

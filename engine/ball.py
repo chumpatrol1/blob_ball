@@ -377,7 +377,7 @@ class Ball:
                     self.y_speed = Ball.ground - self.y_pos
                     self.status_effects['zapped'] += 120
         
-        for hazard in environment['spike']:
+        for hazard in environment['cactus_spike']:
             if("ball" in hazard.affects):
                 
                 ball_vector = pg.math.Vector2(self.x_center, self.y_center + 50)
@@ -392,12 +392,14 @@ class Ball:
                         hazard.lifetime = 0
                         ball_nv = pg.math.Vector2(self.x_pos - hazard.x_pos, (self.y_pos + 50) - hazard.y_pos)
                         ball_nv.scale_to_length(20)
-                        self.x_speed = ball_nv[0]
-                        self.y_speed = ball_nv[1]
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = ball_nv[0]
+                            self.y_speed = ball_nv[1]
                     except:
                         hazard.lifetime = 0
-                        self.x_speed = 0
-                        self.y_speed = -10
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = 0
+                            self.y_speed = -10
 
                     continue
 

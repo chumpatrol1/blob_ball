@@ -900,7 +900,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'spike', lifetime = 300)
+                create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'cactus_spike', lifetime = 180)
             else:
                 return
         
@@ -1031,8 +1031,8 @@ class Blob:
                     elif(self.species == "king" and not blob.block_timer and not blob.kick_timer):
                         create_environmental_modifier(blob.player, affects = {'self'}, species = 'royal_loan', lifetime = 360, hp = 0, x_pos = self.x_center - 20, y_pos = self.y_center - 150, gravity = 0, random_image=self.player)
                     elif(self.species == "cactus" and not blob.block_timer and not blob.kick_timer):
-                        self.special_ability_meter += 900 if blob.special_ability_meter > 900 else blob.special_ability_meter
-                        blob.special_ability_meter -= 900 if blob.special_ability_meter > 900 else blob.special_ability_meter
+                        self.special_ability_meter += 360 * Blob.nrg_multiplier if blob.special_ability_meter > 360 * Blob.nrg_multiplier else blob.special_ability_meter
+                        blob.special_ability_meter -= 360 * Blob.nrg_multiplier if blob.special_ability_meter > 360 * Blob.nrg_multiplier else blob.special_ability_meter
                         if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
                     #elif(self.species == "doctor"):
@@ -1237,7 +1237,7 @@ class Blob:
                 if(self.special_ability_cooldown == self.special_ability_cooldown_max):
                     hazard.hp += 1
         
-        for hazard in environment['spike']:
+        for hazard in environment['cactus_spike']:
             if(hazard.player != self.player and 'enemy' in hazard.affects and self.player not in hazard.affects):
                 if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                     stun_amount = 30
@@ -1450,7 +1450,7 @@ class Blob:
                 blob_traction += 1
                 blob_friction += 1
             if(self.status_effects['monado_effect'] == "SHIELD"):
-                blob_speed -= 4
+                blob_speed -= 3
         wavedashed = False
 
         menu_open = self.status_effects['menu']['open']
@@ -1642,6 +1642,8 @@ class Blob:
             self.y_speed = 0
             self.y_pos = Blob.ground
             self.impact_land_frames = 10
+            if(self.status_effects['monado_effect'] == "JUMP"):
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700)
         
         #ABILITY
         if('ability' in pressed and not menu_open):
@@ -1753,7 +1755,7 @@ class Blob:
                 
                 self.status_effects['menu']['time'] += 1
                 selected_card = ''
-                if(self.status_effects['menu']['time'] > 15 and menu_direction != 'neutral'):
+                if(self.status_effects['menu']['time'] > 5 and menu_direction != 'neutral'):
                     monado_activated = False
                     if(menu_direction == "up" and self.status_effects['monado_jump_cooldown'] <= 0):
                         self.jump_lock = 15
@@ -1778,6 +1780,8 @@ class Blob:
                         createSFXEvent('crunch')
                         self.status_effects['menu']['open'] = False
                         self.status_effects['monado_timer'] = 300
+                        if(self.status_effects['monado_effect'] == "SHIELD"):
+                            self.status_effects['monado_timer'] = 420
                         self.movement_lock = 5
                         self.special_ability_timer = self.special_ability_cooldown
                         self.special_ability_meter -= self.special_ability_cost

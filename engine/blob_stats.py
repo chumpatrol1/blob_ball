@@ -63,7 +63,7 @@ def species_to_stars(species, stat_overrides):
         'arcade': create_dict(4, 2, 2, 2, 1, 3, 3, 600, 2, 2, 'teleport', 180, 0, 1800, 180, 0, 0),
         'joker': create_dict(4, 2, 2, 2, 2, 2, 2, 600, 2, 2, 'cardpack', 360, 0, 1800, 60, 0, 0),
         'taco': create_dict(4, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 60, 0, 0),
-        'cactus': create_dict(2, 3, 4, 2, 4, 3, 3, 600, 3, 3, 'spike', 600, 0, 1800, 60, 0, 0),
+        'cactus': create_dict(1, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
     }
 
     blob_dict = full_dict[species]
