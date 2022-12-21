@@ -321,6 +321,15 @@ class Blob:
 
         if(self.focus_lock > 0):
             self.focus_lock -= 1
+            if(self.focus_lock == 0 and self.status_effects['shop']['focus_equip'] == 'explosive_focus'):
+                self.kick(ignore_cooldown=True)
+                self.status_effects['shop']['focus_durability'] -= 1
+            if(self.focus_lock == 0 and self.status_effects['shop']['focus_equip'] == 'soul_focus'):
+                self.heal_hp(heal_amt = 1, overheal = False)
+                self.status_effects['shop']['focus_durability'] -= 1
+            
+            if(self.status_effects['shop']['focus_durability'] == 0):
+                self.status_effects['shop']['focus_equip'] = None
         if(self.special_ability_meter < self.special_ability_max):
             self.special_ability_meter += self.special_ability_charge
 
@@ -930,8 +939,8 @@ class Blob:
 
 
 
-    def kick(self):
-        if(self.kick_cooldown <= 0 and not self.status_effects['cards']['kick']):
+    def kick(self, ignore_cooldown = False):
+        if((self.kick_cooldown <= 0 or ignore_cooldown) and not self.status_effects['cards']['kick']):
             createSFXEvent('kick')
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
@@ -945,7 +954,7 @@ class Blob:
             if(self.status_effects['shop']['offense_equip'] == 'nailmasters_glory'):
                 self.kick_cooldown /= 2
             
-        elif(self.kick_cooldown <= 0 and self.status_effects['cards']['kick']):
+        elif((self.kick_cooldown <= 0 or ignore_cooldown) and self.status_effects['cards']['kick']):
             self.ability(card = self.status_effects['cards']['kick'])
             
             self.kick_cooldown = self.kick_cooldown_max//2
@@ -1348,7 +1357,13 @@ class Blob:
             # Decrease damage by 1 if using SHIELD
             # self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
             initial_hp = self.hp
-            self.hp -= damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") + (2 * bool(self.status_effects['monado_effect'] == "SMASH")) - bool(self.status_effects['monado_effect'] == "SHIELD")
+            self.hp -= damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") + (2 * bool(self.status_effects['monado_effect'] == "SMASH")) - bool(self.status_effects['monado_effect'] == "SHIELD") - bool(self.focusing and self.status_effects['shop']['focus_equip'] == 'baldur_shell')
+            
+            if(self.status_effects['shop']['focus_equip'] == 'baldur_shell' and self.focusing):
+                self.status_effects['shop']['focus_durability'] -= 1
+                self.focus_lock = 0
+                if(self.status_effects['shop']['focus_durability'] == 0):
+                    self.status_effects['shop']['focus_equip'] = None
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
@@ -1872,12 +1887,12 @@ class Blob:
                         if(self.status_effects['shop']['focus_sale'] == 'baldur_shell'):
                             self.status_effects['shop']['focus_sale'] = 'explosive_focus'
                             self.status_effects['shop']['focus_equip'] = 'baldur_shell'
-                            self.status_effects['shop']['focus_durability'] = 3
+                            self.status_effects['shop']['focus_durability'] = 2
                             createSFXEvent('glyph')
                         elif(self.status_effects['shop']['focus_sale'] == 'explosive_focus'):
                             self.status_effects['shop']['focus_sale'] = 'soul_focus'
                             self.status_effects['shop']['focus_equip'] = 'explosive_focus'
-                            self.status_effects['shop']['focus_durability'] = 3
+                            self.status_effects['shop']['focus_durability'] = 2
                             createSFXEvent('chime_error')
                         elif(self.status_effects['shop']['focus_sale'] == 'soul_focus'):
                             self.status_effects['shop']['focus_sale'] = 'baldur_shell'
