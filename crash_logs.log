@@ -2409,3 +2409,102 @@ P2_Blob: taco, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+6504-ERROR-Game Crash at Sun Dec 18 08:23:40 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 212, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p1_blob.move(pressed), 1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1629, in move
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 901, in ability
+    create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spike', lifetime = special_ability_delay, y_pos = 700)
+UnboundLocalError: local variable 'special_ability_delay' referenced before assignment
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16360-ERROR-Game Crash at Sun Dec 18 09:06:04 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 231, in handle_gameplay
+    sball.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\ball.py", line 384, in check_environmental_collisions
+    hazard_vector = pg.math.Vector2(hazard.x_center, hazard.y_center)
+AttributeError: 'EnvironmentalModifiers' object has no attribute 'x_center'
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4032-ERROR-Game Crash at Sun Dec 18 09:06:43 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 231, in handle_gameplay
+    sball.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\ball.py", line 397, in check_environmental_collisions
+    if(dist_vector.length > 150):
+AttributeError: 'float' object has no attribute 'length'
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17444-ERROR-Game Crash at Sun Dec 18 09:31:20 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 228, in handle_gameplay
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1235, in check_environmental_collisions
+    if(hazard.player != self.player and 'enemy' in hazard.affects and self.player not in hazard):
+TypeError: argument of type 'EnvironmentalModifiers' is not iterable
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: quirkless, is CPU: True
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19144-ERROR-Game Crash at Sun Dec 18 09:47:46 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 228, in handle_gameplay
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1244, in check_environmental_collisions
+    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = ['nrg_drain', 300])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1322, in take_damage
+    self.status_effects[status_effect[0]] += status_effect[1]
+KeyError: 'n'
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

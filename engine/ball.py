@@ -137,7 +137,6 @@ class Ball:
                         self.info['kicked'] += 1
                         self.species = "kicked_ball"
                         self.special_timer = 30
-                        p1_ball_nv = p1_vector - ball_vector
 
                         try:
                             # Make this not dependent on ball speed!
@@ -153,7 +152,7 @@ class Ball:
                             blob_kick_x_modifier = 0
                             p1_ball_collision.scale_to_length(50)
                         except: #Stationary ball?
-                            p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_ball_nv)
+                            p1_ball_collision = pg.math.Vector2(self.x_speed, self.y_speed).reflect(p1_vector - ball_vector)
                             blob_kick_x_modifier = ((self.x_center - blob.x_center)/50) * 10
                         
                         #print(ball_vector, p1_vector, p1_ball_collision, p1_ball_nv)
@@ -377,6 +376,47 @@ class Ball:
                 if(hazard.lifetime == hazard.max_lifetime - 1):
                     self.y_speed = Ball.ground - self.y_pos
                     self.status_effects['zapped'] += 120
+        
+        for hazard in environment['cactus_spike']:
+            if("ball" in hazard.affects):
+                
+                ball_vector = pg.math.Vector2(self.x_center, self.y_center + 50)
+                hazard_vector = pg.math.Vector2(hazard.x_pos, hazard.y_pos)
+
+                #print("X", hazard.x_pos, self.x_pos)
+                #print("Y", hazard.y_pos, self.y_pos)
+                
+                dist_vector = hazard_vector.distance_to(ball_vector)
+                if(dist_vector < 75):
+                    try:
+                        hazard.lifetime = 0
+                        ball_nv = pg.math.Vector2(self.x_pos - hazard.x_pos, (self.y_pos + 50) - hazard.y_pos)
+                        ball_nv.scale_to_length(20)
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = ball_nv[0]
+                            self.y_speed = ball_nv[1]
+                    except:
+                        hazard.lifetime = 0
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = 0
+                            self.y_speed = -10
+
+                    continue
+
+                
+                hazard_nv = hazard_vector - ball_vector
+                if(dist_vector > 150):
+                    hazard_nv.scale_to_length(25)
+                else:
+                    hazard_nv.scale_to_length(15)
+                hazard.x_pos -= hazard_nv[0]
+                hazard.y_pos -= hazard_nv[1] * 2
+                #print(hazard_nv.length())
+
+
+
+                
+
 
     def check_ceiling_collisions(self):
         ceiling = 210

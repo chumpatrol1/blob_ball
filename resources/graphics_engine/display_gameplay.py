@@ -204,7 +204,7 @@ def draw_ui(game_display, blobs):
         ui_idx += 1
 
         #DEBUG TEXT
-        menu_text = ui_font.render(("NRG: " + str(blob.special_ability_meter)), False, (255, 255, 255))
+        menu_text = ui_font.render(("NRG: " + str(blob.special_ability_meter//5)), False, (255, 255, 255))
         text_rect = menu_text.get_rect()
         text_rect.center = (align[0] + 263, align[1] + 85)
         game_display.blit(menu_text, text_rect)

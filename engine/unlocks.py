@@ -13,7 +13,7 @@ css_selector_list_blobs = [
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
 [["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"],],
-[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/random_blob.png", "Taco Blob", "Crunchy"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/random_blob.png", "Taco Blob", "Crunchy"], ["/blobs/random_blob.png", "Cactus Blob", "Spike"], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
@@ -41,7 +41,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (3, 2): "joker",
     (4, 2): "coming_soon",
     (5, 2): "taco",
-    (6, 2): "coming_soon",
+    (6, 2): "cactus",
     (7, 2): "coming_soon",
     (1, 3): "coming_soon",
     (2, 3): "coming_soon",
@@ -78,6 +78,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "arcade": False,
     "joker": False,
     "taco": False,
+    "cactus": False,
 }
 
 def load_blob_unlocks(cwd):
@@ -124,7 +125,8 @@ def update_css_blobs(cwd):
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
                 css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
-            unlock_slot += 1
+            if(location != (4, 2)):
+                unlock_slot += 1
             #if location in if_blob_shadow:
                 #css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "Bug", "Coming soon!"]
 
@@ -330,6 +332,7 @@ costume_unlock_dict = {
     "arcade": {"grayscale_1": False},
     "joker": {"grayscale_1": False},
     "taco": {},
+    "cactus": {},
 }
 
 def load_costume_unlocks(cwd):
