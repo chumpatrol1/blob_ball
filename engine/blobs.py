@@ -270,6 +270,7 @@ class Blob:
             "monado_shield_cooldown": 0,
             "monado_speed_cooldown": 0,
             "monado_jump_cooldown": 0,
+            "shop": {'offense_sale': 'dream_wielder', 'focus_sale': 'baldur_shell', 'passive_sale': 'soul_catcher', 'defense_sale': 'sharp_shadow', 'offense_equip': None, 'focus_equip': None, 'passive_equip': None, 'defense_equip': None, 'offense_durability': 0, 'focus_durability': 0, 'passive_durability': 0, 'defense_durability': 0},
 
             "teleporter": [1],
             "taxing": 0,
@@ -901,7 +902,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'cactus_spike', lifetime = 180)
+                create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'cactus_spike', lifetime = 60)
             else:
                 return
         elif(special_ability == "shop"):
@@ -1108,7 +1109,7 @@ class Blob:
                     break
 
         for hazard in environment['spire_spike']:
-            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215):
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215 and self.y_center > 400):
                 if(self.block_timer == 0):
                     self.take_damage(y_speed_mod = -40 - (5 * (self.gravity_mod - 1.05)), stun_amount = 20)
                     # TODO: Reflection
@@ -1790,6 +1791,109 @@ class Blob:
                         self.status_effects['monado_timer'] = 300
                         if(self.status_effects['monado_effect'] == "SHIELD"):
                             self.status_effects['monado_timer'] = 420
+                        self.movement_lock = 5
+                        self.special_ability_timer = self.special_ability_cooldown
+                        self.special_ability_meter -= self.special_ability_cost
+                    
+                elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 15):
+                    self.status_effects['menu']['open'] = False
+                    self.special_ability_cooldown = self.special_ability_cooldown_max
+                
+                '''if(not self.status_effects['menu']['open']):
+                    if('ability' in pressed):
+                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                    elif('kick' in pressed):
+                        self.kick_cooldown += 60 * Blob.timer_multiplier
+                    elif('block' in pressed):
+                        self.block_cooldown += 60 * Blob.timer_multiplier
+                    elif('boost' in pressed):
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
+            elif(self.status_effects['menu']['type'] == 'shop'):
+                if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
+                    menu_action = 'ability'
+
+                
+                self.status_effects['menu']['time'] += 1
+                selected_card = ''
+                if(self.status_effects['menu']['time'] > 5 and menu_direction != 'neutral'):
+                    monado_activated = False
+                    if(menu_direction == "up"): # Passive
+                        self.jump_lock = 15
+                        monado_activated = True
+                        if(self.status_effects['shop']['passive_sale'] == 'soul_catcher'):
+                            self.status_effects['shop']['passive_sale'] = 'grub_song'
+                            self.status_effects['shop']['passive_equip'] = 'soul_catcher'
+                            self.status_effects['shop']['passive_durability'] = 3
+                            createSFXEvent('glyph')
+                        elif(self.status_effects['shop']['passive_sale'] == 'grub_song'):
+                            self.status_effects['shop']['passive_sale'] = 'sprint_master'
+                            self.status_effects['shop']['passive_equip'] = 'grub_song'
+                            self.status_effects['shop']['passive_durability'] = 3
+                            createSFXEvent('chime_error')
+                        elif(self.status_effects['shop']['passive_sale'] == 'sprint_master'):
+                            self.status_effects['shop']['passive_sale'] = 'soul_catcher'
+                            self.status_effects['shop']['passive_equip'] = 'sprint_master'
+                            self.status_effects['shop']['passive_durability'] = 2
+                            createSFXEvent('parry')
+                    elif(menu_direction == "down"): # Focus
+                        self.wavedash_lock = 15
+                        monado_activated = True
+                        if(self.status_effects['shop']['focus_sale'] == 'baldur_shell'):
+                            self.status_effects['shop']['focus_sale'] = 'explosive_focus'
+                            self.status_effects['shop']['focus_equip'] = 'baldur_shell'
+                            self.status_effects['shop']['focus_durability'] = 3
+                            createSFXEvent('glyph')
+                        elif(self.status_effects['shop']['focus_sale'] == 'explosive_focus'):
+                            self.status_effects['shop']['focus_sale'] = 'soul_focus'
+                            self.status_effects['shop']['focus_equip'] = 'explosive_focus'
+                            self.status_effects['shop']['focus_durability'] = 3
+                            createSFXEvent('chime_error')
+                        elif(self.status_effects['shop']['focus_sale'] == 'soul_focus'):
+                            self.status_effects['shop']['focus_sale'] = 'baldur_shell'
+                            self.status_effects['shop']['focus_equip'] = 'soul_focus'
+                            self.status_effects['shop']['focus_durability'] = 2
+                            createSFXEvent('parry')
+                    elif(menu_direction == "left"): # Defense
+                        monado_activated = True
+                        if(self.status_effects['shop']['defense_sale'] == 'sharp_shadow'):
+                            self.status_effects['shop']['defense_sale'] = 'thorns_of_agony'
+                            self.status_effects['shop']['defense_equip'] = 'sharp_shadow'
+                            self.status_effects['shop']['defense_durability'] = 3
+                            createSFXEvent('glyph')
+                        elif(self.status_effects['shop']['defense_sale'] == 'thorns_of_agony'):
+                            self.status_effects['shop']['defense_sale'] = 'izumi_tear'
+                            self.status_effects['shop']['defense_equip'] = 'thorns_of_agony'
+                            self.status_effects['shop']['defense_durability'] = 3
+                            createSFXEvent('chime_error')
+                        elif(self.status_effects['shop']['defense_sale'] == 'izumi_tear'):
+                            self.status_effects['shop']['defense_sale'] = 'sharp_shadow'
+                            self.status_effects['shop']['defense_equip'] = 'izumi_tear'
+                            self.status_effects['shop']['defense_durability'] = 2
+                            createSFXEvent('parry')
+                    elif(menu_direction == "right"): # Offense
+                        monado_activated = True
+                        if(self.status_effects['shop']['offense_sale'] == 'dream_wielder'):
+                            self.status_effects['shop']['offense_sale'] = 'nailmasters_glory'
+                            self.status_effects['shop']['offense_equip'] = 'dream_wielder'
+                            self.status_effects['shop']['offense_durability'] = 3
+                            createSFXEvent('glyph')
+                        elif(self.status_effects['shop']['offense_sale'] == 'nailmasters_glory'):
+                            self.status_effects['shop']['offense_sale'] = 'heavy_blow'
+                            self.status_effects['shop']['offense_equip'] = 'nailmasters_glory'
+                            self.status_effects['shop']['offense_durability'] = 3
+                            createSFXEvent('chime_error')
+                        elif(self.status_effects['shop']['offense_sale'] == 'heavy_blow'):
+                            self.status_effects['shop']['offense_sale'] = 'dream_wielder'
+                            self.status_effects['shop']['offense_equip'] = 'heavy_blow'
+                            self.status_effects['shop']['offense_durability'] = 2
+                            createSFXEvent('parry')
+                    
+                    if(monado_activated):
+                        createSFXEvent('crunch')
+                        self.status_effects['menu']['open'] = False
+                        #self.status_effects['monado_timer'] = 300
+                        #if(self.status_effects['monado_effect'] == "SHIELD"):
+                        #    self.status_effects['monado_timer'] = 420
                         self.movement_lock = 5
                         self.special_ability_timer = self.special_ability_cooldown
                         self.special_ability_meter -= self.special_ability_cost

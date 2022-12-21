@@ -2508,3 +2508,22 @@ P2_Blob: cactus, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+30984-ERROR-Game Crash at Tue Dec 20 21:39:17 2022 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 533, in draw_gameplay
+    draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_particles.py", line 239, in draw_blob_particles
+    particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+UnboundLocalError: local variable 'monado_image' referenced before assignment
+Game State: casual_match
+P1 Blob: merchant, is CPU: False
+P2_Blob: merchant, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
