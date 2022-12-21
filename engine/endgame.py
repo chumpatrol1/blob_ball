@@ -23,6 +23,7 @@ def attempt_blob_unlocks(game_stats):
         66: "joker",
         74: "taco",
         82: "cactus",
+        90: "merchant",
     }
     
     blobs_unlocked = 0

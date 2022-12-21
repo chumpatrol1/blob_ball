@@ -43,7 +43,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike', 'shop']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -75,6 +75,7 @@ def species_to_image(species, costume):
         'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png")},
         'taco': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'cactus': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
+        'merchant': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -903,6 +904,13 @@ class Blob:
                 create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'cactus_spike', lifetime = 180)
             else:
                 return
+        elif(special_ability == "shop"):
+            if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
+                #self.special_ability_cooldown = 30 * Blob.timer_multiplier
+                self.status_effects['menu']['open'] = True
+                self.status_effects['menu']['type'] = 'shop'
+                self.status_effects['menu']['time'] = 0
+                
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])

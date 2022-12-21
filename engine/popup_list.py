@@ -18,6 +18,7 @@ blob_unlock_splashes = { # Key is Blob name, first value is image, second is blo
     'joker': ['joker_blob.png', "Joker Blob", "Press your ability button to/look at your deck of cards!/Press a direction and press an action button/to swap out an action with an Ability Card!"],
     'taco': ['random_blob.png', "Taco Blob", "Press your ability button to/look at your menu!/Press a direction and press an action button/to change your stats mid-battle!"],
     'cactus': ['random_blob.png', "Cactus Blob", "Press your ability button to/shoot out a spiky ball!/It targets the ball, draining energy/ from enemies as it travels!"],
+    'merchant': ['random_blob.png', "Merchant Blob", "Open up shop with your ability button!/Simply pick a direction in order/to buy some fragile accessories!"],
 }
 
 def find_blob_unlock(key):

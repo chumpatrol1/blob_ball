@@ -282,6 +282,10 @@ cactus_tips = [
 
 ]
 
+merchant_tips = [
+
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -303,6 +307,7 @@ def return_selected_blob_tips(selected_blob):
         'joker': joker_tips,
         'taco': taco_tips,
         'cactus': cactus_tips,
+        'merchant': merchant_tips,
     }
     try:
         return tips_dict[selected_blob]
