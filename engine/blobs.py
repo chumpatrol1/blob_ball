@@ -940,6 +940,11 @@ class Blob:
             self.collision_distance = 175
             self.kick_visualization = self.kick_visualization_max
             self.info['kick_count'] += 1
+            if(self.status_effects['shop']['offense_equip']):
+                self.status_effects['shop']['offense_durability'] -= 1
+            if(self.status_effects['shop']['offense_equip'] == 'nailmasters_glory'):
+                self.kick_cooldown /= 2
+            
         elif(self.kick_cooldown <= 0 and self.status_effects['cards']['kick']):
             self.ability(card = self.status_effects['cards']['kick'])
             
@@ -966,6 +971,8 @@ class Blob:
             self.x_speed = 0
             if(self.y_speed < 0): #If we are moving upwards, halt your momentum!
                 self.y_speed = 0
+            if(self.status_effects['shop']['defense_equip'] in {'thorns_of_agony', 'izumi_tear'}):
+                self.status_effects['shop']['defense_durability'] -= 1
             self.info['block_count'] += 1
         elif(self.block_cooldown <= 0 and self.status_effects['cards']['block']):
             self.ability(card = self.status_effects['cards']['block'])
@@ -1025,6 +1032,7 @@ class Blob:
             if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
                 accumulated_damage = 2
                 pierce = 0
+                x_speed_mod = 0
                 if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
                     accumulated_damage += 1
                     if(self.species == "ice"):
@@ -1044,6 +1052,11 @@ class Blob:
                         blob.special_ability_meter -= 360 * Blob.nrg_multiplier if blob.special_ability_meter > 360 * Blob.nrg_multiplier else blob.special_ability_meter
                         if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
+                    elif(self.species == "wind"):
+                        if(self.x_pos < blob.x_pos):
+                            x_speed_mod = 30
+                        else:
+                            x_speed_mod = -30
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
@@ -1056,12 +1069,26 @@ class Blob:
                     accumulated_damage += 1
                 if(self.status_effects['monado_effect'] == "JUMP" or self.status_effects['monado_effect'] == "SPEED"):
                     accumulated_damage += 1
-                
-                blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce)
+                if(self.status_effects['shop']['offense_equip'] == 'heavy_blow'):
+                    accumulated_damage += 1
+                    if(self.x_pos < blob.x_pos):
+                        x_speed_mod = 30
+                    else:
+                        x_speed_mod = -30
+
+                dealt_damage = blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce, x_speed_mod = x_speed_mod)
+                if(self.status_effects['shop']['offense_equip'] == 'dream_wielder'):
+                    self.special_ability_meter += dealt_damage * 150 * Blob.nrg_multiplier
+                    if(self.special_ability_meter > self.special_ability_max):
+                            self.special_ability_meter = self.special_ability_max
+
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
                     blob.special_ability_cooldown += 180 * Blob.timer_multiplier
+        if(self.status_effects['shop']['offense_durability'] == 0):
+                createSFXEvent('crunch')
+                self.status_effects['shop']['offense_equip'] = None
 
 
                     
@@ -1261,8 +1288,8 @@ class Blob:
                         self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 
 
-    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, stun_amount = 0,\
-        show_parry = True, status_effects = [], pierce = 0):
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, x_speed_mod = 0,\
+    stun_amount = 0, show_parry = True, status_effects = [], pierce = 0):
         damage_taken = False
         pierced = False
         if(self.status_effects['monado_effect'] == "SMASH"):
@@ -1320,11 +1347,13 @@ class Blob:
             # Increase damage by 2 if using SMASH
             # Decrease damage by 1 if using SHIELD
             # self.hp -= damage + bool(self.used_ability == "hook") - bool(self.status_effects['reflecting'] > 0)
+            initial_hp = self.hp
             self.hp -= damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") + (2 * bool(self.status_effects['monado_effect'] == "SMASH")) - bool(self.status_effects['monado_effect'] == "SHIELD")
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
             self.y_speed = y_speed_mod
+            self.x_speed = x_speed_mod
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
@@ -1332,6 +1361,8 @@ class Blob:
                 self.status_effects['silenced'] += 360
             for status_effect in status_effects:
                 self.status_effects[status_effect[0]] += status_effect[1]
+            return initial_hp - self.hp
+        return 0
 
     def heal_hp(self, heal_amt = 1, overheal = False):
         if(heal_amt > 0):
