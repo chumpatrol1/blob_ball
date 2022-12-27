@@ -137,7 +137,8 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
         particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
-        
+        particle_cache['sharp_shadow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        particle_cache['sharp_shadow'].fill((0, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         particle_cache['icons'] = {}
         for icon in ability_image_dict:
             try:
