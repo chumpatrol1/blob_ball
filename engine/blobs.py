@@ -1118,7 +1118,7 @@ class Blob:
                 if(blob.status_effects['reflecting'] > 1):
                     self.take_damage(damage = 1, unblockable=True, unclankable=True)
                     blob.status_effects['reflect_break'] = 68
-                    blob.special_ability_cooldown += 180 * Blob.timer_multiplier
+                    blob.status_effects['silenced'] += 360
         if(self.status_effects['shop']['offense_durability'] == 0 and self.status_effects['shop']['offense_equip']):
                 createSFXEvent('crunch')
                 self.status_effects['shop']['offense_equip'] = None
