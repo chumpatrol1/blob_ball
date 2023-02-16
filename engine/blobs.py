@@ -416,7 +416,6 @@ class Blob:
                         self.special_ability_cooldown_rate = 1
                         self.boost_cooldown_rate = 1
                     if(effect == 'loaned'):
-                        print(self.status_effects['loaned'])
                         self.kick_cooldown_rate += 4
                         self.block_cooldown_rate += 4
                         self.special_ability_cooldown_rate += 4
