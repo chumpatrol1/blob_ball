@@ -30,7 +30,12 @@ class EnvironmentalModifiers:
         #if(self.y_pos > 685 - self.image.get_height()/2 and not self.ground_clip):
         #    self.y_pos = 685 - self.image.get_height()/2
         self.y_speed += self.gravity
-        self.lifetime -= 1
+        self.lifetime -= 1 if self.species != "royal_loan" else 0
+        if(self.species == "royal_loan" and self.lifetime == 1):
+            self.lifetime = 0
+        elif(self.species == "royal_loan" and self.hp >= 8):
+            self.lifetime = 1
+        
         if(self.species == 'glue_shot' and self.y_pos > 1350):
             create_environmental_modifier(player = self.player, affects = self.affects, species = 'glue_puddle', random_image = self.player, x_pos = self.x_pos - 27.5, y_pos = 1378, lifetime = 180)
             self.lifetime = 0
@@ -81,6 +86,7 @@ class EnvironmentalModifiers:
             draw_console_sparks([self.x_pos, self.y_pos])
             draw_console_sparks([self.x_pos, self.y_pos])
             draw_console_sparks([self.x_pos, self.y_pos])
+        
 # FOR EACH MODIFIER, ADD A NEW ENTRY!
 environmental_modifiers = {
     'glue_shot': [],
@@ -96,6 +102,7 @@ environmental_modifiers = {
     'cartridge': [],
     'royal_loan': [],
     'cactus_spike': [],
+    'sharp_shadow': [],
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
@@ -137,4 +144,5 @@ def clear_environmental_modifiers():
     'cartridge': [],
     'royal_loan': unpaid_loans,
     'cactus_spike': [],
+    'sharp_shadow': [],
 }

@@ -58,12 +58,13 @@ def species_to_stars(species, stat_overrides):
         'cop': create_dict(4, 4, 3, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 360, 0, 1800, 360, 0, 0),
         'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 810, 25, 0),
         'mirror': create_dict(1, 1, 5, 3, 2, 2, 2, 600, 2, 4, 'mirror', 450, 0, 1800, 300, 0, 60),
-        'fisher': create_dict(1, 3, 4, 1, 3, 2, 1, 600, 3, 4, 'hook', 15, 15, 1800, 2, 20, 0),
+        'fisher': create_dict(1, 3, 4, 1, 3, 2, 1, 600, 3, 4, 'hook', 12, 12, 1800, 2, 20, 0),
         'glue': create_dict(3, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'gluegun', 150, 15, 1800, 2, 0, 0),
         'arcade': create_dict(4, 2, 2, 2, 1, 3, 3, 600, 2, 2, 'teleport', 180, 0, 1800, 180, 0, 0),
         'joker': create_dict(4, 2, 2, 2, 2, 2, 2, 600, 2, 2, 'cardpack', 360, 0, 1800, 60, 0, 0),
         'taco': create_dict(4, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 60, 0, 0),
         'cactus': create_dict(1, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
+        'merchant': create_dict(2, 2, 4, 4, 4, 1, 1, 600, 3, 3, 'shop', 300, 0, 1800, 60, 0, 0),
     }
 
     blob_dict = full_dict[species]
@@ -105,7 +106,8 @@ ability_image_dict = {
         'joker': ability_cwd + 'card.png',
         'arcade': ability_cwd + 'teleport.png',
         'taco': ability_cwd + '404.png',
-        'cactus': ability_cwd + '404.png',
+        'cactus': ability_cwd + 'cactus_spike.png',
+        'merchant': ability_cwd + '404.png',
         "random": icon_cwd + "boost_icon.png",
     }
 

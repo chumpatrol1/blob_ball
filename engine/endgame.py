@@ -23,6 +23,7 @@ def attempt_blob_unlocks(game_stats):
         66: "joker",
         74: "taco",
         82: "cactus",
+        90: "merchant",
     }
     
     blobs_unlocked = 0
@@ -53,7 +54,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "arcade": {10: "arcade/grayscale_1"},
         "joker": {10: "joker/grayscale_1"},
         "taco": {},
-        "cactus": {},
+        "cactus": {10: "cactus/grayscale_1"},
     }
     blobs_unlocked = 0
     try:
