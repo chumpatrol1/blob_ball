@@ -75,7 +75,7 @@ def species_to_image(species, costume):
         'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png")},
         'taco': {0: (blob_cwd + "taco_beta.png", blob_cwd + "random_blob.png")},
         'cactus': {0: (blob_cwd + "cactus_blob.png", blob_cwd + "cactus_blob_-1.png"), 1: (blob_cwd + "cactus_blob_1.png", blob_cwd + "cactus_blob_-1.png")},
-        'merchant': {0: (blob_cwd + "merchant_1.png", blob_cwd + "random_blob.png")},
+        'merchant': {0: (blob_cwd + "merchant_blob.png", blob_cwd + "merchant_blob_-1.png"), 1: (blob_cwd + "merchant_blob_1.png", blob_cwd + "merchant_blob_-1.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},

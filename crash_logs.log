@@ -2548,3 +2548,68 @@ P2_Blob: cactus, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+18532-ERROR-Game Crash at Tue Feb 28 01:11:13 2023 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 129, in __init__
+    self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 70, in species_to_stars
+    blob_dict = full_dict[species]
+KeyError: 'random'
+Game State: casual_match
+P1 Blob: random, is CPU: False
+P2_Blob: random, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+38500-ERROR-Game Crash at Tue Feb 28 01:27:44 2023 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 144, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 129, in __init__
+    self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 70, in species_to_stars
+    blob_dict = full_dict[species]
+KeyError: 'random'
+Game State: casual_match
+P1 Blob: random, is CPU: False
+P2_Blob: random, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+41292-ERROR-Game Crash at Tue Feb 28 01:34:53 2023 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 135, in update_game_state
+    p1_blob = get_random_blob()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\get_random_blob.py", line 6, in get_random_blob
+    return random.choice(blob_set)
+  File "C:\Users\Elijah McLaughlin\anaconda3\envs\blob_ball\lib\random.py", line 346, in choice
+    return seq[self._randbelow(len(seq))]
+TypeError: 'set' object is not subscriptable
+Game State: css
+P1 Blob: random, is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
