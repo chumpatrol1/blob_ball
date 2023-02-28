@@ -123,7 +123,6 @@ def update_css_blobs(cwd):
     for y in range(0, 5):
         for x in range(1, 8):
             location = (x, y)
-            print(location, end=': ')
             if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":
                 css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
             elif location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
@@ -131,7 +130,6 @@ def update_css_blobs(cwd):
                 css_selector_list_blobs[y][x] = blob_id
                 if(blob_id != "random"):
                     unlocked_blobs.append(blob_id)
-                print(blob_id)
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
                 css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
@@ -343,7 +341,7 @@ costume_unlock_dict = {
     "fisher": {"grayscale_1": False},
     "glue": {"grayscale_1": False},
     "arcade": {"grayscale_1": False},
-    "joker": {"grayscale_1": False},
+    "joker": {"grayscale_1": False, "red_2": False, "mosaic_3": False},
     "random": {},
     "taco": {},
     "cactus": {"grayscale_1": False},

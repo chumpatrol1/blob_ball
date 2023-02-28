@@ -72,7 +72,7 @@ def species_to_image(species, costume):
         'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png")},
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
-        'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png")},
+        'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png"), 2: (blob_cwd + "joker_blob_2.png", blob_cwd + "joker_blob_-1.png"), 3: (blob_cwd + "joker_blob_3.png", blob_cwd + "joker_blob_-2.png")},
         'taco': {0: (blob_cwd + "taco_beta.png", blob_cwd + "random_blob.png")},
         'cactus': {0: (blob_cwd + "cactus_blob.png", blob_cwd + "cactus_blob_-1.png"), 1: (blob_cwd + "cactus_blob_1.png", blob_cwd + "cactus_blob_-1.png")},
         'merchant': {0: (blob_cwd + "merchant_blob.png", blob_cwd + "merchant_blob_-1.png"), 1: (blob_cwd + "merchant_blob_1.png", blob_cwd + "merchant_blob_-1.png")},
@@ -1991,10 +1991,11 @@ class Blob:
                         self.movement_lock = 5
                         self.special_ability_timer = self.special_ability_cooldown
                         self.special_ability_meter -= self.special_ability_cost
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                     
                 elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 15):
                     self.status_effects['menu']['open'] = False
-                    self.special_ability_cooldown = self.special_ability_cooldown_max
+                    self.special_ability_cooldown = self.special_ability_cooldown_max/2
                 
                 '''if(not self.status_effects['menu']['open']):
                     if('ability' in pressed):
