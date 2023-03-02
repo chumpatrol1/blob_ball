@@ -2632,3 +2632,45 @@ P2_Blob: merchant, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+49036-ERROR-Game Crash at Tue Feb 28 16:32:15 2023 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 240, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 93, in load_individual_blob
+    costume_unlock = find_costume_unlock(selected_blob[2]+"/"+ i)[3]
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+44484-ERROR-Game Crash at Tue Feb 28 16:41:50 2023 (Version 0.17.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 240, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 89, in load_individual_blob
+    costume_name = find_costume_unlock(selected_blob[2]+"/"+ i)[1]
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: cactus, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
