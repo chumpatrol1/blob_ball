@@ -1825,12 +1825,15 @@ class Blob:
                     self.status_effects['cards']['recharge'].add(other_card_1)
                     self.status_effects['cards']['recharge'].add(other_card_2)
                     if(menu_action == 'ability'):
-                        self.special_ability_cooldown += 60 * Blob.timer_multiplier
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                     elif('kick' in pressed):
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                         self.kick_cooldown += 60 * Blob.timer_multiplier
                     elif('block' in pressed):
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                         self.boost_cooldown_timer += 60 * Blob.timer_multiplier
                     if(menu_direction == "up"):
                         self.jump_lock = 15
@@ -1843,16 +1846,16 @@ class Blob:
                     self.status_effects['cards']['recharge'].add(self.status_effects['cards']['pulled'][2])
                     self.status_effects['menu']['open'] = False
                     self.wavedash_lock = 15
-                    self.special_ability_cooldown = self.special_ability_cooldown_max
+                    self.special_ability_cooldown = self.special_ability_cooldown_max/2
 
-                    if(menu_action == 'ability'):
+                    '''if(menu_action == 'ability'):
                         self.special_ability_cooldown += 60 * Blob.timer_multiplier
                     elif('kick' in pressed):
                         self.kick_cooldown += 60 * Blob.timer_multiplier
                     elif('block' in pressed):
                         self.block_cooldown += 60 * Blob.timer_multiplier
                     elif('boost' in pressed):
-                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier
+                        self.boost_cooldown_timer += 60 * Blob.timer_multiplier'''
             elif(self.status_effects['menu']['type'] == 'monado'):
                 if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
                     menu_action = 'ability'
