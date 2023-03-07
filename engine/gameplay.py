@@ -410,4 +410,4 @@ def clear_info_cache():
     p2_blob = None
     ball = None
     replay_inputs = []
-    clear_environmental_modifiers()
+    clear_environmental_modifiers(true_reset=True)

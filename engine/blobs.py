@@ -1406,8 +1406,10 @@ class Blob:
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
-            if(self.special_ability == "hook" and self.special_ability_timer):
+            if(self.special_ability == "hook" and self.special_ability_timer and self.status_effects['silenced'] < 360):
+                print(self.status_effects['silenced'], "BLOB")
                 self.status_effects['silenced'] += 360
+
             for status_effect in status_effects:
                 self.status_effects[status_effect[0]] += status_effect[1]
             self.special_ability_meter += 150 * Blob.nrg_multiplier * (initial_hp - self.hp) if self.status_effects['shop']['passive_equip'] == 'grub_song' else 0

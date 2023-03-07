@@ -126,13 +126,13 @@ def return_environmental_modifiers():
     global environmental_modifiers
     return environmental_modifiers
 
-def clear_environmental_modifiers():
+def clear_environmental_modifiers(true_reset = False):
     global environmental_modifiers
     shot_glue = environmental_modifiers['glue_puddle']
     unpaid_loans = environmental_modifiers['royal_loan']
     environmental_modifiers = {
     'glue_shot': [],
-    'glue_puddle': shot_glue,
+    'glue_puddle': shot_glue if not true_reset else [],
     'spire_glyph': [],
     'spire_spike': [],
     'thunder_glyph': [],
@@ -142,7 +142,7 @@ def clear_environmental_modifiers():
     'starpunch_spring': [],
     'console': [],
     'cartridge': [],
-    'royal_loan': unpaid_loans,
+    'royal_loan': unpaid_loans if not true_reset else [],
     'cactus_spike': [],
     'sharp_shadow': [],
 }
