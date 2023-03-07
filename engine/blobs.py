@@ -1326,7 +1326,7 @@ class Blob:
             
             if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                 accumulated_damage = 3
-                stun_amount = 30
+                stun_amount = 120
                 self.take_damage(damage=accumulated_damage, stun_amount=stun_amount)
                 hazard.affects.add(self.player)
                 
@@ -1354,7 +1354,7 @@ class Blob:
                 return False # We failed the block check, don't take damage
             else:
                 
-                return True # Return true if the block check passes, we can take damage!
+                return True # Return true if the block check passes, we can take damage (amd boogy woogy[quacknote])!
 
         def check_clank(): # Returns true if the hit goes through
             if(self.kick_timer == 1):  # Kicking?
@@ -1888,10 +1888,11 @@ class Blob:
                         self.movement_lock = 5
                         self.special_ability_timer = self.special_ability_cooldown
                         self.special_ability_meter -= self.special_ability_cost
+                        self.special_ability_cooldown = self.special_ability_cooldown_max
                     
                 elif(menu_direction == 'neutral' and menu_action == 'ability' and self.status_effects['menu']['time'] > 15):
                     self.status_effects['menu']['open'] = False
-                    self.special_ability_cooldown = self.special_ability_cooldown_max
+                    self.special_ability_cooldown = self.special_ability_cooldown_max/2
                 
                 '''if(not self.status_effects['menu']['open']):
                     if('ability' in pressed):

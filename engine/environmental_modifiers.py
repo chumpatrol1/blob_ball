@@ -37,7 +37,7 @@ class EnvironmentalModifiers:
             self.lifetime = 1
         
         if(self.species == 'glue_shot' and self.y_pos > 1350):
-            create_environmental_modifier(player = self.player, affects = self.affects, species = 'glue_puddle', random_image = self.player, x_pos = self.x_pos - 27.5, y_pos = 1378, lifetime = 180)
+            create_environmental_modifier(player = self.player, affects = self.affects, species = 'glue_puddle', random_image = self.player, x_pos = self.x_pos - 27.5, y_pos = 1378, lifetime = 600)
             self.lifetime = 0
         
         if(self.species == 'glue_shot' and (self.x_pos < 0 or self.x_pos > 1835)):
@@ -128,11 +128,11 @@ def return_environmental_modifiers():
 
 def clear_environmental_modifiers():
     global environmental_modifiers
+    shot_glue = environmental_modifiers['glue_puddle']
     unpaid_loans = environmental_modifiers['royal_loan']
     environmental_modifiers = {
     'glue_shot': [],
-    'glue_puddle': [],
-    'glue_puddle': [],
+    'glue_puddle': shot_glue,
     'spire_glyph': [],
     'spire_spike': [],
     'thunder_glyph': [],

@@ -25,9 +25,9 @@ def unload_image_cache():
     image_cache['joker_card'] = None
     image_cache['icons'] = {}
     image_cache['monado'] = {
-        "SPEED": pg.transform.scale(pg.image.load(cwd+"/resources/images/ui_icons/boost_icon.png"), (70, 70)),
+        "SPEED": pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png"),
         "SMASH": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70)),
-        "SHIELD": pg.transform.scale(pg.image.load(cwd+"/resources/images/particles/shield_particle.png"), (70, 70)),
+        "SHIELD": pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png"),
         "JUMP": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/snowball_v2.png"), (70, 70)),
     }
     image_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
