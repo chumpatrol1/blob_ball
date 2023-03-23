@@ -28,7 +28,7 @@ def unload_image_cache():
         "SPEED": pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png"),
         "SMASH": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70)),
         "SHIELD": pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png"),
-        "JUMP": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/snowball_v2.png"), (70, 70)),
+        "JUMP": pg.image.load(cwd+"/resources/images/ui_icons/cheese.png"),
     }
     image_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
     for icon in ability_image_dict:

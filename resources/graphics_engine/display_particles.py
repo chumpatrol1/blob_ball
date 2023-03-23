@@ -5,6 +5,7 @@ import pygame as pg
 import random
 from random import randint
 import resources.graphics_engine.dynamic_particle_handler as dpc
+from resources.sound_engine.sfx_event import createSFXEvent
 cwd = getcwd()
 
 def blit_and_update_particles(memory, game_display):
@@ -137,9 +138,14 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
         particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
+        particle_cache['hot_sauce'] = pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png")
+        particle_cache['meat'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70))
+        particle_cache['vegan_crunch'] = pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png")
+        particle_cache['cheese'] = pg.image.load(cwd+"/resources/images/ui_icons/cheese.png")
         particle_cache['sharp_shadow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
         particle_cache['sharp_shadow'].fill((0, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         particle_cache['icons'] = {}
+        particle_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
         for icon in ability_image_dict:
             try:
                 ability_key = species_to_stars(icon, {})['special_ability']
@@ -228,17 +234,25 @@ def draw_blob_particles(game_display, blobs):
 
         if(blob.status_effects['monado_timer'] % 10 == 0 and blob.status_effects['monado_timer'] > 0):
             if(blob.status_effects['monado_effect'] == "SPEED"):
-                monado_image = particle_cache['fire_particle']
+                monado_image = particle_cache['hot_sauce']
             elif(blob.status_effects['monado_effect'] == "SMASH"):
                 monado_image = particle_cache['earth_particle_4']
             elif(blob.status_effects['monado_effect'] == "SHIELD"):
-                monado_image = particle_cache['water_particle']
+                monado_image = particle_cache['vegan_crunch']
             elif(blob.status_effects['monado_effect'] == "JUMP"):
-                monado_image = particle_cache['thunder_particle']
+                monado_image = particle_cache['cheese']
 
-            for i in range(blob.status_effects['monado_timer'] // 50):
-                particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+            particle_divider = 100 #if blob.status_effects['monado_effect'] == "JUMP" else 50
+            for i in range(1 + blob.status_effects['monado_timer'] // particle_divider):
+                particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
         
+        if(blob.status_effects['shop']['purchase_particle']):
+            draw_shop_selection((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['purchase_particle'])
+            blob.status_effects['shop']['purchase_particle'] = None
+        
+        if(blob.status_effects['shop']['discard_particle']):
+            draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
+            blob.status_effects['shop']['discard_particle'] = None
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
@@ -280,6 +294,33 @@ def draw_card_selection(position, icon):
     particle_memory.append(dpc.Particle(image = particle_cache['joker_card'], x_pos = position[0]*(1000/1366), y_pos = position[1]*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
     particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
 
+shop_crop_info = {
+        "soul_catcher": (180,0,60,60),
+        "grub_song": (180,60,60,60),
+        "sprint_master": (240,0,60,60),
+        "sharp_shadow": (240,60,60,60),
+        "thorns_of_agony": (300,0,60,60),
+        "izumi_tear": (300,60,60,60),
+        "dream_wielder": (0, 60, 60, 60),
+        "nailmasters_glory": (60, 60, 60, 60),
+        "heavy_blow": (60, 0, 60, 60),
+        "baldur_shell": (0, 0, 60, 60),
+        "explosive_focus": (120, 0, 60, 60),
+        "soul_focus": (120, 60, 60, 60),
+    }
+
+def draw_shop_selection(position, icon):
+    crop_rect = shop_crop_info[icon]
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300, crop = crop_rect))
+    createSFXEvent("chime_progress")
+
+def draw_shop_discard(position, icon):
+    crop_rect = shop_crop_info[icon]
+    left_half = (crop_rect[0], crop_rect[1], 30, 60)
+    right_half = (crop_rect[0] + 30, crop_rect[1], 30, 60)
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 2, x_speed = -1, y_speed = -3, gravity = 0.1, lifetime = 300, crop = left_half))
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 2, x_speed = 1, y_speed = -3, gravity = 0.1, lifetime = 300, crop = right_half))
+    createSFXEvent("crunch")
 
 def clear_particle_memory():
     global particle_memory

@@ -270,7 +270,7 @@ class Blob:
             "monado_shield_cooldown": 0,
             "monado_speed_cooldown": 0,
             "monado_jump_cooldown": 0,
-            "shop": {'offense_sale': 'dream_wielder', 'focus_sale': 'baldur_shell', 'passive_sale': 'soul_catcher', 'defense_sale': 'sharp_shadow', 'offense_equip': None, 'focus_equip': None, 'passive_equip': None, 'defense_equip': None, 'offense_durability': 0, 'focus_durability': 0, 'passive_durability': 0, 'defense_durability': 0},
+            "shop": {'offense_sale': 'dream_wielder', 'focus_sale': 'baldur_shell', 'passive_sale': 'soul_catcher', 'defense_sale': 'sharp_shadow', 'offense_equip': None, 'focus_equip': None, 'passive_equip': None, 'defense_equip': None, 'offense_durability': 0, 'focus_durability': 0, 'passive_durability': 0, 'defense_durability': 0, 'purchase_particle': None, 'discard_particle': None},
 
             "teleporter": [1],
             "taxing": 0,
@@ -307,20 +307,24 @@ class Blob:
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
-            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 5)) * 5 
+            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)) * 5 
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
             if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
-            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 5)
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)
 
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
 
         if(self.focus_lock > 0):
             self.focus_lock -= 1
+            if(self.status_effects['shop']['focus_equip'] == 'explosive_focus' or self.status_effects['shop']['focus_equip'] == 'soul_focus'):
+                self.focus_lock -= 2
+            if(self.status_effects['shop']['defense_equip'] == 'sharp_shadow' or self.species == "cactus"):
+                self.focus_lock -= 2
             if(self.focus_lock == 0 and self.status_effects['shop']['focus_equip'] == 'explosive_focus'):
                 self.kick(ignore_cooldown=True)
                 self.status_effects['shop']['focus_durability'] -= 1
@@ -328,8 +332,10 @@ class Blob:
                 self.heal_hp(heal_amt = 1, overheal = False)
                 self.status_effects['shop']['focus_durability'] -= 1
             
-            if(self.status_effects['shop']['focus_durability'] == 0):
+            if(self.status_effects['shop']['focus_durability'] == 0 and self.status_effects['shop']['focus_equip']):
+                self.status_effects['shop']['discard_particle'] = self.status_effects['shop']['focus_equip']
                 self.status_effects['shop']['focus_equip'] = None
+                
         if(self.special_ability_meter < self.special_ability_max):
             self.special_ability_meter += self.special_ability_charge
 
@@ -518,14 +524,17 @@ class Blob:
 
         if(self.status_effects['shop']['defense_durability'] == 0 and self.status_effects['shop']['defense_equip']):
                 createSFXEvent('crunch')
+                self.status_effects['shop']['discard_particle'] = self.status_effects['shop']['defense_equip']
                 self.status_effects['shop']['defense_equip'] = None
         
         if(self.status_effects['shop']['focus_durability'] == 0 and self.status_effects['shop']['focus_equip']):
                 createSFXEvent('crunch')
+                self.status_effects['shop']['discard_particle'] = self.status_effects['shop']['focus_equip']
                 self.status_effects['shop']['focus_equip'] = None
         
         if(self.status_effects['shop']['passive_durability'] == 0 and self.status_effects['shop']['passive_equip']):
             createSFXEvent('crunch')
+            self.status_effects['shop']['discard_particle'] = self.status_effects['shop']['passive_equip']
             self.status_effects['shop']['passive_equip'] = None
         else:
             self.status_effects['shop']['passive_durability'] -= 1
@@ -584,6 +593,9 @@ class Blob:
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= maintenance #Remove some SA meter
                 self.ability_holding_timer += 1
+                if(self.ability_holding_timer % 45 == 0):
+                    self.status_effects['monado_effect'] = "SPEED"
+                    self.status_effects['monado_timer'] += 300
             elif(self.special_ability_meter > cost):
                 #If we ignite the ball
                 self.used_ability["fireball"] = 1
@@ -1077,8 +1089,15 @@ class Blob:
                         self.special_ability_cooldown -= 120 * Blob.timer_multiplier
                         if(self.special_ability_cooldown < 0):
                             self.special_ability_cooldown = 0
+                    elif(self.species == "judge"):
+                        if(blob.status_effects['judged']):
+                            status_effects.append(['stunned', 45])
+                        else:
+                            status_effects.append(['stunned', 15])
                     elif(self.species == "king" and not blob.block_timer and not blob.kick_timer):
                         create_environmental_modifier(blob.player, affects = {'self'}, species = 'royal_loan', lifetime = 360, hp = 0, x_pos = self.x_center - 20, y_pos = self.y_center - 150, gravity = 0, random_image=self.player)
+                    elif(self.species == "glue"):
+                        self.boost_timer += 60 * Blob.timer_multiplier
                     elif(self.species == "cactus" and not blob.block_timer and not blob.kick_timer):
                         self.special_ability_meter += 360 * Blob.nrg_multiplier if blob.special_ability_meter > 360 * Blob.nrg_multiplier else blob.special_ability_meter
                         blob.special_ability_meter -= 360 * Blob.nrg_multiplier if blob.special_ability_meter > 360 * Blob.nrg_multiplier else blob.special_ability_meter
@@ -1086,9 +1105,13 @@ class Blob:
                             self.special_ability_meter = self.special_ability_max
                     elif(self.species == "wind"):
                         if(self.x_pos < blob.x_pos):
-                            x_speed_mod = 30
+                            x_speed_mod = 40
+                        elif(self.x_pos > blob.x_pos):
+                            x_speed_mod = -40
+                        elif(self.x_pos < 902):
+                            x_speed_mod = 40
                         else:
-                            x_speed_mod = -30
+                            x_speed_mod = -40
                     #elif(self.species == "doctor"):
                     #    accumulated_damage += 1
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
@@ -1110,7 +1133,7 @@ class Blob:
 
                 dealt_damage = blob.take_damage(accumulated_damage,  status_effects = status_effects, pierce = pierce, x_speed_mod = x_speed_mod)
                 if(self.status_effects['shop']['offense_equip'] == 'dream_wielder'):
-                    self.special_ability_meter += dealt_damage * 150 * Blob.nrg_multiplier
+                    self.special_ability_meter += dealt_damage * 300 * Blob.nrg_multiplier
                     if(self.special_ability_meter > self.special_ability_max):
                             self.special_ability_meter = self.special_ability_max
 
@@ -1120,7 +1143,9 @@ class Blob:
                     blob.status_effects['silenced'] += 360
         if(self.status_effects['shop']['offense_durability'] == 0 and self.status_effects['shop']['offense_equip']):
                 createSFXEvent('crunch')
+                self.status_effects['shop']['discard_particle'] = self.status_effects['shop']['offense_equip']
                 self.status_effects['shop']['offense_equip'] = None
+                #print("114X Offense Discard")
 
 
                     
@@ -1327,7 +1352,7 @@ class Blob:
             if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                 accumulated_damage = 3
                 stun_amount = 120
-                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount)
+                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player] == "merchant" else 0)
                 hazard.affects.add(self.player)
                 
 
@@ -1396,8 +1421,6 @@ class Blob:
             if(self.status_effects['shop']['focus_equip'] == 'baldur_shell' and self.focusing):
                 self.status_effects['shop']['focus_durability'] -= 1
                 self.focus_lock = 0
-                if(self.status_effects['shop']['focus_durability'] == 0):
-                    self.status_effects['shop']['focus_equip'] = None
             self.damage_flash_timer = damage_flash_timer
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
@@ -1412,7 +1435,7 @@ class Blob:
 
             for status_effect in status_effects:
                 self.status_effects[status_effect[0]] += status_effect[1]
-            self.special_ability_meter += 150 * Blob.nrg_multiplier * (initial_hp - self.hp) if self.status_effects['shop']['passive_equip'] == 'grub_song' else 0
+            self.special_ability_meter += 300 * Blob.nrg_multiplier * (initial_hp - self.hp) if self.status_effects['shop']['passive_equip'] == 'grub_song' else 0
             if(self.special_ability_meter > self.special_ability_max):
                 self.special_ability_meter = self.special_ability_max
             return initial_hp - self.hp
@@ -1546,9 +1569,9 @@ class Blob:
             if(self.status_effects['monado_effect'] == "SHIELD"):
                 blob_speed -= 3
         if(self.status_effects['shop']['passive_equip'] == "sprint_master"):
-            blob_speed += 1
-            blob_traction += 3
-            blob_friction += 3
+            blob_speed += 2
+            blob_traction += 5
+            blob_friction += 5
         wavedashed = False
 
         menu_open = self.status_effects['menu']['open']
@@ -1568,6 +1591,8 @@ class Blob:
                                 self.x_speed -= blob_traction
                             else:
                                 self.x_speed -= blob_traction # Accelerate based off of traction
+                        elif(abs(self.x_speed) > blob_speed + (blob_traction * 2)): # Ease back into top speed if we're above it
+                            self.x_speed += blob_traction
                         else: # Snap back to top speed
                             prev_speed = self.x_speed
                             self.x_speed = -1*blob_speed #If at max speed, maintain it
@@ -1578,7 +1603,7 @@ class Blob:
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
                     #self.x_speed = -1 * (15 + (10 * blob_traction))
-                    self.x_speed = -20
+                    self.x_speed = -30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else -20
                     self.focusing = False
                     self.focus_lock = 0
                     wavedashed = True
@@ -1604,18 +1629,15 @@ class Blob:
                             self.x_speed = blob_speed #If at max speed, maintain it
                             if(round(prev_speed) == -1 * blob_speed):
                                 self.info['wavebounces'] += 1
-                                createSFXEvent('wavebounce') 
+                                createSFXEvent('wavebounce')
                 elif('down' in pressed and not menu_open):
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
                     #self.x_speed = 15 + (10 * blob_traction)
-                    self.x_speed = 20
+                    self.x_speed = 30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else 20
                     self.focusing = False
                     wavedashed = True
                     createSFXEvent('wavedash')
-                
-                
-
 
             else: #We're either not holding anything, or pressing both at once
                 if(self.x_speed < 0): #If we're going left, decelerate
@@ -1688,9 +1710,19 @@ class Blob:
             self.x_pos = 1700
         
         if(wavedashed and self.status_effects['shop']['defense_equip'] == 'sharp_shadow'):
-            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=15, x_pos=self.x_center-20, y_pos=self.y_center-20)
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
             self.status_effects['shop']['defense_durability'] -= 1
-        
+        elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= 200 * Blob.nrg_multiplier):
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
+            self.special_ability_meter -= 200 * Blob.nrg_multiplier
+        elif(wavedashed and self.species == "glue" and self.special_ability_meter >= 300 * Blob.nrg_multiplier):
+            x_mod = 1 if self.facing == 'left' else -1
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (5*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (7*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)            
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            self.special_ability_meter -= 300 * Blob.nrg_multiplier
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
@@ -1749,6 +1781,7 @@ class Blob:
             self.impact_land_frames = 10
             if(self.status_effects['monado_effect'] == "JUMP"):
                 create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700)
+                createSFXEvent('glyph')
         
         #ABILITY
         if('ability' in pressed and not menu_open):
@@ -1924,17 +1957,17 @@ class Blob:
                             self.status_effects['shop']['passive_sale'] = 'grub_song'
                             self.status_effects['shop']['passive_equip'] = 'soul_catcher'
                             self.status_effects['shop']['passive_durability'] = 600
-                            createSFXEvent('glyph')
+                            self.status_effects['shop']['purchase_particle'] = 'soul_catcher'
                         elif(self.status_effects['shop']['passive_sale'] == 'grub_song'):
                             self.status_effects['shop']['passive_sale'] = 'sprint_master'
                             self.status_effects['shop']['passive_equip'] = 'grub_song'
                             self.status_effects['shop']['passive_durability'] = 600
-                            createSFXEvent('chime_error')
+                            self.status_effects['shop']['purchase_particle'] = 'grub_song'
                         elif(self.status_effects['shop']['passive_sale'] == 'sprint_master'):
                             self.status_effects['shop']['passive_sale'] = 'soul_catcher'
                             self.status_effects['shop']['passive_equip'] = 'sprint_master'
                             self.status_effects['shop']['passive_durability'] = 300
-                            createSFXEvent('parry')
+                            self.status_effects['shop']['purchase_particle'] = 'sprint_master'
                     elif(menu_direction == "down"): # Focus
                         self.wavedash_lock = 15
                         monado_activated = True
@@ -1942,51 +1975,51 @@ class Blob:
                             self.status_effects['shop']['focus_sale'] = 'explosive_focus'
                             self.status_effects['shop']['focus_equip'] = 'baldur_shell'
                             self.status_effects['shop']['focus_durability'] = 2
-                            createSFXEvent('glyph')
+                            self.status_effects['shop']['purchase_particle'] = 'baldur_shell'
                         elif(self.status_effects['shop']['focus_sale'] == 'explosive_focus'):
                             self.status_effects['shop']['focus_sale'] = 'soul_focus'
                             self.status_effects['shop']['focus_equip'] = 'explosive_focus'
                             self.status_effects['shop']['focus_durability'] = 2
-                            createSFXEvent('chime_error')
+                            self.status_effects['shop']['purchase_particle'] = 'explosive_focus'
                         elif(self.status_effects['shop']['focus_sale'] == 'soul_focus'):
                             self.status_effects['shop']['focus_sale'] = 'baldur_shell'
                             self.status_effects['shop']['focus_equip'] = 'soul_focus'
                             self.status_effects['shop']['focus_durability'] = 2
-                            createSFXEvent('parry')
+                            self.status_effects['shop']['purchase_particle'] = 'soul_focus'
                     elif(menu_direction == "left"): # Defense
                         monado_activated = True
                         if(self.status_effects['shop']['defense_sale'] == 'sharp_shadow'):
                             self.status_effects['shop']['defense_sale'] = 'thorns_of_agony'
                             self.status_effects['shop']['defense_equip'] = 'sharp_shadow'
                             self.status_effects['shop']['defense_durability'] = 3
-                            createSFXEvent('glyph')
+                            self.status_effects['shop']['purchase_particle'] = 'sharp_shadow'
                         elif(self.status_effects['shop']['defense_sale'] == 'thorns_of_agony'):
                             self.status_effects['shop']['defense_sale'] = 'izumi_tear'
                             self.status_effects['shop']['defense_equip'] = 'thorns_of_agony'
                             self.status_effects['shop']['defense_durability'] = 3
-                            createSFXEvent('chime_error')
+                            self.status_effects['shop']['purchase_particle'] = 'thorns_of_agony'
                         elif(self.status_effects['shop']['defense_sale'] == 'izumi_tear'):
                             self.status_effects['shop']['defense_sale'] = 'sharp_shadow'
                             self.status_effects['shop']['defense_equip'] = 'izumi_tear'
                             self.status_effects['shop']['defense_durability'] = 2
-                            createSFXEvent('parry')
+                            self.status_effects['shop']['purchase_particle'] = 'izumi_tear'
                     elif(menu_direction == "right"): # Offense
                         monado_activated = True
                         if(self.status_effects['shop']['offense_sale'] == 'dream_wielder'):
                             self.status_effects['shop']['offense_sale'] = 'nailmasters_glory'
                             self.status_effects['shop']['offense_equip'] = 'dream_wielder'
                             self.status_effects['shop']['offense_durability'] = 3
-                            createSFXEvent('glyph')
+                            self.status_effects['shop']['purchase_particle'] = 'dream_wielder'
                         elif(self.status_effects['shop']['offense_sale'] == 'nailmasters_glory'):
                             self.status_effects['shop']['offense_sale'] = 'heavy_blow'
                             self.status_effects['shop']['offense_equip'] = 'nailmasters_glory'
                             self.status_effects['shop']['offense_durability'] = 3
-                            createSFXEvent('chime_error')
+                            self.status_effects['shop']['purchase_particle'] = 'nailmasters_glory'
                         elif(self.status_effects['shop']['offense_sale'] == 'heavy_blow'):
                             self.status_effects['shop']['offense_sale'] = 'dream_wielder'
                             self.status_effects['shop']['offense_equip'] = 'heavy_blow'
                             self.status_effects['shop']['offense_durability'] = 2
-                            createSFXEvent('parry')
+                            self.status_effects['shop']['purchase_particle'] = 'heavy_blow'
                     
                     if(monado_activated):
                         createSFXEvent('crunch')

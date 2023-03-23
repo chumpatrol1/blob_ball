@@ -108,6 +108,11 @@ environmental_modifiers = {
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
     global environmental_modifiers
     if(species in environmental_modifiers):
+        if(species == "royal_loan"):
+            for loan_item in environmental_modifiers["royal_loan"]:
+                if(loan_item.player == player):
+                    loan_item.hp += 2
+                    return
         environmental_modifiers[species].append(EnvironmentalModifiers(player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp))
     else:
         environmental_modifiers[species] = [EnvironmentalModifiers(player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp)]
