@@ -1296,7 +1296,7 @@ class Blob:
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
 
         for hazard in environment['cartridge']:
-            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 20 and self.down_holding_timer and not teleported):
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 15 and self.down_holding_timer and not teleported):
                 draw_teleportation_pfx([self.x_pos, self.y_pos])
                 self.x_pos = hazard.x_pos
                 self.y_pos = hazard.y_pos 
@@ -1901,20 +1901,20 @@ class Blob:
                     if(menu_direction == "up" and self.status_effects['monado_jump_cooldown'] <= 0):
                         self.jump_lock = 15
                         self.status_effects['monado_effect'] = "JUMP"
-                        self.status_effects['monado_jump_cooldown'] = 900
+                        self.status_effects['monado_jump_cooldown'] = 1080
                         monado_activated = True
                     elif(menu_direction == "down" and self.status_effects['monado_shield_cooldown'] <= 0):
                         self.wavedash_lock = 15
                         self.status_effects['monado_effect'] = "SHIELD"
-                        self.status_effects['monado_shield_cooldown'] = 900
+                        self.status_effects['monado_shield_cooldown'] = 1080
                         monado_activated = True
                     elif(menu_direction == "left" and self.status_effects['monado_smash_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SMASH"
-                        self.status_effects['monado_smash_cooldown'] = 900
+                        self.status_effects['monado_smash_cooldown'] = 1080
                         monado_activated = True
                     elif(menu_direction == "right" and self.status_effects['monado_speed_cooldown'] <= 0):
                         self.status_effects['monado_effect'] = "SPEED"
-                        self.status_effects['monado_speed_cooldown'] = 1200
+                        self.status_effects['monado_speed_cooldown'] = 1380
                         monado_activated = True
                     
                     if(monado_activated):
