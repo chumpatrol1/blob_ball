@@ -338,7 +338,7 @@ costume_unlock_dict = {
     "cop": {"grayscale_1": False},
     "boxer": {"grayscale_1": False},
     "mirror": {"grayscale_1": False},
-    "fisher": {"grayscale_1": False},
+    "fisher": {"grayscale_1": False, "jew_2": False},
     "glue": {"grayscale_1": False},
     "arcade": {"grayscale_1": False},
     "joker": {"grayscale_1": False, "red_2": False, "mosaic_3": False},

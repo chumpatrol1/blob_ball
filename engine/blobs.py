@@ -69,7 +69,7 @@ def species_to_image(species, costume):
         'cop': {0: (blob_cwd + "cop_blob.png", blob_cwd + "cop_blob_-1.png"), 1: (blob_cwd + "cop_blob_1.png", blob_cwd + "cop_blob_-1.png")},
         'boxer': {0: (blob_cwd + "boxer_blob.png", blob_cwd + "boxer_blob_-1.png"), 1: (blob_cwd + "boxer_blob_1.png", blob_cwd + "boxer_blob_-1.png")},
         'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png"), 1: (blob_cwd + "mirror_blob_1.png", blob_cwd + "mirror_blob_-1.png")},
-        'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png")},
+        'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png"), 2: (blob_cwd + "fisher_blob_2.png", blob_cwd + "fisher_blob_-2.png")},
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
         'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png"), 2: (blob_cwd + "joker_blob_2.png", blob_cwd + "joker_blob_-1.png"), 3: (blob_cwd + "joker_blob_3.png", blob_cwd + "joker_blob_-2.png")},

@@ -49,7 +49,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "cop": {10: "cop/grayscale_1"},
         "boxer": {10: "boxer/grayscale_1"},
         "mirror": {10: "mirror/grayscale_1"},
-        "fisher": {10: "fisher/grayscale_1"},
+        "fisher": {10: "fisher/grayscale_1", 20: "fisher/jew_2"},
         "glue": {10: "glue/grayscale_1"},
         "arcade": {10: "arcade/grayscale_1"},
         "joker": {10: "joker/grayscale_1", 20: "joker/red_2", 30: "joker/mosaic_3"},
