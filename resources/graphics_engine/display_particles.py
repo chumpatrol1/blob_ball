@@ -139,7 +139,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
         particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
         particle_cache['hot_sauce'] = pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png")
-        particle_cache['meat'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70))
+        particle_cache['meat'] = pg.image.load(cwd+"/resources/images/ui_icons/meat.png")
         particle_cache['vegan_crunch'] = pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png")
         particle_cache['cheese'] = pg.image.load(cwd+"/resources/images/ui_icons/cheese.png")
         particle_cache['sharp_shadow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
@@ -232,18 +232,18 @@ def draw_blob_particles(game_display, blobs):
             draw_card_selection(*blob.status_effects['cards']['joker_particle'])
             blob.status_effects['cards']['joker_particle'] = None
 
-        if(blob.status_effects['monado_timer'] % 10 == 0 and blob.status_effects['monado_timer'] > 0):
+        if(blob.status_effects['monado_timer'] % 15 == 0 and blob.status_effects['monado_timer'] > 0):
             if(blob.status_effects['monado_effect'] == "SPEED"):
                 monado_image = particle_cache['hot_sauce']
             elif(blob.status_effects['monado_effect'] == "SMASH"):
-                monado_image = particle_cache['earth_particle_4']
+                monado_image = particle_cache['meat']
             elif(blob.status_effects['monado_effect'] == "SHIELD"):
                 monado_image = particle_cache['vegan_crunch']
             elif(blob.status_effects['monado_effect'] == "JUMP"):
                 monado_image = particle_cache['cheese']
 
             particle_divider = 100 #if blob.status_effects['monado_effect'] == "JUMP" else 50
-            for i in range(1 + blob.status_effects['monado_timer'] // particle_divider):
+            for i in range(blob.status_effects['monado_timer'] // particle_divider):
                 particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
         
         if(blob.status_effects['shop']['purchase_particle']):

@@ -26,7 +26,7 @@ def unload_image_cache():
     image_cache['icons'] = {}
     image_cache['monado'] = {
         "SPEED": pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png"),
-        "SMASH": pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/pill_boost.png"), (70, 70)),
+        "SMASH": pg.image.load(cwd+"/resources/images/ui_icons/meat.png"),
         "SHIELD": pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png"),
         "JUMP": pg.image.load(cwd+"/resources/images/ui_icons/cheese.png"),
     }
