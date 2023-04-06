@@ -107,7 +107,7 @@ ability_image_dict = {
         'arcade': ability_cwd + 'teleport.png',
         'taco': ability_cwd + 'filling.png',
         'cactus': ability_cwd + 'cactus_spike.png',
-        'merchant': ability_cwd + '404.png',
+        'merchant': ability_cwd + 'coin.png',
         "random": icon_cwd + "boost_icon.png",
     }
 

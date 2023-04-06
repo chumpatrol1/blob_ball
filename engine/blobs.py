@@ -73,7 +73,7 @@ def species_to_image(species, costume):
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
         'joker': {0: (blob_cwd + "joker_blob.png", blob_cwd + "joker_blob_-1.png"), 1: (blob_cwd + "joker_blob_1.png", blob_cwd + "joker_blob_-1.png"), 2: (blob_cwd + "joker_blob_2.png", blob_cwd + "joker_blob_-1.png"), 3: (blob_cwd + "joker_blob_3.png", blob_cwd + "joker_blob_-2.png")},
-        'taco': {0: (blob_cwd + "taco_blob.png", blob_cwd + "taco_blob.png")},
+        'taco': {0: (blob_cwd + "taco_blob.png", blob_cwd + "taco_blob_-1.png"), 1: (blob_cwd + "taco_blob_1.png", blob_cwd + "taco_blob_-1.png")},
         'cactus': {0: (blob_cwd + "cactus_blob.png", blob_cwd + "cactus_blob_-1.png"), 1: (blob_cwd + "cactus_blob_1.png", blob_cwd + "cactus_blob_-1.png")},
         'merchant': {0: (blob_cwd + "merchant_blob.png", blob_cwd + "merchant_blob_-1.png"), 1: (blob_cwd + "merchant_blob_1.png", blob_cwd + "merchant_blob_-1.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},

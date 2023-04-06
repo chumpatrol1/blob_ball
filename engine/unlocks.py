@@ -343,7 +343,7 @@ costume_unlock_dict = {
     "arcade": {"grayscale_1": False},
     "joker": {"grayscale_1": False, "red_2": False, "mosaic_3": False},
     "random": {},
-    "taco": {},
+    "taco": {"grayscale_1": False},
     "cactus": {"grayscale_1": False},
     "merchant": {"grayscale_1": False},
 }

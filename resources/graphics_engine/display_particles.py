@@ -142,6 +142,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['meat'] = pg.image.load(cwd+"/resources/images/ui_icons/meat.png")
         particle_cache['vegan_crunch'] = pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png")
         particle_cache['cheese'] = pg.image.load(cwd+"/resources/images/ui_icons/cheese.png")
+        particle_cache['spike_ball'] = pg.image.load(cwd + "/resources/images/particles/spike_ball.png").convert_alpha()
         particle_cache['sharp_shadow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
         particle_cache['sharp_shadow'].fill((0, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         particle_cache['icons'] = {}

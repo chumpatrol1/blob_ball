@@ -22,7 +22,7 @@ modifier_images = {
     'cartridge_2': 'cartridge_2',
     'cartridge_3': 'cartridge_3',
     'royal_loan': 'taxation',
-    'cactus_spike': 'star_glove',
+    'cactus_spike': 'spike_ball',
     'sharp_shadow': 'sharp_shadow',
 }
 

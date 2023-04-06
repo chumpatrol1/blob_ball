@@ -60,6 +60,7 @@ costume_unlock_splashes = { # Key is
     'joker/grayscale_1': ["joker_blob_1.png", "Grayscale Joker", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'joker/red_2': ["joker_blob_2.png", "Red Joker", "Press block after selecting/this blob to toggle costumes!", "Play 20 Matches"],
     'joker/mosaic_3': ["joker_blob_3.png", "Mosaic Joker", "Press block after selecting/this blob to toggle costumes!", "Play 30 Matches"],
+    'taco/grayscale_1': ["taco_blob_1.png", "Grayscale Taco", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'cactus/grayscale_1': ["cactus_blob_1.png", "Grayscale Cactus", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'merchant/grayscale_1': ["merchant_blob_1.png", "Grayscale Merchant", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
 }
