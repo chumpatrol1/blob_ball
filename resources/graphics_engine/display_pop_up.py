@@ -99,7 +99,6 @@ def create_generic_popup(pop_up):
         text_array = [
             menu_font.render("Update available!", False, (0, 0, 255)),
             menu_font.render("Download at blobball.com", False, (0, 0, 255)),
-            menu_font.render("New Blob + Online Mode", False, (0, 0, 255)),
         ]
         text_y = 10
         for text_box in text_array:
@@ -111,7 +110,6 @@ def create_generic_popup(pop_up):
         text_array = [
             menu_font.render("Up to date!", False, (0, 0, 255)),
             menu_font.render("Check back later.", False, (0, 0, 255)),
-            menu_font.render("New Blob + Online Mode Soon!", False, (0, 0, 255)),
         ]
         text_y = 10
         for text_box in text_array:
