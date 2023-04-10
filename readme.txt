@@ -1,5 +1,5 @@
 # Blob Ball
-A fast paced two player game. Soccer-like game with magic and combat. Score 5 points to win!
+A fast paced two player game. Soccer-like game with magic and combat. Score 10 points to win!
 Join our Discord: https://discord.gg/sPR2B9hhkF
 Can be played with either Keyboard or Controller
 
