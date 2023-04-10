@@ -52,19 +52,19 @@ def species_to_stars(species, stat_overrides):
         'rock': create_dict(5, 1, 5, 1, 5, 1, 2, 600, 3, 5, 'spire', 360, 0, 1800, 300, 30, 0),
         'lightning': create_dict(1, 5, 3, 5, 5, 2, 1, 600, 3, 3, 'thunderbolt', 600, 0, 1800, 360, 10, 120),
         'wind': create_dict(2, 5, 2, 5, 1, 5, 1, 600, 3, 3, 'gale', 120, 12, 1800, 2, 0, 0),
-        'judge': create_dict(3, 3, 2, 3, 3, 3, 3, 600, 3, 3, 'c&d', 510, 0, 1800, 300, 0, 90),
+        'judge': create_dict(3, 3, 2, 3, 3, 3, 3, 600, 3, 3, 'c&d', 510, 0, 1800, 300, 0, 120),
         'doctor': create_dict(4, 3, 3, 3, 4, 1, 1, 600, 1, 1, 'pill', 300, 0, 1800, 240, 0, 0),
         'king': create_dict(3, 1, 1, 1, 1, 4, 4, 600, 5, 5, 'tax', 600, 0, 1800, 540, 0, 240),
-        'cop': create_dict(4, 4, 3, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 360, 0, 1800, 360, 0, 0),
-        'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 810, 25, 0),
+        'cop': create_dict(4, 4, 3, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 360, 0, 1800, 300, 0, 0),
+        'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 600, 25, 0),
         'mirror': create_dict(1, 1, 5, 3, 2, 2, 2, 600, 2, 4, 'mirror', 450, 0, 1800, 300, 0, 60),
         'fisher': create_dict(1, 3, 4, 1, 3, 2, 1, 600, 3, 4, 'hook', 12, 12, 1800, 2, 20, 0),
         'glue': create_dict(3, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'gluegun', 150, 15, 1800, 2, 0, 0),
         'arcade': create_dict(4, 2, 2, 2, 1, 3, 3, 600, 2, 2, 'teleport', 180, 0, 1800, 180, 0, 0),
         'joker': create_dict(4, 2, 2, 2, 2, 2, 2, 600, 2, 2, 'cardpack', 360, 0, 1800, 60, 0, 0),
-        'taco': create_dict(4, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 60, 0, 0),
-        'cactus': create_dict(1, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
-        'merchant': create_dict(2, 2, 4, 4, 4, 1, 1, 600, 3, 3, 'shop', 300, 0, 1800, 60, 0, 0),
+        'taco': create_dict(2, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 180, 0, 0),
+        'cactus': create_dict(3, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
+        'merchant': create_dict(2, 2, 4, 4, 4, 1, 1, 600, 3, 3, 'shop', 750, 0, 2400, 120, 0, 0),
     }
 
     blob_dict = full_dict[species]
@@ -105,9 +105,9 @@ ability_image_dict = {
         'glue': ability_cwd + 'glue.png',
         'joker': ability_cwd + 'card.png',
         'arcade': ability_cwd + 'teleport.png',
-        'taco': ability_cwd + '404.png',
+        'taco': ability_cwd + 'filling.png',
         'cactus': ability_cwd + 'cactus_spike.png',
-        'merchant': ability_cwd + '404.png',
+        'merchant': ability_cwd + 'coin.png',
         "random": icon_cwd + "boost_icon.png",
     }
 

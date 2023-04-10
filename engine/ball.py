@@ -408,7 +408,7 @@ class Ball:
                 if(dist_vector > 150):
                     hazard_nv.scale_to_length(25)
                 else:
-                    hazard_nv.scale_to_length(15)
+                    hazard_nv.scale_to_length(20)
                 hazard.x_pos -= hazard_nv[0]
                 hazard.y_pos -= hazard_nv[1] * 2
                 #print(hazard_nv.length())

@@ -37,6 +37,7 @@ import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
 from engine.unlocks import return_available_costumes, update_css_blobs, update_mam_medals, update_costumes
+from engine.get_random_blob import get_random_blob
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
@@ -127,10 +128,17 @@ def update_game_state(game_state, cwd):
                 p2_is_cpu = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
+
+
             p1_blob = info_getter[2]
+            if(p1_blob == 'random'):
+                p1_blob = get_random_blob()
             p2_blob = info_getter[3]
+            if(p2_blob == 'random'):
+                p2_blob = get_random_blob()
             p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
             p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]
+
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3

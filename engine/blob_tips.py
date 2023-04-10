@@ -30,7 +30,9 @@ fire_tips = [
     tip_font.render("multiplicative, not additive", False, text_color),
     tip_font.render("", False, text_color),
     tip_font.render("#2: Holding down Fireball rather than tapping", False, text_color),
-    tip_font.render("it will save on energy", False, text_color),
+    tip_font.render("it will save on energy. If you do it long enough,", False, text_color),
+    tip_font.render("you'll get a speed boost, but you'll also be", False, text_color),
+    tip_font.render("vulnerable to damage.", False, text_color),
     tip_font.render("", False, text_color),
     tip_font.render("#3: Need more energy? Holding ''down'' ", False, text_color),
     tip_font.render("while on the ground will cause your blob", False, text_color),
@@ -129,6 +131,9 @@ wind_tips = [
     tip_font.render("is a danger zone! If you get kicked, you will", False, text_color),
     tip_font.render("take +1 damage! Use Gale to reset the", False, text_color),
     tip_font.render("situation and to preserve your pool of HP!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Wind Blob's boost kick knocks back", False, text_color),
+    tip_font.render("opponents! Holding in reduces the effect.", False, text_color),
 ]
 
 judge_tips = [
@@ -141,6 +146,9 @@ judge_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#3: C&D does not increase cooldowns,", False, text_color),
     tip_font.render("but simply blocks use of any powers", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Judge Blob's boost kick is a short stun.", False, text_color),
+    tip_font.render("If the opponent is C&D'd, the stun lasts longer.", False, text_color),
 ]
 
 doctor_tips = [
@@ -168,6 +176,15 @@ king_tips = [
     tip_font.render("", False, text_color),
     tip_font.render("#3: You can stack the speed boost with", False, text_color),
     tip_font.render("the stat swap from Tax!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: King Blob's boost kick is known as the", False, text_color),
+    tip_font.render("Royal Loan. While the opponent has Royal Loan,", False, text_color),
+    tip_font.render("their cooldowns are greatly reduced. After 8", False, text_color),
+    tip_font.render("actions are used, that enemy gets the overheat", False, text_color),
+    tip_font.render("effect while King improves his cooldowns!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: If an opponent has Royal Loan active,", False, text_color),
+    tip_font.render("King Blob's boost kick will increase the counter instead.", False, text_color),
 ]
 
 cop_tips = [
@@ -234,6 +251,9 @@ fisher_tips = [
     tip_font.render("#4: A spicy trick you can do is called", False, text_color),
     tip_font.render("Threading the Loop. Jump, hook the ball", False, text_color),
     tip_font.render("and have it spin around you before letting go.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Kicking Fisher Blob or the ball while", False, text_color),
+    tip_font.render("hook is active will force Hook into cooldown.", False, text_color),
 ]
 
 glue_tips = [
@@ -251,6 +271,10 @@ glue_tips = [
     tip_font.render("the glue, you should remember that your", False, text_color),
     tip_font.render("enemies will have a hard time jumping out", False, text_color),
     tip_font.render("of the glue, and the ball bounces less too!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: For 300 energy, wavedashing will create", False, text_color),
+    tip_font.render("several pellets of glue that can cover the", False, text_color),
+    tip_font.render("whole field.", False, text_color),
 ]
 
 arcade_tips = [
@@ -271,19 +295,73 @@ arcade_tips = [
 ]
 
 joker_tips = [
-
+    tip_font.render("#1: Pressing Down lets you close your menu", False, text_color),
+    tip_font.render("instantly, but you won't get a refund!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: After closing the menu or buying", False, text_color),
+    tip_font.render("something, you won't be able to pick the card", False, text_color),
+    tip_font.render("you ignored. Choose wisely!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Equipping a card means you won't be", False, text_color),
+    tip_font.render("able to use that particular action ", False, text_color),
+    tip_font.render("until you spend the card. When in doubt,", False, text_color),
+    tip_font.render("equip to your Ability or Boost slot!", False, text_color),
 ]
 
 taco_tips = [
-
+    tip_font.render("#1: Each filling (Meat, Hot Sauce, Cheese, and", False, text_color),
+    tip_font.render("Vegan Crunch) has its own cooldown.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Cheese (Up) increases your jump height", False, text_color),
+    tip_font.render("and air control, but you also take extra damage.", False, text_color),
+    tip_font.render("When landing, you will summon spires!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Hot Sauce (Right) increases your", False, text_color),
+    tip_font.render("horizontal speed greatly, but you are ", False, text_color),
+    tip_font.render("vulnerable to damage.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Vegan Crunch (Down) decreases the damage you take", False, text_color),
+    tip_font.render("and makes your blocks frequent. You also take less damage!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Meat (Left) increases your kick damage, pierce and", False, text_color),
+    tip_font.render("reduces your kick cooldown. The meat is too greasy", False, text_color),
+    tip_font.render("for your shell so you take more damage, though.", False, text_color),
 ]
 
 cactus_tips = [
-
+    tip_font.render("#1: The spike follows the ball, but beware", False, text_color),
+    tip_font.render("its travel time! The angle it hits the ball", False, text_color),
+    tip_font.render("influences the knockback direction.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Hitting an opponent with the spike", False, text_color),
+    tip_font.render("deals a little damage and stun. It also applies", False, text_color),
+    tip_font.render("an effect that reduces energy build rate.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Cactus Blob's boost kick steals 360", False, text_color),
+    tip_font.render("energy (about 20%) from the enemy on hit.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: For 200 energy, Cactus Blob's wavedash will", False, text_color),
+    tip_font.render("deal 3 damage to enemies on contact.", False, text_color),
 ]
 
 merchant_tips = [
-
+    tip_font.render("#1: Merchant Blob can equip charms to buff", False, text_color),
+    tip_font.render("himself, but they break over time.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: Passive charms (up) provide effects like", False, text_color),
+    tip_font.render("increasing energy build rate, converting taken", False, text_color),
+    tip_font.render("damage to energy, and increasing speed.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: Offensive charms (right) provide effects", False, text_color),
+    tip_font.render("like gaining energy when dealing damage,", False, text_color),
+    tip_font.render("faster kicks, and stronger kicks.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Focus charms (down) provide effects like", False, text_color),
+    tip_font.render("damage reduction, free kicks, and healing.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#5: Defensive charms (left) provide effects like", False, text_color),
+    tip_font.render("damaging wavedashes, gaining the reflect status,", False, text_color),
+    tip_font.render("and getting passive damage reduction and faster blocks.", False, text_color),
 ]
 
 def return_selected_blob_tips(selected_blob):
