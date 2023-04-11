@@ -1,4 +1,4 @@
-blob_unlock_popups = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
+blob_unlock_splashes = { # Key is Blob name, first value is image, second is blob name, third is blob blurb
     'quirkless': ["quirkless_blob.png", "Quirkless Blob", "Has no ability, but good stats./Pressing your Ability Button/activates your boost instead!"],
     'fire': ["fire_blob.png", "Fire Blob", "Press and hold your ability/button to speed the ball up!"],
     'ice': ["ice_blob.png", "Ice Blob", "Press and hold your ability/button to slow the ball down!"],
@@ -15,11 +15,15 @@ blob_unlock_popups = { # Key is Blob name, first value is image, second is blob 
     'fisher': ['fisher_blob.png', "Fisher Blob", "Press and hold your ability button/to reel in your catch!/It seems to always be a soccer ball."],
     'glue': ['glue_blob.png', "Glue Blob", "Press and hold your ability button/to shoot out glue pellets!/When they land, the puddles trap/both your enemy and the ball!"],
     'arcade': ['arcade_blob.png', "Arcade Blob", "Press your ability button to/throw out a cheat cartridge!/Press and hold down to teleport to it."],
+    'joker': ['joker_blob.png', "Joker Blob", "Press your ability button to/look at your deck of cards!/Press a direction and press an action button/to swap out an action with an Ability Card!"],
+    'taco': ['taco_beta.png', "Taco Blob", "Press your ability button to/look at your menu!/Press a direction and press an action button/to change your stats mid-battle!"],
+    'cactus': ['cactus_blob.png', "Cactus Blob", "Press your ability button to/shoot out a spiky ball!/It targets the ball, draining energy/ from enemies as it travels!"],
+    'merchant': ['merchant_1.png', "Merchant Blob", "Open up shop with your ability button!/Simply pick a direction in order/to buy some fragile accessories!"],
 }
 
 def find_blob_unlock(key):
     try:
-        return blob_unlock_popups[key]
+        return blob_unlock_splashes[key]
     except:
         print("Cannot find blob")
 
@@ -35,7 +39,7 @@ def find_medal_unlock(key):
     except:
         print("Cannot find medal")
 
-costume_unlock_popups = { # Key is 
+costume_unlock_splashes = { # Key is 
     'quirkless/grayscale_1': ["quirkless_blob_1.png", "Grayscale Quirkless", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'fire/grayscale_1': ["fire_blob_1.png", "Grayscale Fire", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'ice/grayscale_1': ["ice_blob_1.png", "Grayscale Ice", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
@@ -50,12 +54,19 @@ costume_unlock_popups = { # Key is
     'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'fisher/jew_2': ["fisher_blob_2.png", "Jew Fisher", "Press block after selecting/this blob to toggle costumes!", "Play 20 Matches"],
     'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'arcade/grayscale_1': ["arcade_blob_1.png", "Grayscale Arcade", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'joker/grayscale_1': ["joker_blob_1.png", "Grayscale Joker", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'joker/red_2': ["joker_blob_2.png", "Red Joker", "Press block after selecting/this blob to toggle costumes!", "Play 20 Matches"],
+    'joker/mosaic_3': ["joker_blob_3.png", "Mosaic Joker", "Press block after selecting/this blob to toggle costumes!", "Play 30 Matches"],
+    'taco/grayscale_1': ["taco_blob_1.png", "Grayscale Taco", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'cactus/grayscale_1': ["cactus_blob_1.png", "Grayscale Cactus", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'merchant/grayscale_1': ["merchant_blob_1.png", "Grayscale Merchant", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
 }
 
 def find_costume_unlock(key):
     try:
-        return costume_unlock_popups[key]
+        return costume_unlock_splashes[key]
     except:
         print("Cannot find costume")

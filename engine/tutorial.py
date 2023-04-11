@@ -79,7 +79,7 @@ def initialize_scenario(page):
         unload_image_cache()
     elif(page == 6):
         blobs = {1: Blob(species = 'king', player = 1, x_pos = 150, facing = 'right')}
-        blobs[1].special_ability_meter = 600
+        blobs[1].special_ability_meter = 3000
         balls = {1: Ball(x_pos = 1500, y_pos = 1240)}
         balls[1].all_blobs = blobs
         countdown2 = 120
@@ -101,7 +101,7 @@ def initialize_scenario(page):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
         blobs = {1: Blob(species = 'cop', player = 1, x_pos = 1600, facing = 'left')}
-        blobs[1].special_ability_meter = 900
+        blobs[1].special_ability_meter = 4500
         balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
         balls[1].all_blobs = blobs
     elif(page == 10):
@@ -134,7 +134,7 @@ def check_if_requirements_met(page):
             balls[1].special_timer = 2
             for blob in blobs.values():
                 blob.impact_land_frames = 0
-                blob.used_ability = ""
+                blob.used_ability = {}
             countdown -= 1
             if(countdown == 0):
                 return initialize_scenario(page)
@@ -178,7 +178,7 @@ def check_if_requirements_met(page):
             balls[1].special_timer = 2
             for blob in blobs.values():
                 blob.impact_land_frames = 0
-                blob.used_ability = ""
+                blob.used_ability = {}
             countdown -= 1
             if(countdown == 0):
                 return initialize_scenario(page)
@@ -197,7 +197,7 @@ def check_if_requirements_met(page):
         if(countdown2 == 0):
             createSFXEvent('chime_error')
             return initialize_scenario(page - 1)
-        if(blobs[1].special_ability_meter >= 1800):
+        if(blobs[1].special_ability_meter >= 9000):
             createSFXEvent('goal')
             return initialize_scenario(page)
     elif(page == 12):

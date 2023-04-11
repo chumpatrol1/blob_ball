@@ -1,4 +1,14 @@
 '''
+main.py
+
+File used to open the rest of the game. Contains the game loop and handles the crash logs.
+
+> get_script_path(): Changes the current working directory for use in os.getcwd() calls throughout the script
+> run(): The game loop that runs every frame
+> exception block: Opens crash_logs.log and outputs data based on what caused the crash
+'''
+
+'''
 INSTRUCTIONS FOR EVERY RELEASE
 Update Game Stats Version (initializer.py)
 Update Setup.py Game Version
@@ -31,6 +41,12 @@ from resources.graphics_engine.display_particles import clear_particle_memory
 
 
 def get_script_path():
+    '''
+    Changes the current working directory
+
+    Outputs:
+        os.path.dirname: The current working directory based on the location of main.py
+    '''
     return os.path.dirname(os.path.realpath(__file__))
 
 os.chdir(get_script_path())
@@ -67,22 +83,25 @@ with open(appcwd+'/saves/game_stats.txt', 'w') as statsdoc:
     start_time = time.time()
     statsdoc.write(dumps(game_stats))
 
-
-def handle_input():
-    engine.handle_input.get_keypress()
-
-def get_game_state(game_state, cwd):
-    return ugs(game_state, cwd)
-
-def display_graphics(game_state, cwd, info_getter, settings):
-    dg.handle_graphics(game_state, cwd, info_getter, settings)
-
-def handle_sound(game_state, settings):
-    hs.handle_sound(game_state, settings)
-
 clock = pg.time.Clock()
 escape_timer = 0
 def run(game_state):
+    '''
+    Runs the game, calling the essential functions to handle gameplay, display and sound.
+
+    Inputs:
+        - game_state [string]: A string representing the current game state, or screen that we're on (such as the main menu, character select, etc.)
+        - done [bool] (global): Global variable that determines whether or not the game loop will run.
+        - clock (global): Locks the game's frame rate at 60 fps
+        - cwd [string] (global): The working directory, allowing the game to open files and resources.
+        - escape_timer [int] (global): Timer that prevents escape from being spammed and accidentally closing the game
+
+    Outputs:
+        - game_state [string] (global): Updates every frame to use in the next
+        - done [bool] (global): If this is set to True, the game will quit
+        - dg.handle_graphics(): Displays graphics
+        - hs.handle_sound(): Handles SFX and BGM
+    '''
     global done
     global clock
     global cwd
@@ -94,11 +113,10 @@ def run(game_state):
         if event.type == pg.QUIT:
             done = True
     detect_joysticks()
-    #handle_input()
-    new_game_state, info_getter, bgm_song, settings, ruleset = get_game_state(game_state, cwd)
-    display_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
-    # Why did I write it this way?
-    handle_sound(bgm_song, settings)
+    # Having things lag behind a frame is a weird design decision - why did I write it this way?
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    hs.handle_sound(bgm_song, settings)
     game_state = new_game_state
     pressed = get_keypress(detect_new_controllers = False)
     if('escape' in pressed and not escape_timer):

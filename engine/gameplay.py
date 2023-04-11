@@ -333,8 +333,8 @@ def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_i
                 p2_blob.move([])
                 p1_blob.impact_land_frames = 0
                 p2_blob.impact_land_frames = 0
-                p1_blob.used_ability = ""
-                p2_blob.used_ability = ""
+                p1_blob.used_ability = {}
+                p2_blob.used_ability = {}
                 countdown -= 1
                 if(countdown == 0):
                     game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset, is_replay)
@@ -410,4 +410,4 @@ def clear_info_cache():
     p2_blob = None
     ball = None
     replay_inputs = []
-    clear_environmental_modifiers()
+    clear_environmental_modifiers(true_reset=True)

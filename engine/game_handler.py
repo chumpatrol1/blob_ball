@@ -1,4 +1,24 @@
+'''
+engine/game_handler.py
+
+Updates the game state and some important global variables every frame. Calls basically every other function
+
+> set_timer(): Sets the button lockout timer to a specific amount
+> update_game_state(): Takes the game state, and calls the appropriate function to return a new game state, the info getter (used for the display), bgm, settings and ruleset
+> update_replay_blobs(): Extracts information from the currently loaded replay file to use in the replay and its display
+> return_blobs(): Returns the blobs and their CPU status for use in crash reports
+'''
+
 def set_timer(frames):
+    '''
+    Sets the button lockout timer
+
+    Inputs:
+        - frames [int]: The number that the lockout timer should be set to
+
+    Outputs:
+        - timer [int] (global): The lockout timer
+    '''
     global timer
     timer = frames
 
@@ -17,6 +37,7 @@ import engine.menus.medal_milestone_menu
 import engine.rebind
 from engine.replays import return_replay_info
 from engine.unlocks import return_available_costumes, update_css_blobs, update_mam_medals, update_costumes
+from engine.get_random_blob import get_random_blob
 import engine.win_screen_handler
 import resources.graphics_engine.display_gameplay
 import resources.graphics_engine.display_win_screen
@@ -40,6 +61,32 @@ p1_costume = 0
 p2_costume = 0
 game_stats = []
 def update_game_state(game_state, cwd):
+    '''
+    Takes in the current game state, and then calls the appropriate function that handles the game state.
+    Updates the game state, info getter (used for the display), background music, ruleset and settings
+
+    Inputs:
+        - game_state [string]: The current game state, which tells which screen we are currently on (String)
+        - cwd [string]: The current directory. Use unknown.
+        - timer [int] (global): A lockout timer that prevents people from menuing too quickly
+        - previous_screen [string] (global): This keeps track of our previous screen in certain circumstances, used mostly for ruleset, settings and almanac (you can navigate to these through the css and the main menu)
+        - p1_blob [varies] (global): Keeps track of the current selected blob of P1
+        - p2_blob [varies] (global): Keeps track of the current selected blob of P2 
+        - p1_is_cpu [bool] (global): Keeps track of P1's status as a CPU or human player
+        - p2_is_cpu [bool] (global): Keeps track of P2's status as a CPU or human player
+        - p1_costume [int] (global): Keeps track of P1's selected costume
+        - p2_costume [int] (global): Keeps track of P2's selected costume
+        - ruleset [dict] (global): Keeps track of the current state of the ruleset, a dictionary
+        - settings [dict] (global): Keeps track of the game settings, like volume and quality, a dictionary
+        - game_stats [dict] (global): Keeps track of the current game stats, which can be viewed in the almanac
+    
+    Outputs:
+        - game_state: The updated game_state, which tells which screen we are now on
+        - info_getter: Usually an array filled with various elements. Contain necessary information to draw dynamic elements like characters and selector positions
+        - song_playing: A string with the name of the background track to play
+        - ruleset: Keeps track of the current state of the ruleset, a dictionary
+        - settings: Keeps track of the game settings, like volume and quality, a dictionary
+    '''
     global timer
     global previous_screen
     global p1_blob
@@ -81,10 +128,17 @@ def update_game_state(game_state, cwd):
                 p2_is_cpu = False
             p1_selector_position[2] = 0
             p2_selector_position[2] = 0
+
+
             p1_blob = info_getter[2]
+            if(p1_blob == 'random'):
+                p1_blob = get_random_blob()
             p2_blob = info_getter[3]
+            if(p2_blob == 'random'):
+                p2_blob = get_random_blob()
             p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
             p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]
+
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
@@ -113,13 +167,13 @@ def update_game_state(game_state, cwd):
     elif(game_state == "casual_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats)
         song_playing = "bb_win_theme"
-        if(game_state == "css" or game_state == "pop_up"):
+        if(game_state == "css" or game_state == "unlock_splash"):
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
             resources.graphics_engine.display_css.update_css_blobs(appcwd)
             update_costumes()
-            if(game_state == "pop_up"):
+            if(game_state == "unlock_splash"):
                 timer = 60
     elif(game_state == "replay_match"):
         try:
@@ -157,10 +211,10 @@ def update_game_state(game_state, cwd):
             timer = 10
         else:
             game_state = "replay_pause"
-    elif(game_state == "pop_up"):
-        game_state, info_getter = engine.menus.css_menu.popup_handler(timer)
+    elif(game_state == "unlock_splash"):
+        game_state, info_getter = engine.menus.css_menu.unlock_splash_handler(timer)
         song_playing = ""
-        if(game_state != "pop_up"):
+        if(game_state != "unlock_splash"):
             update_css_blobs(appcwd)
             resources.graphics_engine.display_css.force_load_blobs()
     elif(game_state == "rules"):
@@ -189,7 +243,7 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.medal_milestone_menu.medal_navigation(timer)
         song_playing = "bb_credits_theme"
     elif(game_state == "almanac_stats"):
-        info_getter = engine.menus.almanac_menu.almanac_stats_navigation(timer)
+        info_getter = engine.menus.almanac_menu.almanac_stats_navigation_1(timer)
         game_state = info_getter[0]
         song_playing = "bb_credits_theme"
         if(game_state != "almanac_stats"):
@@ -234,6 +288,17 @@ def update_game_state(game_state, cwd):
     return game_state, info_getter, song_playing, settings, ruleset
 
 def update_replay_blobs():
+    '''
+    Updates several global variables for use in replays
+
+    Inputs/Outputs
+        - replay_ruleset [dict] (global): Keeps track of the ruleset of that particular replay
+        - p1_blob [varies] (global): Keeps track of the current selected blob of P1
+        - p2_blob [varies] (global): Keeps track of the current selected blob of P2 
+        - p1_costume [int] (global): Keeps track of P1's selected costume
+        - p2_costume [int] (global): Keeps track of P2's selected costume
+
+    '''
     global replay_ruleset
     global p1_blob
     global p2_blob
@@ -247,4 +312,13 @@ def update_replay_blobs():
     p2_costume = extracted_info[5]
 
 def return_blobs():
+    '''
+    Returns the blobs and whether or not they are CPUs by pulling globals. Used when the game crashes
+
+    Outputs:
+        - p1_blob (global): Keeps track of the current selected blob of P1
+        - p2_blob (global): Keeps track of the current selected blob of P2 
+        - p1_is_cpu (global): Keeps track of P1's status as a CPU or human player
+        - p2_is_cpu (global): Keeps track of P2's status as a CPU or human player 
+    '''
     return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu

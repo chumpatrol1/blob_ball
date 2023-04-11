@@ -5,6 +5,7 @@ import pygame as pg
 import random
 from random import randint
 import resources.graphics_engine.dynamic_particle_handler as dpc
+from resources.sound_engine.sfx_event import createSFXEvent
 cwd = getcwd()
 
 def blit_and_update_particles(memory, game_display):
@@ -75,9 +76,11 @@ def create_blob_particles(blob):
         'gale': draw_gale,
     }
 
-    if blob.used_ability in used_ability_dict:
-        used_ability_dict[blob.used_ability](blob)
+    for ability in blob.used_ability:
+        if ability in used_ability_dict:
+            used_ability_dict[ability](blob)
 
+from engine.blob_stats import species_to_stars, ability_image_dict
 
 def draw_blob_particles(game_display, blobs):
     '''HOW TO ADD TO THE PARTICLE CACHE
@@ -105,6 +108,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['earth_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_2.png").convert_alpha(), (20, 20))
         particle_cache['earth_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_3.png").convert_alpha(), (20, 20))
+        particle_cache['earth_particle_4'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/earth_particle_4.png").convert_alpha(), (40, 40))
         particle_cache['landing_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_2'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_2.png").convert_alpha(), (30, 30))
         particle_cache['landing_particle_3'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/landing_particle_3.png").convert_alpha(), (30, 30))
@@ -133,6 +137,22 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['cartridge_2'] = pg.image.load(cwd + "/resources/images/particles/cartridge_blobbykong.png").convert_alpha()
         particle_cache['cartridge_3'] = pg.image.load(cwd + "/resources/images/particles/cartridge_legendofbloba.png").convert_alpha()
         particle_cache['glitch_particle_1'] = pg.image.load(cwd + "/resources/images/particles/glitch_1.png").convert_alpha()
+        particle_cache['joker_card'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/ui_icons/visible_card.png"), (80, 80))
+        particle_cache['hot_sauce'] = pg.image.load(cwd+"/resources/images/ui_icons/hot_sauce.png")
+        particle_cache['meat'] = pg.image.load(cwd+"/resources/images/ui_icons/meat.png")
+        particle_cache['vegan_crunch'] = pg.image.load(cwd+"/resources/images/ui_icons/vegan_crunch.png")
+        particle_cache['cheese'] = pg.image.load(cwd+"/resources/images/ui_icons/cheese.png")
+        particle_cache['spike_ball'] = pg.image.load(cwd + "/resources/images/particles/spike_ball.png").convert_alpha()
+        particle_cache['sharp_shadow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        particle_cache['sharp_shadow'].fill((0, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
+        particle_cache['icons'] = {}
+        particle_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
+        for icon in ability_image_dict:
+            try:
+                ability_key = species_to_stars(icon, {})['special_ability']
+                particle_cache['icons'][ability_key] = pg.transform.scale(pg.image.load(ability_image_dict[icon]), (70, 70))
+            except:
+                particle_cache['icons'][icon] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png"), (70, 70))
     for blob in blobs:
         blob_speed = blob.top_speed
         if(blob.status_effects['glued']):
@@ -141,6 +161,13 @@ def draw_blob_particles(game_display, blobs):
             blob_speed += 2
         if(blob.status_effects['hypothermia']):
             blob_speed -= 3
+        if(blob.status_effects['monado_effect']):
+            if(blob.status_effects['monado_effect'] == "JUMP"):
+                blob_speed -= 3
+            if(blob.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+            if(blob.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 4
         
         if(abs(blob.x_speed) >= blob_speed and blob.y_pos == blob.ground): #Handles Top Speed Particles while grounded
             particle_memory = draw_top_speed_particles(blob.x_center + 50, particle_memory)
@@ -183,7 +210,7 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['steroided'] % 5 == 0 and blob.status_effects['steroided'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
-        if(blob.used_ability == "pill"):
+        if("pill" in blob.used_ability):
             ability_icon = pg.image.load(blob.ability_icon)
             particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
 
@@ -196,7 +223,37 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['overheat'] % 10 == 0 and blob.status_effects['overheat'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['smoke_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
 
+        if(blob.status_effects['hyped'] % 10 == 0 and blob.status_effects['hyped'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['thunder_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
 
+        if(blob.status_effects['nrg_drain'] % 10 == 0 and blob.status_effects['nrg_drain'] > 0):
+            particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+
+        if(blob.status_effects['cards']['joker_particle']):
+            draw_card_selection(*blob.status_effects['cards']['joker_particle'])
+            blob.status_effects['cards']['joker_particle'] = None
+
+        if(blob.status_effects['monado_timer'] % 15 == 0 and blob.status_effects['monado_timer'] > 0):
+            if(blob.status_effects['monado_effect'] == "SPEED"):
+                monado_image = particle_cache['hot_sauce']
+            elif(blob.status_effects['monado_effect'] == "SMASH"):
+                monado_image = particle_cache['meat']
+            elif(blob.status_effects['monado_effect'] == "SHIELD"):
+                monado_image = particle_cache['vegan_crunch']
+            elif(blob.status_effects['monado_effect'] == "JUMP"):
+                monado_image = particle_cache['cheese']
+
+            particle_divider = 100 #if blob.status_effects['monado_effect'] == "JUMP" else 50
+            for i in range(blob.status_effects['monado_timer'] // particle_divider):
+                particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+        
+        if(blob.status_effects['shop']['purchase_particle']):
+            draw_shop_selection((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['purchase_particle'])
+            blob.status_effects['shop']['purchase_particle'] = None
+        
+        if(blob.status_effects['shop']['discard_particle']):
+            draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
+            blob.status_effects['shop']['discard_particle'] = None
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
@@ -221,7 +278,6 @@ def draw_boost_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['boost_flash'], alpha = 255, x_pos = align[0], y_pos = align[1], fade = 15, ground_clip = True))
 
-
 def draw_energy_flash(align):
     global particle_memory
     ui_memory.append(dpc.Particle(image = particle_cache['energy_flash'], alpha = 255, x_pos = align[0], y_pos = align[1] + 75, fade = 15, ground_clip = True))
@@ -234,6 +290,38 @@ def draw_shatter(align, shatter_timer):
     cropRect = (cropx, cropy, 70, 70)
 
     ui_memory.append(dpc.Particle(image = particle_cache['shatter_spritesheet'], alpha = 255, x_pos = align[0], y_pos = align[1], lifetime=1, ground_clip = True, crop=cropRect))
+
+def draw_card_selection(position, icon):
+    particle_memory.append(dpc.Particle(image = particle_cache['joker_card'], x_pos = position[0]*(1000/1366), y_pos = position[1]*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+    particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+
+shop_crop_info = {
+        "soul_catcher": (180,0,60,60),
+        "grub_song": (180,60,60,60),
+        "sprint_master": (240,0,60,60),
+        "sharp_shadow": (240,60,60,60),
+        "thorns_of_agony": (300,0,60,60),
+        "izumi_tear": (300,60,60,60),
+        "dream_wielder": (0, 60, 60, 60),
+        "nailmasters_glory": (60, 60, 60, 60),
+        "heavy_blow": (60, 0, 60, 60),
+        "baldur_shell": (0, 0, 60, 60),
+        "explosive_focus": (120, 0, 60, 60),
+        "soul_focus": (120, 60, 60, 60),
+    }
+
+def draw_shop_selection(position, icon):
+    crop_rect = shop_crop_info[icon]
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300, crop = crop_rect))
+    createSFXEvent("chime_progress")
+
+def draw_shop_discard(position, icon):
+    crop_rect = shop_crop_info[icon]
+    left_half = (crop_rect[0], crop_rect[1], 30, 60)
+    right_half = (crop_rect[0] + 30, crop_rect[1], 30, 60)
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 2, x_speed = -1, y_speed = -3, gravity = 0.1, lifetime = 300, crop = left_half))
+    particle_memory.append(dpc.Particle(image = particle_cache['merchant_shop'], x_pos = (position[0])*(1000/1366), y_pos = (position[1])*(382/768), alpha = 255, fade = 2, x_speed = 1, y_speed = -3, gravity = 0.1, lifetime = 300, crop = right_half))
+    createSFXEvent("crunch")
 
 def clear_particle_memory():
     global particle_memory
@@ -253,13 +341,13 @@ def draw_ball_particles(game_display, ball, blobs):
     '''
     global ball_particle_memory
     for blob in blobs:
-        if(blob.used_ability == "fireball"):
+        if("fireball" in blob.used_ability):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['fire_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786), alpha = 150, x_speed = 0, y_speed = -1, gravity = 0))
         
-        if(blob.used_ability == "snowball"):
+        if("snowball" in blob.used_ability):
             ball_particle_memory.append(dpc.Particle(image = particle_cache['ice_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = 0, y_speed = 1, gravity = 0))
         
-        if(blob.used_ability == "geyser"):
+        if("geyser" in blob.used_ability):
             for y in range((1240 - round(ball.y_pos))//40):
                 if(y > 7):
                     particle_cache['water_particle'].set_alpha(100)
@@ -308,18 +396,18 @@ def draw_ball_overlay(game_display, ball, blobs):
             alpha += 10
     
     for blob in blobs:
-        if(blob.used_ability == "stoplight_pfx"):
+        if("stoplight" in blob.used_ability):
             ball_overlay_memory.append(dpc.Particle(image = particle_cache['stoplight'], x_pos = (ball.x_center * 1000/1366) - 35, y_pos = ball.y_pos * (400/786), alpha = 255, fade = 8.5))
 
-        if(blob.used_ability == "hook"):
+        if("hook" in blob.used_ability):
             #print("hooka")
             blob_x = (blob.x_center) * (1000/1366)
             blob_y = (blob.y_center - 200) * (382/768)
             ball_x = ball.x_center * (1000/1366)
             ball_y = ball.y_center * (400/768)
-            if(blob.holding_timer < blob.special_ability_delay):
-                ball_x = (ball_x - blob_x) * (blob.holding_timer/blob.special_ability_delay) + blob_x
-                ball_y = (ball_y - blob_y) * (blob.holding_timer/blob.special_ability_delay) + blob_y
+            if(blob.ability_holding_timer < blob.special_ability_delay):
+                ball_x = (ball_x - blob_x) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_x
+                ball_y = (ball_y - blob_y) * (blob.ability_holding_timer/blob.special_ability_delay) + blob_y
             pg.draw.line(game_display, (0, 0, 0), (blob_x, blob_y), (ball_x, ball_y), width = 2)
             pg.draw.rect(game_display, (150, 75, 0), (blob_x - 5, blob_y, 10, 90))
 

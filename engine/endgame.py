@@ -1,6 +1,6 @@
 from json import loads, dumps
 from os import getenv
-from engine.popup_event import createPopUpEvent
+from engine.unlock_event import createUnlockEvent
 cwd = getenv('APPDATA')+'/BlobBall'
 
 def attempt_blob_unlocks(game_stats):
@@ -20,12 +20,16 @@ def attempt_blob_unlocks(game_stats):
         45: "fisher",
         52: "glue",
         59: "arcade",
+        66: "joker",
+        74: "taco",
+        82: "cactus",
+        90: "merchant",
     }
     
     blobs_unlocked = 0
     for dict_key in blob_unlock_requirements:
         if(game_stats['matches_played'] >= dict_key):
-            if(createPopUpEvent(blob_unlock_requirements[dict_key], 0)):
+            if(createUnlockEvent(blob_unlock_requirements[dict_key], 0)):
                 blobs_unlocked += 1
 
     return blobs_unlocked
@@ -45,15 +49,19 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "cop": {10: "cop/grayscale_1"},
         "boxer": {10: "boxer/grayscale_1"},
         "mirror": {10: "mirror/grayscale_1"},
-        "fisher": {10: "fisher/grayscale_1"},
+        "fisher": {10: "fisher/grayscale_1", 20: "fisher/jew_2"},
         "glue": {10: "glue/grayscale_1"},
         "arcade": {10: "arcade/grayscale_1"},
+        "joker": {10: "joker/grayscale_1", 20: "joker/red_2", 30: "joker/mosaic_3"},
+        "taco": {10: "taco/grayscale_1"},
+        "cactus": {10: "cactus/grayscale_1"},
+        "merchant": {10: "merchant/grayscale_1"},
     }
     blobs_unlocked = 0
     try:
         for dict_key in costume_unlock_requirements[p1_blob.species]:
             if(mu_chart[p1_blob.species]['total'] >= dict_key):
-                if(createPopUpEvent(costume_unlock_requirements[p1_blob.species][dict_key], 2)):
+                if(createUnlockEvent(costume_unlock_requirements[p1_blob.species][dict_key], 2)):
                     blobs_unlocked += 1
     except KeyError:
         print("No Costumes Available")
@@ -61,7 +69,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
     try:
         for dict_key in costume_unlock_requirements[p2_blob.species]:
             if(mu_chart[p2_blob.species]['total'] >= dict_key):
-                if(createPopUpEvent(costume_unlock_requirements[p2_blob.species][dict_key], 2)):
+                if(createUnlockEvent(costume_unlock_requirements[p2_blob.species][dict_key], 2)):
                     blobs_unlocked += 1
     except KeyError:
         print("No Costumes Available")

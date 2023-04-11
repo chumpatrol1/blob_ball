@@ -1,3 +1,12 @@
+'''
+engine/menus/blob_info.py
+
+File that handles the general blob information menu
+
+> blob_selector_navigation(): Handles the character selection screen
+> blob_info_navigation(): Handles navigating when we select an individual blob
+> general_navigation(): Handles the entirety of the blob info page, and calls on either the general selector or the individual navigator
+'''
 from engine.button import Button
 from engine.unlocks import unlock_all_blobs
 from resources.graphics_engine.display_css import force_load_blobs
@@ -19,6 +28,23 @@ for i in range(6):
     blob_info_buttons.append(Button(76+66*i, 142+66*i,1050,1360))
 
 def blob_selector_navigation(pressed, mouse): # Handles the CSS
+    '''
+    Handles the character selection screen
+
+    Inputs:
+        - pressed [array]: Array of strings representing actions delivered via keyboard or controller. We specifically care about 'up', 'down', 'ability' and 'return'
+        - mouse [array]: Array of arrays representing the state of the mouse. See documentation in engine/handle_input/handle_mouse 
+        - selector_position [array] (global): Represents the location of the actual selector
+            - Element 1 [int]: X position of the selector. Ranges from 0 to 6
+            - Element 2 [int]: Y position of the selector. Ranges from 0 to 4
+            - Element 3 [int]: 0 means we haven't selected a blob, 1 means we have
+        - selector_ghost [array] (global): Represents the location of selector that comes up when we hover with the mouse
+            - Element 1 [int]: X position of the selector. Ranges from 0 to 6
+            - Element 2 [int]: Y position of the selector. Ranges from 0 to 4
+    
+    Outputs:
+        - game_state [string]: The updated game state. Defaults to "blob_info"
+    '''
     global selector_position
     global selector_ghost
     game_state = 'blob_info'
@@ -90,7 +116,22 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
     
     return game_state
 
-def blob_info_navigation(pressed, mouse): # Handles individual blob selection
+def blob_info_navigation(pressed, mouse):
+    '''
+    Handles navigating when we select an individual blob
+
+    Inputs:
+        - pressed [array]: Array of strings representing actions delivered via keyboard or controller. We specifically care about 'up', 'down', 'ability' and 'return'
+        - mouse [array]: Array of arrays representing the state of the mouse. See documentation in engine/handle_input/handle_mouse 
+        - selector_position [array] (global): 3 element array of ints representing location (blob selected) and select status
+        - blob_tab [int] (global): An integer representing the tab that we are currently viewing
+        - ghost_tab [int] (global): An integer representing the tab we are currently hovering
+    
+    Outputs:
+        - selector_position [array]: Updated selector position (selected or deselected)
+        - blob_tab [int]: Updated integer representing the tab that we are currently viewing
+        - ghost_tab [int]: Updated integer representing the tab we are currently hovering
+    '''
     global selector_position
     global blob_tab
     global ghost_tab
@@ -130,6 +171,25 @@ def blob_info_navigation(pressed, mouse): # Handles individual blob selection
 
 
 def general_navigation(): # Handles everything
+    '''
+    Handles the entirety of the blob info page, and calls on either the general selector or the individual navigator
+
+    Inputs:
+        - selector_position [array] (global): Represents the location of the actual selector
+            - Element 1 [int]: X position of the selector. Ranges from 0 to 6
+            - Element 2 [int]: Y position of the selector. Ranges from 0 to 4
+            - Element 3 [int]: 0 means we haven't selected a blob, 1 means we have
+        - selector_ghost [array] (global): Represents the location of selector that comes up when we hover with the mouse
+            - Element 1 [int]: X position of the selector. Ranges from 0 to 6
+            - Element 2 [int]: Y position of the selector. Ranges from 0 to 4
+    Outputs:
+        - game_state [str]: The updated game state. Defaults to "blob_info"
+        - info_getter [array]
+            - selector_position [array] (global): Represents the location of the actual selector
+            - selector_ghost [array] (global): Represents the location of selector that comes up when we hover with the mouse
+            - blob_tab [int] (global): Represents the location of the tab marker
+            - ghost_tab [int] (global): Represents the mouse hover location of the tab marker
+    '''
     global selector_position
     game_state = 'blob_info'
 

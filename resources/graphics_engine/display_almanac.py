@@ -47,7 +47,7 @@ def load_almanac_static_text():
         menu_font.render('Yael "Chumpatrol3" McLaughlin (Blob and Concept Artist)', False, (0, 0, 150)),
         menu_font.render('NeoPhyte_TPK (Contributor, Bug Hunter)', False, (0, 0, 150)),
         menu_font.render('BoingK (Lead Musician, CPU Programmer)', False, (0, 0, 150)),
-        menu_font.render('Sunken/XNunuAZ (Programmer)', False, (0, 0, 150)),
+        menu_font.render('Sunken/XNunuAZ (Programmer, Artist)', False, (0, 0, 150)),
         menu_font.render('Allan "Quackus" Weiner (Artist, Contributor)', False, (0, 0, 150)),
     ]
     static_text['almanac_art'] = [
@@ -307,8 +307,8 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
     for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
         for icon in row:
             blob = blob_image_cache[y][x]
-            blob = pg.transform.scale(blob, (122, 68))
-            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100)))
+            blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
+            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1

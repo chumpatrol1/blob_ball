@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.16.1b'
+game_version = '0.17.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -109,9 +109,9 @@ def load_default_ruleset():
     }
     ruleset = {
         'version': game_version,
-        'goal_limit': 5,
-        'time_limit': 3600,
-        'time_bonus': 600,
+        'goal_limit': 10,
+        'time_limit': 5400,
+        'time_bonus': 300,
         'special_ability_charge_base': 1,
         'danger_zone_enabled': True,
         'p1_modifiers': dict(player_mods),
