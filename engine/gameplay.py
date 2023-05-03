@@ -398,7 +398,10 @@ def clear_info_cache():
     global initialized
     global p1_blob
     global p2_blob
+    global p1_ko
+    global p2_ko
     global ball
+    global goal_scored
     global replay_inputs
     game_score = [0, 0]
     timer = 180
@@ -408,6 +411,9 @@ def clear_info_cache():
     initialized = False
     p1_blob = None
     p2_blob = None
+    p1_ko = False
+    p2_ko = False
+    goal_scored = False
     ball = None
     replay_inputs = []
     clear_environmental_modifiers(true_reset=True)
