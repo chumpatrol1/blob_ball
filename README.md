@@ -1,7 +1,7 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.17.0b**
+**v0.17.1b**
 
 
 **Features:**
@@ -48,3 +48,4 @@ Slime Soccer type game
 * Added Merchant Blob
 * Balanced a large chunk of the cast
 * Default ruleset changed to have 10 goals and longer match timer
+* Fixed various bugs
