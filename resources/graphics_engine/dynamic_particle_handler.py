@@ -1,6 +1,6 @@
 class Particle:
     def __init__(self, image = "", alpha = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, fade = 5, lifetime = 60, ground_clip = False, crop = None):
-        self.image = image
+        self.image = image.copy()
         if(crop):
             self.crop = crop
         else:
