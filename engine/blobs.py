@@ -1352,7 +1352,7 @@ class Blob:
             if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                 accumulated_damage = 3
                 stun_amount = 120
-                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player] == "merchant" else 0)
+                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
                 hazard.affects.add(self.player)
                 
 
