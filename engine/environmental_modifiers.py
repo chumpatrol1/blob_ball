@@ -88,6 +88,7 @@ class EnvironmentalModifiers:
             draw_console_sparks([self.x_pos, self.y_pos])
         
 # FOR EACH MODIFIER, ADD A NEW ENTRY!
+# TODO: This is just bad code lol... each environmental modifier should be its own class
 environmental_modifiers = {
     'glue_shot': [],
     'glue_puddle': [],
@@ -103,6 +104,7 @@ environmental_modifiers = {
     'royal_loan': [],
     'cactus_spike': [],
     'sharp_shadow': [],
+    'bubble': [],
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
@@ -150,4 +152,5 @@ def clear_environmental_modifiers(true_reset = False):
     'royal_loan': unpaid_loans if not true_reset else [],
     'cactus_spike': [],
     'sharp_shadow': [],
+    'bubble': [],
 }

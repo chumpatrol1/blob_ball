@@ -381,7 +381,7 @@ class Ball:
             if("ball" in hazard.affects):
                 
                 ball_vector = pg.math.Vector2(self.x_center, self.y_center + 50)
-                hazard_vector = pg.math.Vector2(hazard.x_pos, hazard.y_pos)
+                hazard_vector = pg.math.Vector2(hazard.x_pos, hazard.y_pos + 20)
 
                 #print("X", hazard.x_pos, self.x_pos)
                 #print("Y", hazard.y_pos, self.y_pos)
@@ -412,6 +412,34 @@ class Ball:
                 hazard.x_pos -= hazard_nv[0]
                 hazard.y_pos -= hazard_nv[1] * 2
                 #print(hazard_nv.length())
+
+        for hazard in environment['bubble']:
+            if("ball" in hazard.affects):
+                ball_vector = pg.math.Vector2(self.x_center, self.y_center)
+                hazard_vector = pg.math.Vector2(hazard.x_pos + 60, hazard.y_pos + 60)
+
+                #print("X", hazard.x_pos, self.x_pos)
+                #print("Y", hazard.y_pos, self.y_pos)
+                
+                dist_vector = hazard_vector.distance_to(ball_vector)
+                print(dist_vector, self.y_center, hazard.y_pos + 60)
+                if(dist_vector < 135):
+                    try:
+                        hazard.lifetime = 0
+                        #ball_nv = pg.math.Vector2(self.x_pos - hazard.x_pos, (self.y_pos + 50) - hazard.y_pos)
+                        #ball_nv.scale_to_length(20)
+                        #if(not self.species == "blocked_ball"):
+                            #self.x_speed = ball_nv[0]
+                            #self.y_speed = ball_nv[1]
+                        self.x_speed = 0
+                        self.y_speed = 0
+                    except:
+                        hazard.lifetime = 0
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = 0
+                            self.y_speed = -10
+
+                    continue
 
 
 

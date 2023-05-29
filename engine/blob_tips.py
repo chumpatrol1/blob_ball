@@ -364,6 +364,10 @@ merchant_tips = [
     tip_font.render("and getting passive damage reduction and faster blocks.", False, text_color),
 ]
 
+bubble_tips = [
+
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -386,6 +390,7 @@ def return_selected_blob_tips(selected_blob):
         'taco': taco_tips,
         'cactus': cactus_tips,
         'merchant': merchant_tips,
+        'bubble': bubble_tips,
     }
     try:
         return tips_dict[selected_blob]

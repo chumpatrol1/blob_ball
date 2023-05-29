@@ -147,6 +147,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['sharp_shadow'].fill((0, 0, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         particle_cache['icons'] = {}
         particle_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
+        particle_cache['bubble'] = pg.image.load(cwd + "/resources/images/particles/bubble.png").convert_alpha()
         for icon in ability_image_dict:
             try:
                 ability_key = species_to_stars(icon, {})['special_ability']

@@ -2777,3 +2777,47 @@ P2_Blob: taco, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+19532-ERROR-Game Crash at Thu May 25 09:56:21 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 129, in __init__
+    self.ability_icon = species_to_ability_icon(species)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 116, in species_to_ability_icon
+    return ability_image_dict[species]
+KeyError: 'bubble'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: bubble, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25264-ERROR-Game Crash at Thu May 25 10:00:40 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 240, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 75, in load_individual_blob
+    selected_blob_description = find_blob_unlock(selected_blob[2])[2]
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
