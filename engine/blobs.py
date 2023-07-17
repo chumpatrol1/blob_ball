@@ -960,7 +960,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 200, y_speed=-0.25, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 600)
+                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 200, y_speed=-0.1, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 600)
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])

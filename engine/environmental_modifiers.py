@@ -87,6 +87,9 @@ class EnvironmentalModifiers:
             draw_console_sparks([self.x_pos, self.y_pos])
             draw_console_sparks([self.x_pos, self.y_pos])
         
+        if(self.species == 'bubble' and self.lifetime == self.max_lifetime//2):
+            self.y_speed = -0.25
+        
 # FOR EACH MODIFIER, ADD A NEW ENTRY!
 # TODO: This is just bad code lol... each environmental modifier should be its own class
 environmental_modifiers = {

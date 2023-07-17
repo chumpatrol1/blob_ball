@@ -116,7 +116,7 @@ class Ball:
                         self.x_speed = 0
                         blob.collision_timer = 0
                         self.info['blob_warp_collisions'] += 1
-                        self.update_bubble_status(None)
+                        self.update_bubble_status(None, blob)
                     elif(abs(blob.x_center - self.x_center) <= blob_collision_distance) and not self.grounded:
                         #True if x is close enough, and ball is airborne.
                         if(self.y_speed < 0): #Are we moving upwards?
@@ -131,7 +131,7 @@ class Ball:
                             else:
                                 self.info['blob_reflect_collisions'] += 1
                                 createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
-                            self.update_bubble_status(None)
+                            self.update_bubble_status(None, blob)
 
                 elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                     if(p1_vector.distance_to(ball_vector) < 80):
@@ -169,7 +169,8 @@ class Ball:
                         for other_blob in blob.all_blobs.values():
                             if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
                                 other_blob.status_effects['silenced'] += 360
-                        self.update_bubble_status(None)
+                        self.update_bubble_status(None, blob)
+                        #blob.take_damage(damage = 1, unblockable=True, unclankable=True)
                         #print("speed", p1_ball_collision, "loc diff", p1_ball_nv)
                     elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                         self.info['blob_standard_collisions'] += 1
@@ -187,7 +188,7 @@ class Ball:
                         self.y_speed *= self.bounciness
                         
                         createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 + self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
-                        self.update_bubble_status(None)
+                        self.update_bubble_status(None, blob)
                 else:
                     #Debug
                     if(abs(blob.x_center - self.x_center) < blob_collision_distance):
@@ -209,7 +210,7 @@ class Ball:
                         self.x_speed = 0
                         blob.collision_timer = 0
                         self.info['blob_warp_collisions'] += 1
-                    self.update_bubble_status(None)
+                    self.update_bubble_status(None, blob)
             self.check_ceiling_collisions()
 
     def check_block_collisions(self):
@@ -673,8 +674,11 @@ class Ball:
                 if(self.status_effects["bubbled"] == 0):
                     self.bubble = None
         
-    def update_bubble_status(self, bubble):
+    def update_bubble_status(self, bubble, blob = None):
         current_bubble = self.bubble
         self.bubble = bubble
         if(current_bubble):
             current_bubble.lifetime = 0
+        if(blob and self.status_effects['bubbled']):
+            blob.take_damage(damage = 1, unblockable=True, unclankable=True)
+            self.status_effects['bubbled'] = 0
