@@ -19,7 +19,7 @@ class bgm:
 
 bgm_list = {
     "": [bgm(track_file = "", track_name="Silence", track_number = 0, track_duration = 1000, restart_point = 0, volume_modifier = 0)],
-    "bb_main_theme": [bgm(track_file="Blob_Ball_Main_Theme.wav", track_name = "Blob Ball Main Theme", track_number=1, track_duration=133.5, restart_point=10, volume_modifier=1)],
+    "bb_main_theme": [bgm(track_file="Blob_Ball_Main_Theme.wav", track_name = "Blob Ball Main Theme", track_number=1, track_duration=133.5, restart_point=10, volume_modifier=1), bgm(track_file="Monarchy_2.wav", track_name = "Monarchy 2", track_number=4, track_duration=135, restart_point=0, volume_modifier=1, fade_in=1000)],
     "bb_win_theme": [bgm(track_file="Blob_Ball_Win_Theme.wav", track_name = "Blob Ball Win Theme", track_number=2, track_duration=4, restart_point=None, volume_modifier=0.5)],
     "bb_credits_theme": [bgm(track_file="Blob_Ball_Credits_Theme.wav", track_name = "Blob Ball Credits Theme", track_number=3, track_duration=135, restart_point=0, volume_modifier=1, fade_in=1000)],
 }
