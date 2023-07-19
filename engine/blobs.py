@@ -43,7 +43,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike', 'shop']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike', 'shop', 'bubble']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -76,6 +76,7 @@ def species_to_image(species, costume):
         'taco': {0: (blob_cwd + "taco_blob.png", blob_cwd + "taco_blob_-1.png"), 1: (blob_cwd + "taco_blob_1.png", blob_cwd + "taco_blob_-1.png")},
         'cactus': {0: (blob_cwd + "cactus_blob.png", blob_cwd + "cactus_blob_-1.png"), 1: (blob_cwd + "cactus_blob_1.png", blob_cwd + "cactus_blob_-1.png")},
         'merchant': {0: (blob_cwd + "merchant_blob.png", blob_cwd + "merchant_blob_-1.png"), 1: (blob_cwd + "merchant_blob_1.png", blob_cwd + "merchant_blob_-1.png")},
+        'bubble': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png"), 1: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -951,7 +952,15 @@ class Blob:
                 self.status_effects['menu']['open'] = True
                 self.status_effects['menu']['type'] = 'shop'
                 self.status_effects['menu']['time'] = 0
-                
+        elif(special_ability == "bubble"):
+            if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
+                #Spire activation
+                createSFXEvent('glyph')
+                #self.used_ability = "spire_wait"
+                self.special_ability_cooldown = cooldown
+                self.special_ability_timer = cooldown #Set the cooldown between uses timer
+                self.special_ability_meter -= cost #Remove some SA meter
+                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 200, y_speed=-0.1, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 600)
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])

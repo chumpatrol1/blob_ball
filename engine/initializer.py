@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 
-game_version = '0.17.1b'
+game_version = '0.18.0a'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):

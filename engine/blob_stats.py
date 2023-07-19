@@ -65,6 +65,7 @@ def species_to_stars(species, stat_overrides):
         'taco': create_dict(2, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 180, 0, 0),
         'cactus': create_dict(3, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
         'merchant': create_dict(2, 2, 4, 4, 4, 1, 1, 600, 3, 3, 'shop', 750, 0, 2400, 120, 0, 0),
+        'bubble': create_dict(2, 3, 4, 2, 3, 3, 3, 600, 3, 3, 'bubble', 300, 0, 1800, 180, 0, 0),
     }
 
     blob_dict = full_dict[species]
@@ -108,6 +109,7 @@ ability_image_dict = {
         'taco': ability_cwd + 'filling.png',
         'cactus': ability_cwd + 'cactus_spike.png',
         'merchant': ability_cwd + 'coin.png',
+        'bubble': ability_cwd + 'coin.png',
         "random": icon_cwd + "boost_icon.png",
     }
 
