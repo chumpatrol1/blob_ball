@@ -288,7 +288,7 @@ class Blob:
             "loaned": 0,
             "hyped": 0,
             "silenced": 0,
-            "nrg_drain": 0,
+            "nrg_fatigue": 0,
         }
 
         if(self.species == "doctor"):
@@ -308,14 +308,14 @@ class Blob:
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
-            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)) * 5 
+            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)) * 5 
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
             if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
-            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)
 
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
@@ -408,7 +408,7 @@ class Blob:
                 try:
                     self.status_effects[effect] -= 1
 
-                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_drain'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
+                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_fatigue'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
                         self.status_effects[effect] = 1
 
                     if((effect == 'taxing' or effect == 'taxed') and self.status_effects[effect] == 1):
@@ -1346,7 +1346,7 @@ class Blob:
                     if(self.block_timer):
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_drain', 300]])
+                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
                     hazard.affects.add(self.player)
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
