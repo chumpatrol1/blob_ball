@@ -1091,7 +1091,7 @@ class Blob:
                     if(self.species == "ice"):
                         status_effects.append(['hypothermia', 180])
                     elif(self.species == "arcade" and not blob.block_timer and not blob.kick_timer):
-                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
+                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 360, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                     elif(self.species == "fire"):
                         status_effects.append(['overheat', 300])
                     elif(self.species == "boxer"):
@@ -1721,9 +1721,10 @@ class Blob:
         if(wavedashed and self.status_effects['shop']['defense_equip'] == 'sharp_shadow'):
             create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
             self.status_effects['shop']['defense_durability'] -= 1
-        elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= 200 * Blob.nrg_multiplier):
+        elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= self.special_ability_cost and self.special_ability_timer <= 0):
             create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
-            self.special_ability_meter -= 200 * Blob.nrg_multiplier
+            self.special_ability_meter -= self.special_ability_cost
+            self.special_ability_cooldown = self.special_ability_cooldown_max
         elif(wavedashed and self.species == "glue" and self.special_ability_meter >= 300 * Blob.nrg_multiplier):
             x_mod = 1 if self.facing == 'left' else -1
             create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
@@ -1732,6 +1733,8 @@ class Blob:
             create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)            
             create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
             self.special_ability_meter -= 300 * Blob.nrg_multiplier
+        elif(wavedashed and self.species == 'cactus'):
+            print(self.special_ability_timer, self.special_ability_cooldown, self.special_ability_cost)
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
