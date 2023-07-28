@@ -133,6 +133,7 @@ class Blob:
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted
         self.x_speed = 0
+        self.x_kb = 0
         self.y_speed = 0
         self.x_pos = x_pos #Where the blob is on the X axis
         self.y_pos = y_pos #Where the blob is on the Y axis, 1200 is grounded
@@ -1078,7 +1079,7 @@ class Blob:
                 self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
             except Exception as ex:
                 print("Tried to remove", ex, "from lineup")
-                
+
             self.status_effects['cards']['boost'] = None
             self.recharge_indicators['ability_swap'] = True
     
@@ -1438,7 +1439,7 @@ class Blob:
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
             self.y_speed = y_speed_mod
-            self.x_speed = x_speed_mod
+            self.x_kb = x_speed_mod
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
@@ -1713,7 +1714,21 @@ class Blob:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
                         self.x_speed -= blob_friction #Normal deceleration
-        self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        if(not self.x_kb):
+            self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        else:
+            self.x_pos += self.x_kb
+            self.x_speed = 0
+            if(self.x_kb > 1 and self.y_pos == Blob.ground):
+                self.x_kb -= blob_traction
+            elif(self.x_kb > 1 and self.y_pos != Blob.ground):
+                self.x_kb -= blob_friction
+            elif(self.x_kb < -1 and self.y_pos == Blob.ground):
+                self.x_kb += blob_traction
+            elif(self.x_kb < -1 and self.y_pos != Blob.ground):
+                self.x_kb += blob_friction
+            else:
+                self.x_kb = 0
         self.info['x_distance_moved'] += abs(self.x_speed)
         if(self.x_pos <= 0): #Don't move off screen!
             self.x_speed = 0
