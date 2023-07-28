@@ -1073,8 +1073,12 @@ class Blob:
                 self.boost_cooldown = 10 * Blob.timer_multiplier
             self.boost_cooldown_timer = self.boost_cooldown_max//2
             #print(self.status_effects['cards']['boost'])
-            self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
-            self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
+            try:
+                self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
+                self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
+            except Exception as ex:
+                print("Tried to remove", ex, "from lineup")
+                
             self.status_effects['cards']['boost'] = None
             self.recharge_indicators['ability_swap'] = True
     
