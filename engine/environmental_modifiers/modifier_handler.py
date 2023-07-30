@@ -11,6 +11,7 @@ em_def = {
     'glue_puddle': em_glue_puddle,
     'glue_shot': em_glue_shot,
     'royal_loan': em_royal_loan,
+    'sharp_shadow': em_sharp_shadow,
     'spire_glyph': em_spire_glyph,
     'spire_spike': em_spire_spike,
     'starpunch': em_starpunch,

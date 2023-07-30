@@ -1719,18 +1719,18 @@ class Blob:
             self.x_pos = 1700
         
         if(wavedashed and self.status_effects['shop']['defense_equip'] == 'sharp_shadow'):
-            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
             self.status_effects['shop']['defense_durability'] -= 1
         elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= 200 * Blob.nrg_multiplier):
-            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
             self.special_ability_meter -= 200 * Blob.nrg_multiplier
         elif(wavedashed and self.species == "glue" and self.special_ability_meter >= 300 * Blob.nrg_multiplier):
             x_mod = 1 if self.facing == 'left' else -1
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (5*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (7*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)            
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (5*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (7*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])            
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
             self.special_ability_meter -= 300 * Blob.nrg_multiplier
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
@@ -1789,7 +1789,7 @@ class Blob:
             self.y_pos = Blob.ground
             self.impact_land_frames = 10
             if(self.status_effects['monado_effect'] == "JUMP"):
-                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700, special_functions = [create_environmental_modifier])
                 createSFXEvent('glyph')
         
         #ABILITY

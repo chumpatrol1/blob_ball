@@ -5,6 +5,7 @@ from .console          import em_console
 from .glue_puddle      import em_glue_puddle
 from .glue_shot        import em_glue_shot
 from .royal_loan       import em_royal_loan
+from .sharp_shadow     import em_sharp_shadow
 from .spire_glyph      import em_spire_glyph
 from .spire_spike      import em_spire_spike
 from .starpunch        import em_starpunch
