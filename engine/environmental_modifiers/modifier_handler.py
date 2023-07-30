@@ -13,6 +13,8 @@ em_def = {
     'royal_loan': em_royal_loan,
     'spire_glyph': em_spire_glyph,
     'spire_spike': em_spire_spike,
+    'starpunch': em_starpunch,
+    'starpunch_spring': em_starpunch_spring,
     'starpunch_wait': em_starpunch_wait,
     'thunder_bolt': em_thunder_bolt,
     'thunder_glyph': em_thunder_glyph
