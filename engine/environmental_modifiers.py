@@ -1,6 +1,6 @@
 from resources.graphics_engine.display_particles import draw_spire_dirt, draw_console_sparks, draw_cartridge_sparks
 from random import randint
-
+from math import cos, sin, radians, pi
 
 class EnvironmentalModifiers:
     def __init__(self, player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1):
@@ -78,8 +78,8 @@ class EnvironmentalModifiers:
 
         if(self.species == 'console' and self.y_pos > 1270):
             self.y_pos = 1270
-            self.y_speed = 0
-            self.gravity = 0
+            self.y_speed = 1
+            self.gravity = 1
         if(self.species == 'console' and (self.lifetime == self.max_lifetime - 300 or self.lifetime == 180 or self.lifetime == 60)):
             draw_console_sparks([self.x_pos, self.y_pos])
         if(self.species == 'console' and (self.lifetime == 1 or self.hp <= 0)):
@@ -87,9 +87,17 @@ class EnvironmentalModifiers:
             draw_console_sparks([self.x_pos, self.y_pos])
             draw_console_sparks([self.x_pos, self.y_pos])
         
-        if(self.species == 'bubble' and self.lifetime == self.max_lifetime//2):
-            self.y_speed = -0.25
-        
+        '''if(self.species == 'bubble' and self.lifetime == self.max_lifetime//2):
+            self.y_speed = -1.25
+            self.x_speed = 5.00'''
+        if(self.species == 'bubble' and self.lifetime < self.max_lifetime):
+            if(self.player == 1):
+                self.x_speed = sin(radians((self.max_lifetime - self.lifetime) *  pi)) * 10
+                self.y_speed = cos(radians((self.max_lifetime - self.lifetime)  * pi)) * -10
+            else:
+                self.x_speed = sin(radians((self.max_lifetime - self.lifetime) *  pi)) * -10
+                self.y_speed = cos(radians((self.max_lifetime - self.lifetime)  * pi)) * -10
+            
 # FOR EACH MODIFIER, ADD A NEW ENTRY!
 # TODO: This is just bad code lol... each environmental modifier should be its own class
 environmental_modifiers = {

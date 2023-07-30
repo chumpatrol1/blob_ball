@@ -961,7 +961,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 200, y_speed=-0.1, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 600)
+                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 300, y_speed= -0.25, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 600)
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])
@@ -1319,9 +1319,17 @@ class Blob:
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
                 teleported = True
+                self.kick(ignore_cooldown=True)
                 createSFXEvent('teleport')
                 draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+            elif(hazard.player != self.player):
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    if(self.status_effects['judged'] < 60):
+                        self.status_effects['judged'] = 60
+                    if(self.status_effects['hypothermia'] < 60):
+                        self.status_effects['hypothermia'] = 60#
+                    #self.take_damage(damage = 0, unblockable=True, unclankable=True, status_effects=[['judged', 60], ['hypothermia', 60]])
         
         for hazard in environment['royal_loan']:
             if(hazard.player == self.player and hazard.lifetime == 1):
