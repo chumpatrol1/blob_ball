@@ -650,7 +650,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = special_ability_delay, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = special_ability_delay, y_pos = 700, special_functions = [create_environmental_modifier])
             else:
                 return
         elif(special_ability == "thunderbolt"):
@@ -667,7 +667,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = special_ability_delay, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = special_ability_delay, y_pos = 700, special_functions = [create_environmental_modifier])
             else:
                 return
         elif(special_ability == "gale"):
@@ -825,7 +825,7 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
                 #self.kick_cooldown += 120
-                create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = special_ability_delay, y_pos = self.y_center)
+                create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = special_ability_delay, y_pos = self.y_center, special_functions = [create_environmental_modifier])
                 createSFXEvent('boxing_bell')
             else:
                 return
@@ -885,7 +885,7 @@ class Blob:
             else:
                 x_mod = 1
             if(not (self.ability_holding_timer % 4)):
-                create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
+                create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
                 #createSFXEvent('water')
         elif(special_ability == "teleport"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
