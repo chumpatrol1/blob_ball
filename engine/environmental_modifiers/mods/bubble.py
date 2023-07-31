@@ -1,5 +1,5 @@
 from .base_class import em_base_class # Main Class
-
+from math import sin, cos, radians, pi
 # em_ prefix is to signify in other files that it's an Environment Modifier.
 class em_bubble(em_base_class):
     def __init__(self, *args, **kwargs):
@@ -10,7 +10,12 @@ class em_bubble(em_base_class):
         self.y_pos += self.y_speed
         self.y_speed += self.gravity
         self.lifetime -= 1
-        
-        if(self.lifetime == self.max_lifetime//2):
-            self.y_speed = -0.25
+
+        if(self.species == 'bubble' and self.lifetime < self.max_lifetime):
+            if(self.player == 1):
+                self.x_speed = sin(radians((self.max_lifetime - self.lifetime) *  pi)) * 10
+                self.y_speed = cos(radians((self.max_lifetime - self.lifetime)  * pi)) * -10
+            else:
+                self.x_speed = sin(radians((self.max_lifetime - self.lifetime) *  pi)) * -10
+                self.y_speed = cos(radians((self.max_lifetime - self.lifetime)  * pi)) * -10
 
