@@ -2908,7 +2908,7 @@ P2_Blob: joker, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-9712-ERROR-Game Crash at Sun Jul 30 01:23:19 2023 (Version 0.18.0a)
+16328-ERROR-Game Crash at Sun Jul 30 13:33:18 2023 (Version 0.18.0a)
 Traceback (most recent call last):
   File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
     game_state = run(game_state)
@@ -2916,16 +2916,127 @@ Traceback (most recent call last):
     new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
   File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
     game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
-  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 228, in handle_gameplay
-    blob.check_environmental_collisions(env_mod)
-  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1328, in check_environmental_collisions
-    self.take_damage(damage = 0, unblockable=True, unclankable=True, status_effects=[['c&d', 60], ['hypothermia', 60]])
-  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1455, in take_damage
-    self.status_effects[status_effect[0]] += status_effect[1]
-KeyError: 'c&d'
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1729, in move
+    create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\mods\glue_shot.py", line 7, in __init__
+    self.create_environmental_modifier = args[len(args)-1][0] # Should be the cem function.
+IndexError: list index out of range
 Game State: casual_match
 P1 Blob: arcade, is CPU: False
-P2_Blob: arcade, is CPU: False
+P2_Blob: glue, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9100-ERROR-Game Crash at Sun Jul 30 13:33:48 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1729, in move
+    create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\mods\glue_shot.py", line 7, in __init__
+    self.create_environmental_modifier = args[len(args)-1][0] # Should be the cem function.
+IndexError: list index out of range
+Game State: casual_match
+P1 Blob: glue, is CPU: False
+P2_Blob: glue, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15456-ERROR-Game Crash at Sun Jul 30 13:35:38 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1792, in move
+    create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\mods\spire_glyph.py", line 8, in __init__
+    self.create_environmental_modifier = args[len(args)-1][0] # Should be the cem function.
+IndexError: list index out of range
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: taco, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9472-ERROR-Game Crash at Sun Jul 30 13:37:00 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1725, in move
+    create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+KeyError: 'sharp_shadow'
+Game State: casual_match
+P1 Blob: merchant, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17488-ERROR-Game Crash at Sun Jul 30 13:37:37 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1722, in move
+    create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+KeyError: 'sharp_shadow'
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: merchant, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13164-ERROR-Game Crash at Sun Jul 30 13:38:32 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 212, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p1_blob.move(pressed), 1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1725, in move
+    create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 50, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+KeyError: 'sharp_shadow'
+Game State: casual_match
+P1 Blob: cactus, is CPU: False
+P2_Blob: merchant, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
