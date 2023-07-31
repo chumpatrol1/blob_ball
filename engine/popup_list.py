@@ -54,6 +54,7 @@ costume_unlock_splashes = { # Key is
     'cop/grayscale_1': ["cop_blob_1.png", "Grayscale Cop", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'boxer/grayscale_1': ["boxer_blob_1.png", "Grayscale Boxer", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'mirror/grayscale_1': ["mirror_blob_1.png", "Grayscale Mirror", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'mirror/dark_2': ["mirror_blob_2.png", "Dark Reflection", "Press block after selecting/this blob to toggle costumes!", "Play 20 Matches"],
     'fisher/grayscale_1': ["fisher_blob_1.png", "Grayscale Fisher", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'fisher/jew_2': ["fisher_blob_2.png", "Jew Fisher", "Press block after selecting/this blob to toggle costumes!", "Play 20 Matches"],
     'glue/grayscale_1': ["glue_blob_1.png", "Grayscale Glue", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],

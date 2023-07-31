@@ -455,7 +455,7 @@ class Ball:
                             self.status_effects['bubbled'] = hazard.lifetime
                             #print("EXCEPTION", self.y_center - (hazard.y_pos + 60))
                     
-                    if(self.bubble != hazard):
+                    if(self.bubble != hazard or self.bubble.lifetime == 1):
                         self.update_bubble_status(hazard)
 
                     continue
@@ -679,6 +679,8 @@ class Ball:
         self.bubble = bubble
         if(current_bubble):
             current_bubble.lifetime = 0
+            self.x_speed = current_bubble.x_speed * 2
+            self.y_speed = current_bubble.y_speed  * 2
         if(blob and self.status_effects['bubbled']):
             blob.take_damage(damage = 1, unblockable=True, unclankable=True)
             self.status_effects['bubbled'] = 0

@@ -227,7 +227,7 @@ def draw_blob_particles(game_display, blobs):
         if(blob.status_effects['hyped'] % 10 == 0 and blob.status_effects['hyped'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['thunder_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
 
-        if(blob.status_effects['nrg_drain'] % 10 == 0 and blob.status_effects['nrg_drain'] > 0):
+        if(blob.status_effects['nrg_fatigue'] % 10 == 0 and blob.status_effects['nrg_fatigue'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['spring_particle'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
 
         if(blob.status_effects['cards']['joker_particle']):
