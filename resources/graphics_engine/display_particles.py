@@ -368,10 +368,10 @@ def draw_console_sparks(console_pos):
         spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
         ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (console_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = console_pos[1] * (400/768), y_speed = random.randint(-10, -5), gravity = 0.5, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
 
-def draw_cartridge_sparks(cart_pos, cart_speed):
-    for x in range(0, 7):
+def draw_cartridge_sparks(sparkc, cart_pos, cart_speed, part_velocity=[0, 0]):
+    for x in range(0, sparkc):
         spark_particles = [particle_cache['thunder_particle'], particle_cache['fire_particle'], particle_cache['spring_particle']]
-        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (cart_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = cart_speed[0] + random.randint(-2, 2), y_pos = cart_pos[1] * (400/768), y_speed = cart_speed[1] + random.randint(-5, 0), gravity = 1, alpha = 255, fade = 3, ground_clip=False, lifetime = 255))
+        ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (cart_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = cart_speed[0] + random.randint(-2+part_velocity[0], 2+part_velocity[0]), y_pos = cart_pos[1] * (400/768), y_speed = cart_speed[1] + random.randint(-5+part_velocity[1], 0+part_velocity[1]), gravity = 1+random.randint(0, 1), alpha = 255, fade = 3, ground_clip=False, lifetime = 255 - random.randint(0, 30)))
 
 def draw_teleportation_pfx(tele_pos):
     for x in range(0, 7):
