@@ -167,7 +167,7 @@ class Ball:
                         self.x_speed *= self.bounciness
                         self.y_speed *= self.bounciness
                         for other_blob in blob.all_blobs.values():
-                            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+                            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer and other_blob.status_effects['silenced'] < 350):
                                 other_blob.status_effects['silenced'] += 360
                         self.update_bubble_status(None, blob)
                         #blob.take_damage(damage = 1, unblockable=True, unclankable=True)
@@ -263,7 +263,7 @@ class Ball:
         for other_blob in blob.all_blobs.values():
             if(other_blob.player != blob.player):
                 other_blob.collision_timer = collision_timer_duration
-            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer and other_blob.status_effects['silenced'] < 350):
                 other_blob.status_effects['silenced'] += 360
         #Stops the ball completely
         if(blob.block_timer == blob.block_timer_max - 3):
