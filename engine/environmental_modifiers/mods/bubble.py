@@ -1,5 +1,7 @@
 from .base_class import em_base_class # Main Class
 from math import sin, cos, radians, pi
+from resources.sound_engine.sfx_event import createSFXEvent
+
 # em_ prefix is to signify in other files that it's an Environment Modifier.
 class em_bubble(em_base_class):
     def __init__(self, *args, **kwargs):
@@ -18,4 +20,6 @@ class em_bubble(em_base_class):
             else:
                 self.x_speed = sin(radians((self.max_lifetime - self.lifetime) *  pi)) * -10
                 self.y_speed = cos(radians((self.max_lifetime - self.lifetime)  * pi)) * -10
+        if(self.lifetime == 5):
+            createSFXEvent('pop')
 

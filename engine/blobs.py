@@ -955,7 +955,7 @@ class Blob:
         elif(special_ability == "bubble"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
                 #Spire activation
-                createSFXEvent('glyph')
+                createSFXEvent('bubble')
                 #self.used_ability = "spire_wait"
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
