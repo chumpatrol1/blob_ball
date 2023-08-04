@@ -93,6 +93,7 @@ class Ball:
         self.image = type_to_image("soccer_ball")
         for effect in self.status_effects:
             self.status_effects[effect] = 0
+        self.bubble=None
 
     def check_blob_collisions(self):
         #The distance to p1's blob

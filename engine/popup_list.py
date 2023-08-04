@@ -19,7 +19,7 @@ blob_unlock_splashes = { # Key is Blob name, first value is image, second is blo
     'taco': ['taco_beta.png', "Taco Blob", "Press your ability button to/look at your menu!/Press a direction and press an action button/to change your stats mid-battle!"],
     'cactus': ['cactus_blob.png', "Cactus Blob", "Press your ability button to/shoot out a spiky ball!/It targets the ball, draining energy/ from enemies as it travels!"],
     'merchant': ['merchant_1.png', "Merchant Blob", "Open up shop with your ability button!/Simply pick a direction in order/to buy some fragile accessories!"],
-    'bubble': ['merchant_1.png', "Bubble Blob", "TODO: Write Description Here"],
+    'bubble': ['bubble_1.png', "Bubble Blob", "Press your ability button to/blow a bubble! The bubble picks/up the ball and launches it!"],
 }
 
 def find_blob_unlock(key):
