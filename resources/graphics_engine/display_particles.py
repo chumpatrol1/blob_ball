@@ -148,6 +148,7 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['icons'] = {}
         particle_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
         particle_cache['bubble'] = pg.image.load(cwd + "/resources/images/particles/bubble.png").convert_alpha()
+        particle_cache['bubble_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/bubble_particle.png").convert_alpha(), (40, 40))
         for icon in ability_image_dict:
             try:
                 ability_key = species_to_stars(icon, {})['special_ability']
@@ -355,6 +356,9 @@ def draw_ball_particles(game_display, ball, blobs):
                 else:
                     particle_cache['water_particle'].set_alpha(255)
                 game_display.blit(particle_cache['water_particle'], (ball.x_pos * (1000/1366), ((1240 - y*40) + randint(-10, 10)) * (400/768)))
+        
+    if(ball.status_effects['bubbled'] > 1):
+        ball_particle_memory.append(dpc.Particle(image = particle_cache['bubble_particle'], x_pos = ball.x_pos * (1000/1366), y_pos = ball.y_pos * (400/786) + 20, alpha = 150, x_speed = -1 * ball.x_speed + (randint(-9, 9)/3), y_speed = -1 * ball.y_speed, gravity = -0.2))
 
     ball_particle_memory = blit_and_update_particles(ball_particle_memory, game_display)
 

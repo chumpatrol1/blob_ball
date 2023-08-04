@@ -365,7 +365,18 @@ merchant_tips = [
 ]
 
 bubble_tips = [
-
+    tip_font.render("#1: Bubbles will float around in circles. The", False, text_color),
+    tip_font.render("direction is dependent on the player's team!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: While the ball is caught in a bubble, ", False, text_color),
+    tip_font.render("it gains a damaging effect! Touching the ball", False, text_color),
+    tip_font.render("will hurt you a little bit.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: While the ball is caught in a bubble,", False, text_color),
+    tip_font.render("many abilities will affect the bubble!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Popping the bubble at any point will launch", False, text_color),
+    tip_font.render("the ball, regardless of when or how!", False, text_color),
 ]
 
 def return_selected_blob_tips(selected_blob):

@@ -109,7 +109,7 @@ ability_image_dict = {
         'taco': ability_cwd + 'filling.png',
         'cactus': ability_cwd + 'cactus_spike.png',
         'merchant': ability_cwd + 'coin.png',
-        'bubble': ability_cwd + 'coin.png',
+        'bubble': ability_cwd + 'bubble.png',
         "random": icon_cwd + "boost_icon.png",
     }
 

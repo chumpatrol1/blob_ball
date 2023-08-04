@@ -1,5 +1,6 @@
 # Add a new import here for each modifier.
 from .bubble           import em_bubble
+from .cactus_spike     import em_cactus_spike
 from .cartridge        import em_cartridge
 from .console          import em_console
 from .glue_puddle      import em_glue_puddle
