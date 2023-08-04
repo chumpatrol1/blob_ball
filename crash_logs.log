@@ -3040,3 +3040,64 @@ P2_Blob: merchant, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2792-ERROR-Game Crash at Mon Jul 31 19:00:47 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 219, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 1827, in move
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 947, in ability
+    create_environmental_modifier(player = self.player, x_pos = self.x_center, y_pos = self.y_center, affects = {'enemy', 'ball'}, species = 'cactus_spike', lifetime = 60)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\environmental_modifiers\modifier_handler.py", line 51, in create_environmental_modifier
+    environmental_modifiers[species].append(em_def[species](player, affects, species, random_image, x_pos, y_pos, x_speed, y_speed, gravity, ground_clip, lifetime, hp, special_functions))
+KeyError: 'cactus_spike'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+20784-ERROR-Game Crash at Thu Aug  3 23:50:03 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 231, in handle_gameplay
+    sball.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\ball.py", line 485, in check_environmental_collisions
+    if(self.bubble == hazard or self.bubble.lifetime <= 1):
+AttributeError: 'NoneType' object has no attribute 'lifetime'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: wind, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+21128-ERROR-Game Crash at Fri Aug  4 00:00:06 2023 (Version 0.18.0a)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 152, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 233, in handle_gameplay
+    sball.check_blob_ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\ball.py", line 309, in check_blob_ability
+    if(self.bubble and self.player == 1):
+AttributeError: 'Ball' object has no attribute 'player'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: wind, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

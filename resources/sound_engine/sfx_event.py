@@ -37,6 +37,8 @@ name_to_file = {
     'wavedash': ['wavedash.wav'],
     'camera': ['camera.wav'],
     'teleport': ['teleport.wav'],
+    'bubble': ['bubble.wav'],
+    'pop': ['pop.wav'],
 }
 
 suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)

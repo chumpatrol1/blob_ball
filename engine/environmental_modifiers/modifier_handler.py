@@ -6,6 +6,7 @@ from .mods import *
 # For each modifier, add a definition. (pls keep alphabetical order, it cool)
 em_def = {
     'bubble': em_bubble,
+    'cactus_spike': em_cactus_spike,
     'cartridge': em_cartridge,
     'console': em_console,
     'glue_puddle': em_glue_puddle,
