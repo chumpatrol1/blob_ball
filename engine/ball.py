@@ -79,7 +79,9 @@ class Ball:
         self.status_effects = {
             'glued': 0,
             'zapped': 0,
+            'bubbled': 0,
         }
+        self.bubble = None
     
     ground = 1240
 
@@ -91,6 +93,7 @@ class Ball:
         self.image = type_to_image("soccer_ball")
         for effect in self.status_effects:
             self.status_effects[effect] = 0
+        self.bubble=None
 
     def check_blob_collisions(self):
         #The distance to p1's blob
@@ -114,6 +117,7 @@ class Ball:
                         self.x_speed = 0
                         blob.collision_timer = 0
                         self.info['blob_warp_collisions'] += 1
+                        self.update_bubble_status(None, blob)
                     elif(abs(blob.x_center - self.x_center) <= blob_collision_distance) and not self.grounded:
                         #True if x is close enough, and ball is airborne.
                         if(self.y_speed < 0): #Are we moving upwards?
@@ -128,6 +132,7 @@ class Ball:
                             else:
                                 self.info['blob_reflect_collisions'] += 1
                                 createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 +self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
+                            self.update_bubble_status(None, blob)
 
                 elif(blob.y_center >= self.y_center): #Is the ball above the blob?
                     if(p1_vector.distance_to(ball_vector) < 80):
@@ -163,8 +168,10 @@ class Ball:
                         self.x_speed *= self.bounciness
                         self.y_speed *= self.bounciness
                         for other_blob in blob.all_blobs.values():
-                            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+                            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer and other_blob.status_effects['silenced'] < 350):
                                 other_blob.status_effects['silenced'] += 360
+                        self.update_bubble_status(None, blob)
+                        #blob.take_damage(damage = 1, unblockable=True, unclankable=True)
                         #print("speed", p1_ball_collision, "loc diff", p1_ball_nv)
                     elif p1_vector.distance_to(ball_vector) <= blob_collision_distance and ((self.goal_grounded and blob.y_pos < 875) or not self.goal_grounded): #Standard collision
                         self.info['blob_standard_collisions'] += 1
@@ -182,7 +189,7 @@ class Ball:
                         self.y_speed *= self.bounciness
                         
                         createSFXEvent('ball_blob_bounce', volume_modifier = ((self.x_speed**2 + self.y_speed**2)/(self.x_speed_max**2 + self.y_speed_max**2))**(1/3))
-                    
+                        self.update_bubble_status(None, blob)
                 else:
                     #Debug
                     if(abs(blob.x_center - self.x_center) < blob_collision_distance):
@@ -204,6 +211,7 @@ class Ball:
                         self.x_speed = 0
                         blob.collision_timer = 0
                         self.info['blob_warp_collisions'] += 1
+                    self.update_bubble_status(None, blob)
             self.check_ceiling_collisions()
 
     def check_block_collisions(self):
@@ -256,22 +264,29 @@ class Ball:
         for other_blob in blob.all_blobs.values():
             if(other_blob.player != blob.player):
                 other_blob.collision_timer = collision_timer_duration
-            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer):
+            if(other_blob.special_ability == "hook" and other_blob.special_ability_timer and other_blob.status_effects['silenced'] < 350):
                 other_blob.status_effects['silenced'] += 360
         #Stops the ball completely
         if(blob.block_timer == blob.block_timer_max - 3):
             self.info['blocked'] += 1
         self.bounciness = 0.1
         self.blocked_timer = 20
+        self.update_bubble_status(None)
 
     def check_blob_ability(self):
         for blob in self.all_blobs.values():
             if("fireball" in blob.used_ability):
                 self.x_speed *= (1.05 - (self.x_speed/1000))
                 self.y_speed *= (1.05 - (self.y_speed/1000))
+                if(self.bubble):
+                    self.bubble.x_speed = self.bubble.x_orbit * 1.05
+                    self.bubble.y_speed = self.bubble.y_orbit * 1.05
             elif("snowball" in blob.used_ability):
                 self.x_speed *= .975
                 self.y_speed *= (.9 - (self.y_speed/1000))
+                if(self.bubble):
+                    self.bubble.x_speed = self.bubble.x_orbit * -.4
+                    self.bubble.y_speed = self.bubble.y_orbit * -.4
             elif("geyser" in blob.used_ability):
                 try:
                     geyser_power = math.sqrt(Ball.ground - self.y_pos)/4-5
@@ -281,13 +296,22 @@ class Ball:
                             self.y_speed += geyser_power #Effectively, it's twice as powerful
                     else:
                         self.y_speed -= 0.8
+                    if(self.bubble and geyser_power < 0):
+                        self.bubble.y_speed += geyser_power
                 except Exception as exception:
                     self.y_speed -= 5
+                    if(self.bubble):
+                        self.bubble.y_speed -= 5
             elif("gale" in blob.used_ability and not blob.collision_timer):
                 if(blob.player == 1 and self.x_speed < 15):
                     self.x_speed += 0.4
                 elif(blob.player == 2 and self.x_speed > -15):
                     self.x_speed -= 0.4
+                if(self.bubble and blob.player == 1):
+                    self.bubble.x_speed = 4
+                elif(self.bubble and blob.player == 2):
+                    self.bubble.x_speed = -4
+                    
             elif("stoplight" in blob.used_ability):
                 self.x_speed = 0
                 self.y_speed = 0
@@ -297,9 +321,14 @@ class Ball:
                 for other_blob in blob.all_blobs.values():
                     if(other_blob.special_ability == "hook" and blob.special_ability_timer):
                         other_blob.special_ability_timer = 1
+                self.update_bubble_status()
             elif("mirror" in blob.used_ability):
                 self.x_speed *= -0.9
                 self.y_speed *= -0.5
+                if(self.bubble and self.bubble.player == 1):
+                    self.bubble.player = 2
+                elif(self.bubble and self.bubble.player == 2):
+                    self.bubble.player = 1
             elif("hook" in blob.used_ability):
                 if(blob.ability_holding_timer > blob.special_ability_delay and not self.species == "blocked_ball"):
                     # After the delay, start reeling the ball in. This is a gradual
@@ -327,6 +356,7 @@ class Ball:
                     '''if(abs(self.x_speed) > 5):
                         self.x_speed *= 0.95'''
                     # Change the number after // - bigger means the pulling force is weaker
+                    self.update_bubble_status() # Pop the current bubble, if possible
                 elif(not self.species == "blocked_ball"):
                     x_dist = (self.x_center - blob.x_center)**2
                     y_dist = (self.y_center - blob.y_center)**2
@@ -365,8 +395,13 @@ class Ball:
         for hazard in environment['spire_spike']:
             if("ball" in hazard.affects):
                 if(hazard.lifetime == hazard.max_lifetime - 1 and self.y_pos >= 900):
+                    if(self.bubble):
+                        print("Spire called!")
+                        self.update_bubble_status()
                     createSFXEvent('ball_spire_hit')
                     self.y_speed = -50
+                    
+                    
         
         for hazard in environment['thunder_glyph']:
             hazard.x_pos = self.x_pos - 40
@@ -374,20 +409,25 @@ class Ball:
         for hazard in environment['thunder_bolt']:
             if("ball" in hazard.affects):
                 if(hazard.lifetime == hazard.max_lifetime - 1):
+                    if(self.bubble):
+                        self.update_bubble_status()
                     self.y_speed = Ball.ground - self.y_pos
                     self.status_effects['zapped'] += 120
+                    
         
         for hazard in environment['cactus_spike']:
             if("ball" in hazard.affects):
                 
                 ball_vector = pg.math.Vector2(self.x_center, self.y_center + 50)
-                hazard_vector = pg.math.Vector2(hazard.x_pos, hazard.y_pos)
+                hazard_vector = pg.math.Vector2(hazard.x_pos, hazard.y_pos + 20)
 
                 #print("X", hazard.x_pos, self.x_pos)
                 #print("Y", hazard.y_pos, self.y_pos)
                 
                 dist_vector = hazard_vector.distance_to(ball_vector)
                 if(dist_vector < 75):
+                    if(self.bubble):
+                        self.update_bubble_status()
                     try:
                         hazard.lifetime = 0
                         ball_nv = pg.math.Vector2(self.x_pos - hazard.x_pos, (self.y_pos + 50) - hazard.y_pos)
@@ -400,6 +440,7 @@ class Ball:
                         if(not self.species == "blocked_ball"):
                             self.x_speed = 0
                             self.y_speed = -10
+                    
 
                     continue
 
@@ -412,6 +453,45 @@ class Ball:
                 hazard.x_pos -= hazard_nv[0]
                 hazard.y_pos -= hazard_nv[1] * 2
                 #print(hazard_nv.length())
+
+        for hazard in environment['bubble']:
+            if("ball" in hazard.affects):
+                ball_vector = pg.math.Vector2(self.x_center, self.y_center)
+                hazard_vector = pg.math.Vector2(hazard.x_pos + 60, hazard.y_pos + 60)
+
+                #print("X", hazard.x_pos, self.x_pos)
+                #print("Y", hazard.y_pos, self.y_pos)
+                
+                dist_vector = hazard_vector.distance_to(ball_vector)
+                #print(dist_vector, self.y_center, hazard.y_pos + 60)
+                if(dist_vector < 135 and hazard.lifetime > 1):
+                    try:
+                        #hazard.lifetime = 0
+                        #ball_nv = pg.math.Vector2(self.x_pos - hazard.x_pos, (self.y_pos + 50) - hazard.y_pos)
+                        #ball_nv.scale_to_length(20)
+                        #if(not self.species == "blocked_ball"):
+                            #self.x_speed = ball_nv[0]
+                            #self.y_speed = ball_nv[1]
+                        self.x_speed = hazard.x_speed
+                        self.y_speed = hazard.y_speed
+                        self.x_pos = hazard.x_pos + 60 - 5
+                        self.y_pos = hazard.y_pos + 30
+                        self.status_effects['bubbled'] = hazard.lifetime
+                        #print("TRY", self.y_center - (hazard.y_pos + 60))
+                    except:
+                        #hazard.lifetime = 0
+                        if(not self.species == "blocked_ball"):
+                            self.x_speed = 0
+                            self.y_speed = -10
+                            self.x_pos = hazard.x_pos + 60 - 5
+                            self.y_pos = hazard.y_pos + 30
+                            self.status_effects['bubbled'] = hazard.lifetime
+                            #print("EXCEPTION", self.y_center - (hazard.y_pos + 60))
+                    
+                    if(self.bubble != hazard or self.bubble.lifetime == 1):
+                        self.update_bubble_status(hazard)
+
+                    continue
 
 
 
@@ -443,6 +523,10 @@ class Ball:
         self.previous_locations = self.previous_locations[1:]
 
         #Traction/Friction
+        if(self.bubble):
+            self.x_speed = self.bubble.x_orbit + self.bubble.x_speed
+            self.y_speed = self.bubble.y_orbit + self.bubble.y_speed
+
         def apply_traction_friction():
             ball_traction = self.traction
             if(self.status_effects['glued']):
@@ -624,4 +708,16 @@ class Ball:
         for effect in self.status_effects:
             if(self.status_effects[effect] > 0):
                 self.status_effects[effect] -= 1
+                if(self.status_effects["bubbled"] == 0):
+                    self.bubble = None
         
+    def update_bubble_status(self, bubble = None, blob = None):
+        current_bubble = self.bubble
+        self.bubble = bubble
+        if(current_bubble):
+            current_bubble.lifetime = 0
+            self.x_speed = (current_bubble.x_speed + current_bubble.x_orbit) * 2
+            self.y_speed = (current_bubble.y_speed + current_bubble.y_orbit)  * 2
+        if(blob and self.status_effects['bubbled']):
+            blob.take_damage(damage = 1, unblockable=True, unclankable=True)
+            self.status_effects['bubbled'] = 0

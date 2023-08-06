@@ -54,6 +54,7 @@ def draw_ball(game_display, ball):
     if(ball.y_pos < 210): # Why is this here?
         y_pos = 210 # TODO: Get to the bottom of this.
     game_display.blit(image_cache[bname], (ball.x_pos * (1000/1366),  y_pos * (400/768)))
+    #pg.draw.rect(game_display, (255, 0, 0), pg.Rect(ball.x_center * (1000/1366) - 5, ball.y_center * (400/768) - 5, 10, 10))
 
 cooldown_species = ['instant', 'delayed']
 

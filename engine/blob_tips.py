@@ -364,6 +364,21 @@ merchant_tips = [
     tip_font.render("and getting passive damage reduction and faster blocks.", False, text_color),
 ]
 
+bubble_tips = [
+    tip_font.render("#1: Bubbles will float around in circles. The", False, text_color),
+    tip_font.render("direction is dependent on the player's team!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#2: While the ball is caught in a bubble, ", False, text_color),
+    tip_font.render("it gains a damaging effect! Touching the ball", False, text_color),
+    tip_font.render("will hurt you a little bit.", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#3: While the ball is caught in a bubble,", False, text_color),
+    tip_font.render("many abilities will affect the bubble!", False, text_color),
+    tip_font.render("", False, text_color),
+    tip_font.render("#4: Popping the bubble at any point will launch", False, text_color),
+    tip_font.render("the ball, regardless of when or how!", False, text_color),
+]
+
 def return_selected_blob_tips(selected_blob):
     tips_dict = {
         'quirkless': quirkless_tips,
@@ -386,6 +401,7 @@ def return_selected_blob_tips(selected_blob):
         'taco': taco_tips,
         'cactus': cactus_tips,
         'merchant': merchant_tips,
+        'bubble': bubble_tips,
     }
     try:
         return tips_dict[selected_blob]

@@ -14,7 +14,7 @@ original_css_display_list_blobs = [ #Creates an array of arrays, which contains 
 [["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
 [["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"],],
 [["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/random_blob.png", "Random Blob", "Random Ability"], ["/blobs/taco_blob.png", "Taco Blob", "Filling"], ["/blobs/cactus_blob.png", "Cactus Blob", "Spike"], ["/blobs/merchant_blob.png", "Merchant Blob", "Shop"],],
-[["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/bubble_blob.png", "Bubble Blob", "Bubble"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 [["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
 ]
 
@@ -43,7 +43,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (5, 2): "taco",
     (6, 2): "cactus",
     (7, 2): "merchant",
-    (1, 3): "coming_soon",
+    (1, 3): "bubble",
     (2, 3): "coming_soon",
     (3, 3): "coming_soon",
     (4, 3): "coming_soon",
@@ -81,6 +81,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "taco": False,
     "cactus": False,
     "merchant": False,
+    "bubble": False,
 }
 
 unlocked_blobs = []
@@ -337,7 +338,7 @@ costume_unlock_dict = {
     "king": {"grayscale_1": False},
     "cop": {"grayscale_1": False},
     "boxer": {"grayscale_1": False},
-    "mirror": {"grayscale_1": False},
+    "mirror": {"grayscale_1": False, "dark_2": False},
     "fisher": {"grayscale_1": False, "jew_2": False},
     "glue": {"grayscale_1": False},
     "arcade": {"grayscale_1": False},
@@ -346,6 +347,7 @@ costume_unlock_dict = {
     "taco": {"grayscale_1": False},
     "cactus": {"grayscale_1": False},
     "merchant": {"grayscale_1": False},
+    "bubble": {"grayscale_1": False}
 }
 
 def load_costume_unlocks(cwd):

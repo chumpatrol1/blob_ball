@@ -43,7 +43,7 @@ def ability_to_classification(ability):
     held_abilities = ['fireball', 'snowball', 'geyser', 'gale', 'hook', 'gluegun']
     if(ability in held_abilities):
         return "held"
-    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike', 'shop']
+    instant_abilities = ['boost', 'c&d', 'pill', 'tax', 'stoplight', 'mirror', 'teleport', 'cardpack', 'monado', 'spike', 'shop', 'bubble']
     if(ability in instant_abilities):
         return "instant"
     delayed_abilities = ['spire', 'thunderbolt', 'starpunch']
@@ -68,7 +68,7 @@ def species_to_image(species, costume):
         'king': {0: (blob_cwd + "king_blob.png", blob_cwd + "king_blob_-1.png"), 1: (blob_cwd + "king_blob_1.png", blob_cwd + "king_blob_-1.png")},
         'cop': {0: (blob_cwd + "cop_blob.png", blob_cwd + "cop_blob_-1.png"), 1: (blob_cwd + "cop_blob_1.png", blob_cwd + "cop_blob_-1.png")},
         'boxer': {0: (blob_cwd + "boxer_blob.png", blob_cwd + "boxer_blob_-1.png"), 1: (blob_cwd + "boxer_blob_1.png", blob_cwd + "boxer_blob_-1.png")},
-        'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png"), 1: (blob_cwd + "mirror_blob_1.png", blob_cwd + "mirror_blob_-1.png")},
+        'mirror': {0: (blob_cwd + "mirror_blob.png", blob_cwd + "mirror_blob_-1.png"), 1: (blob_cwd + "mirror_blob_1.png", blob_cwd + "mirror_blob_-1.png"), 2: (blob_cwd + "mirror_blob_2.png", blob_cwd + "mirror_blob_-2.png")},
         'fisher': {0: (blob_cwd + "fisher_blob.png", blob_cwd + "fisher_blob_-1.png"), 1: (blob_cwd + "fisher_blob_1.png", blob_cwd + "fisher_blob_-1.png"), 2: (blob_cwd + "fisher_blob_2.png", blob_cwd + "fisher_blob_-2.png")},
         'glue': {0: (blob_cwd + "glue_blob.png", blob_cwd + "glue_blob_-1.png"), 1: (blob_cwd + "glue_blob_1.png", blob_cwd + "glue_blob_-1.png")},
         'arcade': {0: (blob_cwd + "arcade_blob.png", blob_cwd + "arcade_blob_-1.png"), 1: (blob_cwd + "arcade_blob_1.png", blob_cwd + "arcade_blob_-1.png")},
@@ -76,6 +76,7 @@ def species_to_image(species, costume):
         'taco': {0: (blob_cwd + "taco_blob.png", blob_cwd + "taco_blob_-1.png"), 1: (blob_cwd + "taco_blob_1.png", blob_cwd + "taco_blob_-1.png")},
         'cactus': {0: (blob_cwd + "cactus_blob.png", blob_cwd + "cactus_blob_-1.png"), 1: (blob_cwd + "cactus_blob_1.png", blob_cwd + "cactus_blob_-1.png")},
         'merchant': {0: (blob_cwd + "merchant_blob.png", blob_cwd + "merchant_blob_-1.png"), 1: (blob_cwd + "merchant_blob_1.png", blob_cwd + "merchant_blob_-1.png")},
+        'bubble': {0: (blob_cwd + "bubble_blob.png", blob_cwd + "bubble_blob_-1.png"), 1: (blob_cwd + "bubble_blob_1.png", blob_cwd + "bubble_blob_-1.png")},
         'random': {0: (blob_cwd + "random_blob.png", blob_cwd + "random_blob.png")},
         'locked': {0: (blob_cwd + "locked_blob.png", blob_cwd + "locked_blob.png")},
         'invisible': {0: (blob_cwd + "invisible_blob.png", blob_cwd + "invisible_blob.png")},
@@ -132,6 +133,7 @@ class Blob:
         self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
         self.base_top_speed = self.top_speed #Non-boosted
         self.x_speed = 0
+        self.x_kb = 0
         self.y_speed = 0
         self.x_pos = x_pos #Where the blob is on the X axis
         self.y_pos = y_pos #Where the blob is on the Y axis, 1200 is grounded
@@ -287,7 +289,7 @@ class Blob:
             "loaned": 0,
             "hyped": 0,
             "silenced": 0,
-            "nrg_drain": 0,
+            "nrg_fatigue": 0,
         }
 
         if(self.species == "doctor"):
@@ -307,14 +309,14 @@ class Blob:
 
     def cooldown(self): #Reduces timers
         if(self.focusing):
-            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)) * 5 
+            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)) * 5 
             self.info['time_focused'] += 1
             self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
             if(self.y_pos < Blob.ground):
                 self.focusing = False
                 self.focus_lock = 0
         else:
-            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_drain"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3) + (bool(self.status_effects['shop']['passive_equip'] == 'soul_catcher') * 10)
 
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
@@ -407,7 +409,7 @@ class Blob:
                 try:
                     self.status_effects[effect] -= 1
 
-                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_drain'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
+                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_fatigue'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
                         self.status_effects[effect] = 1
 
                     if((effect == 'taxing' or effect == 'taxed') and self.status_effects[effect] == 1):
@@ -649,7 +651,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = special_ability_delay, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = special_ability_delay, y_pos = 700, special_functions = [create_environmental_modifier])
             else:
                 return
         elif(special_ability == "thunderbolt"):
@@ -666,7 +668,7 @@ class Blob:
                 self.special_ability_cooldown = cooldown
                 self.special_ability_timer = self.special_ability_cooldown #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
-                create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = special_ability_delay, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = special_ability_delay, y_pos = 700, special_functions = [create_environmental_modifier])
             else:
                 return
         elif(special_ability == "gale"):
@@ -824,7 +826,7 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown
                 self.special_ability_meter -= cost
                 #self.kick_cooldown += 120
-                create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = special_ability_delay, y_pos = self.y_center)
+                create_environmental_modifier(player = self.player, affects = {'enemy'}, species = 'starpunch_wait', lifetime = special_ability_delay, y_pos = self.y_center, special_functions = [create_environmental_modifier])
                 createSFXEvent('boxing_bell')
             else:
                 return
@@ -860,7 +862,6 @@ class Blob:
                 self.special_ability_timer = self.special_ability_cooldown_max #Set the cooldown between uses timer
                 self.special_ability_meter -= cost #Remove some SA meter
                 self.ability_holding_timer = 0
-                self.status_effects['overheat'] += 5
                 #createSFXEvent('water')
             else:
                 return
@@ -884,7 +885,7 @@ class Blob:
             else:
                 x_mod = 1
             if(not (self.ability_holding_timer % 4)):
-                create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600)
+                create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = (self.y_speed/2) - 7, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
                 #createSFXEvent('water')
         elif(special_ability == "teleport"):
             if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
@@ -951,7 +952,15 @@ class Blob:
                 self.status_effects['menu']['open'] = True
                 self.status_effects['menu']['type'] = 'shop'
                 self.status_effects['menu']['time'] = 0
-                
+        elif(special_ability == "bubble"):
+            if(self.special_ability_meter >= cost and self.special_ability_cooldown <= 0):
+                #Spire activation
+                createSFXEvent('bubble')
+                #self.used_ability = "spire_wait"
+                self.special_ability_cooldown = cooldown
+                self.special_ability_timer = cooldown #Set the cooldown between uses timer
+                self.special_ability_meter -= cost #Remove some SA meter
+                create_environmental_modifier(player = self.player, x_pos = self.x_center - 75, y_pos = self.y_center - 300, y_speed= -0.25, gravity=0, affects = {'ball'}, species = 'bubble', lifetime = 480)
         
         if(card == "" and self.status_effects['cards']['ability']):
             #print(card, self.status_effects['cards']['ability'])
@@ -1064,8 +1073,12 @@ class Blob:
                 self.boost_cooldown = 10 * Blob.timer_multiplier
             self.boost_cooldown_timer = self.boost_cooldown_max//2
             #print(self.status_effects['cards']['boost'])
-            self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
-            self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
+            try:
+                self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['boost'])
+                self.status_effects['cards']['recharge'].add(self.status_effects['cards']['boost'])
+            except Exception as ex:
+                print("Tried to remove", ex, "from lineup")
+
             self.status_effects['cards']['boost'] = None
             self.recharge_indicators['ability_swap'] = True
     
@@ -1082,7 +1095,7 @@ class Blob:
                     if(self.species == "ice"):
                         status_effects.append(['hypothermia', 180])
                     elif(self.species == "arcade" and not blob.block_timer and not blob.kick_timer):
-                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 480, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
+                        create_environmental_modifier(blob.player, affects = {'self'}, species = 'console', lifetime = 360, hp = 1, x_pos = self.x_center, y_pos = self.y_center - 20, gravity = 0.5)
                     elif(self.species == "fire"):
                         status_effects.append(['overheat', 300])
                     elif(self.species == "boxer"):
@@ -1305,9 +1318,17 @@ class Blob:
                 if(self.y_pos > Blob.ground):
                     self.y_pos = Blob.ground
                 teleported = True
+                self.kick(ignore_cooldown=True)
                 createSFXEvent('teleport')
                 draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+            elif(hazard.player != self.player):
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    if(self.status_effects['judged'] < 60):
+                        self.status_effects['judged'] = 60
+                    if(self.status_effects['hypothermia'] < 60):
+                        self.status_effects['hypothermia'] = 60#
+                    #self.take_damage(damage = 0, unblockable=True, unclankable=True, status_effects=[['judged', 60], ['hypothermia', 60]])
         
         for hazard in environment['royal_loan']:
             if(hazard.player == self.player and hazard.lifetime == 1):
@@ -1337,7 +1358,7 @@ class Blob:
                     if(self.block_timer):
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_drain', 300]])
+                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
                     hazard.affects.add(self.player)
                     if(self.status_effects['reflecting'] > 1):
                         self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
@@ -1349,7 +1370,8 @@ class Blob:
                 hazard.x_pos = self.x_center - 20
                 hazard.y_pos = self.y_center - 20
             
-            if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+            if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and\
+                self.y_center - 185 <= hazard.y_pos <= self.y_center + 175):
                 accumulated_damage = 3
                 stun_amount = 120
                 self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
@@ -1425,11 +1447,11 @@ class Blob:
             self.info['damage_taken'] += damage
             self.status_effects['stunned'] = stun_amount
             self.y_speed = y_speed_mod
-            self.x_speed = x_speed_mod
+            self.x_kb = x_speed_mod
             createSFXEvent('hit')
             if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
                 self.toggle_recharge_indicator('damage_flash')
-            if(self.special_ability == "hook" and self.special_ability_timer and self.status_effects['silenced'] < 360):
+            if(self.special_ability == "hook" and self.special_ability_timer and self.status_effects['silenced'] < 359):
                 print(self.status_effects['silenced'], "BLOB")
                 self.status_effects['silenced'] += 360
 
@@ -1461,6 +1483,7 @@ class Blob:
     def reset(self, ruleset):
         self.x_speed = 0
         self.y_speed = 0
+        self.x_kb = 0
         if(self.player == 1):
             self.x_pos = 100
             self.facing = 'right'
@@ -1583,6 +1606,7 @@ class Blob:
                     if(self.x_pos <= 0): #Are we in danger of going off screen?
                         self.x_speed = 0
                         self.x_pos = 0
+                        self.x_kb /= 2
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed > 0):
@@ -1614,6 +1638,7 @@ class Blob:
                     if(self.x_pos >= 1700): #Are we in danger of going off screen?
                         self.x_speed = 0
                         self.x_pos = 1700
+                        self.x_kb /= 2
                     else:
                         if(abs(self.x_speed) < blob_speed):
                             if(self.x_speed < 0):
@@ -1700,7 +1725,21 @@ class Blob:
                         self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
                     else:
                         self.x_speed -= blob_friction #Normal deceleration
-        self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        if(not self.x_kb):
+            self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        else:
+            self.x_pos += self.x_kb
+            self.x_speed = 0
+            if(self.x_kb > 1 and self.y_pos == Blob.ground):
+                self.x_kb -= blob_traction
+            elif(self.x_kb > 1 and self.y_pos != Blob.ground):
+                self.x_kb -= blob_friction
+            elif(self.x_kb < -1 and self.y_pos == Blob.ground):
+                self.x_kb += blob_traction
+            elif(self.x_kb < -1 and self.y_pos != Blob.ground):
+                self.x_kb += blob_friction
+            else:
+                self.x_kb = 0
         self.info['x_distance_moved'] += abs(self.x_speed)
         if(self.x_pos <= 0): #Don't move off screen!
             self.x_speed = 0
@@ -1710,19 +1749,22 @@ class Blob:
             self.x_pos = 1700
         
         if(wavedashed and self.status_effects['shop']['defense_equip'] == 'sharp_shadow'):
-            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
             self.status_effects['shop']['defense_durability'] -= 1
-        elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= 200 * Blob.nrg_multiplier):
-            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20)
-            self.special_ability_meter -= 200 * Blob.nrg_multiplier
+        elif(wavedashed and self.species == "cactus" and self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
+            create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=25, x_pos=self.x_center-20, y_pos=self.y_center-20, special_functions = [create_environmental_modifier])
+            self.special_ability_meter -= self.special_ability_cost
+            self.special_ability_cooldown = self.special_ability_cooldown_max
         elif(wavedashed and self.species == "glue" and self.special_ability_meter >= 300 * Blob.nrg_multiplier):
             x_mod = 1 if self.facing == 'left' else -1
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (5*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (7*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)            
-            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600)
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (5*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (7*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (9*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])            
+            create_environmental_modifier(self.player, affects = {'enemy', 'self', 'ball'}, species = 'glue_shot', x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (11*self.x_speed/4) + (6*x_mod), y_speed = -1, gravity = 0.25, lifetime = 600, special_functions = [create_environmental_modifier])
             self.special_ability_meter -= 300 * Blob.nrg_multiplier
+        elif(wavedashed and self.species == 'cactus'):
+            '''print(self.special_ability_timer, self.special_ability_cooldown, self.special_ability_cost)'''
         #VERTICAL MOVEMENT
         if('up' in pressed and self.y_pos == Blob.ground and not menu_open): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
@@ -1780,7 +1822,7 @@ class Blob:
             self.y_pos = Blob.ground
             self.impact_land_frames = 10
             if(self.status_effects['monado_effect'] == "JUMP"):
-                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700)
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700, special_functions = [create_environmental_modifier])
                 createSFXEvent('glyph')
         
         #ABILITY

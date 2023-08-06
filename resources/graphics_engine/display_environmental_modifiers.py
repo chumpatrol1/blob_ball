@@ -1,6 +1,7 @@
 from engine.environmental_modifiers import return_environmental_modifiers
 from resources.graphics_engine.display_particles import return_particle_cache
 import pygame as pg
+import math
 
 modifier_images = {
     'glue_shot': 'glue_shot',
@@ -24,6 +25,7 @@ modifier_images = {
     'royal_loan': 'taxation',
     'cactus_spike': 'spike_ball',
     'sharp_shadow': 'sharp_shadow',
+    'bubble': 'bubble',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))
@@ -100,6 +102,18 @@ def draw_environmental_modifiers(game_display, ):
         elif(modifier == 'sharp_shadow'):
             for individual in modifiers[modifier]:
                 game_display.blit(particle_cache[mod_key], ((individual.x_pos - 105) * (1000/1366), (individual.y_pos - 90) * (382/768)))
+        elif(modifier == 'bubble'):
+            for individual in modifiers[modifier]:
+                image = particle_cache[mod_key].convert_alpha()
+                if(individual.lifetime < 120):
+                    bubble_alpha = 255-abs(200*math.cos(math.radians(individual.lifetime*21/4)))
+                    # Good values: 27/4, 15/4, 21/4, 9/4, 3/4
+                    image.set_alpha(bubble_alpha)
+                
+                    #print(bubble_alpha)
+                game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+                
         else:
             for individual in modifiers[modifier]:
                 game_display.blit(particle_cache[mod_key], (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+                #pg.draw.rect(game_display, (255, 0, 0), pg.Rect(individual.x_pos * (1000/1366) + 55, individual.y_pos * (382/768) + 55, 10, 10))
