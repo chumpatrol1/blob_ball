@@ -1,13 +1,13 @@
 # blob_ball
 Slime Soccer type game
 
-**v0.17.1b**
+**v0.18.0b**
 
 
 **Features:**
 * Casual Matches!
-* 15 of the exact same blob!
-* 20 unique blobs!
+* 13 of the exact same blob!
+* 21 unique blobs!
 * Physics system that works 99.99% of the time!
 * High Octane Matches!
 * Lots of advanced tech!
@@ -42,10 +42,8 @@ Slime Soccer type game
 
 
 **Changelog**
-* Added Joker Blob
-* Added Taco Blob
-* Added Cactus Blob
-* Added Merchant Blob
-* Balanced a large chunk of the cast
-* Default ruleset changed to have 10 goals and longer match timer
+* Added Bubble Blob
+* Optimized Environmental Modifiers like Glue etc.
+* Added a new soundtrack, "Monarchy 2", by Allan "Quackus" Weiner!
 * Fixed various bugs
+* Full Changelog can be found at https://docs.google.com/document/d/1M0mxPMobF79kyU8XHRvIrWKbIk6v8WotAPLwUnbOuFg

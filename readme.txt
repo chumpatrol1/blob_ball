@@ -8,7 +8,7 @@ Both players start on opposite sides of the field, with a white ball in the midd
 Players can push the ball on contact with their characters.
 If the ball goes into the opposite colored zone, you score a point!
 You can attack your enemy with your kick or with some abilities. If your opponent gets KO'd, you score a point!
-Score 5 points to win - this can be adjusted in the "Rules" Menu
+Score 10 points to win - this can be adjusted in the "Rules" Menu
 
 Special Buttons:
 Kicks launch the ball and turn it red. If your opponent is nearby, they will take 2 damage!
@@ -26,6 +26,7 @@ Press down while in the air to fall more quickly!
 Press down while on the ground to Focus - this builds up energy more quickly!
 Press up while focusing to cancel your focus - you'll be in the air though!
 If you are moving at maximum speed, you can tap the opposite direction to wavebounce (reversing direction quickly!)
+Pressing left or right while focusing causes you to dash quickly!
 
 **Default Controls (Can be Adjusted under Settings -> Remap Keyboard)**
 *P1:*
