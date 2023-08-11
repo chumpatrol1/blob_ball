@@ -55,7 +55,7 @@ def force_load_blobs():
     blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
     unload_css()
 
-def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob):
+def css_blobs(game_display):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
@@ -93,6 +93,8 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
         token_cache['cpu2_ghost'] = token_cache['cpu2_ball'].convert_alpha()
         token_cache['cpu2_ghost'].set_alpha(200)
 
+        token_cache['red_hands'] = pg.image.load(cwd + "/resources/images/css_icons/lame_cursor.png").convert_alpha()
+
         token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (51, 51))
         
         bic_cached = True
@@ -109,7 +111,7 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
                 game_display.blit(blob, (x_align, 768*(y * (100/768)) - (768*(20/768)) - (blob.get_height() - 51)/2))
         x = 0
 
-    if(not p1_selector_position[4]):
+    '''if(not p1_selector_position[4]):
         p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
     else:
         # TODO: Check costume thing
@@ -154,10 +156,10 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
         game_display.blit(p2_selected_blob, (1024, 576 - (p2_selected_blob.get_height()-110)/2))
 
     if(p2_selector_position[3] == 1):
-        game_display.blit(token_cache['cpu_icon'], (1225, 575))
+        game_display.blit(token_cache['cpu_icon'], (1225, 575))'''
 
 
-    menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
+    '''menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (5*1366//6, 11*768//12)
     game_display.blit(menu_text, text_rect)
@@ -173,64 +175,12 @@ def css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob,
     menu_text = font_cache['blob_description'].render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (50, 50, 255))
     text_rect = menu_text.get_rect()
     text_rect.center = (1366//6, 24*768//25)
-    game_display.blit(menu_text, text_rect)
+    game_display.blit(menu_text, text_rect)'''
 
 def draw_css(game_display, info_getter, settings):
     global cwd
-    p1_selector_position = info_getter[0]
-    p2_selector_position = info_getter[1]
-    p1_blob = info_getter[2]
-    p2_blob = info_getter[3]
-    p1_ghost_position = info_getter[4]
-    p2_ghost_position = info_getter[5]
 
     draw_background(game_display, "css", settings)
-    css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)
-
-    if(not p1_selector_position[3]): #Are we a CPU?
-        if(p1_selector_position[2] == 0):
-            p1_ball = token_cache['p1_ball']
-        else:
-            p1_ball = token_cache['p1_selected']
-    else:
-        if(p1_selector_position[2] == 0):
-            p1_ball = token_cache['cpu1_ball']
-        else:
-            p1_ball = token_cache['cpu1_selected']
-
-    if(not p2_selector_position[3]):
-        if(p2_selector_position[2] == 0):
-            p2_ball = token_cache['p2_ball']
-        else:
-            p2_ball = token_cache['p2_selected']
-    else:
-        if(p2_selector_position[2] == 0):
-            p2_ball = token_cache['cpu2_ball']
-        else:
-            p2_ball = token_cache['cpu2_selected']
-
-    game_display.blit(p1_ball, ((136 * (p1_selector_position[0] + 1) + 1366*(1/135)), 100 * (p1_selector_position[1] + 1) - 25))
-    game_display.blit(p2_ball, ((136 * (p2_selector_position[0] + 1) + 1366*(8/135)), 100 * (p2_selector_position[1] + 1) - 25))
-    if(p1_ghost_position is not None and not p1_selector_position[2]):
-        ghost = 'p1_ghost'
-        if(p1_selector_position[3]):
-            ghost = 'cpu1_ghost'
-        game_display.blit(token_cache[ghost], ((136 * (p1_ghost_position[0] + 1) + 1366*(1/135)), 100 * (p1_ghost_position[1] + 1) - 25))
-    if(p2_ghost_position is not None and not p2_selector_position[2]):
-        ghost = 'p2_ghost'
-        if(p2_selector_position[3]):
-            ghost = 'cpu2_ghost'
-        game_display.blit(token_cache[ghost], ((136 * (p2_ghost_position[0] + 1) + 1366*(8/135)), 100 * (p2_ghost_position[1] + 1) - 25))
-
-
-    if(p1_selector_position[2] >= 1 and p2_selector_position[2] >= 1):
-        pg.draw.rect(game_display, (255, 255, 0), (0, 768*(2/5), 1366, 153))
-        menu_font = font_cache['ready_confirmation']
-        menu_text = menu_font.render('CONFIRM READY WITH "ABILITY"', False, (50, 50, 255))
-        text_rect = menu_text.get_rect()
-        text_rect.center = (683, 384)
-        game_display.blit(menu_text, text_rect)
-        if(p1_selector_position[2] == 2):
-            game_display.blit(p1_ball, ((1366*(1/10), 768*(2/5))))
-        if(p2_selector_position[2] == 2):
-            game_display.blit(p2_ball, ((1366*(9/10), 768*(2/5))))
+    css_blobs(game_display)
+    game_display.blit(token_cache['red_hands'], (info_getter[0][1].cursor.x_pos, info_getter[0][1].cursor.y_pos))
+    #css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)

@@ -114,30 +114,18 @@ def update_game_state(game_state, cwd):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
         game_state, info_getter = engine.menus.css_menu.css_handler()
-        p1_selector_position = info_getter[0]
-        p2_selector_position = info_getter[1]
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
-            if(p1_selector_position[3]):
-                p1_is_cpu = True
-            else:
-                p1_is_cpu = False
-            if(p2_selector_position[3]):
-                p2_is_cpu = True
-            else:
-                p2_is_cpu = False
-            p1_selector_position[2] = 0
-            p2_selector_position[2] = 0
 
-
-            p1_blob = info_getter[2]
+            # Looks like Miscellaneous CPU, Costume and Random Blob code
+            '''p1_blob = info_getter[2]
             if(p1_blob == 'random'):
                 p1_blob = get_random_blob()
             p2_blob = info_getter[3]
             if(p2_blob == 'random'):
                 p2_blob = get_random_blob()
             p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
-            p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]
+            p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]'''
 
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
