@@ -29,6 +29,9 @@ p2_blob = "quirkless"
 player_menus = {
     1: CSS_PLAYER(1)
 }
+token_list = []
+for player_menu in player_menus:
+    token_list.append(player_menus[player_menu].token)
 
 blob_list = return_css_selector_blobs()
 
@@ -52,7 +55,17 @@ def css_handler():
     pressed = engine.handle_input.get_keypress()
     for player_menu in player_menus:
         player_menus[player_menu].cursor.player_interaction(pressed)
-
+        if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
+        # Click with empty cursor
+            for token_obj in token_list:
+                if(not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj)):
+                    token_obj.attach_to_cursor(player_menus[player_menu].cursor)
+                    break
+            continue
+        if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
+        # Click with filled cursor
+            player_menus[player_menu].cursor.held_token.detach_from_cursor()
+            continue
     return game_state, [player_menus]
 
 unlock_counter = 0
