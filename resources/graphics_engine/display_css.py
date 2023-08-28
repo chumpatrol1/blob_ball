@@ -183,6 +183,8 @@ def draw_css(game_display, info_getter, settings):
     draw_background(game_display, "css", settings)
     css_blobs(game_display)
     game_display.blit(token_cache['red_hands'], (info_getter[0][1].cursor.x_pos, info_getter[0][1].cursor.y_pos))
+    game_display.blit(token_cache['red_hands'], (info_getter[0][2].cursor.x_pos, info_getter[0][2].cursor.y_pos))
     game_display.blit(token_cache['p1_ball'], (info_getter[0][1].token.x_pos, info_getter[0][1].token.y_pos))
+    game_display.blit(token_cache['p2_ball'], (info_getter[0][2].token.x_pos, info_getter[0][2].token.y_pos))
     
     #css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)

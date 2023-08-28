@@ -27,7 +27,8 @@ p1_blob = "quirkless"
 p2_blob = "quirkless"
 
 player_menus = {
-    1: CSS_PLAYER(1)
+    1: CSS_PLAYER(1),
+    2: CSS_PLAYER(2),
 }
 token_list = []
 for player_menu in player_menus:
@@ -58,7 +59,7 @@ def css_handler():
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
         # Click with empty cursor
             for token_obj in token_list:
-                if(not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj)):
+                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj)):
                     token_obj.attach_to_cursor(player_menus[player_menu].cursor)
                     break
             continue

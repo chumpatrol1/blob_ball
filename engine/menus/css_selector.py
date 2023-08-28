@@ -1,3 +1,4 @@
+import math
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0):
         self.menu = CSS_MENU()
@@ -41,14 +42,14 @@ class CSS_CURSOR:
                 pressed.add(key_input.split("_")[1])
         
         if('left' in pressed):
-            self.x_pos -= 1
+            self.x_pos -= 4
         elif('right' in pressed):
-            self.x_pos += 1
+            self.x_pos += 4
 
         if('up' in pressed):
-            self.y_pos -= 1
+            self.y_pos -= 4
         elif('down' in pressed):
-            self.y_pos += 1
+            self.y_pos += 4
 
         if('ability' in pressed):
             self.clicking = True # Ability to select, kick to deselect
@@ -91,6 +92,9 @@ class CSS_CURSOR:
 
         if(self.held_token):
             self.held_token.track_attached_cursor()
+
+    def dist_to_element(self, other):
+        return math.dist([self.x_pos, self.y_pos], [other.x_pos, other.y_pos])
 
 class CSS_TOKEN:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0):
