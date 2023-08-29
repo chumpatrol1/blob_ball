@@ -96,6 +96,14 @@ class CSS_CURSOR:
     def dist_to_element(self, other):
         return math.dist([self.x_pos, self.y_pos], [other.x_pos, other.y_pos])
 
+    def follow_mouse(self, mouse):
+        self.x_pos = mouse[0]
+        self.y_pos = mouse[1]
+
+        if(self.held_token):
+            self.held_token.track_attached_cursor()
+
+
 class CSS_TOKEN:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0):
         self.player = player

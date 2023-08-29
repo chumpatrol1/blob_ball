@@ -7,7 +7,7 @@ File that handles the character select screen, albeit a little messily. Should b
 > css_handler(): Handles the selector position itself and updates the game state/selected blobs depending on the state of each selector.
 > popup_handler(): Handles the splash screen for unlocks. Mostly it just needs to detect a click or button press to move on
 '''
-
+import math
 import engine.handle_input
 from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
 from engine.unlock_event import clear_unlock_events, get_unlock_events
@@ -33,7 +33,7 @@ player_menus = {
 token_list = []
 for player_menu in player_menus:
     token_list.append(player_menus[player_menu].token)
-
+player_menus[0] = CSS_PLAYER(0)
 blob_list = return_css_selector_blobs()
 
     
@@ -54,6 +54,7 @@ def css_handler():
     # TODO: Verify below
     # Controller failure - cannot swap players here
     pressed = engine.handle_input.get_keypress()
+    
     for player_menu in player_menus:
         player_menus[player_menu].cursor.player_interaction(pressed)
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
@@ -67,6 +68,21 @@ def css_handler():
         # Click with filled cursor
             player_menus[player_menu].cursor.held_token.detach_from_cursor()
             continue
+    mouse = engine.handle_input.handle_mouse()
+    mouse_pos = mouse[0]
+    mouse_pressed = mouse[1]
+    mouse_pick_up = False
+    if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and not player_menus[0].cursor.held_token):
+        for token_obj in token_list:
+            #print(math.dist(mouse_pos, [token_obj.x_pos, token_obj.y_pos]))
+            if(math.dist(mouse_pos, [token_obj.x_pos, token_obj.y_pos]) < 50 and not token_obj.attached_to):
+                token_obj.attach_to_cursor(player_menus[0].cursor)
+                mouse_pick_up = True
+                break
+    if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and player_menus[0].cursor.held_token and not mouse_pick_up):
+        #print()
+        player_menus[0].cursor.held_token.detach_from_cursor()
+    player_menus[0].cursor.follow_mouse(mouse_pos)
     return game_state, [player_menus]
 
 unlock_counter = 0
