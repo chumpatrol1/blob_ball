@@ -22,3 +22,6 @@ class Button:
 
     def check_right_click(self, mouse):
         return mouse[1][2]
+
+    def __repr__(self):
+        return f"Left: {self.left}, Top: {self.top}, Width: {self.right - self.left}, Height: {self.bottom - self.top}"

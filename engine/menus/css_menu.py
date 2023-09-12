@@ -17,6 +17,7 @@ from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button        
 from engine.menus.css_selector import CSS_PLAYER
+from engine.menus.css_blobs import CSS_BLOBS
 
 # X position, Y position, Confirmation, CPU/Human
 p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
@@ -25,16 +26,20 @@ p1_ghost_position = None
 p2_ghost_position = None
 p1_blob = "quirkless"
 p2_blob = "quirkless"
+blob_list = return_css_selector_blobs()
+blob_selection_obj = CSS_BLOBS()
 
 player_menus = {
-    1: CSS_PLAYER(1),
-    2: CSS_PLAYER(2),
+    1: CSS_PLAYER(1, 150, 600, blob_selection_obj),
+    2: CSS_PLAYER(2, 475, 600, blob_selection_obj),
+    3: CSS_PLAYER(3, 800, 600, blob_selection_obj),
+    4: CSS_PLAYER(4, 1125, 600, blob_selection_obj),
 }
+
 token_list = []
 for player_menu in player_menus:
     token_list.append(player_menus[player_menu].token)
 player_menus[0] = CSS_PLAYER(0)
-blob_list = return_css_selector_blobs()
 
     
 p1_timer = 0
@@ -62,11 +67,13 @@ def css_handler():
             for token_obj in token_list:
                 if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj)):
                     token_obj.attach_to_cursor(player_menus[player_menu].cursor)
+                    player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
                     break
             continue
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
         # Click with filled cursor
             player_menus[player_menu].cursor.held_token.detach_from_cursor()
+            player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.idle_image
             continue
     mouse = engine.handle_input.handle_mouse()
     mouse_pos = mouse[0]

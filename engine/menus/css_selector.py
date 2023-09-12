@@ -1,9 +1,9 @@
 import math
 class CSS_PLAYER:
-    def __init__(self, player = 1, x_pos = 0, y_pos = 0):
+    def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
         self.menu = CSS_MENU()
         self.cursor = CSS_CURSOR(player, x_pos, y_pos)
-        self.token = CSS_TOKEN(player, x_pos, y_pos)
+        self.token = CSS_TOKEN(player, x_pos, y_pos, blob_selector)
         self.profile = None
         self.player_type = None # Can be NoneType, "Human", or "Computer"
         self.cpu_level = 5 # Scales from 1-5, or something. 1 is very easy, 5 is max difficulty
@@ -27,6 +27,8 @@ class CSS_CURSOR:
         self.was_clicking = False
         self.clicking = False
         self.current_image = None
+        self.idle_image = None
+        self.grab_image = None
         self.acceptable_inputs = None
         self.define_acceptable_inputs()
     
@@ -102,10 +104,16 @@ class CSS_CURSOR:
 
         if(self.held_token):
             self.held_token.track_attached_cursor()
+    
+    def set_image(self, idle, grab):
+        self.idle_image = idle
+        self.grab_image = grab
+        self.current_image = self.idle_image
+        print(self.current_image, self.player)
 
 
 class CSS_TOKEN:
-    def __init__(self, player = 1, x_pos = 0, y_pos = 0):
+    def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
         self.player = player
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -115,6 +123,7 @@ class CSS_TOKEN:
         self.on_blob = False # True if placed on a blob to select it.
         self.current_image = None
         self.attached_to = None
+        self.blob_selector = blob_selector
 
     def attach_to_cursor(self, cursor):
         self.attached_to = cursor
@@ -129,3 +138,8 @@ class CSS_TOKEN:
         if(self.attached_to):
             self.x_pos = self.attached_to.x_pos
             self.y_pos = self.attached_to.y_pos
+            print(self.blob_selector.check_buttons(self))
+
+class CSS_BLOBS:
+    def __init__(self):
+        pass
