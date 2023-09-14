@@ -30,10 +30,10 @@ blob_list = return_css_selector_blobs()
 blob_selection_obj = CSS_BLOBS()
 
 player_menus = {
-    1: CSS_PLAYER(1, 150, 600, blob_selection_obj),
-    2: CSS_PLAYER(2, 475, 600, blob_selection_obj),
-    3: CSS_PLAYER(3, 800, 600, blob_selection_obj),
-    4: CSS_PLAYER(4, 1125, 600, blob_selection_obj),
+    1: CSS_PLAYER(1, 85, 525, blob_selection_obj),
+    2: CSS_PLAYER(2, 412, 525, blob_selection_obj),
+    3: CSS_PLAYER(3, 739, 525, blob_selection_obj),
+    4: CSS_PLAYER(4, 1067, 525, blob_selection_obj),
 }
 
 token_list = []

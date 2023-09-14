@@ -1,19 +1,21 @@
 import math
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
-        self.menu = CSS_MENU()
-        self.cursor = CSS_CURSOR(player, x_pos, y_pos)
-        self.token = CSS_TOKEN(player, x_pos, y_pos, blob_selector)
+        self.menu = CSS_MENU(player, x_pos, y_pos)
+        self.cursor = CSS_CURSOR(player, x_pos + 65, y_pos + 75)
+        self.token = CSS_TOKEN(player, x_pos + 65, y_pos + 75, blob_selector)
         self.profile = None
         self.player_type = None # Can be NoneType, "Human", or "Computer"
         self.cpu_level = 5 # Scales from 1-5, or something. 1 is very easy, 5 is max difficulty
 
 class CSS_MENU:
-    def __init__(self):
-        self.player = None
+    def __init__(self, player, x_pos, y_pos):
+        self.player = player
         self.kick_setting = "default"
         self.block_setting = "default"
         self.boost_setting = "default"
+        self.x_pos = x_pos
+        self.y_pos = y_pos
 
 class CSS_CURSOR:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0):
@@ -122,7 +124,10 @@ class CSS_TOKEN:
         self.is_cpu = False
         self.on_blob = False # True if placed on a blob to select it.
         self.current_image = None
-        self.attached_to = None
+        self.current_blob = None
+        self.current_blob_x = None
+        self.current_blob_y = None
+        self.attached_to = None # Is this attached to a cursor?
         self.blob_selector = blob_selector
 
     def attach_to_cursor(self, cursor):
@@ -138,8 +143,13 @@ class CSS_TOKEN:
         if(self.attached_to):
             self.x_pos = self.attached_to.x_pos
             self.y_pos = self.attached_to.y_pos
-            print(self.blob_selector.check_buttons(self))
-
-class CSS_BLOBS:
-    def __init__(self):
-        pass
+            button_tuple = self.blob_selector.check_buttons(self)
+            if(button_tuple):
+                self.current_blob = button_tuple[0]
+                self.current_blob_x = button_tuple[1]
+                self.current_blob_y = button_tuple[2]
+            else:
+                self.current_blob = None
+                self.current_blob_x = None
+                self.current_blob_y = None
+            

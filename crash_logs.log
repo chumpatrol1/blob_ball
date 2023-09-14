@@ -3616,3 +3616,224 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+5108-ERROR-Game Crash at Mon Sep 11 23:51:09 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 227, in draw_css
+    load_blobs(blob_image_cache, big_image_cache, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 46, in load_blobs
+    loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
+FileNotFoundError: No such file or directory.
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15260-ERROR-Game Crash at Mon Sep 11 23:52:09 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 228, in draw_css
+    load_blobs(blob_image_cache, big_image_cache, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 47, in load_blobs
+    loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
+FileNotFoundError: No such file or directory.
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8448-ERROR-Game Crash at Mon Sep 11 23:57:11 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 64, in css_handler
+    player_menus[player_menu].cursor.player_interaction(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 96, in player_interaction
+    self.held_token.track_attached_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 141, in track_attached_cursor
+    print(self.blob_selector.check_buttons(self))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_blobs.py", line 27, in check_buttons
+    return return_css_selector_blobs()[button_y][button_x]
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23856-ERROR-Game Crash at Mon Sep 11 23:57:34 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 64, in css_handler
+    player_menus[player_menu].cursor.player_interaction(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 96, in player_interaction
+    self.held_token.track_attached_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 141, in track_attached_cursor
+    print(self.blob_selector.check_buttons(self))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_blobs.py", line 27, in check_buttons
+    return return_css_selector_blobs()[button_y][button_x]
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9780-ERROR-Game Crash at Mon Sep 11 23:58:09 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 64, in css_handler
+    player_menus[player_menu].cursor.player_interaction(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 96, in player_interaction
+    self.held_token.track_attached_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 141, in track_attached_cursor
+    print(self.blob_selector.check_buttons(self))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_blobs.py", line 27, in check_buttons
+    return return_css_selector_blobs()[button_y][button_x]
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10404-ERROR-Game Crash at Mon Sep 11 23:58:17 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 64, in css_handler
+    player_menus[player_menu].cursor.player_interaction(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 96, in player_interaction
+    self.held_token.track_attached_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 141, in track_attached_cursor
+    print(self.blob_selector.check_buttons(self))
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_blobs.py", line 27, in check_buttons
+    return return_css_selector_blobs()[button_y][button_x]
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19208-ERROR-Game Crash at Tue Sep 12 07:10:25 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 243, in draw_css
+    if(player_obj.cursor.current_blob):
+AttributeError: 'CSS_CURSOR' object has no attribute 'current_blob'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13544-ERROR-Game Crash at Tue Sep 12 07:10:55 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 244, in draw_css
+    game_display.blit(blob_image_cache[player_obj.cursor.current_blob_y][player_obj.cursor.current_blob_y], (player_obj.menu.x_pos, player_obj.menu.y_pos))
+AttributeError: 'CSS_CURSOR' object has no attribute 'current_blob_y'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+24224-ERROR-Game Crash at Tue Sep 12 07:11:48 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 64, in css_handler
+    player_menus[player_menu].cursor.player_interaction(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 98, in player_interaction
+    self.held_token.track_attached_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 146, in track_attached_cursor
+    button_tuple = self.blob_selector.check_buttons(self)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_blobs.py", line 27, in check_buttons
+    return (return_css_selector_blobs()[button_y][button_x], button_x, button_y)
+IndexError: list index out of range
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8996-ERROR-Game Crash at Wed Sep 13 21:37:24 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 257, in draw_css
+    text_rect = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_rect()
+TypeError: 'pygame.Surface' object is not subscriptable
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19788-ERROR-Game Crash at Wed Sep 13 21:38:59 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 257, in draw_css
+    blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
+TypeError: 'pygame.Surface' object is not subscriptable
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
