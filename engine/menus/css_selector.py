@@ -26,6 +26,7 @@ class CSS_CURSOR:
         self.y_stick = 0
         self.visible = False
         self.held_token = None
+        self.called_detach_from_cursor = False
         self.was_clicking = False
         self.clicking = False
         self.current_image = None
@@ -46,14 +47,14 @@ class CSS_CURSOR:
                 pressed.add(key_input.split("_")[1])
         
         if('left' in pressed):
-            self.x_pos -= 4
+            self.x_pos -= 10
         elif('right' in pressed):
-            self.x_pos += 4
+            self.x_pos += 10
 
         if('up' in pressed):
-            self.y_pos -= 4
+            self.y_pos -= 10
         elif('down' in pressed):
-            self.y_pos += 4
+            self.y_pos += 10
 
         if('ability' in pressed):
             self.clicking = True # Ability to select, kick to deselect

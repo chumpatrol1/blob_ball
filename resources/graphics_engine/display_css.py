@@ -15,7 +15,7 @@ name_cache = []
 ability_cache = []
 blob_image_cache = [
 ]
-big_image_cache = []
+ghost_image_cache = []
 costume_cache = [[None, None], [None, None]] # P1: [CostumeName, Surface], P2: [CostumeName, Surface]
 
 cursor_cached = False
@@ -26,18 +26,18 @@ token_cache = {}
 def unload_css():
     global bic_cached
     global blob_image_cache
-    global big_image_cache
+    global ghost_image_cache
     global font_cache
     global token_cache
     bic_cached = False
     blob_image_cache = []
-    big_image_cache = []
+    ghost_image_cache = []
     name_cache = []
     ability_cache = []
     font_cache = {}
     token_cache = {}
 
-def load_blobs(blob_image_cache, big_image_cache, directory):
+def load_blobs(blob_image_cache, ghost_image_cache, directory):
     global name_cache
     global ability_cache
     load_blob_unlocks(appcwd)
@@ -46,36 +46,38 @@ def load_blobs(blob_image_cache, big_image_cache, directory):
     #print(return_css_selector_blobs())
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])
-            big_image_cache.append([])
+            ghost_image_cache.append([])
             name_cache.append([])
             ability_cache.append([])
             for icon in row:
                 #blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, round(pg.image.load(directory+icon[0]).get_height()*.4636))))
-                #big_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, pg.image.load(directory+icon[0]).get_height())))
+                #ghost_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, pg.image.load(directory+icon[0]).get_height())))
                 loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
                 blob_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
+                ghost_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
+                ghost_image_cache[-1][-1].set_alpha(200)
                 name_cache[-1].append(font_cache['blob_name'].render(icon[1], False, (255, 255, 255)))
                 ability_cache[-1].append(font_cache['blob_description'].render(icon[2], False, (255, 255, 255)))
 
-    return blob_image_cache, big_image_cache
+    return blob_image_cache, ghost_image_cache
 
 def force_load_blobs():
     global blob_image_cache
-    global big_image_cache
+    global ghost_image_cache
     global cwd
     unload_css()
     directory = cwd + "/resources/images"
-    blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
+    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
     unload_css()
 
-def css_blobs(game_display):
+def css_blobs(game_display, info_getter):
     '''
     Draws the blobs on screen, and handles "mousing over" blobs.
     '''
     global cwd
     global bic_cached
     global blob_image_cache
-    global big_image_cache
+    global ghost_image_cache
     x = 0
     y = 0
     directory = cwd + "/resources/images"
@@ -128,6 +130,25 @@ def css_blobs(game_display):
         token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (80, 80))
         
         token_cache['ready_bar'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/ready_bar.png").convert_alpha(), (1366, 39))
+        token_cache['ready_bar_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/ready_bar_glow.png").convert_alpha(), (1366, 39))
+        token_cache['back_button_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/back_button_glow.png").convert_alpha(), (176, 79))
+        token_cache['back_button_glow'].set_alpha(100)
+        token_cache['rules_button_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_button_glow.png").convert_alpha(), (886, 79))
+        token_cache['rules_button_glow'].set_alpha(100)
+        token_cache['almanac_button_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/almanac_button_glow.png").convert_alpha(), (145, 79))
+        token_cache['almanac_button_glow'].set_alpha(100)
+        token_cache['settings_button_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/settings_button_glow.png").convert_alpha(), (145, 79))
+        token_cache['settings_button_glow'].set_alpha(100)
+
+        info_getter[2]['casual_match'].surfaces['idle'] = token_cache['ready_bar']
+        info_getter[2]['casual_match'].surfaces['hover'] = token_cache['ready_bar_glow']
+        info_getter[2]['main_menu'].surfaces['hover'] = token_cache['back_button_glow']
+        info_getter[2]['rules'].surfaces['hover'] = token_cache['rules_button_glow']
+        info_getter[2]['almanac'].surfaces['hover'] = token_cache['almanac_button_glow']
+        info_getter[2]['settings'].surfaces['hover'] = token_cache['settings_button_glow']
+        
+        
+
         token_cache['p1_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p1_box.png").convert_alpha(), (217, 225))
         token_cache['p2_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p2_box.png").convert_alpha(), (217, 225))
         token_cache['p3_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p3_box.png").convert_alpha(), (217, 225))
@@ -136,7 +157,7 @@ def css_blobs(game_display):
         token_cache['pnone_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pnone_box.png").convert_alpha(), (217, 225))
         bic_cached = True
 
-        blob_image_cache, big_image_cache = load_blobs(blob_image_cache, big_image_cache, directory)
+        blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
 
         update_css_blobs(cwd)
             
@@ -156,7 +177,11 @@ def css_blobs(game_display):
             game_display.blit(blob, (x_align, 100+ 768*(y * (100/768)) - (768*(100/768)) - (blob.get_height() - 51)/2))
         x = 0
 
-    game_display.blit(token_cache['ready_bar'], (0, 470))
+    for button_key in info_getter[2]:
+        button = info_getter[2][button_key]
+        if(button.surfaces[button.state]):
+            game_display.blit(button.surfaces[button.state], (button.left, button.top))
+
     game_display.blit(token_cache['p1_box'], (85, 525))
     game_display.blit(token_cache['cpu_icon'], (300, 680))
     game_display.blit(token_cache['p2_box'], (412, 525))
@@ -169,7 +194,7 @@ def css_blobs(game_display):
     game_display.blit(token_cache['cpu_icon'], (1282, 680))
 
     '''if(not p1_selector_position[4]):
-        p1_selected_blob = big_image_cache[p1_selector_position[1]][p1_selector_position[0]]
+        p1_selected_blob = ghost_image_cache[p1_selector_position[1]][p1_selector_position[0]]
     else:
         # TODO: Check costume thing
         temp_loaded = species_to_image(p1_blob, return_available_costumes()[p1_blob][p1_selector_position[4]])[0]
@@ -193,7 +218,7 @@ def css_blobs(game_display):
         game_display.blit(token_cache['cpu_icon'], (75, 575))
 
     if(not p2_selector_position[4]):
-        p2_selected_blob = big_image_cache[p2_selector_position[1]][p2_selector_position[0]]
+        p2_selected_blob = ghost_image_cache[p2_selector_position[1]][p2_selector_position[0]]
     else:
         # TODO: Check costume thing
         temp_loaded = species_to_image(p2_blob, return_available_costumes()[p2_blob][p2_selector_position[4]])[0]
@@ -238,7 +263,7 @@ def draw_css(game_display, info_getter, settings):
     global cwd
 
     draw_background(game_display, "css", settings)
-    css_blobs(game_display)
+    css_blobs(game_display, info_getter)
 
     game_display.blit(token_cache['p1_ball'], (info_getter[0][1].token.x_pos - 25, info_getter[0][1].token.y_pos - 25))
     game_display.blit(token_cache['p2_ball'], (info_getter[0][2].token.x_pos - 25, info_getter[0][2].token.y_pos - 25))
@@ -253,7 +278,17 @@ def draw_css(game_display, info_getter, settings):
             break # Should this be a continue?
         player_obj = info_getter[0][index]
         game_display.blit(player_obj.cursor.current_image, (player_obj.cursor.x_pos, player_obj.cursor.y_pos))
-        if(player_obj.token.current_blob):
+        if(player_obj.token.current_blob and player_obj.token.attached_to):
+            game_display.blit(ghost_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+            blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
+            text_rect = blob_name.get_rect()
+            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 15)
+            game_display.blit(blob_name, text_rect)
+            blob_desc = ability_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
+            text_rect = blob_desc.get_rect()
+            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 180)
+            game_display.blit(blob_desc, text_rect)
+        elif(player_obj.token.current_blob and not player_obj.token.attached_to):
             game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_name.get_rect()
