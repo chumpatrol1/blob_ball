@@ -161,6 +161,12 @@ class CSS_TOKEN:
                 print("16X")
                 self.current_costume = 0
     
+    def update_selected_costume(self):
+        self.current_costume += 1
+        costumes = return_available_costumes()
+        if(self.current_costume >= len(costumes[self.current_blob])):
+            self.current_costume = 0
+
     def check_costume_toggle(self, input_list):
         pressed = set()
         for key_input in input_list:
@@ -170,14 +176,8 @@ class CSS_TOKEN:
         # TODO: Stop using return_available_costumes() because it's slow. Ideally, it should be called when entering the CSS
         if('block' in pressed and self.current_blob and not (self.current_blob == 'quirkless' and self.current_blob_x != 0 and self.current_blob_y != 0) and not self.toggle_select_cooldown):
             self.toggle_select_cooldown = 15
-            self.current_costume += 1
+            self.update_selected_costume()
             
-            costumes = return_available_costumes()
-            if(self.current_costume >= len(costumes[self.current_blob])):
-                print("17X")
-                self.current_costume = 0
-            print(self.current_costume)
-            print(costumes[self.current_blob])
 
     def costume_toggle_cooldown(self, input_list):
         # TODO: Just make this a function?

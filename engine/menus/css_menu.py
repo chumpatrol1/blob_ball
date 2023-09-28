@@ -20,12 +20,12 @@ from engine.menus.css_selector import CSS_PLAYER
 from engine.menus.css_blobs import CSS_BLOBS
 
 # X position, Y position, Confirmation, CPU/Human
-p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
-p2_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
-p1_ghost_position = None
-p2_ghost_position = None
-p1_blob = "quirkless"
-p2_blob = "quirkless"
+#p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
+#p2_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
+#p1_ghost_position = None
+#p2_ghost_position = None
+#p1_blob = "quirkless"
+#p2_blob = "quirkless"
 blob_list = return_css_selector_blobs()
 blob_selection_obj = CSS_BLOBS()
 players_ready = 0
@@ -87,6 +87,9 @@ def css_handler():
                     player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
                     player_menus[player_menu].cursor.called_detach_from_cursor = True
                     break
+            else:
+                if(player_menus[player_menu].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[player_menu].menu.x_pos + 217 and player_menus[player_menu].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[player_menu].menu.y_pos + 200 and player_menus[player_menu].token.current_blob):
+                    player_menus[player_menu].token.update_selected_costume()
             continue
             
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
