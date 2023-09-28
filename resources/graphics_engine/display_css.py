@@ -289,7 +289,19 @@ def draw_css(game_display, info_getter, settings):
             text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 180)
             game_display.blit(blob_desc, text_rect)
         elif(player_obj.token.current_blob and not player_obj.token.attached_to):
-            game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+            if(player_obj.token.current_costume == 0):
+                game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+            else:
+                print(player_obj.token.current_costume)
+                temp_loaded = species_to_image(player_obj.token.current_blob, player_obj.token.current_costume)[0]
+                #print(player_obj.token.current_costume)
+                #print(temp_loaded)
+                if(costume_cache[0][0] != temp_loaded):
+                    costume_cache[0][0] = temp_loaded
+                    costume_cache[0][1] = pg.image.load(temp_loaded).convert_alpha()
+                blob_to_draw = costume_cache[0][1]
+                blob_to_draw = pg.transform.scale(blob_to_draw, (2 * blob_to_draw.get_width()//3, 2 * blob_to_draw.get_height()//3))
+                game_display.blit(blob_to_draw, (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_name.get_rect()
             text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 15)

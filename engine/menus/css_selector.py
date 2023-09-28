@@ -1,4 +1,5 @@
 import math
+from engine.unlocks import return_available_costumes
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
         self.menu = CSS_MENU(player, x_pos, y_pos)
@@ -27,8 +28,8 @@ class CSS_CURSOR:
         self.visible = False
         self.held_token = None
         self.called_detach_from_cursor = False
-        self.was_clicking = False
-        self.clicking = False
+        self.was_clicking = True
+        self.clicking = True
         self.current_image = None
         self.idle_image = None
         self.grab_image = None
@@ -128,8 +129,11 @@ class CSS_TOKEN:
         self.current_blob = None
         self.current_blob_x = None
         self.current_blob_y = None
+        self.current_costume = 0
+        self.toggle_select_cooldown = 0
         self.attached_to = None # Is this attached to a cursor?
         self.blob_selector = blob_selector
+        
 
     def attach_to_cursor(self, cursor):
         self.attached_to = cursor
@@ -139,7 +143,6 @@ class CSS_TOKEN:
         self.attached_to.held_token = None
         self.attached_to = None
         
-
     def track_attached_cursor(self):
         if(self.attached_to):
             self.x_pos = self.attached_to.x_pos
@@ -149,8 +152,39 @@ class CSS_TOKEN:
                 self.current_blob = button_tuple[0]
                 self.current_blob_x = button_tuple[1]
                 self.current_blob_y = button_tuple[2]
+                self.current_costume = 0
+                print("15X")
             else:
                 self.current_blob = None
                 self.current_blob_x = None
                 self.current_blob_y = None
+                print("16X")
+                self.current_costume = 0
+    
+    def check_costume_toggle(self, input_list):
+        pressed = set()
+        for key_input in input_list:
+            if(str(self.player) in key_input):
+                pressed.add(key_input.split("_")[1])
+        
+        # TODO: Stop using return_available_costumes() because it's slow. Ideally, it should be called when entering the CSS
+        if('block' in pressed and self.current_blob and not (self.current_blob == 'quirkless' and self.current_blob_x != 0 and self.current_blob_y != 0) and not self.toggle_select_cooldown):
+            self.toggle_select_cooldown = 15
+            self.current_costume += 1
             
+            costumes = return_available_costumes()
+            if(self.current_costume >= len(costumes[self.current_blob])):
+                print("17X")
+                self.current_costume = 0
+            print(self.current_costume)
+            print(costumes[self.current_blob])
+
+    def costume_toggle_cooldown(self, input_list):
+        # TODO: Just make this a function?
+        pressed = set()
+        for key_input in input_list:
+            if(str(self.player) in key_input):
+                pressed.add(key_input.split("_")[1])
+
+        if('block' not in pressed):
+            self.toggle_select_cooldown = 0

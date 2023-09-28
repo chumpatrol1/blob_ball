@@ -9,7 +9,7 @@ File that handles the character select screen, albeit a little messily. Should b
 '''
 import math
 import engine.handle_input
-from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
+from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs
 from engine.unlock_event import clear_unlock_events, get_unlock_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
@@ -50,9 +50,13 @@ ui_buttons = {
     "almanac": Button(0, 70, 1070, 1200),
     "settings": Button(0, 70, 1220, 1366),
 }
-    
-p1_timer = 0
-p2_timer = 0
+
+def temp_disable_cursors():
+    global player_menus
+    for player in player_menus:
+        player_menus[player].cursor.clicking = True
+        player_menus[player].cursor.was_clicking = True    
+
 def css_handler():
     '''
     
@@ -118,6 +122,11 @@ def css_handler():
     for token_obj in token_list:
         players_ready += bool(token_obj.current_blob and not token_obj.attached_to)
     
+    for player_menu in player_menus:
+        player_menus[player_menu].token.check_costume_toggle(pressed)
+        player_menus[player_menu].token.costume_toggle_cooldown(pressed)
+
+        
     if(players_ready >= 2):
         ui_buttons["casual_match"].state = "idle"
     else:
@@ -138,6 +147,7 @@ def css_handler():
                     game_state = ui_button_key
                     ui_button_timer = 20
                     button_override = True
+                    temp_disable_cursors()
                 #print(ui_button_key, ui_button.check_hover(cursor_pos, button_override), ui_button.state)
             ui_button.state = 'hover' if hover_lock else 'idle'
 

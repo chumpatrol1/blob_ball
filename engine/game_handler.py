@@ -118,15 +118,14 @@ def update_game_state(game_state, cwd):
             resources.graphics_engine.display_css.unload_css()
 
             # Looks like Miscellaneous CPU, Costume and Random Blob code
-            '''p1_blob = info_getter[2]
+            p1_blob = info_getter[0][1].token.current_blob
+            p2_blob = info_getter[0][2].token.current_blob
+            p1_costume = info_getter[0][1].token.current_costume
+            p2_costume = info_getter[0][2].token.current_costume
             if(p1_blob == 'random'):
                 p1_blob = get_random_blob()
-            p2_blob = info_getter[3]
             if(p2_blob == 'random'):
                 p2_blob = get_random_blob()
-            p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
-            p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]'''
-
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3

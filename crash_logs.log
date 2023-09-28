@@ -4004,3 +4004,273 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+4348-ERROR-Game Crash at Mon Sep 25 00:13:36 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+TypeError: unhashable type: 'list'
+Game State: casual_match
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1068-ERROR-Game Crash at Mon Sep 25 00:14:11 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+TypeError: unhashable type: 'list'
+Game State: casual_match
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+6308-ERROR-Game Crash at Mon Sep 25 08:25:14 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 142, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+KeyError: None
+Game State: casual_match
+P1 Blob: None, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8224-ERROR-Game Crash at Wed Sep 27 20:00:46 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 142, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 27, in initialize_players
+    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+KeyError: None
+Game State: casual_match
+P1 Blob: None, is CPU: False
+P2_Blob: None, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18652-ERROR-Game Crash at Wed Sep 27 20:01:13 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 142, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 189, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 28, in initialize_players
+    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 130, in __init__
+    self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 71, in species_to_stars
+    blob_dict = full_dict[species]
+KeyError: 'random'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: random, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7128-ERROR-Game Crash at Wed Sep 27 20:03:23 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 130, in update_game_state
+    p2_blob = info_getter[3]
+IndexError: list index out of range
+Game State: css
+P1 Blob: bubble, is CPU: False
+P2_Blob: random, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18356-ERROR-Game Crash at Wed Sep 27 20:29:31 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 126, in css_handler
+    player_menus[player_menu].token.check_costume_toggle(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 167, in check_costume_toggle
+    self.current_costume += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8120-ERROR-Game Crash at Wed Sep 27 20:29:38 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 126, in css_handler
+    player_menus[player_menu].token.check_costume_toggle(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 167, in check_costume_toggle
+    self.current_costume += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+21828-ERROR-Game Crash at Wed Sep 27 20:30:09 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 116, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 126, in css_handler
+    player_menus[player_menu].token.check_costume_toggle(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 168, in check_costume_toggle
+    self.current_costume += 1
+TypeError: unsupported operand type(s) for +=: 'NoneType' and 'int'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18408-ERROR-Game Crash at Wed Sep 27 20:44:34 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 300, in draw_css
+    blob_to_draw = pg.transform.scale(blob_to_draw, (2 * blob_to_draw.get_width()//3, 2 * blob_to_draw.get_height()//3))
+AttributeError: 'NoneType' object has no attribute 'get_width'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2948-ERROR-Game Crash at Wed Sep 27 20:56:53 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 299, in draw_css
+    costume_cache[0][1] = pg.image.load(temp_loaded).convert_alpha()
+FileNotFoundError: No such file or directory.
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8696-ERROR-Game Crash at Wed Sep 27 21:00:29 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 299, in draw_css
+    costume_cache[0][1] = pg.image.load(temp_loaded).convert_alpha()
+TypeError: not a file object
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4208-ERROR-Game Crash at Wed Sep 27 21:01:46 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 296, in draw_css
+    print(player_obj.current_blob_costume)
+AttributeError: 'CSS_PLAYER' object has no attribute 'current_blob_costume'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18124-ERROR-Game Crash at Wed Sep 27 21:21:08 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 142, in update_game_state
+    p1_costume = info_getter[0][1].token.current_costume
+UnboundLocalError: local variable 'info_getter' referenced before assignment
+Game State: casual_match
+P1 Blob: fire, is CPU: False
+P2_Blob: quirkless, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
