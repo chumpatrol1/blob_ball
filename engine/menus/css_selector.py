@@ -6,17 +6,21 @@ class CSS_PLAYER:
         self.cursor = CSS_CURSOR(player, x_pos + 65, y_pos + 75)
         self.token = CSS_TOKEN(player, x_pos + 65, y_pos + 75, blob_selector)
         self.profile = None
-        self.player_type = None # Can be NoneType, "Human", or "Computer"
+        self.player_type = 'human' # Can be NoneType, "Human", or "Computer"
         self.cpu_level = 5 # Scales from 1-5, or something. 1 is very easy, 5 is max difficulty
 
 class CSS_MENU:
     def __init__(self, player, x_pos, y_pos):
         self.player = player
+        self.image_cache = {"human": None, "cpu": None, "none":None}
         self.kick_setting = "default"
         self.block_setting = "default"
         self.boost_setting = "default"
         self.x_pos = x_pos
         self.y_pos = y_pos
+    
+    def set_image(self, image_dict):
+        self.image_cache = image_dict
 
 class CSS_CURSOR:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0):
@@ -130,6 +134,9 @@ class CSS_TOKEN:
         self.current_blob_x = None
         self.current_blob_y = None
         self.current_costume = 0
+        self.player_state = 'human' # 'human', 'cpu', none'
+        self.ps_cycle = {'human': 'cpu', 'cpu': 'none', 'none': 'human'}
+        self.image_cache = {"human": None, "cpu": None, "none":None}
         self.toggle_select_cooldown = 0
         self.attached_to = None # Is this attached to a cursor?
         self.blob_selector = blob_selector
@@ -153,12 +160,12 @@ class CSS_TOKEN:
                 self.current_blob_x = button_tuple[1]
                 self.current_blob_y = button_tuple[2]
                 self.current_costume = 0
-                print("15X")
+                #print("15X")
             else:
                 self.current_blob = None
                 self.current_blob_x = None
                 self.current_blob_y = None
-                print("16X")
+                #print("16X")
                 self.current_costume = 0
     
     def update_selected_costume(self):
@@ -188,3 +195,9 @@ class CSS_TOKEN:
 
         if('block' not in pressed):
             self.toggle_select_cooldown = 0
+
+    def update_player_status(self):
+        self.player_state = self.ps_cycle[self.player_state]
+
+    def set_image(self, image_dict):
+        self.image_cache = image_dict

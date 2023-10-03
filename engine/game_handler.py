@@ -122,6 +122,8 @@ def update_game_state(game_state, cwd):
             p2_blob = info_getter[0][2].token.current_blob
             p1_costume = info_getter[0][1].token.current_costume
             p2_costume = info_getter[0][2].token.current_costume
+            p1_is_cpu = info_getter[0][1].token.player_state == 'cpu'
+            p2_is_cpu = info_getter[0][2].token.player_state == 'cpu'
             if(p1_blob == 'random'):
                 p1_blob = get_random_blob()
             if(p2_blob == 'random'):

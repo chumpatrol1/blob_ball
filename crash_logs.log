@@ -4308,3 +4308,130 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+15500-ERROR-Game Crash at Sun Oct  1 11:08:55 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 268, in draw_css
+    css_blobs(game_display, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 197, in css_blobs
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+AttributeError: 'int' object has no attribute 'menu'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13436-ERROR-Game Crash at Sun Oct  1 11:09:29 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 269, in draw_css
+    css_blobs(game_display, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 198, in css_blobs
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+TypeError: argument 1 must be pygame.Surface, not None
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8200-ERROR-Game Crash at Sun Oct  1 11:10:52 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 270, in draw_css
+    css_blobs(game_display, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 199, in css_blobs
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+TypeError: argument 1 must be pygame.Surface, not None
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7932-ERROR-Game Crash at Sun Oct  1 11:11:44 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 279, in draw_css
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+TypeError: argument 1 must be pygame.Surface, not None
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+5608-ERROR-Game Crash at Sun Oct  1 11:12:14 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 279, in draw_css
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+TypeError: argument 1 must be pygame.Surface, not None
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7912-ERROR-Game Crash at Sun Oct  1 11:13:19 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 281, in draw_css
+    game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+TypeError: argument 1 must be pygame.Surface, not None
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1108-ERROR-Game Crash at Mon Oct  2 10:39:27 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 269, in draw_css
+    assign_cursor_images(info_getter[0])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 337, in assign_cursor_images
+    cursor_dict[1].token.set_image({'human': token_cache['p1_ball'], 'cpu': token_cache['cpu1_box'], 'none': None})
+KeyError: 'cpu1_box'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

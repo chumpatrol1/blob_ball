@@ -181,7 +181,7 @@ def css_blobs(game_display, info_getter):
         button = info_getter[2][button_key]
         if(button.surfaces[button.state]):
             game_display.blit(button.surfaces[button.state], (button.left, button.top))
-
+    '''
     game_display.blit(token_cache['p1_box'], (85, 525))
     game_display.blit(token_cache['cpu_icon'], (300, 680))
     game_display.blit(token_cache['p2_box'], (412, 525))
@@ -192,7 +192,7 @@ def css_blobs(game_display, info_getter):
     game_display.blit(token_cache['p4_box'], (1067, 525))
     #game_display.blit(token_cache['pnone_box'], (1067, 525))
     game_display.blit(token_cache['cpu_icon'], (1282, 680))
-
+'''
     '''if(not p1_selector_position[4]):
         p1_selected_blob = ghost_image_cache[p1_selector_position[1]][p1_selector_position[0]]
     else:
@@ -265,20 +265,32 @@ def draw_css(game_display, info_getter, settings):
     draw_background(game_display, "css", settings)
     css_blobs(game_display, info_getter)
 
-    game_display.blit(token_cache['p1_ball'], (info_getter[0][1].token.x_pos - 25, info_getter[0][1].token.y_pos - 25))
+    if not cursor_cached:
+        assign_cursor_images(info_getter[0])
+    # Draw Menus
+    for player_menu in info_getter[0]:
+        if(player_menu == 0):
+            continue
+        player_menu = info_getter[0][player_menu]
+        game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
+    # Draw Tokens
+    for player_menu in info_getter[0]:
+        player_menu = info_getter[0][player_menu]
+        token = player_menu.token
+        if(token.image_cache[token.player_state]):
+            game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
+    '''game_display.blit(token_cache['p1_ball'], (info_getter[0][1].token.x_pos - 25, info_getter[0][1].token.y_pos - 25))
     game_display.blit(token_cache['p2_ball'], (info_getter[0][2].token.x_pos - 25, info_getter[0][2].token.y_pos - 25))
     game_display.blit(token_cache['p3_ball'], (info_getter[0][3].token.x_pos - 25, info_getter[0][3].token.y_pos - 25))
     game_display.blit(token_cache['p4_ball'], (info_getter[0][4].token.x_pos - 25, info_getter[0][4].token.y_pos - 25))
-    
-
-    if not cursor_cached:
-        assign_cursor_images(info_getter[0])
+    '''
+    # Draw Cursors
     for index in info_getter[0]:
         if(index == 0):
             break # Should this be a continue?
         player_obj = info_getter[0][index]
         game_display.blit(player_obj.cursor.current_image, (player_obj.cursor.x_pos, player_obj.cursor.y_pos))
-        if(player_obj.token.current_blob and player_obj.token.attached_to):
+        if(player_obj.token.current_blob and player_obj.token.attached_to and not player_obj.token.player_state == 'none'):
             game_display.blit(ghost_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_name.get_rect()
@@ -288,11 +300,11 @@ def draw_css(game_display, info_getter, settings):
             text_rect = blob_desc.get_rect()
             text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 180)
             game_display.blit(blob_desc, text_rect)
-        elif(player_obj.token.current_blob and not player_obj.token.attached_to):
+        elif(player_obj.token.current_blob and not player_obj.token.attached_to and not player_obj.token.player_state == 'none'):
             if(player_obj.token.current_costume == 0):
                 game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             else:
-                print(player_obj.token.current_costume)
+                #print(player_obj.token.current_costume)
                 temp_loaded = species_to_image(player_obj.token.current_blob, player_obj.token.current_costume)[0]
                 #print(player_obj.token.current_costume)
                 #print(temp_loaded)
@@ -319,5 +331,12 @@ def assign_cursor_images(cursor_dict):
     cursor_dict[2].cursor.set_image(token_cache['p2_hand'], token_cache['p2_grab'])
     cursor_dict[3].cursor.set_image(token_cache['p3_hand'], token_cache['p3_grab'])
     cursor_dict[4].cursor.set_image(token_cache['p4_hand'], token_cache['p4_grab'])
-
+    cursor_dict[1].menu.set_image({'human': token_cache['p1_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    cursor_dict[2].menu.set_image({'human': token_cache['p2_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    cursor_dict[3].menu.set_image({'human': token_cache['p3_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    cursor_dict[4].menu.set_image({'human': token_cache['p4_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    cursor_dict[1].token.set_image({'human': token_cache['p1_ball'], 'cpu': token_cache['cpu1_ball'], 'none': None})
+    cursor_dict[2].token.set_image({'human': token_cache['p2_ball'], 'cpu': token_cache['cpu2_ball'], 'none': None})
+    cursor_dict[3].token.set_image({'human': token_cache['p3_ball'], 'cpu': token_cache['cpu3_ball'], 'none': None})
+    cursor_dict[4].token.set_image({'human': token_cache['p4_ball'], 'cpu': token_cache['cpu4_ball'], 'none': None})
     cursor_cached = True

@@ -41,7 +41,7 @@ player_menus = {
 token_list = []
 for player_menu in player_menus:
     token_list.append(player_menus[player_menu].token)
-player_menus[0] = CSS_PLAYER(0)
+player_menus[0] = CSS_PLAYER(0, y_pos = 1000)
 
 ui_buttons = {
     "casual_match": Button(470, 509, 0, 1366, 'disabled'),
@@ -90,6 +90,10 @@ def css_handler():
             else:
                 if(player_menus[player_menu].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[player_menu].menu.x_pos + 217 and player_menus[player_menu].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[player_menu].menu.y_pos + 200 and player_menus[player_menu].token.current_blob):
                     player_menus[player_menu].token.update_selected_costume()
+                else:
+                    for pm in player_menus:
+                        if(player_menus[pm].menu.x_pos + 218 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 100 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
+                            player_menus[pm].token.update_player_status()
             continue
             
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
@@ -146,7 +150,7 @@ def css_handler():
                 if(ui_button.check_hover(cursor_pos, True)):
                     hover_lock = True
                 if(ui_button.check_hover(cursor_pos, button_override) and ui_button.check_left_click(cursor_pos) and not player_cursor.was_clicking and not ui_button_timer and not player_cursor.held_token and not player_cursor.called_detach_from_cursor):
-                    print(player_cursor.called_detach_from_cursor)
+                    #print(player_cursor.called_detach_from_cursor
                     game_state = ui_button_key
                     ui_button_timer = 20
                     button_override = True
