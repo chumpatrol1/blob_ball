@@ -127,7 +127,7 @@ def css_blobs(game_display, info_getter):
         token_cache['p3_grab'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p3_grab.png").convert_alpha(), (128, 128))
         token_cache['p4_grab'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p4_grab.png").convert_alpha(), (128, 128))
 
-        token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (80, 80))
+        token_cache['cpu_icon'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (40, 40))
         
         token_cache['ready_bar'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/ready_bar.png").convert_alpha(), (1366, 39))
         token_cache['ready_bar_glow'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/ready_bar_glow.png").convert_alpha(), (1366, 39))
@@ -149,11 +149,11 @@ def css_blobs(game_display, info_getter):
         
         
 
-        token_cache['p1_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p1_box.png").convert_alpha(), (217, 225))
-        token_cache['p2_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p2_box.png").convert_alpha(), (217, 225))
-        token_cache['p3_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p3_box.png").convert_alpha(), (217, 225))
-        token_cache['p4_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p4_box.png").convert_alpha(), (217, 225))
-        token_cache['pcpu_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pcpu_box.png").convert_alpha(), (217, 225))
+        token_cache['p1_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p1_box.png").convert_alpha(), (285, 225))
+        token_cache['p2_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p2_box.png").convert_alpha(), (285, 225))
+        token_cache['p3_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p3_box.png").convert_alpha(), (285, 225))
+        token_cache['p4_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/p4_box.png").convert_alpha(), (285, 225))
+        token_cache['pcpu_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pcpu_box.png").convert_alpha(), (285, 225))
         token_cache['pnone_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pnone_box.png").convert_alpha(), (217, 225))
         bic_cached = True
 
@@ -173,7 +173,7 @@ def css_blobs(game_display, info_getter):
             #print(color_tuple)
             #print((100+ 768*(y * (100/768)) - (768*(100/768)) - (blob.get_height() - 51)/2))
             #pg.draw.rect(game_display, color_tuple, (x_align, (100+ 768*(y * (100/768)) - (768*(130/768))), 133, 95))
-            pg.draw.rect(game_display, color_tuple, (x_align - 2, (100+ (y * 100) - (130)), 137, 100))
+            #pg.draw.rect(game_display, color_tuple, (x_align - 2, (100+ (y * 100) - (130)), 137, 100))
             game_display.blit(blob, (x_align, 100+ 768*(y * (100/768)) - (768*(100/768)) - (blob.get_height() - 51)/2))
         x = 0
 
@@ -273,12 +273,7 @@ def draw_css(game_display, info_getter, settings):
             continue
         player_menu = info_getter[0][player_menu]
         game_display.blit(player_menu.menu.image_cache[player_menu.token.player_state], (player_menu.menu.x_pos, player_menu.menu.y_pos))
-    # Draw Tokens
-    for player_menu in info_getter[0]:
-        player_menu = info_getter[0][player_menu]
-        token = player_menu.token
-        if(token.image_cache[token.player_state]):
-            game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
+        game_display.blit(token_cache["cpu_icon"], (player_menu.menu.x_pos+240, player_menu.menu.y_pos+150))
     '''game_display.blit(token_cache['p1_ball'], (info_getter[0][1].token.x_pos - 25, info_getter[0][1].token.y_pos - 25))
     game_display.blit(token_cache['p2_ball'], (info_getter[0][2].token.x_pos - 25, info_getter[0][2].token.y_pos - 25))
     game_display.blit(token_cache['p3_ball'], (info_getter[0][3].token.x_pos - 25, info_getter[0][3].token.y_pos - 25))
@@ -289,20 +284,19 @@ def draw_css(game_display, info_getter, settings):
         if(index == 0):
             break # Should this be a continue?
         player_obj = info_getter[0][index]
-        game_display.blit(player_obj.cursor.current_image, (player_obj.cursor.x_pos, player_obj.cursor.y_pos))
         if(player_obj.token.current_blob and player_obj.token.attached_to and not player_obj.token.player_state == 'none'):
-            game_display.blit(ghost_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+            game_display.blit(ghost_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 73, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_name.get_rect()
-            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 15)
+            text_rect.center = (player_obj.menu.x_pos + 142, player_obj.menu.y_pos + 15)
             game_display.blit(blob_name, text_rect)
             blob_desc = ability_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_desc.get_rect()
-            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 180)
+            text_rect.center = (player_obj.menu.x_pos + 142, player_obj.menu.y_pos + 180)
             game_display.blit(blob_desc, text_rect)
         elif(player_obj.token.current_blob and not player_obj.token.attached_to and not player_obj.token.player_state == 'none'):
             if(player_obj.token.current_costume == 0):
-                game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+                game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 73, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             else:
                 #print(player_obj.token.current_costume)
                 temp_loaded = species_to_image(player_obj.token.current_blob, player_obj.token.current_costume)[0]
@@ -313,15 +307,30 @@ def draw_css(game_display, info_getter, settings):
                     costume_cache[0][1] = pg.image.load(temp_loaded).convert_alpha()
                 blob_to_draw = costume_cache[0][1]
                 blob_to_draw = pg.transform.scale(blob_to_draw, (2 * blob_to_draw.get_width()//3, 2 * blob_to_draw.get_height()//3))
-                game_display.blit(blob_to_draw, (player_obj.menu.x_pos + 40, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
+                game_display.blit(blob_to_draw, (player_obj.menu.x_pos + 73, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             blob_name = name_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_name.get_rect()
-            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 15)
+            text_rect.center = (player_obj.menu.x_pos + 142, player_obj.menu.y_pos + 15)
             game_display.blit(blob_name, text_rect)
             blob_desc = ability_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x]
             text_rect = blob_desc.get_rect()
-            text_rect.center = (player_obj.menu.x_pos + 109, player_obj.menu.y_pos + 180)
+            text_rect.center = (player_obj.menu.x_pos + 142, player_obj.menu.y_pos + 180)
             game_display.blit(blob_desc, text_rect)
+    
+    # Draw Tokens
+    for player_menu in info_getter[0]:
+        player_menu = info_getter[0][player_menu]
+        token = player_menu.token
+        if(token.image_cache[token.player_state]):
+            game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
+    
+    #Draw the cursor on top of everything!
+    for index in info_getter[0]:
+        if(index == 0):
+            break # Should this be a continue?
+        player_obj = info_getter[0][index]
+        game_display.blit(player_obj.cursor.current_image, (player_obj.cursor.x_pos, player_obj.cursor.y_pos))
+        
 
     #css_blobs(game_display, p1_selector_position, p2_selector_position, p1_blob, p2_blob)
 

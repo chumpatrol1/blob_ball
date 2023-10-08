@@ -3,8 +3,8 @@ from engine.unlocks import return_available_costumes
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
         self.menu = CSS_MENU(player, x_pos, y_pos)
-        self.cursor = CSS_CURSOR(player, x_pos + 65, y_pos + 75)
-        self.token = CSS_TOKEN(player, x_pos + 65, y_pos + 75, blob_selector)
+        self.cursor = CSS_CURSOR(self, player, x_pos + 100, y_pos + 75)
+        self.token = CSS_TOKEN(player, x_pos + 100, y_pos + 75, blob_selector)
         self.profile = None
         self.player_type = 'human' # Can be NoneType, "Human", or "Computer"
         self.cpu_level = 5 # Scales from 1-5, or something. 1 is very easy, 5 is max difficulty
@@ -23,8 +23,9 @@ class CSS_MENU:
         self.image_cache = image_dict
 
 class CSS_CURSOR:
-    def __init__(self, player = 1, x_pos = 0, y_pos = 0):
-        self.player = player
+    def __init__(self, player_obj = None, player = 1, x_pos = 0, y_pos = 0):
+        self.player = player # player number
+        self.player_obj = player_obj
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.x_stick = 0
@@ -70,32 +71,32 @@ class CSS_CURSOR:
             self.clicking = True
             self.was_clicking = False
 
-        if(self.x_pos > 1366 and self.x_stick < 30):
+        if(self.x_pos > 1325 and self.x_stick < 30):
             self.x_stick += 1
-            self.x_pos = 1366
-        elif(self.x_pos > 1366 and self.x_stick >= 30):
+            self.x_pos = 1325
+        elif(self.x_pos > 1325 and self.x_stick >= 30):
             self.x_pos = 0
             self.x_stick = 0
         elif(self.x_pos < 0 and self.x_stick < 30):
             self.x_stick += 1
             self.x_pos = 0
         elif(self.x_pos < 0 and self.x_stick >= 30):
-            self.x_pos = 1366
+            self.x_pos = 1325
             self.x_stick = 0
         else:
             self.x_stick = 0
 
-        if(self.y_pos > 768 and self.y_stick < 30):
+        if(self.y_pos > 740 and self.y_stick < 30):
             self.y_stick += 1
-            self.y_pos = 768
-        elif(self.y_pos > 768 and self.y_stick >= 30):
+            self.y_pos = 740
+        elif(self.y_pos > 740 and self.y_stick >= 30):
             self.y_pos = 0
             self.y_stick = 0
         elif(self.y_pos < 0 and self.y_stick < 30):
             self.y_stick += 1
             self.y_pos = 0
         elif(self.y_pos < 0 and self.y_stick >= 30):
-            self.y_pos = 768
+            self.y_pos = 740
             self.y_stick = 0
         else:
             self.y_stick = 0
@@ -198,6 +199,9 @@ class CSS_TOKEN:
 
     def update_player_status(self):
         self.player_state = self.ps_cycle[self.player_state]
+        if(self.player_state == "none" and self.attached_to):
+            self.attached_to.current_image = self.attached_to.idle_image
+            self.detach_from_cursor()
 
     def set_image(self, image_dict):
         self.image_cache = image_dict

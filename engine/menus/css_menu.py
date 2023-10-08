@@ -82,18 +82,21 @@ def css_handler():
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
         # Click with empty cursor
             for token_obj in token_list:
-                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj)):
+                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj.player_state == "cpu")):
                     token_obj.attach_to_cursor(player_menus[player_menu].cursor)
                     player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
                     player_menus[player_menu].cursor.called_detach_from_cursor = True
                     break
             else:
-                if(player_menus[player_menu].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[player_menu].menu.x_pos + 217 and player_menus[player_menu].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[player_menu].menu.y_pos + 200 and player_menus[player_menu].token.current_blob):
-                    player_menus[player_menu].token.update_selected_costume()
-                else:
-                    for pm in player_menus:
-                        if(player_menus[pm].menu.x_pos + 218 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 100 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
+                for pm in player_menus:
+                    if(player_menus[pm].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200 and player_menus[pm].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
+                        player_menus[pm].token.update_selected_costume()
+                    elif(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 120 and player_menus[player_menu].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
+                        player_menus[pm].token.update_selected_costume()
+                    else:
+                        if(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 120 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
                             player_menus[pm].token.update_player_status()
+                            break
             continue
             
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
