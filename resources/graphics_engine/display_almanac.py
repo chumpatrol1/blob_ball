@@ -82,7 +82,11 @@ appcwd = getenv('APPDATA')+"/BlobBall"
 def draw_almanac_main(game_display, selector_position, settings):
     global ball_76
     draw_background(game_display, 'almanac', settings)
-    text_array = static_text['almanac_main']
+    try:
+        text_array = static_text['almanac_main']
+    except:
+        load_almanac_static_text()
+        text_array = static_text['almanac_main']
 
     if(ball_76 is None):
         ball_76 = pg.image.load(cwd + "/resources/images/balls/soccer_ball.png")

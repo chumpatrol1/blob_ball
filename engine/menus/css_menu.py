@@ -7,314 +7,161 @@ File that handles the character select screen, albeit a little messily. Should b
 > css_handler(): Handles the selector position itself and updates the game state/selected blobs depending on the state of each selector.
 > popup_handler(): Handles the splash screen for unlocks. Mostly it just needs to detect a click or button press to move on
 '''
-
+import math
 import engine.handle_input
-from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs, return_available_costumes
+from engine.unlocks import load_blob_unlocks, return_blob_unlocks, return_css_selector_blobs, update_css_blobs
 from engine.unlock_event import clear_unlock_events, get_unlock_events
 from engine.game_handler import set_timer
 from resources.graphics_engine.display_almanac import load_almanac_static_text, unload_almanac_static_text
 from resources.graphics_engine.display_css import force_load_blobs
 from resources.sound_engine.sfx_event import createSFXEvent
-from engine.button import Button
-
-p1_css_menu_buttons = [
-]
-p2_css_menu_buttons = [
-]
-for i in range(8): # 8 columns
-    for j in range(5): # 5 rows
-        p1_css_menu_buttons.append(Button(50+100*j, 150+100*j, 136 + i*136, 204 + i*136)) # Left half of slot is for P1
-        p2_css_menu_buttons.append(Button(50+100*j, 150+100*j, 204 + i*136, 272 + i*136)) # Right half of slot is for P2
-        
-
+from engine.button import Button        
+from engine.menus.css_selector import CSS_PLAYER
+from engine.menus.css_blobs import CSS_BLOBS
 
 # X position, Y position, Confirmation, CPU/Human
-p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
-p2_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
-p1_ghost_position = None
-p2_ghost_position = None
-p1_blob = "quirkless"
-p2_blob = "quirkless"
-
+#p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
+#p2_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
+#p1_ghost_position = None
+#p2_ghost_position = None
+#p1_blob = "quirkless"
+#p2_blob = "quirkless"
 blob_list = return_css_selector_blobs()
+blob_selection_obj = CSS_BLOBS()
+players_ready = 0
+ui_button_timer = 0
 
-def css_navigation(player, selector, timer, other_selector, ghost_selector, other_ghost):
-    '''
-    Takes keyboard and mouse inputs to move the selectors
+player_menus = {
+    1: CSS_PLAYER(1, 85, 525, blob_selection_obj),
+    2: CSS_PLAYER(2, 412, 525, blob_selection_obj),
+    3: CSS_PLAYER(3, 739, 525, blob_selection_obj),
+    4: CSS_PLAYER(4, 1067, 525, blob_selection_obj),
+}
 
-    Inputs:
-        - player [int]: The player's number passed. Primarily used to prevent controllers from being detected twice in a frame
-        - selector [array]: Array with 3 elements indicating position and selection status
-        - timer [int]: The player's timer, which prevents the selectors from moving too quickly
-        - other_selector [array]: Same as selector, but for the other player
-        - ghost_selector [array]: Array with 2 elements for using with mouse hovering 
-        - other_ghost: Same as ghost_selector, but for the other player
+token_list = []
+for player_menu in player_menus:
+    token_list.append(player_menus[player_menu].token)
+player_menus[0] = CSS_PLAYER(0, y_pos = 1000)
 
-    Ouputs
-        - selector [array]: Array with 3 elements indicating position and selection status
-        - timer [int]: The player's timer, which prevents the selectors from moving too quickly
-        - other_selector [array]: Same as selector, but for the other player
-        - ghost_selector [array]: Array with 2 elements for using with mouse hovering 
-        - other_ghost: Same as ghost_selector, but for the other player
-    '''
-    
-    # Convert player controls
-    pressed_conversions = engine.handle_input.player_to_controls(player)
-    detect_new_controllers = True
-    if(player == 2):
-        detect_new_controllers = False
-    pressed_buttons = engine.handle_input.css_input(detect_new_controllers = detect_new_controllers)
-    if(player == 1):
-        mouse = engine.handle_input.handle_mouse(False)
-        cur_blob = p1_blob
-    else:
-        mouse = engine.handle_input.handle_mouse()
-        cur_blob = p2_blob
+ui_buttons = {
+    "casual_match": Button(470, 509, 0, 1366, 'disabled'),
+    "main_menu": Button(0, 70, 0, 178),
+    "rules": Button(0, 70, 180, 1066),
+    "almanac": Button(0, 70, 1070, 1200),
+    "settings": Button(0, 70, 1220, 1366),
+}
 
-    pressed = []
-    override = {'return', 'escape'}
-    for button in pressed_buttons:
-        if(button in pressed_conversions):
-            pressed.append(pressed_conversions[button])
-        elif(button in override):
-            pressed.append(button)
-    if pressed == []:
-        timer = 0
+def temp_disable_cursors():
+    global player_menus
+    for player in player_menus:
+        player_menus[player].cursor.clicking = True
+        player_menus[player].cursor.was_clicking = True    
 
-    if not timer == 0:
-        pressed = []
-        
-    if not (pressed == []):
-        if('ability' in pressed or 'escape' in pressed):
-            timer = 15
-        else:
-            timer = 30
-    
-    
-    if(selector[2] == 0):
-        if('up' in pressed):
-            selector[4] = 0
-            if selector[1] == 0:
-                selector[1] = 4
-            else:
-                selector[1] -= 1
-            
-        elif('down' in pressed):
-            selector[4] = 0
-            if selector[1] == 4:
-                selector[1] = 0
-            else:
-                selector[1] += 1
-        if('left' in pressed):
-            selector[4] = 0
-            if selector[0] == 0:
-                selector[0] = 7
-            else:
-                selector[0] -= 1
-        elif('right' in pressed):
-            selector[4] = 0
-            if selector[0] == 7:
-                selector[0] = 0
-            else:
-                selector[0] += 1
-
-    if('block' in pressed and selector[0] > 0 and not (cur_blob == 'quirkless' and selector[0] != 0 and selector[1] != 0)):
-        selector[4] += 1
-        costumes = return_available_costumes()
-        if(selector[4] >= len(costumes[cur_blob])):
-            selector[4] = 0
-    
-    if('return' in pressed):
-        print("return pressed")
-
-    if(selector[2] == 0):
-        if('ability' in pressed):
-            selector[2] = 1
-            ghost_selector = None
-        elif('escape' in pressed):
-            if(other_selector[2] == 0 and selector[3] == 0):
-                other_selector[2] = 2
-                other_selector[3] = 1
-
-    elif('kick' in pressed):
-        selector[2] = 0
-        if(other_selector[2] == 2):
-            #Deconfirms the other player's selection if the other player has confirmed
-            other_selector[2] = 1
-    elif(selector[2] >= 1 and other_selector[2] >= 1):
-        if('ability' in pressed):
-            selector[2] = 2
-            ghost_selector = None
-        elif('return' in pressed or 'escape' in pressed):
-            selector[2] = 2
-            other_selector[2] = 2
-            ghost_selector = None
-    elif(selector[2] >= 1 and other_selector[2] == 0):
-        if('escape' in pressed and selector[3] == 0):
-            selector[2] = 2
-            other_selector[2] = 2
-            other_selector[3] = 1
-            ghost_selector = None
-
-
-    if(player == 1):
-        css_menu_buttons = p1_css_menu_buttons
-    else:
-        css_menu_buttons = p2_css_menu_buttons
-
-    for i in range(len(css_menu_buttons)):
-        if(css_menu_buttons[i].check_hover(mouse)):
-            if(mouse[2] or mouse[1][0] or mouse[1][2]) and selector[2] == 0: # Did we move the mouse? 
-                ghost_selector = [i//5, i%5] # Change the selector position
-
-            if(mouse[1][0]):
-                # Functionality:
-                # both unselected: set to select
-                # me select, other unselect: nothing
-                # me unselect, other select: set to select
-                # both select: both confirm
-                if(selector[2] >= 1 and other_selector[2] >= 1):
-                    selector[2] = 2
-                    other_selector[2] = 2
-                    ghost_selector = None
-                    other_ghost = None
-                elif(not selector[2]):
-                    selector[0] = i//5
-                    selector[1] = i%5
-                    selector[2] = 1
-                    ghost_selector = None
-                
-            elif(mouse[1][2]):
-                selector[2] = 0
-                other_selector[2] = 0
-                ghost_selector = None
-                other_ghost = None
-                
-    return selector, timer, other_selector, ghost_selector, other_ghost
-    
-p1_timer = 0
-p2_timer = 0
 def css_handler():
     '''
-    Handles the selector position itself and updates the game state/selected blobs depending on the state of each selector.
-
-    Inputs:
-        - p1_selector_position [array]: Array with 3 elements indicating position and selection status
-        - p2_selector_position [array]: Array with 3 elements indicating position and selection status
-        - p1_ghost_position [array]: Array with 2 elements used for mouse hovering
-        - p2_ghost_position [array]: Array with 2 elements used for mouse hovering
-        - p1_blob [string]: The player's selected blob, such as "quirkless" or "fire"
-        - p2_blob [string]: The player's selected blob, such as "quirkless" or "fire"
-        - p1_timer [int]: The player's timer, which prevents the selectors from moving too quickly
-        - p2_timer [int]: The player's timer, which prevents the selectors from moving too quickly
-
-    Outputs:
-        - game_state [string]: The updated game state. Defaults to "css"
-        - info_getter [array]
-            - p1_selector_position: Array with 3 elements indicating position and selection status.
-            - p2_selector_position: Array with 3 elements indicating position and selection status
-            - p1_blob: The player's selected blob, such as "quirkless" or "fire"
-            - p2_blob: The player's selected blob, such as "quirkless" or "fire"
-            - p1_ghost_position: Array with 2 elements used for mouse hovering
-            - p2_ghost_position: Array with 2 elements used for mouse hovering
+    
     '''
 
     # Import globals
-    global p1_selector_position
-    global p2_selector_position
-    global p1_ghost_position
-    global p2_ghost_position
-    global p1_blob
-    global p2_blob
-    global p1_timer
-    global p2_timer
+    global player_menus
+    global players_ready
+    global ui_button_timer
     game_state = "css"
-
+    if(ui_button_timer):
+        ui_button_timer -= 1
     # TODO: We need to refactor the things below to get 3 and 4 player support to work
 
     # Navigate through the CSS 
     # TODO: Verify below
     # Controller failure - cannot swap players here
-    p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position = css_navigation(1, p1_selector_position, p1_timer, p2_selector_position, p1_ghost_position, p2_ghost_position)
-    p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position = css_navigation(2, p2_selector_position, p2_timer, p1_selector_position, p2_ghost_position, p1_ghost_position)
+    pressed = engine.handle_input.get_keypress()
     
-    # Depending on the selection state, do something!
-    if(p1_selector_position[2] == 1):
-        if(p1_selector_position[0] == 0):
-            unload_almanac_static_text()
-            if(p1_selector_position[1] == 0):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0, 0, 0]
-                p2_selector_position = [4, 2, 0, 0, 0]
-                p1_ghost_position = None
-                p2_ghost_position = None
-            elif(p1_selector_position[1] == 1):
-                game_state = "rules"
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p1_selector_position[1] == 2):
-                game_state = "settings"
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p1_selector_position[1] == 3):
-                game_state = "almanac"
-                load_almanac_static_text()
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p1_selector_position[1] == 4):
-                p1_selector_position[2] = 0
-                p1_selector_position[3] = not p1_selector_position[3]
+    for player_menu in player_menus:
+        player_menus[player_menu].cursor.player_interaction(pressed)
+        player_menus[player_menu].cursor.called_detach_from_cursor = False
+        if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
+        # Click with empty cursor
+            for token_obj in token_list:
+                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj.player_state == "cpu")):
+                    token_obj.attach_to_cursor(player_menus[player_menu].cursor)
+                    player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
+                    player_menus[player_menu].cursor.called_detach_from_cursor = True
+                    break
+            else:
+                for pm in player_menus:
+                    if(player_menus[pm].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200 and player_menus[pm].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
+                        player_menus[pm].token.update_selected_costume()
+                    elif(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 120 and player_menus[player_menu].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
+                        player_menus[pm].token.update_selected_costume()
+                    else:
+                        if(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 120 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
+                            player_menus[pm].token.update_player_status()
+                            break
+            continue
+            
+        if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
+        # Click with filled cursor
+            player_menus[player_menu].cursor.held_token.detach_from_cursor()
+            player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.idle_image
+            player_menus[player_menu].cursor.called_detach_from_cursor = True
+            continue
+    mouse = engine.handle_input.handle_mouse()
+    mouse_pos = mouse[0]
+    mouse_pressed = mouse[1]
+    mouse_pick_up = False
+    player_menus[0].cursor.was_clicking = player_menus[0].cursor.clicking
+    if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and not player_menus[0].cursor.held_token):
+        player_menus[0].cursor.clicking = True
+        
+        for token_obj in token_list:
+            #print(math.dist(mouse_pos, [token_obj.x_pos, token_obj.y_pos]))
+            if(math.dist(mouse_pos, [token_obj.x_pos, token_obj.y_pos]) < 50 and not token_obj.attached_to):
+                token_obj.attach_to_cursor(player_menus[0].cursor)
+                mouse_pick_up = True
+                player_menus[0].cursor.called_detach_from_cursor = True
+                break
+    else:
+        player_menus[0].cursor.clicking = False
+    if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and player_menus[0].cursor.held_token and not mouse_pick_up):
+        #print()
+        player_menus[0].cursor.held_token.detach_from_cursor()
+        player_menus[0].cursor.called_detach_from_cursor = True
+    player_menus[0].cursor.follow_mouse(mouse_pos)
+    players_ready = 0
+
+    for token_obj in token_list:
+        players_ready += bool(token_obj.current_blob and not token_obj.attached_to)
     
-    if(p1_selector_position[0] > 0):
-        p1_blob = blob_list[p1_selector_position[1]][p1_selector_position[0]]
+    for player_menu in player_menus:
+        player_menus[player_menu].token.check_costume_toggle(pressed)
+        player_menus[player_menu].token.costume_toggle_cooldown(pressed)
+
+        
+    if(players_ready >= 2):
+        ui_buttons["casual_match"].state = "idle"
+    else:
+        ui_buttons["casual_match"].state = "disabled"
     
-    if(p2_selector_position[2] == 1):
-        if(p2_selector_position[0] == 0):
-            if(p2_selector_position[1] == 0):
-                game_state = "main_menu"
-                p1_selector_position = [4, 2, 0, 0, 0]
-                p2_selector_position = [4, 2, 0, 0, 0]
-                p1_ghost_position = None
-                p2_ghost_position = None
-            elif(p2_selector_position[1] == 1):
-                game_state = "rules"
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p2_selector_position[1] == 2):
-                game_state = "settings"
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p2_selector_position[1] == 3):
-                game_state = "almanac"
-                load_almanac_static_text()
-                p1_selector_position[2] = 0
-                p2_selector_position[2] = 0
-            elif(p2_selector_position[1] == 4):
-                p2_selector_position[2] = 0
-                p2_selector_position[3] = not p2_selector_position[3]
+    for ui_button_key in ui_buttons:
+        ui_button = ui_buttons[ui_button_key]
+        button_override = False
+        hover_lock = False
+        if(ui_button.check_button_enabled()):
+            for player_menu in player_menus:
+                player_cursor = player_menus[player_menu].cursor
+                cursor_pos = [[player_cursor.x_pos, player_cursor.y_pos], [player_cursor.clicking, player_cursor.clicking, player_cursor.clicking]]
+                if(ui_button.check_hover(cursor_pos, True)):
+                    hover_lock = True
+                if(ui_button.check_hover(cursor_pos, button_override) and ui_button.check_left_click(cursor_pos) and not player_cursor.was_clicking and not ui_button_timer and not player_cursor.held_token and not player_cursor.called_detach_from_cursor):
+                    #print(player_cursor.called_detach_from_cursor
+                    game_state = ui_button_key
+                    ui_button_timer = 20
+                    button_override = True
+                    temp_disable_cursors()
+                #print(ui_button_key, ui_button.check_hover(cursor_pos, button_override), ui_button.state)
+            ui_button.state = 'hover' if hover_lock else 'idle'
 
-            #TODO: Fix this spaghetti
-    
-    if(p2_selector_position[0] > 0):
-        p2_blob = blob_list[p2_selector_position[1]][p2_selector_position[0]]
-
-    # If Both players have confirmed, start the match
-
-    if(p1_selector_position[2] == 2 and p2_selector_position[2] == 2):
-        game_state = "casual_match"
-        p1_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
-        p2_selector_position[2] = 0 #0 is unselected, 1 is selected, 2 is confirmed
-        p1_ghost_position = None
-        p2_ghost_position = None
-
-    # Reduce player timers
-
-    if(p1_timer > 0):
-        p1_timer -= 1
-    if(p2_timer > 0):
-        p2_timer -= 1
-
-    return game_state, [p1_selector_position, p2_selector_position, p1_blob, p2_blob, p1_ghost_position, p2_ghost_position]
+    return game_state, [player_menus, players_ready, ui_buttons]
 
 unlock_counter = 0
 def unlock_splash_handler(timer):
