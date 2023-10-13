@@ -18,6 +18,7 @@ from resources.sound_engine.sfx_event import createSFXEvent
 from engine.button import Button        
 from engine.menus.css_selector import CSS_PLAYER
 from engine.menus.css_blobs import CSS_BLOBS
+from engine.game_mode_flags import return_game_mode
 
 # X position, Y position, Confirmation, CPU/Human
 #p1_selector_position = [4, 2, 0, 0, 0] #x... y... 0 is unselected, 1 is selected, 2 is confirmed... 0 is human, 1 is cpu... 0 is default, 1 is grayscale, 2+ are custom
@@ -55,7 +56,14 @@ def temp_disable_cursors():
     global player_menus
     for player in player_menus:
         player_menus[player].cursor.clicking = True
-        player_menus[player].cursor.was_clicking = True    
+        player_menus[player].cursor.was_clicking = True
+
+def update_token_list():
+    global token_list
+    token_list = []
+    for player_menu in player_menus:
+        if(player_menu > 0):
+            token_list.append(player_menus[player_menu].token)
 
 def css_handler():
     '''
@@ -75,8 +83,9 @@ def css_handler():
     # TODO: Verify below
     # Controller failure - cannot swap players here
     pressed = engine.handle_input.get_keypress()
-    
+    update_token_list()
     for player_menu in player_menus:
+        player_menus[player_menu].update_game_mode()
         player_menus[player_menu].cursor.player_interaction(pressed)
         player_menus[player_menu].cursor.called_detach_from_cursor = False
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):

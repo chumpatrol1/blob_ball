@@ -128,7 +128,7 @@ def convert_replay_to_inputs(inputs):
         decoded_inputs.append(code_to_input[rinput])
     return decoded_inputs
 
-def handle_gameplay(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, pause_timer, is_replay = False):
+def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = False):
     # TODO: For loop that allows you to have variable blobs
     
     if(is_replay):

@@ -35,6 +35,7 @@ import engine.menus.almanac_menu
 import engine.menus.blob_info_menu
 import engine.menus.medal_milestone_menu
 import engine.rebind
+from engine.game_mode_flags import set_game_mode, return_game_mode
 from engine.replays import return_replay_info
 from engine.unlocks import return_available_costumes, update_css_blobs, update_mam_medals, update_costumes
 from engine.get_random_blob import get_random_blob
@@ -53,12 +54,7 @@ replay_ruleset = None
 
 timer = 0
 previous_screen = ""
-p1_blob = []
-p2_blob = []
-p1_is_cpu = False
-p2_is_cpu = False
-p1_costume = 0
-p2_costume = 0
+player_info = {}
 game_stats = []
 def update_game_state(game_state, cwd):
     '''
@@ -89,12 +85,13 @@ def update_game_state(game_state, cwd):
     '''
     global timer
     global previous_screen
-    global p1_blob
-    global p2_blob
-    global p1_is_cpu
-    global p2_is_cpu
-    global p1_costume
-    global p2_costume
+    #global p1_blob
+    #global p2_blob
+    #global p1_is_cpu
+    #global p2_is_cpu
+    #global p1_costume
+    #global p2_costume
+    global player_info
     global ruleset
     global settings
     global game_stats
@@ -111,23 +108,24 @@ def update_game_state(game_state, cwd):
         game_state, info_getter = engine.menus.main_menu.menu_navigation(timer)
         info_getter += [ruleset]
         if(game_state == "rules" or game_state == "settings" or game_state == "almanac"):
-            previous_screen = "main_menu" 
+            previous_screen = "main_menu"
+        elif(game_state == "main_menu"):
+            set_game_mode("squadball")
+
     elif(game_state == "css"):
         game_state, info_getter = engine.menus.css_menu.css_handler()
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
 
             # Looks like Miscellaneous CPU, Costume and Random Blob code
-            p1_blob = info_getter[0][1].token.current_blob
+            """p1_blob = info_getter[0][1].token.current_blob
             p2_blob = info_getter[0][2].token.current_blob
             p1_costume = info_getter[0][1].token.current_costume
             p2_costume = info_getter[0][2].token.current_costume
             p1_is_cpu = info_getter[0][1].token.player_state == 'cpu'
-            p2_is_cpu = info_getter[0][2].token.player_state == 'cpu'
-            if(p1_blob == 'random'):
-                p1_blob = get_random_blob()
-            if(p2_blob == 'random'):
-                p2_blob = get_random_blob()
+            p2_is_cpu = info_getter[0][2].token.player_state == 'cpu'"""
+
+            player_info = info_getter[0]
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
@@ -138,7 +136,7 @@ def update_game_state(game_state, cwd):
             timer = 10
             previous_screen = "css"
     elif(game_state == "casual_match"):
-        game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+        game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
         if(game_state == "casual_win"):
             game_stats = info_getter[5]
             clear_info_cache()

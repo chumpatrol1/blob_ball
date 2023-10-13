@@ -2,6 +2,7 @@ from engine.blobs import species_to_image
 from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs, return_css_selector_blobs
+from engine.game_mode_flags import return_game_mode
 import pygame as pg
 from os import getcwd, getenv
 cwd = getcwd()
@@ -16,6 +17,7 @@ ability_cache = []
 blob_image_cache = [
 ]
 ghost_image_cache = []
+tiny_blob_cache = []
 costume_cache = [[None, None], [None, None]] # P1: [CostumeName, Surface], P2: [CostumeName, Surface]
 
 cursor_cached = False
@@ -32,6 +34,7 @@ def unload_css():
     bic_cached = False
     blob_image_cache = []
     ghost_image_cache = []
+    tiny_blob_cache = []
     name_cache = []
     ability_cache = []
     font_cache = {}
@@ -47,6 +50,7 @@ def load_blobs(blob_image_cache, ghost_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
             blob_image_cache.append([])
             ghost_image_cache.append([])
+            tiny_blob_cache.append([])
             name_cache.append([])
             ability_cache.append([])
             for icon in row:
@@ -56,6 +60,8 @@ def load_blobs(blob_image_cache, ghost_image_cache, directory):
                 blob_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
                 ghost_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
                 ghost_image_cache[-1][-1].set_alpha(200)
+                tiny_blob_cache[-1].append(pg.transform.scale(loaded_icon, (1 * loaded_icon.get_width()//3, 1 * loaded_icon.get_height()//3)))
+                
                 name_cache[-1].append(font_cache['blob_name'].render(icon[1], False, (255, 255, 255)))
                 ability_cache[-1].append(font_cache['blob_description'].render(icon[2], False, (255, 255, 255)))
 
@@ -265,7 +271,7 @@ def draw_css(game_display, info_getter, settings):
     draw_background(game_display, "css", settings)
     css_blobs(game_display, info_getter)
 
-    if not cursor_cached:
+    if not cursor_cached or not info_getter[0][1].token.image_cache["human"]: # Add a different check here
         assign_cursor_images(info_getter[0])
     # Draw Menus
     for player_menu in info_getter[0]:
@@ -279,6 +285,18 @@ def draw_css(game_display, info_getter, settings):
     game_display.blit(token_cache['p3_ball'], (info_getter[0][3].token.x_pos - 25, info_getter[0][3].token.y_pos - 25))
     game_display.blit(token_cache['p4_ball'], (info_getter[0][4].token.x_pos - 25, info_getter[0][4].token.y_pos - 25))
     '''
+
+    # Squad Ball tiny blobs
+    if(return_game_mode() == "squadball"):
+        for index in info_getter[0]:
+            if(index == 0):
+                break # Should this be a continue?
+            player_obj = info_getter[0][index]
+            squadball_blobs = player_obj.menu.stored_blobs
+            y_shift = 0
+            for blob_item in squadball_blobs:
+                game_display.blit(tiny_blob_cache[blob_item["y"]][blob_item["x"]], (player_obj.menu.x_pos, player_obj.menu.y_pos + y_shift))
+                y_shift += (tiny_blob_cache[blob_item["y"]][blob_item["x"]].get_height() + 36)/2
     # Draw Cursors
     for index in info_getter[0]:
         if(index == 0):
@@ -317,6 +335,8 @@ def draw_css(game_display, info_getter, settings):
             text_rect.center = (player_obj.menu.x_pos + 142, player_obj.menu.y_pos + 180)
             game_display.blit(blob_desc, text_rect)
     
+            
+
     # Draw Tokens
     for player_menu in info_getter[0]:
         player_menu = info_getter[0][player_menu]

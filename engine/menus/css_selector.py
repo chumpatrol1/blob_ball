@@ -1,13 +1,23 @@
 import math
 from engine.unlocks import return_available_costumes
+from engine.game_mode_flags import return_game_mode
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
         self.menu = CSS_MENU(player, x_pos, y_pos)
         self.cursor = CSS_CURSOR(self, player, x_pos + 100, y_pos + 75)
-        self.token = CSS_TOKEN(player, x_pos + 100, y_pos + 75, blob_selector)
+        self.token = CSS_TOKEN(self, player, x_pos + 100, y_pos + 75, blob_selector)
         self.profile = None
         self.player_type = 'human' # Can be NoneType, "Human", or "Computer"
         self.cpu_level = 5 # Scales from 1-5, or something. 1 is very easy, 5 is max difficulty
+        self.game_mode = "classic"
+
+    def update_game_mode(self):
+        self.game_mode = return_game_mode()
+        if(self.game_mode == "squadball" and type(self.token) != SQUADBALL_TOKEN):
+            print("Update")
+            self.menu = SQUADBALL_MENU(self.menu.player, self.menu.x_pos, self.menu.y_pos)
+            self.token = SQUADBALL_TOKEN(self, self.token.player, self.token.x_pos, self.token.y_pos, self.token.blob_selector)
+
 
 class CSS_MENU:
     def __init__(self, player, x_pos, y_pos):
@@ -122,7 +132,8 @@ class CSS_CURSOR:
 
 
 class CSS_TOKEN:
-    def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
+    def __init__(self, player_obj = None, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
+        self.player_obj = player_obj
         self.player = player
         self.x_pos = x_pos
         self.y_pos = y_pos
@@ -205,3 +216,25 @@ class CSS_TOKEN:
 
     def set_image(self, image_dict):
         self.image_cache = image_dict
+
+class SQUADBALL_MENU(CSS_MENU):
+    def __init__(self, player, x_pos, y_pos):
+        super().__init__(player, x_pos, y_pos)
+        self.stored_blobs = [] # Array of dicts: {"blob": "quirkless", "costume": 0}
+    
+    def store_new_blob(self, blob, costume, x, y):
+        if(len(self.stored_blobs) < 3):
+            self.stored_blobs.append({"blob": blob, "costume": costume, "x": x, "y": y}) # TODO: Handle costumes better
+            print(self.stored_blobs)
+            return True
+        return False
+        
+
+class SQUADBALL_TOKEN(CSS_TOKEN):
+    def detach_from_cursor(self):
+        if(self.current_blob and self.player_obj.menu.store_new_blob(self.current_blob, self.current_costume, self.current_blob_x, self.current_blob_y)):
+            self.x_pos, self.y_pos = self.player_obj.menu.x_pos + 100, self.player_obj.menu.y_pos + 75
+            self.current_blob = None
+            self.current_costume = 0 # TODO: You should be able to edit the costume at some point
+        return super().detach_from_cursor()    
+        

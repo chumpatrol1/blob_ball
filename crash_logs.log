@@ -4456,3 +4456,134 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+5548-ERROR-Game Crash at Fri Oct 13 11:46:53 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 325, in draw_css
+    game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
+TypeError: unsupported operand type(s) for -: 'CSS_BLOBS' and 'int'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8512-ERROR-Game Crash at Fri Oct 13 12:18:05 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 268, in draw_css
+    if not cursor_cached or not info_getter[0][1].image_cache["human"]: # Add a different check here
+AttributeError: 'CSS_PLAYER' object has no attribute 'image_cache'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19588-ERROR-Game Crash at Fri Oct 13 14:47:00 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 120, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 112, in css_handler
+    player_menus[player_menu].cursor.held_token.detach_from_cursor()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 230, in detach_from_cursor
+    self.player_obj.menu.store_new_blob(self.current_blob, self.current_costume)
+AttributeError: 'CSS_MENU' object has no attribute 'store_new_blob'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13728-ERROR-Game Crash at Fri Oct 13 14:47:41 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 120, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 87, in css_handler
+    player_menus[player_menu].update_game_mode()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 18, in update_game_mode
+    self.menu = SQUADBALL_MENU(player, self.menu.x_pos, self.menu.y_pos)
+NameError: name 'player' is not defined
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25528-ERROR-Game Crash at Fri Oct 13 14:48:03 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 269, in draw_css
+    assign_cursor_images(info_getter[0])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 343, in assign_cursor_images
+    cursor_dict[1].menu.set_image({'human': token_cache['p1_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+AttributeError: 'SQUADBALL_MENU' object has no attribute 'set_image'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19148-ERROR-Game Crash at Fri Oct 13 14:48:40 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 269, in draw_css
+    assign_cursor_images(info_getter[0])
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 343, in assign_cursor_images
+    cursor_dict[1].menu.set_image({'human': token_cache['p1_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+AttributeError: 'SQUADBALL_MENU' object has no attribute 'set_image'
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+21252-ERROR-Game Crash at Fri Oct 13 14:49:02 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 120, in update_game_state
+    game_state, info_getter = engine.menus.css_menu.css_handler()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_menu.py", line 87, in css_handler
+    player_menus[player_menu].update_game_mode()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 18, in update_game_mode
+    self.menu = SQUADBALL_MENU(self.menu.player, self.menu.x_pos, self.menu.y_pos)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\css_selector.py", line 222, in __init__
+    super().__init__(player, x_pos, y_pos, blob_selector)
+TypeError: __init__() takes 4 positional arguments but 5 were given
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
