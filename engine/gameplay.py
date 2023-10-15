@@ -14,7 +14,7 @@ import random
 from resources.graphics_engine.display_particles import clear_particle_memory
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
-def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, set_seed = None, p1_costume = 0, p2_costume = 0):
+def initialize_players(player_info, ruleset, settings, set_seed = None):
     global random_seed
     if(set_seed == None):
         random_seed = random.randint(-2147483648, 2147483647)
@@ -24,8 +24,17 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
-    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
+    blob_dict = {}
+    ball_dict = {}
+    for player_menu in player_info:
+        dir_facing = 'right'
+        x_pos = 100
+        if(player_menu == 2):
+            dir_facing = 'left'
+            x_pos = 1600
+        blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+        if(player_menu == 2):
+            break
     ball = engine.ball.Ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
@@ -33,7 +42,15 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     else:
         time_limit = ruleset['time_limit']
     time_bonus = ruleset['time_bonus']
-    return p1_blob, p2_blob, ball
+    ball_dict = {
+            0: ball
+        } 
+
+    for blob in blob_dict:
+        blob_dict[blob].all_blobs = blob_dict
+    for ball in ball_dict:
+        ball_dict[ball].all_blobs = blob_dict 
+    return blob_dict, ball_dict
 
 initialized = False
 p1_blob = None
@@ -146,9 +163,8 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
         game_state = "casual_match"
         pressed = engine.handle_input.gameplay_input()
     global initialized
-    global p1_blob
-    global p2_blob
-    global ball
+    global blob_dict
+    global ball_dict
     global game_score
     global timer
     global p1_ko
@@ -183,28 +199,15 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
         '''
         Upon game startup, initialize all the actors
         '''
-        if(is_replay):
-            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume, set_seed = return_replay_info()[0])
+        if(is_replay): #TODO: Change the replay format to support the new gameplay.py
+            blob_dict, ball_dict = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume, set_seed = return_replay_info()[0])
         else:
-            blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
-        p1_blob = blobs[0]
-        p2_blob = blobs[1]
-        ball = blobs[2]
-        blob_dict = {
-            1: p1_blob,
-            2: p2_blob
-        }
-        p1_blob.all_blobs = blob_dict
-        p2_blob.all_blobs = blob_dict
-        ball_dict = {
-            0: ball
-        }        
-        ball.all_blobs = blob_dict
+            blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
         initialized = True
     else:
         if(timer == 0):
             movement_string = ""
-            if(p1_blob.is_cpu):
+            '''if(p1_blob.is_cpu): # TODO: Handle CPU Logic later
                 cpu_logic, cpu_memory = engine.cpu_logic.handle_logic_beta(p1_blob, p2_blob, ball, game_score, game_info['time'])
                 p1_blob.cpu_memory = cpu_memory
                 movement_string += convert_inputs_to_replay(p1_blob.move(cpu_logic), 1)
@@ -217,8 +220,10 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                 movement_string += convert_inputs_to_replay(p2_blob.move(cpu_logic), 2)
             else:
                 movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
-            
-            #print(game_info['time'], movement_string)
+            '''
+            for blob in blob_dict:
+                movement_string += convert_inputs_to_replay(blob_dict[blob].move(pressed), blob)
+
             replay_inputs.append(movement_string)
 
             update_environmental_modifiers()
@@ -244,19 +249,19 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                         blob.check_ability_collision(other_blob)
 
             # TODO: Figure out how to loopify this
-            if(p2_blob.hp <= 0):
+            if(blob_dict[2].hp <= 0):
                     timer = 120
                     p2_ko = True
-                    p1_blob.cooldown()
-                    p1_blob.info['points_from_kos'] += 1
-                    p2_blob.damage_flash_timer = 0
+                    blob_dict[1].cooldown()
+                    blob_dict[1].info['points_from_kos'] += 1
+                    blob_dict[2].damage_flash_timer = 0
             
-            if(p1_blob.hp <= 0):
+            if(blob_dict[1].hp <= 0):
                     timer = 120
                     p1_ko = True
-                    p2_blob.cooldown()
-                    p2_blob.info['points_from_kos'] += 1
-                    p1_blob.damage_flash_timer = 0
+                    blob_dict[2].cooldown()
+                    blob_dict[2].info['points_from_kos'] += 1
+                    blob_dict[1].damage_flash_timer = 0
 
             for blob in blob_dict.values():
                 blob.cooldown()
@@ -266,21 +271,22 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                 sball.check_blob_collisions()
                 
             # TODO: Figure out how to handle goals
-            if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
-                createSFXEvent('goal')
-                goal_scorer = 1
-                goal_scored = True
-                countdown = 60
-                timer = 60
-                p2_blob.info['points_from_goals'] += 1
-                
-            elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
-                createSFXEvent('goal')            
-                goal_scorer = 0
-                goal_scored = True
-                countdown = 60
-                timer = 60
-                p1_blob.info['points_from_goals'] += 1
+            for ball in ball_dict.values():
+                if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
+                    createSFXEvent('goal')
+                    goal_scorer = 1
+                    goal_scored = True
+                    countdown = 60
+                    timer = 60
+                    p2_blob.info['points_from_goals'] += 1
+                    
+                elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
+                    createSFXEvent('goal')            
+                    goal_scorer = 0
+                    goal_scored = True
+                    countdown = 60
+                    timer = 60
+                    p1_blob.info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
@@ -343,8 +349,9 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     reset_round(ruleset)
             timer -= 1
             if timer == 0:
-                p1_blob.heal_hp(ruleset['hp_regen'])
-                p2_blob.heal_hp(ruleset['hp_regen'])
+                for blob in blob_dict.values():
+                    blob.heal_hp(ruleset['hp_regen'])
+
 
         if(game_state == "casual_win"):
             game_info["game_score"] = game_score

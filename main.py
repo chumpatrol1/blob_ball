@@ -170,8 +170,8 @@ except Exception as ex:
     with open(cwd + "/crash_logs.log", 'a') as crash_logs:
         crash_logs.write("Game State: " + game_state + "\n")
         blob_info = return_blobs()
-        crash_logs.write("P1 Blob: " + str(blob_info[0]) + ", is CPU: " + str(bool(blob_info[2])) + "\n")
-        crash_logs.write("P2_Blob: " + str(blob_info[1]) + ", is CPU: " + str(bool(blob_info[3])) + "\n")
+        crash_logs.write("P1 Blob: " + str(blob_info[0]) + ", Player Type: " + str(blob_info[2]) + "\n")
+        crash_logs.write("P2_Blob: " + str(blob_info[1]) + ", Player Type}: " + str(blob_info[3]) + "\n")
         crash_logs.write("\n")
         crash_logs.write("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n")
         crash_logs.write("\n")

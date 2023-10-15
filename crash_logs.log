@@ -4587,3 +4587,95 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+20140-ERROR-Game Crash at Sun Oct 15 11:44:22 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 203, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 35, in initialize_players
+    blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = 1, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+KeyError: None
+Game State: casual_match
+19568-ERROR-Game Crash at Sun Oct 15 11:49:06 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 203, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 35, in initialize_players
+    blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = 1, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 128, in __init__
+    self.image, self.image_death = species_to_image(species, costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 85, in species_to_image
+    return image_dict[species][costume]
+KeyError: None
+Game State: casual_match
+P1 Blob: quirkless, is CPU: True
+P2_Blob: fire, is CPU: True
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8984-ERROR-Game Crash at Sun Oct 15 11:52:40 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 351, in handle_gameplay
+    p1_blob.heal_hp(ruleset['hp_regen'])
+AttributeError: 'NoneType' object has no attribute 'heal_hp'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7256-ERROR-Game Crash at Sun Oct 15 11:55:03 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 252, in handle_gameplay
+    if(p2_blob.hp <= 0):
+AttributeError: 'NoneType' object has no attribute 'hp'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4244-ERROR-Game Crash at Sun Oct 15 11:59:47 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 274, in handle_gameplay
+    if(ball.x_pos < 60 and ball.y_pos > 925): #Left Goal
+AttributeError: 'NoneType' object has no attribute 'x_pos'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -308,4 +308,4 @@ def return_blobs():
         - p1_is_cpu (global): Keeps track of P1's status as a CPU or human player
         - p2_is_cpu (global): Keeps track of P2's status as a CPU or human player 
     '''
-    return p1_blob, p2_blob, p1_is_cpu, p2_is_cpu
+    return player_info[1].token.current_blob, player_info[2].token.current_blob, player_info[1].token.player_state, player_info[1].token.player_state
