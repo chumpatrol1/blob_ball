@@ -4679,3 +4679,237 @@ P2_Blob: quirkless, Player Type}: human
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+2732-ERROR-Game Crash at Sun Oct 15 14:24:43 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 214, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 41, in initialize_players
+    for blob in squad_dict[player_menu].stored_blobs:
+AttributeError: 'dict' object has no attribute 'stored_blobs'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17160-ERROR-Game Crash at Sun Oct 15 14:25:45 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 214, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 41, in initialize_players
+    for blob in squad_dict[player_menu].menu.stored_blobs:
+AttributeError: 'dict' object has no attribute 'menu'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10712-ERROR-Game Crash at Sun Oct 15 14:35:27 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 322, in handle_gameplay
+    p1_blob.info['points_from_goals'] += 1
+AttributeError: 'NoneType' object has no attribute 'info'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+22724-ERROR-Game Crash at Sun Oct 15 14:37:23 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 368, in handle_gameplay
+    ball.image = engine.ball.type_to_image("goal_ball")
+UnboundLocalError: local variable 'ball' referenced before assignment
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14592-ERROR-Game Crash at Sun Oct 15 14:39:03 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 381, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 98, in reset_round
+    p1_blob.reset(ruleset)
+AttributeError: 'NoneType' object has no attribute 'reset'
+Game State: casual_match
+P1 Blob: quirkless, Player Type: human
+P2_Blob: fire, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+24448-ERROR-Game Crash at Sun Oct 15 14:40:37 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 384, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 99, in reset_round
+    p1_blob.reset(ruleset)
+AttributeError: 'NoneType' object has no attribute 'reset'
+Game State: casual_match
+P1 Blob: judge, Player Type: human
+P2_Blob: ice, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23640-ERROR-Game Crash at Sun Oct 15 14:41:23 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 384, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 103, in reset_round
+    ball.reset()
+AttributeError: 'NoneType' object has no attribute 'reset'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: joker, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15332-ERROR-Game Crash at Sun Oct 15 14:44:34 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 384, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 102, in reset_round
+    update_squad(1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 178, in update_squad
+    blob_dict[player] = squad_dict[player][squad_number]
+KeyError: 1
+Game State: casual_match
+P1 Blob: judge, Player Type: human
+P2_Blob: king, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4216-ERROR-Game Crash at Sun Oct 15 14:45:41 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 385, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 102, in reset_round
+    update_squad(1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 179, in update_squad
+    blob_dict[player] = squad_dict[player][squad_number]
+KeyError: 1
+Game State: casual_match
+P1 Blob: judge, Player Type: human
+P2_Blob: ice, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9816-ERROR-Game Crash at Sun Oct 15 14:46:53 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 386, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 102, in reset_round
+    update_squad(1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 180, in update_squad
+    blob_dict[player] = squad_dict[player][squad_number]
+KeyError: 1
+Game State: casual_match
+P1 Blob: glue, Player Type: human
+P2_Blob: ice, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17020-ERROR-Game Crash at Sun Oct 15 20:45:08 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 387, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 103, in reset_round
+    update_squad(1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 181, in update_squad
+    blob_dict[player] = squad_dict[player][squad_number]
+KeyError: 0
+Game State: casual_match
+P1 Blob: judge, Player Type: human
+P2_Blob: ice, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+19516-ERROR-Game Crash at Sun Oct 15 20:46:28 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 387, in handle_gameplay
+    reset_round(ruleset)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 103, in reset_round
+    update_squad(1)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 181, in update_squad
+    blob_dict[player] = squad_dict[player][squad_number]
+KeyError: 3
+Game State: casual_match
+P1 Blob: judge, Player Type: human
+P2_Blob: ice, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

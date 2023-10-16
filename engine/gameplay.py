@@ -4,16 +4,19 @@ from engine.environmental_modifiers import clear_environmental_modifiers, return
 import engine.handle_input
 import engine.blobs
 import engine.ball
+from engine.game_mode_flags import return_game_mode
 import time
 from json import dumps, loads
 from engine.endgame import update_game_stats, update_mu_chart
 from engine.replays import return_replay_info, save_replay
 from resources.graphics_engine.display_graphics import capture_screen
+from resources.graphics_engine.display_gameplay import return_image_cache
 import engine.cpu_logic
 import random
 from resources.graphics_engine.display_particles import clear_particle_memory
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
+squad_dict = {}
 def initialize_players(player_info, ruleset, settings, set_seed = None):
     global random_seed
     if(set_seed == None):
@@ -24,8 +27,10 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
     global goal_limit
     global time_limit
     global time_bonus
+    global squad_dict
     blob_dict = {}
     ball_dict = {}
+    squad_dict = {}
     for player_menu in player_info:
         dir_facing = 'right'
         x_pos = 100
@@ -33,6 +38,13 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
             dir_facing = 'left'
             x_pos = 1600
         blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+        if(return_game_mode() == "squadball"):
+            squad_dict[player_menu] = {}
+            blob_count = 0
+            for blob in player_info[player_menu].menu.stored_blobs:
+                print(blob)
+                squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = blob['blob'], player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
+                blob_count += 1
         if(player_menu == 2):
             break
     ball = engine.ball.Ball()
@@ -55,6 +67,8 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
 initialized = False
 p1_blob = None
 p2_blob = None
+p1_squad_number = 0
+p2_squad_number = 0
 blob_dict = {}
 ball = None
 ball_dict = {}
@@ -77,14 +91,18 @@ game_info = {
         }
 
 def reset_round(ruleset):
-    global p1_blob
-    global p2_blob
-    global ball
+    global blob_dict
+    global ball_dict
+    global squad_dict
     global p1_ko
     global p2_ko
-    p1_blob.reset(ruleset)
-    p2_blob.reset(ruleset)
-    ball.reset()
+    for blob in blob_dict:
+        blob_dict[blob].reset(ruleset)
+    #p1_blob.reset(ruleset)
+    #p2_blob.reset(ruleset)
+    if(return_game_mode() == "squadball"):
+        update_squad(1)
+    ball_dict[0].reset()
     p1_ko = False
     p2_ko = False
     clear_environmental_modifiers()
@@ -145,6 +163,30 @@ def convert_replay_to_inputs(inputs):
         decoded_inputs.append(code_to_input[rinput])
     return decoded_inputs
 
+def update_squad(player):
+    global blob_dict
+    global squad_dict
+    global p1_squad_number
+    global p2_squad_number
+    print(squad_dict)
+    if(player == 1):
+        p1_squad_number += 1
+        if(p1_squad_number >= len(squad_dict[player])):
+            p1_squad_number = 0
+        squad_number = p1_squad_number
+    if(player == 2):
+        p2_squad_number += 1
+        if(p2_squad_number >= len(squad_dict[player])):
+            p2_squad_number = 0
+        squad_number = p2_squad_number
+    print(blob_dict[player])
+    blob_dict[player] = squad_dict[player][squad_number]
+    print(blob_dict[player])
+    image_cache = return_image_cache()
+    image_cache['initialized'] = False
+    image_cache['ui_initialized'] = False
+
+
 def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = False):
     # TODO: For loop that allows you to have variable blobs
     
@@ -178,6 +220,8 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
     global replay_inputs
     global blob_dict
     global ball_dict
+    global p1_squad_number
+    global p2_squad_number
     
     if('escape' in pressed and not pause_timer):
         game_state = "pause"
@@ -204,6 +248,7 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
         else:
             blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
         initialized = True
+
     else:
         if(timer == 0):
             movement_string = ""
@@ -278,7 +323,7 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     goal_scored = True
                     countdown = 60
                     timer = 60
-                    p2_blob.info['points_from_goals'] += 1
+                    #p2_blob.info['points_from_goals'] += 1
                     
                 elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                     createSFXEvent('goal')            
@@ -286,7 +331,7 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     goal_scored = True
                     countdown = 60
                     timer = 60
-                    p1_blob.info['points_from_goals'] += 1
+                    #p1_blob.info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
@@ -332,19 +377,18 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     reset_round(ruleset)
 
             if(goal_scored):
-                ball.image = engine.ball.type_to_image("goal_ball")
-                ball.special_timer = 2
-                ball.move()
-                p1_blob.move([])
-                p2_blob.move([])
-                p1_blob.impact_land_frames = 0
-                p2_blob.impact_land_frames = 0
-                p1_blob.used_ability = {}
-                p2_blob.used_ability = {}
+                ball_dict[0].image = engine.ball.type_to_image("goal_ball")
+                ball_dict[0].special_timer = 2
+                ball_dict[0].move()
+                for blob in blob_dict.values():
+                    blob.move([])
+                    blob.impact_land_frames = 0
+                    blob.used_ability = {}
                 countdown -= 1
                 if(countdown == 0):
                     game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset, is_replay)
                     goal_scored = False
+                    print(goal_scorer)
                     goal_scorer = None
                     reset_round(ruleset)
             timer -= 1
@@ -363,7 +407,8 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                 game_info['avg_goal_time'] = 0
                 game_info['avg_goal_time_seconds'] = 0
             try:
-                game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
+                #game_info['avg_collisions_per_goal'] = (ball.info['blob_standard_collisions'] + ball.info['blob_reflect_collisions'] + ball.info['blob_warp_collisions']) / (p1_blob.info['points_from_goals'] + p2_blob.info['points_from_goals'])
+                pass
             except:
                 game_info['avg_collisions_per_goal'] = 0
             
