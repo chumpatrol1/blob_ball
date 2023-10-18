@@ -44,7 +44,10 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
             for blob in player_info[player_menu].menu.stored_blobs:
                 print(blob)
                 squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = blob['blob'], player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
+                squad_dict[player_menu][blob_count].max_hp //= 2
+                squad_dict[player_menu][blob_count].hp //= 2
                 blob_count += 1
+            blob_dict[player_menu] = squad_dict[player_menu][0]
         if(player_menu == 2):
             break
     ball = engine.ball.Ball()
@@ -90,7 +93,7 @@ game_info = {
         'avg_collisions_per_goal': 0,
         }
 
-def reset_round(ruleset):
+def reset_round(ruleset, player = None):
     global blob_dict
     global ball_dict
     global squad_dict
@@ -101,7 +104,7 @@ def reset_round(ruleset):
     #p1_blob.reset(ruleset)
     #p2_blob.reset(ruleset)
     if(return_game_mode() == "squadball"):
-        update_squad(1)
+        update_squad(player)
     ball_dict[0].reset()
     p1_ko = False
     p2_ko = False
@@ -351,30 +354,31 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
             '''
             # TODO: Figure out how to handle KO's
             if(p1_ko and not p2_ko):
-                blob_ko(p1_blob)
-                if(p1_blob.y_pos >= 1800):
+                blob_ko(blob_dict[1])
+                if(blob_dict[1].y_pos >= 1800):
                     game_state, winner_info = score_goal(1, goal_limit, ruleset, is_replay)
                     p1_ko = False
-                    p1_blob.hp = p1_blob.max_hp
-                    reset_round(ruleset)
+                    blob_dict[1].hp = blob_dict[1].max_hp
+                    reset_round(ruleset, player=2)
 
             elif(p2_ko and not p1_ko):
-                blob_ko(p2_blob)
-                if(p2_blob.y_pos >= 1800):
+                blob_ko(blob_dict[2])
+                if(blob_dict[2].y_pos >= 1800):
                     game_state, winner_info = score_goal(0, goal_limit, ruleset, is_replay)
-                    p2_blob.hp = p2_blob.max_hp
+                    blob_dict[2].hp = blob_dict[2].max_hp
                     p2_ko = False
-                    reset_round(ruleset)
+                    reset_round(ruleset, player=1)
             elif(p1_ko and p2_ko):
-                blob_ko(p1_blob)
-                blob_ko(p2_blob)
-                if(p1_blob.y_pos >= 1800 or p2_blob.y_pos >= 1800):
+                blob_ko(blob_dict[1])
+                blob_ko(blob_dict[2])
+                if(p1_blob.y_pos >= 1800 or blob_dict[2].y_pos >= 1800):
                     game_state, winner_info = score_goal(1, goal_limit, ruleset, is_replay)
                     game_state, winner_info = score_goal(0, goal_limit, ruleset, is_replay)
                     p1_ko, p2_ko = False, False
-                    p1_blob.hp = p1_blob.max_hp
-                    p2_blob.hp = p2_blob.max_hp
-                    reset_round(ruleset)
+                    blob_dict[1].hp = blob_dict[1].max_hp
+                    blob_dict[2].hp = blob_dict[2].max_hp
+                    reset_round(ruleset, player=1)
+                    reset_round(ruleset, player=2)
 
             if(goal_scored):
                 ball_dict[0].image = engine.ball.type_to_image("goal_ball")
@@ -389,8 +393,10 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     game_state, winner_info = score_goal(goal_scorer, goal_limit, ruleset, is_replay)
                     goal_scored = False
                     print(goal_scorer)
+                    team_update = goal_scorer+1
                     goal_scorer = None
-                    reset_round(ruleset)
+                    reset_round(ruleset, player=team_update)
+                    
             timer -= 1
             if timer == 0:
                 for blob in blob_dict.values():
