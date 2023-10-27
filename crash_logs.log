@@ -5048,3 +5048,68 @@ P2_Blob: ice, Player Type}: human
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+15480-ERROR-Game Crash at Thu Oct 26 22:20:04 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 255, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 41, in initialize_players
+    blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 130, in __init__
+    self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 71, in species_to_stars
+    blob_dict = full_dict[species]
+KeyError: 'random'
+Game State: casual_match
+P1 Blob: random, Player Type: human
+P2_Blob: random, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+20440-ERROR-Game Crash at Fri Oct 27 09:19:58 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 255, in handle_gameplay
+    if(is_replay): #TODO: Change the replay format to support the new gameplay.py
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 41, in initialize_players
+    selected_blob = player_info[player_menu].token.current_blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs.py", line 130, in __init__
+    self.stars = species_to_stars(species, stat_overrides) #Gets many values for each blob
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blob_stats.py", line 71, in species_to_stars
+    blob_dict = full_dict[species]
+KeyError: 'random'
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: random, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+17848-ERROR-Game Crash at Fri Oct 27 16:58:37 2023 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 139, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(player_info, ruleset, settings, timer)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 268, in handle_gameplay
+    blob_dict, ball_dict = initialize_players(player_info, ruleset, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 76, in initialize_players
+    for blob in squad:
+TypeError: 'int' object is not iterable
+Game State: casual_match
+P1 Blob: bubble, Player Type: human
+P2_Blob: quirkless, Player Type}: human
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -13,6 +13,7 @@ from resources.graphics_engine.display_graphics import capture_screen
 from resources.graphics_engine.display_gameplay import return_image_cache
 import engine.cpu_logic
 import random
+from engine.get_random_blob import get_random_blob
 from resources.graphics_engine.display_particles import clear_particle_memory
 from resources.sound_engine.sfx_event import createSFXEvent
 random_seed = None
@@ -37,13 +38,18 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
         if(player_menu == 2):
             dir_facing = 'left'
             x_pos = 1600
-        blob_dict[player_menu] = engine.blobs.Blob(species = player_info[player_menu].token.current_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
+        selected_blob = player_info[player_menu].token.current_blob
+        if(selected_blob == 'random'):
+            selected_blob = get_random_blob()
+        blob_dict[player_menu] = engine.blobs.Blob(species = selected_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = player_info[player_menu].token.current_costume)
         if(return_game_mode() == "squadball"):
             squad_dict[player_menu] = {}
             blob_count = 0
             for blob in player_info[player_menu].menu.stored_blobs:
-                print(blob)
-                squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = blob['blob'], player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
+                selected_blob = blob['blob']
+                if(selected_blob == 'random'):
+                    selected_blob = get_random_blob()
+                squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = selected_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
                 squad_dict[player_menu][blob_count].max_hp //= 2
                 squad_dict[player_menu][blob_count].hp //= 2
                 blob_count += 1
@@ -60,11 +66,17 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
     ball_dict = {
             0: ball
         } 
-
-    for blob in blob_dict:
-        blob_dict[blob].all_blobs = blob_dict
-    for ball in ball_dict:
-        ball_dict[ball].all_blobs = blob_dict 
+    if(return_game_mode() == "classic"):
+        for blob in blob_dict:
+            blob_dict[blob].all_blobs = blob_dict
+        for ball in ball_dict:
+            ball_dict[ball].all_blobs = blob_dict 
+    elif(return_game_mode() == "squadball"):
+        for squad in squad_dict:
+            for blob in squad_dict[squad]:
+                squad_dict[squad][blob].all_blobs = blob_dict
+        for ball in ball_dict:
+            ball_dict[ball].all_blobs = blob_dict 
     return blob_dict, ball_dict
 
 initialized = False
