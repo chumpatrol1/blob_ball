@@ -99,9 +99,15 @@ def css_handler():
             else:
                 for pm in player_menus:
                     if(player_menus[pm].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200 and player_menus[pm].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
-                        player_menus[pm].token.update_selected_costume()
+                        if(player_menus[pm].game_mode == "classic"):
+                            player_menus[pm].token.update_selected_costume()
                     elif(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 120 and player_menus[player_menu].token.current_blob and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
                         player_menus[pm].token.update_selected_costume()
+                    elif(player_menus[pm].game_mode == "squadball" and player_menus[pm].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200 and (player_menus[pm].token.player == player_menus[player_menu].cursor.player or player_menus[pm].token.player_state == "cpu")):
+                        if(player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 150):
+                            player_menus[pm].menu.remove_blob()
+                        elif(player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].token.current_blob):
+                            player_menus[pm].token.update_selected_costume()
                     else:
                         if(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 120 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
                             player_menus[pm].token.update_player_status()

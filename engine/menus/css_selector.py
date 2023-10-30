@@ -228,6 +228,10 @@ class SQUADBALL_MENU(CSS_MENU):
             print(self.stored_blobs)
             return True
         return False
+
+    def remove_blob(self):
+        if(len(self.stored_blobs)):
+            self.stored_blobs.pop()
         
 
 class SQUADBALL_TOKEN(CSS_TOKEN):
@@ -236,5 +240,7 @@ class SQUADBALL_TOKEN(CSS_TOKEN):
             self.x_pos, self.y_pos = self.player_obj.menu.x_pos + 100, self.player_obj.menu.y_pos + 75
             self.current_blob = None
             self.current_costume = 0 # TODO: You should be able to edit the costume at some point
+        elif(self.player_obj.menu.x_pos < self.x_pos < self.player_obj.menu.x_pos + 150 and self.player_obj.menu.y_pos < self.y_pos < self.player_obj.menu.y_pos + 200):
+            self.player_obj.menu.remove_blob()
         return super().detach_from_cursor()    
         
