@@ -184,6 +184,7 @@ def update_squad(player):
     global p1_squad_number
     global p2_squad_number
     print(squad_dict)
+    other_player = 1 if player == 2 else 2 # TODO: Write nicer code
     if(player == 1):
         p1_squad_number += 1
         if(p1_squad_number >= len(squad_dict[player])):
@@ -196,6 +197,22 @@ def update_squad(player):
         squad_number = p2_squad_number
     print(blob_dict[player])
     blob_dict[player] = squad_dict[player][squad_number]
+    blob_dict[other_player].kick_cooldown -= blob_dict[other_player].kick_cooldown_max//3
+    if(blob_dict[other_player].kick_cooldown <= 0):
+        blob_dict[other_player].kick_cooldown = 0
+        blob_dict[other_player].recharge_indicators['kick'] = 1
+    blob_dict[other_player].block_cooldown -= blob_dict[other_player].block_cooldown_max//3
+    if(blob_dict[other_player].block_cooldown <= 0):
+        blob_dict[other_player].block_cooldown = 0
+        blob_dict[other_player].recharge_indicators['block'] = 1
+    blob_dict[other_player].boost_cooldown_timer -= blob_dict[other_player].boost_cooldown_max//3
+    if(blob_dict[other_player].boost_cooldown_timer <= 0):
+        blob_dict[other_player].boost_cooldown_timer = 0
+        blob_dict[other_player].recharge_indicators['boost'] = 1
+    blob_dict[other_player].special_ability_cooldown -= blob_dict[other_player].special_ability_cooldown_max//3
+    if(blob_dict[other_player].special_ability_cooldown <= 0):
+        blob_dict[other_player].special_ability_cooldown = 0
+        blob_dict[other_player].recharge_indicators['ability'] = 1
     print(blob_dict[player])
     image_cache = return_image_cache()
     image_cache['initialized'] = False
