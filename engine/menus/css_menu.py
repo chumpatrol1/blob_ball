@@ -113,6 +113,11 @@ def css_handler():
                             player_menus[pm].token.update_player_status()
                             break
             continue
+        elif(player_menus[player_menu].cursor.snap_clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token and not token_list[player_menu-1].attached_to):
+            token_list[player_menu-1].attach_to_cursor(player_menus[player_menu].cursor)
+            player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
+            player_menus[player_menu].cursor.called_detach_from_cursor = True
+                    
             
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and  player_menus[player_menu].cursor.held_token):
         # Click with filled cursor
@@ -125,6 +130,7 @@ def css_handler():
     mouse_pressed = mouse[1]
     mouse_pick_up = False
     player_menus[0].cursor.was_clicking = player_menus[0].cursor.clicking
+    # Click with mouse
     if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and not player_menus[0].cursor.held_token):
         player_menus[0].cursor.clicking = True
         
@@ -135,6 +141,16 @@ def css_handler():
                 mouse_pick_up = True
                 player_menus[0].cursor.called_detach_from_cursor = True
                 break
+        else:
+            for pm in player_menus:
+                if(player_menus[pm].menu.x_pos <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 220 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200 and player_menus[pm].token.current_blob):
+                    player_menus[pm].token.update_selected_costume()
+                elif(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 120 and player_menus[player_menu].token.current_blob):
+                    player_menus[pm].token.update_selected_costume()
+                else:
+                    if(player_menus[pm].menu.x_pos + 220 <= player_menus[player_menu].cursor.x_pos <= player_menus[pm].menu.x_pos + 300 and player_menus[pm].menu.y_pos + 120 <= player_menus[player_menu].cursor.y_pos <= player_menus[pm].menu.y_pos + 200):
+                        player_menus[pm].token.update_player_status()
+                        break
     else:
         player_menus[0].cursor.clicking = False
     if((mouse_pressed[0] or mouse_pressed[1] or mouse_pressed[2]) and player_menus[0].cursor.held_token and not mouse_pick_up):

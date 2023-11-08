@@ -45,6 +45,7 @@ class CSS_CURSOR:
         self.called_detach_from_cursor = False
         self.was_clicking = True
         self.clicking = True
+        self.snap_clicking = False
         self.current_image = None
         self.idle_image = None
         self.grab_image = None
@@ -56,7 +57,7 @@ class CSS_CURSOR:
 
     def player_interaction(self, input_list):
         self.was_clicking = self.clicking
-
+        self.snap_clicking = False
         pressed = set()
         for key_input in input_list:
             if(str(self.player) in key_input):
@@ -76,10 +77,9 @@ class CSS_CURSOR:
             self.clicking = True # Ability to select, kick to deselect
         else:
             self.clicking = False
-
-        if('kick' in pressed and self.held_token):
-            self.clicking = True
-            self.was_clicking = False
+        
+        if('kick' in pressed and not self.was_clicking and not self.held_token):
+            self.snap_clicking = True
 
         if(self.x_pos > 1325 and self.x_stick < 30):
             self.x_stick += 1
@@ -115,7 +115,8 @@ class CSS_CURSOR:
             self.held_token.track_attached_cursor()
 
     def dist_to_element(self, other):
-        return math.dist([self.x_pos, self.y_pos], [other.x_pos, other.y_pos])
+        # Mostly for tokens lol
+        return math.dist([self.x_pos, self.y_pos], [other.x_pos-25, other.y_pos-25])
 
     def follow_mouse(self, mouse):
         self.x_pos = mouse[0]

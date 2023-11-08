@@ -4,15 +4,15 @@ from copy import deepcopy
 # The original selector
 css_selector_list_blobs = [
     ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["quirkless", "quirkless", "quirkless", "quirkless", "random", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
     ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless"],
 ]
 
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ],
-[["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/random_blob.png", "Random Blob", "Random Ability"], ["/blobs/taco_blob.png", "Taco Blob", "Filling"], ["/blobs/cactus_blob.png", "Cactus Blob", "Spike"], ["/blobs/merchant_blob.png", "Merchant Blob", "Shop"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ],
+[["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"],],
+[["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/random_blob.png", "Random Blob", "Random Ability"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/merchant_blob.png", "Merchant Blob", "Shop"], ],
+[["/blobs/fisher_blob.png", "Fisher Blob", "Hook"], ["/blobs/bubble_blob.png", "Bubble Blob", "Bubble"], ["/blobs/cactus_blob.png", "Cactus Blob", "Spike"], ["/blobs/taco_blob.png", "Taco Blob", "Filling"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ],
 [["/blobs/bubble_blob.png", "Bubble Blob", "Bubble"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ],
 ]
 
@@ -27,27 +27,27 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (4, 0): "rock",
     (5, 0): "lightning",
     (6, 0): "wind",
-    (7, 0): "coming_soon",
-    (8, 0): "coming_soon",
+    (7, 0): "glue",
+    (8, 0): "mirror",
     (0, 1): "judge",
     (1, 1): "doctor",
     (2, 1): "king",
-    (3, 1): "cop",
-    (4, 1): "boxer",
-    (5, 1): "mirror",
-    (6, 1): "fisher",
+    (3, 1): "joker",
+    (4, 1): "random",
+    (5, 1): "cop",
+    (6, 1): "boxer",
     (7, 1): "coming_soon",
-    (8, 1): "coming_soon",
-    (0, 2): "glue",
-    (1, 2): "arcade",
-    (2, 2): "joker",
-    (3, 2): "random",
-    (4, 2): "taco",
-    (5, 2): "cactus",
-    (6, 2): "merchant",
+    (8, 1): "merchant",
+    (0, 2): "fisher",
+    (1, 2): "bubble",
+    (2, 2): "cactus",
+    (3, 2): "taco",
+    (4, 2): "arcade",
+    (5, 2): "coming_soon",
+    (6, 2): "coming_soon",
     (7, 2): "coming_soon",
     (8, 2): "coming_soon",
-    (0, 3): "bubble",
+    (0, 3): "coming_soon",
     (1, 3): "coming_soon",
     (2, 3): "coming_soon",
     (3, 3): "coming_soon",
@@ -69,9 +69,9 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
 
 blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "quirkless": True,
-    "fire": False,
-    "ice": False,
-    "water": False,
+    "fire": True,
+    "ice": True,
+    "water": True,
     "rock": False,
     "lightning": False,
     "wind": False,
@@ -114,10 +114,10 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-unlock_milestones = [0, 2, 4, 6, 8, 10, 12, 15, 20,\
-    25, 30, 35, 40, 45, 52, 59, 66, 74,\
-    82, 90, 100, 110, 120, 130, 140, 150, 160,\
-    165, 180, 195, 210, 225, 240, 255, 0]
+unlock_milestones = [0, 0, 0, 0, 3, 6, 9, 12, 15,\
+    20, 25, 30, 35, 42, 50, 58, 66,\
+    75, 85, 95, 105, 115, 125, 135, 145, 155,\
+    170, 185, 200, 215, 230, 245, 260, 275, 0]
 
 def update_css_blobs(cwd):
     global blob_unlock_dict
