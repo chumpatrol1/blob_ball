@@ -36,7 +36,7 @@ def draw_info_box(game_display, player):
 
 def draw_ready_confirmation(game_display, player, ready, x_offset):
 
-    token_tuple = (player.player, player.is_cpu, ready)
+    token_tuple = (player.token.player, player.token.is_cpu, ready)
     token_dict = {
         (1, False, False): 'p1_ball',
         (1, False, True): 'p1_selected',
@@ -69,7 +69,9 @@ def draw_win_screen(game_display, info_getter, settings):
         image_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_check.png").convert_alpha(), (100, 100))
 
     try:
+        
         game_stats = info_getter[3]
+        #print(*game_stats[2])
         # TODO: Move to own file?
         draw_background(game_display, "win_screen", settings)
         clear_particle_memory()
@@ -77,12 +79,11 @@ def draw_win_screen(game_display, info_getter, settings):
         if(game_stats[0] == 3):
             menu_text = menu_font.render("TIE", False, (0, 0, 255))
         else:
-            menu_text = menu_font.render("WINNER: "+ str(game_stats[0]), False, (0, 0, 255))
+            menu_text = menu_font.render("WINNER: "+ str(game_stats[1]), False, (0, 0, 255))
 
         text_rect = menu_text.get_rect()
         text_rect.center = (683, 60)
         game_display.blit(menu_text, text_rect)
-
         menu_text = menu_font.render("TIME TAKEN: "+ str(game_stats[5]), False, (0, 0, 255))
         text_rect = menu_text.get_rect()
         text_rect.center = (683, 110)
@@ -92,18 +93,20 @@ def draw_win_screen(game_display, info_getter, settings):
         text_rect = menu_text.get_rect()
         text_rect.center = (683, 170)
         game_display.blit(menu_text, text_rect)
-
         if(info_getter[2] > 45):
             menu_text = menu_font.render("PRESS ABILITY/ENTER", False, (0, 0, 255))
             text_rect = menu_text.get_rect()
             text_rect.center = (683, 290)
             game_display.blit(menu_text, text_rect)
-        
-        draw_ready_confirmation(game_display, game_stats[1], info_getter[0], 150)
-        draw_ready_confirmation(game_display, game_stats[2], info_getter[1], 1100)
 
-        draw_info_box(game_display, game_stats[1])
-        draw_info_box(game_display, game_stats[2])
+        draw_ready_confirmation(game_display, game_stats[2][1], info_getter[0], 150)
+        draw_ready_confirmation(game_display, game_stats[2][2], info_getter[1], 1100)
+
+        if(game_stats[0] == "classic"):
+            draw_info_box(game_display, game_stats[2])
+            draw_info_box(game_display, game_stats[3])
+        else:
+            pass
         
         #print(info_getter)
 

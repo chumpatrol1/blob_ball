@@ -3,6 +3,7 @@ from engine.unlocks import return_available_costumes
 from engine.game_mode_flags import return_game_mode
 class CSS_PLAYER:
     def __init__(self, player = 1, x_pos = 0, y_pos = 0, blob_selector = None):
+        self.player = player
         self.menu = CSS_MENU(player, x_pos, y_pos)
         self.cursor = CSS_CURSOR(self, player, x_pos + 100, y_pos + 75)
         self.token = CSS_TOKEN(self, player, x_pos + 100, y_pos + 75, blob_selector)

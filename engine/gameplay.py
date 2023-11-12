@@ -213,7 +213,7 @@ def update_squad(player):
     if(blob_dict[other_player].special_ability_cooldown <= 0):
         blob_dict[other_player].special_ability_cooldown = 0
         blob_dict[other_player].recharge_indicators['ability'] = 1
-    print(blob_dict[player])
+    #print(blob_dict[player])
     image_cache = return_image_cache()
     image_cache['initialized'] = False
     image_cache['ui_initialized'] = False
@@ -467,13 +467,14 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
             if(is_replay == False):
                 replay_inputs.append("")
                 #print(game_info['time'], len(replay_inputs))
-                save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob, game_info)
-                update_game_stats(game_info, p1_blob, p2_blob, ball)
-                update_mu_chart(game_score, p1_blob, p2_blob)
+                if(return_game_mode() != "squadball"):
+                    save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob, game_info)
+                    update_game_stats(game_info, p1_blob, p2_blob, ball)
+                    update_mu_chart(game_score, p1_blob, p2_blob)
             else:
                 game_state = "replay_win"                   
             clear_particle_memory()
-            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (winner_info, p1_blob, p2_blob, ball, game_score, game_info['time_seconds'])]
+            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (return_game_mode(), winner_info, player_info, ball_dict, game_score, game_info['time_seconds'])]
     return game_state, [blob_dict, ball_dict, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
 def clear_info_cache():
