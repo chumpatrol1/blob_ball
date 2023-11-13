@@ -1,5 +1,6 @@
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from resources.graphics_engine.display_particles import clear_particle_memory as clear_particle_memory
+from engine.blobs import species_to_image
 from os import getcwd
 import pygame as pg
 cwd = getcwd()
@@ -10,29 +11,43 @@ def unload_win_screen():
     font_cache = {'initialized': False}
     image_cache = {'initialized': False}
 
-def draw_info_box(game_display, player):
+def draw_info_box(game_display, player, game_mode):
     menu_font = font_cache['info_box']
-    info = player.info
+    
     text_color = (255, 255, 0)
-    text_array = [
-        menu_font.render('Points from Goals: {}'.format(str(info['points_from_goals'])), False, text_color),
-        menu_font.render('Points from KO\'s: {}'.format(str(info['points_from_kos'])), False, text_color),
-        menu_font.render('Kick Count: {}'.format(str(info['kick_count'])), False, text_color),
-        menu_font.render('Block Count: {}'.format(str(info['block_count'])), False, text_color),
-        menu_font.render('Boost Count: {}'.format(str(info['boost_count'])), False, text_color),
-        menu_font.render('Parries: {}'.format(str(info['parries'])), False, text_color),
-        menu_font.render('Jumps: {}'.format(str(info['jumps'])), False, text_color),
+    if(game_mode == "classic"):
+        info = player.info
+        text_array = [
+            menu_font.render('Points from Goals: {}'.format(str(info['points_from_goals'])), False, text_color),
+            menu_font.render('Points from KO\'s: {}'.format(str(info['points_from_kos'])), False, text_color),
+            menu_font.render('Kick Count: {}'.format(str(info['kick_count'])), False, text_color),
+            menu_font.render('Block Count: {}'.format(str(info['block_count'])), False, text_color),
+            menu_font.render('Boost Count: {}'.format(str(info['boost_count'])), False, text_color),
+            menu_font.render('Parries: {}'.format(str(info['parries'])), False, text_color),
+            menu_font.render('Jumps: {}'.format(str(info['jumps'])), False, text_color),
     ]
+        text_y = 380
+        text_x = 50
+        if(player.player == 2):
+            text_x = 775
+        for text_box in text_array:
+            text_rect = text_box.get_rect()
+            text_rect.topleft = (text_x, text_y)
+            game_display.blit(text_box, text_rect)
+            text_y += 50
+    elif(game_mode == "squadball"):
+        if(player.player == 1):
+            blob_count = 0
+            for blob_constructor in player.menu.stored_blobs:
+                game_display.blit(image_cache[f"p1_blob_{blob_count}"], (50, 380 + 100*blob_count))
+                blob_count += 1
+        else:
+            blob_count = 0
+            for blob_constructor in player.menu.stored_blobs:
+                game_display.blit(image_cache[f"p2_blob_{blob_count}"], (775, 380 + 100*blob_count))
+                blob_count += 1
 
-    text_y = 380
-    text_x = 50
-    if(player.player == 2):
-        text_x = 775
-    for text_box in text_array:
-        text_rect = text_box.get_rect()
-        text_rect.topleft = (text_x, text_y)
-        game_display.blit(text_box, text_rect)
-        text_y += 50
+    
 
 def draw_ready_confirmation(game_display, player, ready, x_offset):
 
@@ -51,6 +66,7 @@ def draw_ready_confirmation(game_display, player, ready, x_offset):
     game_display.blit(image_cache[used_token], (x_offset, 250))
 
 def draw_win_screen(game_display, info_getter, settings):
+    game_stats = info_getter[3]
     if(not font_cache['initialized']):
         font_cache['initialized'] = True
         font_cache['info_box'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 38)
@@ -67,10 +83,25 @@ def draw_win_screen(game_display, info_getter, settings):
         image_cache['p2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p2_check.png").convert_alpha(), (100, 100))
         image_cache['cpu2_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_token.png").convert_alpha(), (100, 100))
         image_cache['cpu2_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/cpu2_check.png").convert_alpha(), (100, 100))
-
+        if(game_stats[0] == "squadball"):
+            # Pseudocode
+            # Look at each participating player
+            # Loop through each blob
+            # Save an image of the blob as "p#_blob_x", where # is the player number and x is the blob number
+            blob_count = 0
+            for blob_constructor in game_stats[2][1].menu.stored_blobs:
+                print(blob_constructor)
+                blob_file = species_to_image(blob_constructor['blob'], blob_constructor['costume'])
+                temp_blob = pg.image.load(blob_file[0])
+                image_cache[f"p1_blob_{blob_count}"] = pg.transform.scale(temp_blob,  (2 * temp_blob.get_width()//3, 2 * temp_blob.get_height()//3))
+                blob_count += 1
+            blob_count = 0
+            for blob_constructor in game_stats[2][2].menu.stored_blobs:
+                blob_file = species_to_image(blob_constructor['blob'], blob_constructor['costume'])
+                temp_blob = pg.image.load(blob_file[0])
+                image_cache[f"p2_blob_{blob_count}"] = pg.transform.scale(temp_blob,  (2 * temp_blob.get_width()//3, 2 * temp_blob.get_height()//3))
+                blob_count += 1
     try:
-        
-        game_stats = info_getter[3]
         #print(*game_stats[2])
         # TODO: Move to own file?
         draw_background(game_display, "win_screen", settings)
@@ -102,11 +133,9 @@ def draw_win_screen(game_display, info_getter, settings):
         draw_ready_confirmation(game_display, game_stats[2][1], info_getter[0], 150)
         draw_ready_confirmation(game_display, game_stats[2][2], info_getter[1], 1100)
 
-        if(game_stats[0] == "classic"):
-            draw_info_box(game_display, game_stats[2])
-            draw_info_box(game_display, game_stats[3])
-        else:
-            pass
+        draw_info_box(game_display, game_stats[2][1], game_stats[0])
+        draw_info_box(game_display, game_stats[2][2], game_stats[0])
+            
         
         #print(info_getter)
 
