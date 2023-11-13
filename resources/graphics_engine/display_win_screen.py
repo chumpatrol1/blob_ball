@@ -11,7 +11,7 @@ def unload_win_screen():
     font_cache = {'initialized': False}
     image_cache = {'initialized': False}
 
-def draw_info_box(game_display, player, game_mode):
+def draw_info_box(game_display, player, game_mode, squad_dict):
     menu_font = font_cache['info_box']
     
     text_color = (255, 255, 0)
@@ -40,11 +40,31 @@ def draw_info_box(game_display, player, game_mode):
             blob_count = 0
             for blob_constructor in player.menu.stored_blobs:
                 game_display.blit(image_cache[f"p1_blob_{blob_count}"], (50, 380 + 100*blob_count))
+                game_display.blit(image_cache["goal_ball"], (240, 390 + 100*blob_count))
+                goal_text = menu_font.render('{}'.format(str(squad_dict[player.player][blob_count].info['points_from_goals'])), False, text_color)
+                ko_text = menu_font.render('{}'.format(str(squad_dict[player.player][blob_count].info['points_from_kos'])), False, text_color)
+                text_rect = goal_text.get_rect()
+                text_rect.topleft = (275, 380 + 100*blob_count)
+                game_display.blit(goal_text, text_rect)
+                game_display.blit(image_cache["dead_blob"], (235, 420 + 100*blob_count))
+                text_rect = ko_text.get_rect()
+                text_rect.topleft = (275, 410 + 100*blob_count)
+                game_display.blit(ko_text, text_rect)
                 blob_count += 1
         else:
             blob_count = 0
             for blob_constructor in player.menu.stored_blobs:
                 game_display.blit(image_cache[f"p2_blob_{blob_count}"], (775, 380 + 100*blob_count))
+                game_display.blit(image_cache["goal_ball"], (940, 390 + 100*blob_count))
+                goal_text = menu_font.render('{}'.format(str(squad_dict[player.player][blob_count].info['points_from_goals'])), False, text_color)
+                ko_text = menu_font.render('{}'.format(str(squad_dict[player.player][blob_count].info['points_from_kos'])), False, text_color)
+                text_rect = goal_text.get_rect()
+                text_rect.topleft = (975, 380 + 100*blob_count)
+                game_display.blit(goal_text, text_rect)
+                game_display.blit(image_cache["dead_blob"], (935, 420 + 100*blob_count))
+                text_rect = ko_text.get_rect()
+                text_rect.topleft = (975, 410 + 100*blob_count)
+                game_display.blit(ko_text, text_rect)
                 blob_count += 1
 
     
@@ -101,6 +121,8 @@ def draw_win_screen(game_display, info_getter, settings):
                 temp_blob = pg.image.load(blob_file[0])
                 image_cache[f"p2_blob_{blob_count}"] = pg.transform.scale(temp_blob,  (2 * temp_blob.get_width()//3, 2 * temp_blob.get_height()//3))
                 blob_count += 1
+            image_cache['goal_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/balls/goal_ball.png").convert_alpha(), (30, 30))
+            image_cache['dead_blob'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/quirkless_blob_-1.png").convert_alpha(), (40, 22))
     try:
         #print(*game_stats[2])
         # TODO: Move to own file?
@@ -133,8 +155,8 @@ def draw_win_screen(game_display, info_getter, settings):
         draw_ready_confirmation(game_display, game_stats[2][1], info_getter[0], 150)
         draw_ready_confirmation(game_display, game_stats[2][2], info_getter[1], 1100)
 
-        draw_info_box(game_display, game_stats[2][1], game_stats[0])
-        draw_info_box(game_display, game_stats[2][2], game_stats[0])
+        draw_info_box(game_display, game_stats[2][1], game_stats[0], game_stats[6])
+        draw_info_box(game_display, game_stats[2][2], game_stats[0], game_stats[6])
             
         
         #print(info_getter)

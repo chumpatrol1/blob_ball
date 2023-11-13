@@ -356,6 +356,7 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     countdown = 60
                     timer = 60
                     #p2_blob.info['points_from_goals'] += 1
+                    blob_dict[2].info['points_from_goals'] += 1
                     
                 elif(ball.x_pos > 1745 and ball.y_pos > 925): #Right Goal
                     createSFXEvent('goal')            
@@ -364,6 +365,7 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
                     countdown = 60
                     timer = 60
                     #p1_blob.info['points_from_goals'] += 1
+                    blob_dict[1].info['points_from_goals'] += 1
             if not (ruleset['time_limit'] == 0):
                 time_limit -= 1
                 if(time_limit <= 0):
@@ -474,7 +476,8 @@ def handle_gameplay(player_info, ruleset, settings, pause_timer, is_replay = Fal
             else:
                 game_state = "replay_win"                   
             clear_particle_memory()
-            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (return_game_mode(), winner_info, player_info, ball_dict, game_score, game_info['time_seconds'])]
+            # How did we end up with such an ugly structure?
+            return game_state, [blob_dict, ball_dict, game_score, timer, game_state, (return_game_mode(), winner_info, player_info, ball_dict, game_score, game_info['time_seconds'], squad_dict)]
     return game_state, [blob_dict, ball_dict, game_score, timer,  time_limit] # TODO: Fix/Parity the Output
 
 def clear_info_cache():
