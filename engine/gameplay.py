@@ -49,9 +49,10 @@ def initialize_players(player_info, ruleset, settings, set_seed = None):
                 selected_blob = blob['blob']
                 if(selected_blob == 'random'):
                     selected_blob = get_random_blob()
-                squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = selected_blob, player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
-                squad_dict[player_menu][blob_count].max_hp //= 2
-                squad_dict[player_menu][blob_count].hp //= 2
+                squad_dict[player_menu][blob_count] = engine.blobs.Blob(species = blob['blob'], player = player_menu, x_pos = x_pos, facing = dir_facing, special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = (player_info[player_menu].token.current_blob == 'cpu'), stat_overrides = ruleset['p1_modifiers'], costume = blob['costume'])
+                squad_dict[player_menu][blob_count].max_hp -= 2
+                squad_dict[player_menu][blob_count].hp -= 2
+
                 blob_count += 1
             blob_dict[player_menu] = squad_dict[player_menu][0]
         if(player_menu == 2):
