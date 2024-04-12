@@ -446,42 +446,7 @@ def draw_gameplay(game_display, info_getter, settings):
             bname = "ball_" + str(ball.id)
             image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
             image_cache[bname + '_clone'] = ball.image
-        used_pnames = []
-        used_bfx = {'darkened': False, 'brightened': False, 'blackened': False}
-        for blob in blobs.values():
-            pname = "p" + str(blob.player) + "_"
-            used_pnames.append(blob.player)
 
-            blob_height = round(pg.image.load(blob.image).get_height() * 0.6)
-
-            image_cache[pname+'blob_left'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
-            image_cache[pname+'blob_right'] = pg.transform.flip(image_cache[pname+'blob_left'], True, False)
-            image_cache[pname+'dead_left'] = pg.transform.scale(pg.image.load(blob.image_death).convert_alpha(), (120, blob_height))
-            image_cache[pname+'dead_right'] = pg.transform.flip(image_cache[pname+'dead_left'], True, False)
-            image_cache[pname+'blob_clone'] = blob.image
-            try:
-                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
-            except:
-                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
-
-
-            # TODO: Duplicate check to darken the blobs
-            for used_blob in used_pnames:
-                if(blob.species == blobs[used_blob].species and blob.costume == blobs[used_blob].costume and blob.player != blobs[used_blob].player):
-                    if not used_bfx['darkened']:
-                        image_cache[pname+'blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                    elif not used_bfx['brightened']:
-                        image_cache[pname+'blob_right'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
-                    elif not used_bfx['blackened']:
-                        image_cache[pname+'blob_right'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
-
-            image_cache[pname+'damage_left'] = image_cache[pname+'blob_left'].copy()
-            image_cache[pname+'damage_left'].set_alpha(100)
-            image_cache[pname+'damage_right'] = image_cache[pname+'blob_right'].copy()
-            image_cache[pname+'damage_right'].set_alpha(100)
         
         image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
         image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()

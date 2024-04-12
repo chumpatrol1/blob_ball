@@ -1,4 +1,4 @@
-from engine.blobs import Blob
+from engine.blobs import blob_handler
 from engine.ball import Ball, type_to_image
 from engine.handle_input import gameplay_input, menu_input, merge_inputs
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers

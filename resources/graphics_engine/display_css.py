@@ -1,4 +1,4 @@
-from engine.blobs import species_to_image
+from engine.blobs.blobs.old_blobs import species_to_image
 from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs, return_css_selector_blobs
