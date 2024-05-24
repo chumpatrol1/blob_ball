@@ -1,10 +1,6 @@
+from .blubs import *
+#from .blobs.blobs import Blob
 
-try:
-    from .blobs import *
-    from .blobs.blobs import Blob
-except:
-    from blobs import *
-    from blobs.blobs import Blob
 class BlobContainer:
     def __init__(self):
         self.blob_dict = {}

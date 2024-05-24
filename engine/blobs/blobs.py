@@ -1,6 +1,30 @@
 #from resources.sound_engine.sfx_event import createSFXEvent
 #from engine.blob_stats import species_to_stars
 import pygame as pg
+from json import loads
+
+default_stars = { #Gets many values for each blob
+    'max_hp': 3,
+    'top_speed': 3,
+    'traction': 3,
+    'friction': 3,
+    'gravity': 3,
+    'kick_cooldown_rate': 3,
+    'block_cooldown_rate': 3,
+    'boost_cost': 3,
+    'boost_cooldown_max': 3,
+    'boost_duration': 3,
+
+    'special_ability': 'boost',
+    'special_ability_category': 'instant',
+    'special_ability_cost': 600,
+    'special_ability_maintenance': 3,
+    'special_ability_max': 1800,
+    'special_ability_cooldown': 300,
+    'special_ability_delay': 10,
+    'special_ability_duration': 60,
+}
+
 class Blob:
     ground = 1200
     ceiling = 200
@@ -11,7 +35,8 @@ class Blob:
 
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
     special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = [], match_state = None):
-        self.species = "quirkless"
+        self.init_json = self.load_init_blob()
+        self.species = "base"
         self.player = player #Player 1 or 2
         if(player == 1):
             self.danger_zone = 225
@@ -22,11 +47,7 @@ class Blob:
         self.costume = costume
         self.blob_images = {}
         self.ability_icons = {}
-        self.stars = species_to_stars(self.species, stat_overrides) #Gets many values for each blob
-        self.max_hp = int(2 * (self.stars['max_hp'] + 3)) #Each star adds an additional HP.
-        self.hp = self.max_hp
-        self.top_speed = 10+(1*self.stars['top_speed']) #Each star adds some speed
-        self.base_top_speed = self.top_speed #Non-boosted
+        self.stars = self.init_json["stars"]
         self.x_speed = 0
         self.x_kb = 0
         self.y_speed = 0
@@ -35,20 +56,12 @@ class Blob:
         self.x_center = x_pos + 83
         self.y_center = y_pos + 110
         self.facing = facing #Where the blob is currently facing
-        self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
-        self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
-        self.base_traction = self.traction #Non-boosted
-        self.base_friction = self.friction #No boost
-        self.gravity_stars = round(.3 + (self.stars['gravity'] * .15), 3) #Each star increases gravity
-        self.gravity_mod = self.gravity_stars * 3 #Fastfalling increases gravity
         self.fastfalling = False
         self.shorthopping = False
-        self.jump_force = 14.5 + (self.stars['gravity'] * 2) #Initial velocity is based off of gravity
         
-        self.kick_cooldown_rate = 2 #Each star reduces kick cooldown
+        self.kick_cooldown_rate = 2 # Each star reduces kick cooldown
         self.kick_cooldown = 0 #Cooldown timer between kicks
         self.kick_timer = 0 #Active frames of kick
-        self.kick_cooldown_max = (300 + 15 * (5 - self.stars['kick_cooldown_rate'])) * Blob.timer_multiplier
         self.kick_visualization = 0
         self.kick_visualization_max = 15
 
@@ -56,22 +69,16 @@ class Blob:
         self.block_cooldown = 0 #Block cooldown timer
         self.block_timer = 0 #How much time is left in the current block
         self.block_timer_max = 15 #How many frames a block lasts.
-        self.block_cooldown_max = (360 + 15 * (5 - self.stars['block_cooldown_rate'])) * Blob.timer_multiplier #How long the block cooldown lasts
 
         self.block_outer = 150
         self.block_inner = -25
         self.block_upper = -200
         self.block_lower = 200
 
-        self.boost_cost = self.stars['boost_cost'] * Blob.nrg_multiplier #How much SA meter must be spent to boost
         self.boost_cooldown_rate = 2
-        self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * Blob.timer_multiplier #Each star reduces boost cooldown
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
-        self.boost_duration = 60 + (30 * self.stars['boost_duration']) #Each star increases boost duration by half a second
         self.boost_timer = 0 #How much time is left in the current boost
-        self.boost_top_speed = 10+(1*self.stars['top_speed'] + 3) #This stat is increased by 3 stars
-        self.boost_traction = 0.2 + ((self.stars['traction'] + 5) * 0.15) #These stats are increased by 5 stars
-        self.boost_friction = 0.2 + ((self.stars['friction'] + 5) * 0.15) 
+        self.set_base_stats(self.stars)
 
         self.down_holding_timer = 0
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
@@ -79,20 +86,12 @@ class Blob:
         self.focusing = False
         self.impact_land_frames = 0 #Locks the player from focusing after landing (fastfall leniency)
 
-        self.special_ability = self.stars['special_ability'] #Special Ability of a Blob
-        self.ability_classification = "instant"
-        self.special_ability_max = self.stars['special_ability_max'] * Blob.nrg_multiplier #Highest that the SA gauge can go
-        self.special_ability_cost = self.stars['special_ability_cost'] * Blob.nrg_multiplier #Price to activate SA
-        self.special_ability_maintenance = self.stars['special_ability_maintenance'] * Blob.nrg_multiplier #Price to maintain SA
         self.special_ability_charge = 1 * Blob.nrg_multiplier #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
         self.special_ability_meter = 0 #Amount of SA charge stored up
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
         self.special_ability_cooldown = 0 #Cooldown between uses
-        self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * Blob.timer_multiplier
         self.special_ability_charge_base = special_ability_charge_base * Blob.nrg_multiplier
-        self.special_ability_duration = self.stars['special_ability_duration']
-        self.special_ability_delay = self.stars['special_ability_delay']
         self.special_ability_cooldown_rate = 2
         self.used_ability = {}
         self.ability_holding_timer = 0 # Used for held abilities
@@ -188,6 +187,17 @@ class Blob:
         }
         # TODO: Add image initialization
 
+    def load_init_blob(self, blob_path):
+        init_path = blob_path.rsplit("\\", 1)
+        print(init_path)
+        try:
+            with open(init_path[0]+"\\init.blob", "r") as f:
+                init_file = f.read()
+        except Exception as ex:
+            print(ex)
+        print(init_file)
+        return loads(init_file)
+        
     def cooldown(self):
         # Used by all blobs
         pass
@@ -216,7 +226,7 @@ class Blob:
         # Used by all blobs. Merchant and Joker blobs have notable variants
         # Boost kicks?
         if(self.kick_cooldown <= 0 or ignore_cooldown):
-            createSFXEvent('kick')
+            #createSFXEvent('kick')
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
@@ -228,7 +238,7 @@ class Blob:
     def block(self):
         # Used by all blobs. Merchant and Joker blobs have notable variants
         if(self.block_cooldown <= 0):
-            createSFXEvent('block')
+            #createSFXEvent('block')
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
@@ -282,9 +292,42 @@ class Blob:
         # Can technically be used by all blobs
         pass
 
-    def set_base_stats(self):
+    def set_base_stats(self, stars, set_hp = True, set_ability = True):
         # Used by all blobs when the Taxation effect is active
-        pass
+        if(set_hp):
+            self.max_hp = int(2 * (self.stars['max_hp'] + 3)) # Each star adds an additional HP.
+            self.hp = self.max_hp
+        self.top_speed = 10+(1*stars['top_speed']) # Each star adds some speed
+        self.base_top_speed = self.top_speed # Non-boosted speed
+        self.traction = 0.2 + (stars['traction'] * 0.15) # Each star increases traction
+        self.friction = 0.2 + (stars['friction'] * 0.15) # Each star increases friction
+        self.base_traction = self.traction # Non-boosted
+        self.base_friction = self.friction # No boost
+        self.gravity_stars = round(.3 + (stars['gravity'] * .15), 3) # Each star increases gravity
+        self.gravity_mod = self.gravity_stars * 3 # Fastfalling increases gravity
+        self.jump_force = 14.5 + (stars['gravity'] * 2) # Initial velocity is based off of gravity
+        self.boost_top_speed = 10+(1*stars['top_speed'] + 3) #This stat is increased by 3 stars
+        self.boost_traction = 0.2 + ((stars['traction'] + 5) * 0.15) # These stats are increased by 5 stars
+        self.boost_friction = 0.2 + ((stars['friction'] + 5) * 0.15) # These stats are increased by 5 stars
+
+        self.kick_cooldown_max = (300 + 15 * (5 - self.stars['kick_cooldown_rate'])) * Blob.timer_multiplier # Higher stars means lower cooldown
+        self.block_cooldown_max = (360 + 15 * (5 - self.stars['block_cooldown_rate'])) * Blob.timer_multiplier # How long the block cooldown lasts
+        self.boost_cost = self.stars['boost_cost'] * Blob.nrg_multiplier # How much SA meter must be spent to boost
+        self.boost_cooldown_max = (300 + 30 *  (5 - self.stars['boost_cooldown_max'])) * Blob.timer_multiplier # Each star reduces boost cooldown
+        self.boost_duration = 60 + (30 * self.stars['boost_duration']) # Each star increases boost duration by half a second
+        if(set_ability):
+            self.special_ability = self.stars['special_ability'] # Special Ability of a Blob
+            self.ability_classification = self.stars['special_ability_category']
+            self.special_ability_max = self.stars['special_ability_max'] * Blob.nrg_multiplier # Highest that the SA gauge can go
+            self.special_ability_cost = self.stars['special_ability_cost'] * Blob.nrg_multiplier # Price to activate SA
+            self.special_ability_maintenance = self.stars['special_ability_maintenance'] * Blob.nrg_multiplier # Price to maintain SA
+            self.special_ability_cooldown_max = self.stars['special_ability_cooldown'] * Blob.timer_multiplier
+            self.special_ability_duration = self.stars['special_ability_duration']
+            self.special_ability_delay = self.stars['special_ability_delay']
+        if(self.boost_timer > 0):
+            self.top_speed = self.boost_top_speed
+            self.traction = self.boost_traction
+            self.friction = self.boost_friction
 
     def get_ability_visuals(self):
         # Used by all blobs

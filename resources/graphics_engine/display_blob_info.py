@@ -1,4 +1,4 @@
-from engine.blobs.blobs.old_blobs import species_to_image
+from engine.blobs.blubs.old_blobs import species_to_image
 from engine.unlocks import return_available_costumes, return_costume_unlocks
 from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background
