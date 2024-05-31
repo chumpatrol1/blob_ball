@@ -1,7 +1,7 @@
 # INITIALIZER
 import os
 from json import loads, dumps
-
+import resources.graphics_engine.display_graphics
 game_version = '0.18.0b'
 
 def check_folders(cwd):

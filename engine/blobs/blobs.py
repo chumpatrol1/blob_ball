@@ -34,8 +34,8 @@ class Blob:
     sprite_collisions = {}
 
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = [], match_state = None):
-        self.init_json = self.load_init_blob()
+    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = [], match_state = None, init_blob_path = __file__):
+        self.init_json = self.load_init_blob(init_blob_path)
         self.species = "base"
         self.player = player #Player 1 or 2
         if(player == 1):
@@ -186,15 +186,51 @@ class Blob:
             "nrg_fatigue": 0,
         }
         # TODO: Add image initialization
+        self.initialize_blob_sprites()
 
-    def load_init_blob(self, blob_path):
+    def load_init_blob(self, blob_path=""):
         init_path = blob_path.rsplit("\\", 1)
         print(init_path)
         try:
             with open(init_path[0]+"\\init.blob", "r") as f:
                 init_file = f.read()
         except Exception as ex:
+            print("EXCEPTION CAUGHT")
             print(ex)
+            init_file = {
+                "stars": {
+                    "max_hp": 3,
+                    "top_speed": 3,
+                    "traction": 3,
+                    "friction": 3,
+                    "gravity": 3,
+                    "kick_cooldown_rate": 3,
+                    "block_cooldown_rate": 3,
+                    "boost_cost": 3,
+                    "boost_cooldown_max": 3,
+                    "boost_duration": 3,
+                    "special_ability": "boost",
+                    "special_ability_category": "instant",
+                    "special_ability_cost": 600,
+                    "special_ability_maintenance": 3,
+                    "special_ability_max": 1800,
+                    "special_ability_cooldown": 300,
+                    "special_ability_delay": 10,
+                    "special_ability_duration": 60
+                },
+                "descriptors": {
+                    "species": "quirkless",
+                    "path": "quirkless"
+                },
+                "costumes": {
+                    "0": {
+                        "alive": "quirkless_blob.png", 
+                        "dead": "quirkless_blob_-1.png",
+                        "ability": "boost_icon.png"
+                    }
+                }
+            }
+            return init_file
         print(init_file)
         return loads(init_file)
         
@@ -256,11 +292,11 @@ class Blob:
         # Used by all blobs
         pass
 
-    def check_ability_collision(self):
+    def check_ability_collision(self, blob):
         # Used by all blobs
         pass
 
-    def check_environmental_collisions(self):
+    def check_environmental_collisions(self, environment):
         # Used by all blobs, but it could be refactored
         pass
 
@@ -268,9 +304,14 @@ class Blob:
         # Used by all blobs, but it could be refactored
         pass
 
-    def heal_hp(self):
+    def heal_hp(self, heal_amt = 1, overheal = False):
         # Used by all blobs
-        pass
+        old_hp = self.hp
+        self.hp += heal_amt
+        if not overheal and self.hp > self.max_hp:
+            self.hp = self.max_hp
+        if(old_hp < self.hp):
+            self.toggle_recharge_indicator('heal_flash')
 
     def blob_ko(self):
         # Used by all blobs
@@ -284,9 +325,9 @@ class Blob:
         # Used by all blobs, but each blob would have a different version
         pass
 
-    def move(self):
+    def move(self, pressed):
         # Used by all blobs, but it could be refactored for blobs with menus
-        pass
+        return pressed
 
     def tutorial_move(self):
         # Can technically be used by all blobs
@@ -364,8 +405,18 @@ class Blob:
     def return_sprite_paths(self):
         blob_cwd = '/resources/images/blobs/'
         ability_cwd = "/resources/images/ability_icons/"
-        icon_cwd = "/resources/images/ui_icons/"
-        path_dict = { # Dictionary of tuples. Key is costume ID. Tuple[0] is basic alive sprite. Tuple[1] is basic dead sprite. Can fit more sprites as necessary.
+        print(self.init_json)
+        blob_cwd = f'blobs/{self.init_json["descriptors"]["path"]}/'
+        #icon_cwd = "/resources/images/ui_icons/"
+        path_dict = {}
+        for key, value in self.init_json["costumes"].items():
+            path_dict[int(key)] = {}
+            for sprite_id, sprite_path in value.items():
+                if sprite_id != "ability":
+                    path_dict[int(key)][sprite_id] = blob_cwd + sprite_path
+                else:
+                    path_dict[int(key)][sprite_id] = blob_cwd + sprite_path
+        '''path_dict = { # Dictionary of tuples. Key is costume ID. Tuple[0] is basic alive sprite. Tuple[1] is basic dead sprite. Can fit more sprites as necessary.
             0: {
                 "alive": blob_cwd + "quirkless_blob.png", 
                 "dead": blob_cwd + "quirkless_blob_-1.png",
@@ -381,7 +432,7 @@ class Blob:
                 "dead": blob_cwd + "quirkless_blob_-1.png", 
                 "ability": icon_cwd + "boost_icon.png",
             }
-        }
+        }'''
         return path_dict
 
     def initialize_blob_sprites(self):
@@ -396,8 +447,10 @@ class Blob:
         
         temp_dict = {}
         path_dict = self.return_sprite_paths()
+        print(path_dict)
         for sprite_path in path_dict[self.costume]:
-            temp_dict[sprite_path] = path_dict[self.costume][sprite_path]
+            temp_dict[sprite_path] = pg.image.load(path_dict[self.costume][sprite_path]).convert_alpha()
+            print(sprite_path)
         blob_height = round(temp_dict['alive'].get_height() * 0.6)
         self.blob_images['blob_left'] = pg.transform.scale(temp_dict['alive'].convert_alpha(), (120, blob_height))
         self.blob_images['blob_right'] = pg.transform.flip(self.blob_images['blob_left'], True, False)
@@ -429,7 +482,7 @@ class Blob:
         else:
             self.sprite_collisions[sprite_tuple] = 1
 
-        self.ability_icons['default'] = pg.transform.scale(pg.image.load(temp_dict['ability']).convert_alpha(), (70, 70))
+        self.ability_icons['default'] = pg.transform.scale(temp_dict['ability'].convert_alpha(), (70, 70))
 
     def draw(self, game_display):
         # Separate Chunk        
@@ -463,7 +516,7 @@ class Blob:
         #        game_display.blit(self.blob_images['damage_right'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
         #    else:
         #        game_display.blit(self.blob_images['damage_left'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        game_display.blit(blob_image, self.x_pos*(1000/1366), (blob_y_pos*(400/768)))
+        game_display.blit(blob_image, (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
 
         #draw_blob_special(blob, game_display)
         #draw_blob_particles(game_display, blobs.values()) # TODO: Fix this!

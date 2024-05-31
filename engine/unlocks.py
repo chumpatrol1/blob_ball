@@ -123,7 +123,7 @@ def update_css_blobs(cwd):
     global blob_unlock_dict
     global css_selector_list_blobs
     global css_display_list_blobs
-
+    #print(cwd)
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
 

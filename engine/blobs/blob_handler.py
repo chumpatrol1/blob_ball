@@ -1,5 +1,7 @@
-from .blubs import *
+# .blubs import *
 #from .blobs.blobs import Blob
+from blobs import *
+from engine.blobs.blobs import Blob
 
 class BlobContainer:
     def __init__(self):
@@ -19,9 +21,9 @@ class BlobContainer:
     def return_blob_keys(self):
         return self.blob_keys
 
-#blob_list = BlobContainer()
+blob_list = BlobContainer()
 #blob_list = BlobContainer().blob_dict
-#print(blob_list)
+print(blob_list)
 
 
 def get_blob_list():

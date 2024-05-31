@@ -5,8 +5,9 @@ from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_c
 import pygame as pg
 from os import getcwd, getenv
 cwd = getcwd()
-appcwd = getenv('APPDATA')+"/BlobBall"
-
+appcwd = getenv('APPDATA')+"\\BlobBall"
+print(cwd)
+print(appcwd)
 blob_array = return_css_display_blobs()
 
 
@@ -159,7 +160,7 @@ def css_blobs(game_display, info_getter):
 
         blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
 
-        update_css_blobs(cwd)
+        update_css_blobs(appcwd)
             
     for row in blob_image_cache: #Temporary, until we make more blobs
         y += 1

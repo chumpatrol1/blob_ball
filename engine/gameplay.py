@@ -2,7 +2,7 @@ import pygame as pg
 import sys
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 import engine.handle_input
-import engine.blobs
+import engine.blobs.blob_handler
 import engine.ball
 import time
 from json import dumps, loads
@@ -24,8 +24,11 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
-    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
+    p1_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p1_selected)
+    p1_blob = p1_blob(player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+    
+    p2_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p2_selected)
+    p2_blob = p2_blob(player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
     ball = engine.ball.Ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):

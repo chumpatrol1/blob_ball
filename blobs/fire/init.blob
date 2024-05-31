@@ -20,13 +20,14 @@
     "special_ability_duration": 60
   },
   "descriptors": {
-    "species": "fire"
+    "species": "fire",
+    "path": "fire"
   },
   "costumes": {
     "0": {
         "alive": "quirkless_blob.png", 
         "dead": "quirkless_blob_-1.png",
-        "ability": "boost_icon.png"
+        "ability": "fireball.png"
     }
   }
 }
