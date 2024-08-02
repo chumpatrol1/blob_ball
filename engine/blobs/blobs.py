@@ -2,6 +2,7 @@
 #from engine.blob_stats import species_to_stars
 import pygame as pg
 from json import loads
+from resources.sound_engine.sfx_event import createSFXEvent
 
 default_stars = { #Gets many values for each blob
     'max_hp': 3,
@@ -23,6 +24,49 @@ default_stars = { #Gets many values for each blob
     'special_ability_cooldown': 300,
     'special_ability_delay': 10,
     'special_ability_duration': 60,
+}
+
+player_controls = {
+    1:  {
+            'p1_up': 'up',
+            'p1_down': 'down',
+            'p1_left': 'left',
+            'p1_right': 'right',
+            'p1_ability': 'ability',
+            'p1_kick': 'kick',
+            'p1_block': 'block',
+            'p1_boost': 'boost'
+        },
+    2:  {
+            'p2_up': 'up',
+            'p2_down': 'down',
+            'p2_left': 'left',
+            'p2_right': 'right',
+            'p2_ability': 'ability',
+            'p2_kick': 'kick',
+            'p2_block': 'block',
+            'p2_boost': 'boost'
+        },
+    3:  {
+            'p3_up': 'up',
+            'p3_down': 'down',
+            'p3_left': 'left',
+            'p3_right': 'right',
+            'p3_ability': 'ability',
+            'p3_kick': 'kick',
+            'p3_block': 'block',
+            'p3_boost': 'boost'
+        },
+    4:  {
+            'p4_up': 'up',
+            'p4_down': 'down',
+            'p4_left': 'left',
+            'p4_right': 'right',
+            'p4_ability': 'ability',
+            'p4_kick': 'kick',
+            'p4_block': 'block',
+            'p4_boost': 'boost'
+        },
 }
 
 class Blob:
@@ -233,10 +277,190 @@ class Blob:
             return init_file
         print(init_file)
         return loads(init_file)
+    
+    def apply_status_effects(self, effect = "reflecting", duration = 60, limit = 600, method = "add"):
+        '''
+        Applies a status effect to a Blob
+        Inputs:
+            - effect (string): Refers to a key within the blob dictionary
+            - duration (int): Duration in frames
+            - limit (int): If you are adding to this status effect, this is the limit that you can't go over
+            - method (str): Should either be "add" (adds duration to current status value, but makes sure that the initial duration is 0 or greater), "true_add" (adds duration to the current value, no questions asked) or "set" (sets the duration ignoring everything else)
+        '''
+        if(method == "set" or (method == "add" )):
+            self.status_effects[effect] = duration
+        elif(method == "add"):
+            if(self.status_effects[effect] < 0):
+                self.status_effects[effect] = duration
+            else:
+                self.status_effects[effect] += duration
+            if(self.status_effects[effect] > limit): 
+                self.status_effects[effect] = limit
+        elif(method == "true_add"):
+            self.status_effects[effect] += duration
+            if(self.status_effects[effect] > limit): 
+                self.status_effects[effect] = limit
+
+    def cooldown_status_effects(self):
+        # TODO: Figure this out
+        for effect in self.status_effects:
+            if(self.status_effects[effect]):
+                try:
+                    self.status_effects[effect] -= 1
+
+                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_fatigue'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
+                        self.status_effects[effect] = 1
+
+                    if((effect == 'taxing' or effect == 'taxed') and self.status_effects[effect] == 1):
+                        if(effect == 'taxing'):
+                            createSFXEvent('chime_error')
+                        self.set_base_stats(self.stars)
+                        
+                    
+                    if(effect == 'overheat'):
+                        self.kick_cooldown_rate = 1
+                        self.block_cooldown_rate = 1
+                        self.special_ability_cooldown_rate = 1
+                        self.boost_cooldown_rate = 1
+                    if(effect == 'loaned'):
+                        self.kick_cooldown_rate += 4
+                        self.block_cooldown_rate += 4
+                        self.special_ability_cooldown_rate += 4
+                        self.boost_cooldown_rate += 4
+                    if(effect == 'hyped'):
+                        self.kick_cooldown_rate += 1
+                        self.block_cooldown_rate += 1
+                        self.special_ability_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1
+                    if(effect == 'monado_timer' and self.status_effects[effect] == 1):
+                        self.status_effects['monado_effect'] = None
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "JUMP"):
+                        '''self.kick_cooldown_rate += 1
+                        self.block_cooldown_rate += 1
+                        self.special_ability_cooldown_rate += 1
+                        self.boost_cooldown_rate += 1'''
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SHIELD"):
+                        self.block_cooldown_rate += 5
+                    
+                    if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
+                        self.kick_cooldown_rate += 3
+                except:
+                    pass # Typically pass for strings, like current pill
+    
+    def cooldown_default(self):
+        if(self.focusing):
+            self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3)) * 5
+            self.info['time_focused'] += 1
+            self.info['time_focused_seconds'] = round(self.info['time_focused']/60, 2)
+            if(self.y_pos < Blob.ground):
+                self.focusing = False
+                self.focus_lock = 0
+        else:
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3)
+
+        if(self.special_ability_meter < self.special_ability_max):
+            self.special_ability_meter += self.special_ability_charge
+
+            if(self.special_ability_cost + (self.special_ability_charge * 5) > self.special_ability_meter >= self.special_ability_cost and not self.recharge_indicators['ability_energy']\
+                and not (self.ability_classification == "held" and self.special_ability_timer > 0)):
+                self.toggle_recharge_indicator('ability_energy', 2)
+
+            if(self.special_ability_meter > self.special_ability_max):
+                self.special_ability_meter = self.special_ability_max
+
+        for key in self.recharge_indicators:
+            if(self.recharge_indicators[key]):
+                if(key == "damage_flash" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('damage')
+                elif(key == "heal_flash" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('heal')
+                elif(key == "ability_swap" and self.recharge_indicators[key]):
+                    self.toggle_recharge_indicator('ability_swap_b')
+                self.toggle_recharge_indicator(key)
+
+        if(self.special_ability_cooldown > 0):
+            self.special_ability_cooldown -= self.special_ability_cooldown_rate
+            if(self.special_ability_cooldown <= 0):
+                self.special_ability_cooldown = 0
+                self.toggle_recharge_indicator('ability')
+
+        if(self.kick_cooldown > 0):
+            self.kick_cooldown -= self.kick_cooldown_rate
+            if(self.kick_cooldown <= 0):
+                self.kick_cooldown = 0
+                self.toggle_recharge_indicator('kick')
+
+        if(self.kick_timer > 0):
+            self.kick_timer -= 1
+            if(self.kick_timer == 0):
+                self.collision_distance = 104
+
+        if(self.kick_visualization > 0):
+            self.kick_visualization -= 1
+
+        if(self.block_timer > 0):
+            self.block_timer -= 1
+        if(self.block_cooldown > 0):
+            self.block_cooldown -= self.block_cooldown_rate
+            if(self.block_cooldown <= 0):
+                self.block_cooldown = 0
+                self.toggle_recharge_indicator('block')
         
+        if(self.boost_timer > 0): #Reduces duration of active boost by 1
+            self.boost_timer -= 1 
+            if(self.boost_timer <= 0): #Once the boost ends, revert to normal
+                self.top_speed = 10+(1*self.stars['top_speed'])
+                self.traction = 0.2 + (self.stars['traction'] * 0.15) #Each star increases traction
+                self.friction = 0.2 + (self.stars['friction'] * 0.15) #Each star increases friction
+        elif(self.boost_cooldown_timer > 0): #If the boost is over, cool down
+            self.boost_cooldown_timer -= self.boost_cooldown_rate
+            if(self.boost_cooldown_timer <= 0):
+                self.boost_cooldown_timer = 0
+                self.toggle_recharge_indicator('boost')
+        
+        self.cooldown_status_effects()
+
+        if(self.impact_land_frames):
+            self.impact_land_frames -= 1
+
+        if(self.focus_lock > 0):
+            self.focus_lock -= 1
+        
+        if(self.wavedash_lock > 0):
+            self.wavedash_lock -= 1
+
+        if(self.parried):
+            self.parried -= 1
+        
+        if(self.perfect_parried):
+            self.perfect_parried -= 1
+
+        if(self.clanked):
+            self.clanked -= 1
+
+        self.special_ability_cooldown_rate = Blob.timer_multiplier
+        self.kick_cooldown_rate = Blob.timer_multiplier
+        self.block_cooldown_rate = Blob.timer_multiplier
+        self.boost_cooldown_rate = Blob.timer_multiplier
+
+        #self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown/Blob.timer_multiplier)
+        self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
+        #self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
+        self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
+        #self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
+        self.block_cooldown_percentage = self.block_cooldown/self.block_cooldown_max
+        #self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer/Blob.timer_multiplier)
+        self.boost_cooldown_percentage = self.boost_cooldown_timer/self.boost_cooldown_max
+        #self.boost_timer_visualization = create_visualization(self.boost_timer)
+        self.boost_timer_percentage = self.boost_timer/self.boost_duration
+
+        if(self.damage_flash_timer):
+            self.damage_flash_timer -= 1
+
     def cooldown(self):
         # Used by all blobs
-        pass
+        self.cooldown_default()
 
     def check_cooldown_completion(self, updatedAbility = True, updatedKick = True, updatedBlock = True, updatedBoost = True):
         # Used by Doctor and King blobs
@@ -288,9 +512,38 @@ class Blob:
         # Used by all blobs
         pass
 
-    def check_blob_collision(self):
-        # Used by all blobs
+    def apply_status_effect(self):
         pass
+
+    def check_blob_collision_default(self, blob):
+        hit_dict = {
+            "accumulated_damage": 0,
+            "status_effects": [],
+            "pierce": 0,
+            "x_speed_mod": 0,
+            "hit_registered": False
+        }
+        if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):
+            if(self.y_center - (1.1 * self.collision_distance) <= blob.y_center <= self.y_center + (self.collision_distance)):
+                hit_dict["hit_registered"] = True
+                hit_dict["accumulated_damage"] = 2
+                hit_dict["pierce"] = 0
+                hit_dict["x_speed_mod"] = 0
+                if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
+                    hit_dict["accumulated_damage"] += 1
+                if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
+                    #Take additional damage from kicks if you are hiding by your goal
+                    hit_dict["accumulated_damage"] += 1
+                if(self.status_effects['steroided']):
+                    hit_dict["pierce"] += 1
+        return hit_dict
+                
+
+    def check_blob_collision(self, blob):
+        # Used by all blobs
+        hit_dict = self.check_blob_collision_default(blob)
+        if(hit_dict["hit_registered"]):
+            blob.take_damage(hit_dict["accumulated_damage"],  status_effects = hit_dict["status_effects"], pierce = hit_dict["pierce"], x_speed_mod = hit_dict["x_speed_mod"])
 
     def check_ability_collision(self, blob):
         # Used by all blobs
@@ -299,10 +552,109 @@ class Blob:
     def check_environmental_collisions(self, environment):
         # Used by all blobs, but it could be refactored
         pass
+    
+    def check_block(self, show_parry):
+        """
+        
+        """
+        if(self.block_timer):  # Blocking?
+            if(show_parry):
+                if(self.block_timer >= self.block_timer_max - 3):
+                    self.special_ability_meter += 300
+                    if(self.special_ability_meter > self.special_ability_max):
+                        self.special_ability_meter = self.special_ability_max
+                    createSFXEvent('perfect_parry', volume_modifier=0.4)
+                    self.perfect_parried = 2
+                else:
+                    createSFXEvent('parry')
+                    self.parried = 2
+                self.info['parries'] += 1
+                
+            return False # We failed the block check, don't take damage
+        else:
+            
+            return True # Return true if the block check passes, we can take damage (amd boogy woogy[quacknote])!
+        
+    def check_clank(self):
+        if(self.kick_timer == 1):  # Kicking?
+            self.clanked = 2
+            self.info['clanks'] += 1
+            createSFXEvent('clank')
+            return False # We failed the clank check, don't take damage
+        else:
+            return True # Return true if the clank check passes
+        
+    def calculate_damage(self, damage):
+        return damage - bool(self.status_effects['reflecting'] > 0) # Damage is reduced by 1 if we are reflecting
 
-    def take_damage(self):
-        # Used by all blobs, but it could be refactored
+    def handle_post_damage(self):
         pass
+
+    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, x_speed_mod = 0,\
+    show_parry = True, status_effects = [], pierce = 0):
+        # Used by all blobs, but it could be refactored
+        """
+        Set damage_taken and pierced flags to False
+        Check for Monado Effect "SMASH" (we should check for "JUMP" and "SPEED" as well, no?)
+        If Else:
+            - Unblockable and Unclankable --> Check block and always set damage_taken to true (Why, exactly? It's so we can check for Perfect Parries)
+            - Unclankable only --> Check block and conditionally set damage_taken to true
+            - Unblockable only --> Check clank and conditionally set damage_taken to true
+            - Neither --> Check block, then clank, and conditionally set damage_taken to true
+        If damage is not taken but we have pierce --> Set damage to pierce value but then reduce damage if using SMASH or SHIELD Monado (This is counterintuitive - SMASH should increase Pierce damage)
+        If damage_taken == False --> Return 0
+        Else: 
+            - Set initial_hp to current blob HP
+            - Reduce HP
+                - Start with damage taken
+                - Reduce Damage: Reflecting, SHIELD Monado, Focusing + Baldur Shell (Which I think is getting reworked)
+                - Increase Damage: SPEED Monado, 2xSMASH Monado,
+            - Reduce Baldur Shell durability if conditions are met
+            - Set: blob's damage flash timer, blob info "damage_taken", blob status "stunned" (this should be changed), blob y_speed (think knockback), blob x_kb
+            - Play Hit SFX
+            - Toggle damage_flash (for what purpose?)
+            - For Fisher Blob, apply silence conditionally
+            - Loop through status effects and apply them (this should be its own function)
+            - Return initial hp - current blob hp
+        """
+        damage_taken = False
+        pierced = False
+        if(unblockable and unclankable):
+            # If this attack can't be blocked, parried, or clanked check for a perfect parry anyway for energy gain, but let the game know that you've taken damage
+            self.check_block(show_parry)
+            damage_taken = True
+        elif(unclankable):
+            # If this attack can't be clanked with, check to see if it was blocked instead
+            damage_taken = self.check_block(show_parry)
+        elif(unblockable):
+            # If this attack can't be blocked, but can be clanked (what kind of scenario is this??)
+            damage_taken = self.check_clank()
+        else:
+            # If the attack can be blocked and clanked with as normal, check for those
+            damage_taken = self.check_block(show_parry) and self.check_clank()
+        
+        if(not damage_taken and pierce):
+            # If we have a pierce value, we will use that instead of the default damage
+            damage_taken = True
+            damage = pierce
+
+        if(damage_taken):
+            # Triggers assuming we got past blocks, clanks, parries, and lack of pierce
+            initial_hp = self.hp
+            self.hp -= self.calculate_damage(damage)
+            self.damage_flash_timer = damage_flash_timer
+            self.info['damage_taken'] += damage
+            self.y_speed = y_speed_mod
+            self.x_kb = x_speed_mod   
+            createSFXEvent('hit')
+            if(not self.recharge_indicators['damage_flash']):  # If we're hit twice on the same frame, don't disable the flash!
+                self.toggle_recharge_indicator('damage_flash')     
+            for status_effect in status_effects:
+                self.apply_status_effect(status_effect[0], status_effect[1], status_effect[2], status_effect[3])
+                self.status_effects[status_effect[0]] += status_effect[1]
+            self.handle_post_damage()
+            return initial_hp - self.hp
+        return 0
 
     def heal_hp(self, heal_amt = 1, overheal = False):
         # Used by all blobs
@@ -325,8 +677,342 @@ class Blob:
         # Used by all blobs, but each blob would have a different version
         pass
 
-    def move(self, pressed):
+    def convert_inputs(self, pressed_buttons: list):
+        '''
+        Takes the pressed array (which is an array of up to 32 keys) and turns them into generic inputs
+        Inputs:
+            - pressed_buttons (list): Could look something like ['p1_ability', 'p2_kick']
+            - self.player (int): Used to determine which inputs are used for movement
+        Outputs:
+            - pressed (list): Generic list that looks something like ['right', 'ability']
+        '''
+        pressed_conversions = player_controls[self.player]
+
+        pressed = []
+        for button in pressed_buttons:
+            if(button in pressed_conversions):
+                if(self.focusing and self.focus_lock):
+                    if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    elif(pressed_conversions[button] == "up"):
+                        pressed.append(pressed_conversions[button])
+                        self.info['jump_cancelled_focuses'] += 1
+                    else:
+                        continue
+                elif(self.focusing and not self.focus_lock):
+                    if(pressed_conversions[button] == "down"):
+                        pressed.append(pressed_conversions[button])
+                    elif(pressed_conversions[button] == "up"):
+                        pressed.append(pressed_conversions[button])
+                        self.info['jump_cancelled_focuses'] += 1
+                    elif(pressed_conversions[button] == "left" or pressed_conversions[button] == "right"):
+                        pressed.append(pressed_conversions[button])
+                        self.info['wavedashes'] += 1
+                    else:
+                        continue
+                else:
+                    pressed.append(pressed_conversions[button])
+        return pressed
+
+    def drop_inputs(self, pressed):
+        if(self.movement_lock > 0 or self.status_effects['stunned']):
+            pressed = []
+        if(self.wavedash_lock):
+            if('down' in pressed):
+                pressed.remove('down')
+        if(self.jump_lock):
+            if('up' in pressed):
+                pressed.remove('up')
+        if(self.status_effects['judged']):
+            if('kick' in pressed):
+                pressed.remove('kick')
+            if('block' in pressed):
+                pressed.remove('block')
+            if('boost' in pressed):
+                pressed.remove('boost')
+            if('ability' in pressed):
+                pressed.remove('ability')
+        if(self.status_effects['silenced']):
+            if('ability' in pressed):
+                pressed.remove('ability')
+        return pressed
+
+    def set_maximum_speeds(self):
+        blob_speed = self.top_speed
+        blob_traction = self.traction
+        blob_friction = self.friction
+        if(self.status_effects['glued']):
+            blob_speed = 5 + (3 * bool(self.boost_timer))
+        if(self.status_effects['buttered']):
+            blob_speed += 2
+        if(self.status_effects['hypothermia']):
+            blob_speed -= 3
+        if(self.status_effects['monado_effect']):
+            if(self.status_effects['monado_effect'] == "JUMP"):
+                blob_friction += 3
+            if(self.status_effects['monado_effect'] == "SPEED"):
+                blob_speed += 5
+                blob_traction += 1
+                blob_friction += 1
+            if(self.status_effects['monado_effect'] == "SHIELD"):
+                blob_speed -= 3
+        if(self.status_effects['shop']['passive_equip'] == "sprint_master"):
+            blob_speed += 2
+            blob_traction += 5
+            blob_friction += 5
+        return {"blob_speed": blob_speed, "blob_traction": blob_traction, "blob_friction": blob_friction, "wavedashed": False}
+
+    def calculate_horizontal_speed(self, pressed, frame_stats):
+        if(self.y_pos == Blob.ground): #Applies traction if grounded
+            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+                if(not self.focusing):
+                    self.facing = "left"
+                    if(abs(self.x_speed) < frame_stats['blob_speed']):
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.2 * frame_stats['blob_traction'] # Turn around faster by holding left
+                        elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_traction'] * 2)): # Ease back into top speed if we're above it
+                            self.x_speed -= frame_stats['blob_traction']
+                        else:
+                            self.x_speed -= frame_stats['blob_traction'] # Accelerate based off of traction
+                    elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_traction'] * 2)): # Ease back into top speed if we're above it
+                        self.x_speed += frame_stats['blob_traction']
+                    else: # Snap back to top speed
+                        prev_speed = self.x_speed
+                        self.x_speed = -1*frame_stats['blob_speed'] #If at max speed, maintain it
+                        if(round(prev_speed) == frame_stats['blob_speed']):
+                            self.info['wavebounces'] += 1
+                            createSFXEvent('wavebounce')
+                elif('down' in pressed):
+                    self.wavedash_lock = 15
+                    #self.collision_timer = 30
+                    #self.x_speed = -1 * (15 + (10 * frame_stats['blob_traction']))
+                    self.x_speed = -30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else -20
+                    self.focusing = False
+                    self.focus_lock = 0
+                    frame_stats['wavedashed'] = True
+                    createSFXEvent('wavedash')
+            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+                if(not self.focusing):
+                    self.facing = 'right'
+                    if(abs(self.x_speed) < frame_stats['blob_speed']):
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.2 * frame_stats['blob_traction'] # Turn around faster by holding left
+                        elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_traction'] * 2)):
+                            self.x_speed += frame_stats['blob_traction']
+                        else:
+                            self.x_speed += frame_stats['blob_traction'] # Accelerate based off of traction
+                    elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_traction'] * 2)): # Ease back into top speed if we're above it
+                        self.x_speed -= frame_stats['blob_traction']
+                    else: # Snap back to top speed
+                        prev_speed = self.x_speed
+                        self.x_speed = frame_stats['blob_speed'] #If at max speed, maintain it
+                        if(round(prev_speed) == -1 * frame_stats['blob_speed']):
+                            self.info['wavebounces'] += 1
+                            createSFXEvent('wavebounce')
+                elif('down' in pressed):
+                    self.wavedash_lock = 15
+                    #self.collision_timer = 30
+                    #self.x_speed = 15 + (10 * frame_stats['blob_traction'])
+                    self.x_speed = 30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else 20
+                    self.focusing = False
+                    frame_stats['wavedashed'] = True
+                    createSFXEvent('wavedash')
+
+            else: #We're either not holding anything, or pressing both at once
+                if(self.x_speed < 0): #If we're going left, decelerate
+                    if(self.x_speed + frame_stats['blob_traction']) > 0:
+                        self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                    else:
+                        self.x_speed += frame_stats['blob_traction'] #Normal deceleration
+                elif(self.x_speed > 0):
+                    if(self.x_speed - frame_stats['blob_traction']) < 0:
+                        self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                    else:
+                        self.x_speed -= frame_stats['blob_traction'] #Normal deceleration
+        else: #Applies friction if airborne
+            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+                self.facing = "left"
+                if(self.x_pos <= 0): #Are we in danger of going off screen?
+                    self.x_speed = 0
+                    self.x_pos = 0
+                else:
+                    if(abs(self.x_speed) < frame_stats['blob_speed']):
+                        if(self.x_speed > 0):
+                            self.x_speed -= 1.2 * frame_stats['blob_friction'] # Turn around faster by holding left
+                        elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_friction'] * 2)):
+                            self.x_speed -= frame_stats['blob_friction']
+                        else:
+                            self.x_speed -= frame_stats['blob_friction'] # Accelerate based off of friction
+                    else:
+                        prev_speed = self.x_speed
+                        self.x_speed = -1*frame_stats['blob_speed'] #If at max speed, maintain it
+                        if(round(prev_speed) == frame_stats['blob_speed']):
+                            self.info['wavebounces'] += 1
+                            #createSFXEvent('wavebounce')
+            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+                self.facing = 'right'
+                if(self.x_pos >= 1700): #Are we in danger of going off screen?
+                    self.x_speed = 0
+                    self.x_pos = 1700
+                else:
+                    if(abs(self.x_speed) < frame_stats['blob_speed']):
+                        if(self.x_speed < 0):
+                            self.x_speed += 1.2 * frame_stats['blob_friction'] # Turn around faster by holding left
+                        elif(abs(self.x_speed) > frame_stats['blob_speed'] + (frame_stats['blob_friction'] * 2)):
+                            self.x_speed -= frame_stats['blob_friction']
+                        else:
+                            self.x_speed += frame_stats['blob_friction'] # Accelerate based off of friction
+                    else:
+                        prev_speed = self.x_speed
+                        self.x_speed = frame_stats['blob_speed'] #If at max speed, maintain it
+                        if(round(prev_speed) == -1 * frame_stats['blob_speed']):
+                            self.info['wavebounces'] += 1
+                            #createSFXEvent('wavebounce') 
+            else: #We're either not holding anything, or pressing both at once
+                if(self.x_speed < 0): #If we're going left, decelerate
+                    if(self.x_speed + frame_stats['blob_friction']) > 0:
+                        self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                    else:
+                        self.x_speed += frame_stats['blob_friction'] #Normal deceleration
+                elif(self.x_speed > 0):
+                    if(self.x_speed - frame_stats['blob_friction']) < 0:
+                        self.x_speed = 0 #Ensures that we don't decelerate and start moving backwards
+                    else:
+                        self.x_speed -= frame_stats['blob_friction'] #Normal deceleration
+
+    def apply_wavedash_abilities(self):
+        pass
+
+    def handle_down_press(self, pressed, frame_stats):
+        if('down' in pressed):
+            self.down_holding_timer += 1
+            if(self.y_pos < Blob.ground): #If you are above ground and press down
+                self.fastfalling = True #Fast fall, increasing your gravity by 3 stars
+            else:
+                if(not self.focusing and not self.impact_land_frames and not frame_stats['wavedashed']):
+                    self.focusing = True
+                    self.focus_lock = self.focus_lock_max
+                elif(self.focusing):
+                    self.focusing = True
+        else:
+            self.down_holding_timer = 0
+
+        if((not 'down' in pressed) and self.focus_lock == 0 and self.focusing):
+            #True if we're not holding down, focus lock is done and we're focusing
+            self.focusing = False
+
+    def calculate_vertical_speed(self, pressed):
+        if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
+            self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
+            self.focus_lock = 0
+            self.wavedash_lock = 0
+            self.focusing = False
+            self.info['jumps'] += 1
+        elif('up' in pressed and self.y_speed < 0):
+            self.shorthopping = False
+        elif(('up' not in pressed) and self.y_speed < 0):
+            self.shorthopping = True
+
+        if(self.y_pos < Blob.ground): #Applies gravity while airborne, respecting fast fall status.
+            self.info['time_airborne'] += 1
+            self.info['time_airborne_seconds'] = round(self.info['time_airborne']/60, 2)
+            if(self.y_speed < 0):
+                if(self.shorthopping):
+                    self.y_speed += self.gravity_stars * 2
+                else:
+                    self.y_speed += self.gravity_stars
+            else:
+                if(self.fastfalling):
+                    self.y_speed += self.gravity_mod
+                else:
+                    self.y_speed += self.gravity_stars
+        else:
+            self.info['time_grounded'] += 1
+            self.info['time_grounded_seconds'] = round(self.info['time_grounded']/60, 2)
+
+    def apply_speed(self, frame_stats):
+        if(not self.x_kb):
+            self.x_pos += self.x_speed #This ensures that we are always adjusting our position
+        else:
+            self.x_pos += self.x_kb
+            self.x_speed = 0
+            if(self.x_kb > 1 and self.y_pos == Blob.ground):
+                self.x_kb -= frame_stats['blob_traction']
+            elif(self.x_kb > 1 and self.y_pos != Blob.ground):
+                self.x_kb -= frame_stats['blob_friction']
+            elif(self.x_kb < -1 and self.y_pos == Blob.ground):
+                self.x_kb += frame_stats['blob_traction']
+            elif(self.x_kb < -1 and self.y_pos != Blob.ground):
+                self.x_kb += frame_stats['blob_friction']
+            else:
+                self.x_kb = 0
+        self.info['x_distance_moved'] += abs(self.x_speed)
+        self.y_pos += self.y_speed #This ensures that we are always adjusting our position
+
+    def check_boundary_collision(self):
+        """
+        Handles collisions for floor, ceiling and walls
+        Also updates blob x/y center
+        """
+        # X
+        if(self.x_pos <= 0): #Are we in danger of going off screen?
+            self.x_speed = 0
+            self.x_pos = 0
+            self.x_kb /= 2
+
+        if(self.x_pos >= 1700): #Are we in danger of going off screen?
+            self.x_speed = 0
+            self.x_pos = 1700
+            self.x_kb /= 2
+
+        # Y
+        if(self.y_pos < Blob.ceiling): #How did we get here?
+            self.y_pos = Blob.ceiling
+            self.y_speed = 0
+        if(self.y_pos > Blob.ground): #Don't go under the floor!
+            self.y_speed = 0
+            self.y_pos = Blob.ground
+            self.impact_land_frames = 10
+            self.fastfalling = False
+            self.shorthopping = False
+
+        self.x_center = self.x_pos + 83
+        self.y_center = self.y_pos + 110
+
+    def handle_special_inputs(self, pressed):
+                #ABILITY
+        if('ability' in pressed):
+            self.ability()
+
+        # BOOST
+        if('boost' in pressed):
+            self.boost()
+        
+        #Kick
+        if('kick' in pressed):
+            self.kick()
+        elif('block' in pressed):
+            self.block()
+
+    def move(self, pressed_buttons):
         # Used by all blobs, but it could be refactored for blobs with menus
+        pressed = self.convert_inputs(pressed_buttons)
+        self.drop_inputs(pressed)
+        frame_stats = self.set_maximum_speeds()
+
+        # Are these interchangeable?
+        self.calculate_horizontal_speed(pressed, frame_stats)
+        self.calculate_vertical_speed(pressed)
+        self.apply_speed(frame_stats)
+        self.handle_down_press(pressed, frame_stats)
+        self.apply_wavedash_abilities()
+
+        # Do this last
+        self.check_boundary_collision()
+
+        # Special things go last
+        self.handle_special_inputs(pressed)
+        
         return pressed
 
     def tutorial_move(self):
@@ -372,35 +1058,42 @@ class Blob:
 
     def get_ability_visuals(self):
         # Used by all blobs
-        pass
+        return self.ability_cooldown_percentage, self.ability_cooldown_visualization
 
     def get_kick_visuals(self):
         # Used by all blobs
-        pass
+        return self.kick_cooldown_percentage, self.kick_cooldown_visualization
 
     def get_block_visuals(self):
         # Used by all blobs
-        pass
+        return self.block_cooldown_percentage, self.block_cooldown_visualization
 
     def get_boost_timer_visuals(self):
         # Used by all blobs
-        pass
+        return self.boost_timer_percentage, self.boost_timer_visualization
 
     def get_boost_cooldown_visuals(self):
         # Used by all blobs
-        pass
+        return self.boost_cooldown_percentage, self.boost_cooldown_visualization
 
-    def toggle_recharge_indicator(self):
+    def toggle_recharge_indicator(self, indicator, set_indicator = 1):
         # Used by all blobs
-        pass
+        indicator_state = self.recharge_indicators[indicator]
+        if indicator_state == 2:
+            indicator_state = 1
+        elif(indicator_state == 1):
+            indicator_state = 0
+        else:
+            indicator_state = set_indicator
+        self.recharge_indicators[indicator] = indicator_state
 
     def __str__(self):
         # Used by all blobs
-        pass
+        return f"Player {self.player}: {self.species}."
 
     def return_stars(self):
         # Used by all blobs
-        pass
+        return self.stars
 
     def return_sprite_paths(self):
         blob_cwd = '/resources/images/blobs/'
@@ -498,24 +1191,19 @@ class Blob:
         #    blob_height = round(pg.image.load(blob.image).get_height()*0.6)
         #    self.blob_images['blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
         #    self.blob_images['blob_clone'] = blob.image
-        blob_image = self.blob_images['blob_right']
-        blob_y_pos = self.y_pos - (self.blob_images['blob_right'].get_height() - 66)
-        #if not("invisible" in blob.image):
-        #    if(self.facing == "right"):
-        #        if(self.hp > 0):
-        #            game_display.blit(self.blob_images['blob_right'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #        else:
-        #            game_display.blit(self.blob_images['dead_right'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #    else:
-        #        if(self.hp > 0):
-        #            game_display.blit(self.blob_images['blob_left'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #        else:
-        #            game_display.blit(self.blob_images['dead_left'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #else:
-        #    if(self.facing == "right"):
-        #        game_display.blit(self.blob_images['damage_right'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #    else:
-        #        game_display.blit(self.blob_images['damage_left'], (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
+        # Tuple structure: Direction facing ("left", "right"), Blob Status (0 is normal, 1 is hurt, 2 is dead)
+        sprite_dict = {
+            ("right", 0): self.blob_images["blob_right"],
+            ("left", 0): self.blob_images["blob_left"],
+            ("right", 1): self.blob_images["damage_right"],
+            ("left", 1): self.blob_images["damage_left"],
+            ("right", 2): self.blob_images["dead_right"],
+            ("left", 2): self.blob_images["dead_left"],
+        }
+        blob_status = 2 if self.hp <= 0 else 1 if (self.damage_flash_timer//10) % 2 == 1 else 0
+        blob_image = sprite_dict[(self.facing, blob_status)]
+        
+        blob_y_pos = self.y_pos - (blob_image.get_height() - 66)
         game_display.blit(blob_image, (self.x_pos*(1000/1366), (blob_y_pos*(400/768))))
 
         #draw_blob_special(blob, game_display)
