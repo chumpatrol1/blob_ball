@@ -68,8 +68,8 @@ def reset_round(ruleset):
     global ball
     global p1_ko
     global p2_ko
-    p1_blob.reset(ruleset)
-    p2_blob.reset(ruleset)
+    p1_blob.reset()
+    p2_blob.reset() # sometimes, you pass the ruleset here
     ball.reset()
     p1_ko = False
     p2_ko = False

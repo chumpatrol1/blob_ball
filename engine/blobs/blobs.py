@@ -3,6 +3,7 @@
 import pygame as pg
 from json import loads
 from resources.sound_engine.sfx_event import createSFXEvent
+import math
 
 default_stars = { #Gets many values for each blob
     'max_hp': 3,
@@ -444,15 +445,15 @@ class Blob:
         self.block_cooldown_rate = Blob.timer_multiplier
         self.boost_cooldown_rate = Blob.timer_multiplier
 
-        #self.ability_cooldown_visualization = create_visualization(self.special_ability_cooldown/Blob.timer_multiplier)
+        self.ability_cooldown_visualization = Blob.create_visualization(self.special_ability_cooldown/Blob.timer_multiplier)
         self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
-        #self.kick_cooldown_visualization = create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
+        self.kick_cooldown_visualization = Blob.create_visualization(self.kick_cooldown/self.kick_cooldown_rate)
         self.kick_cooldown_percentage = self.kick_cooldown/self.kick_cooldown_max
-        #self.block_cooldown_visualization = create_visualization(self.block_cooldown/self.block_cooldown_rate)
+        self.block_cooldown_visualization = Blob.create_visualization(self.block_cooldown/self.block_cooldown_rate)
         self.block_cooldown_percentage = self.block_cooldown/self.block_cooldown_max
-        #self.boost_cooldown_visualization = create_visualization(self.boost_cooldown_timer/Blob.timer_multiplier)
+        self.boost_cooldown_visualization = Blob.create_visualization(self.boost_cooldown_timer/Blob.timer_multiplier)
         self.boost_cooldown_percentage = self.boost_cooldown_timer/self.boost_cooldown_max
-        #self.boost_timer_visualization = create_visualization(self.boost_timer)
+        self.boost_timer_visualization = Blob.create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
 
         if(self.collision_timer > 0):
@@ -460,6 +461,9 @@ class Blob:
 
         if(self.damage_flash_timer):
             self.damage_flash_timer -= 1
+
+    def create_visualization(number):
+        return math.ceil(number/6)/10
 
     def cooldown(self):
         # Used by all blobs
@@ -684,11 +688,54 @@ class Blob:
 
     def blob_ko(self):
         # Used by all blobs
-        pass
+        # TODO: Rewrite this for a more interesting KO!
+        self.y_speed = 10
+        if(self.y_pos < 2000):
+            self.y_pos += self.y_speed
 
     def reset(self):
         # Used by all blobs, but it could be refactored
-        pass
+        self.x_speed = 0
+        self.y_speed = 0
+        self.x_kb = 0
+        if(self.player == 1):
+            self.x_pos = 100
+            self.facing = 'right'
+        else:
+            self.x_pos = 1600
+            self.facing = 'left'
+        self.move([])
+        self.y_pos = Blob.ground
+        if(self.species == "quirkless" and self.boost_timer):
+            self.special_ability_cooldown -= self.boost_timer
+        self.boost_timer = 0
+        self.focus_lock = 0
+        self.kick_visualization = 0
+        self.block_timer = 0
+        self.focusing = False
+        self.damage_flash_timer = 0
+        #self.image = species_to_image(self.species, self.costume)[0]
+        self.special_ability_timer = 0
+        self.used_ability = {}
+        self.top_speed = self.base_top_speed
+        self.friction = self.base_friction
+        self.traction = self.base_traction
+        self.impact_land_frames = 0
+        self.movement_lock = 0
+        self.wavedash_lock = 0
+        self.ability_holding_timer = 0
+        self.status_effects['hypothermia'] = 0
+        self.status_effects['judged'] = 0
+        self.status_effects['steroided'] = 0
+        self.status_effects['taxed'] = 0
+        self.status_effects['taxing'] = 0
+        self.status_effects['loaned'] = 0
+        self.status_effects['stunned'] = 0
+        self.status_effects['reflecting'] = 0
+        self.status_effects['reflect_break'] = 0
+        #self.status_effects['overheat'] = 0
+        self.set_base_stats(self.stars)
+        #self.heal_hp(heal_amt=ruleset['hp_regen'])
 
     def cpu_logic(self):
         # Used by all blobs, but each blob would have a different version
