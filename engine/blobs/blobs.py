@@ -12,7 +12,7 @@ default_stars = { #Gets many values for each blob
     'gravity': 3,
     'kick_cooldown_rate': 3,
     'block_cooldown_rate': 3,
-    'boost_cost': 3,
+    'boost_cost': 600,
     'boost_cooldown_max': 3,
     'boost_duration': 3,
 
@@ -130,7 +130,7 @@ class Blob:
         self.focusing = False
         self.impact_land_frames = 0 #Locks the player from focusing after landing (fastfall leniency)
 
-        self.special_ability_charge = 1 * Blob.nrg_multiplier #Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
+        self.special_ability_charge = 1 * Blob.nrg_multiplier # Charge rate. Each frame increases the SA meter by 1 point, or more if focusing
         self.special_ability_meter = 0 #Amount of SA charge stored up
         self.special_ability_timer = 0 #Timer that counts down between uses of an SA
         self.special_ability_duration = 0 #Time that a SA is active
@@ -250,7 +250,7 @@ class Blob:
                     "gravity": 3,
                     "kick_cooldown_rate": 3,
                     "block_cooldown_rate": 3,
-                    "boost_cost": 3,
+                    "boost_cost": 600,
                     "boost_cooldown_max": 3,
                     "boost_duration": 3,
                     "special_ability": "boost",
@@ -455,6 +455,9 @@ class Blob:
         #self.boost_timer_visualization = create_visualization(self.boost_timer)
         self.boost_timer_percentage = self.boost_timer/self.boost_duration
 
+        if(self.collision_timer > 0):
+            self.collision_timer -=1 
+
         if(self.damage_flash_timer):
             self.damage_flash_timer -= 1
 
@@ -486,7 +489,7 @@ class Blob:
         # Used by all blobs. Merchant and Joker blobs have notable variants
         # Boost kicks?
         if(self.kick_cooldown <= 0 or ignore_cooldown):
-            #createSFXEvent('kick')
+            createSFXEvent('kick')
             self.block_cooldown += 5 * (self.block_cooldown_rate)
             self.kick_timer = 2
             self.kick_cooldown = self.kick_cooldown_max
@@ -498,7 +501,7 @@ class Blob:
     def block(self):
         # Used by all blobs. Merchant and Joker blobs have notable variants
         if(self.block_cooldown <= 0):
-            #createSFXEvent('block')
+            createSFXEvent('block')
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
@@ -508,9 +511,23 @@ class Blob:
                 self.y_speed = 0
             self.info['block_count'] += 1
 
+    def add_boost(self, boost_duration):
+        '''
+        Directly adds boost_duration to the blob's boost_timer - super useful for things like Lightning Blob's Thunderbolt or Doctor Blob's Steroid Pill
+        '''
+        createSFXEvent('boost')
+        self.boost_timer += boost_duration
+        self.top_speed = self.boost_top_speed
+        self.traction = self.boost_traction
+        self.friction = self.boost_friction
+        self.info['boost_count'] += 1
+
     def boost(self):
         # Used by all blobs
-        pass
+        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
+            self.special_ability_meter -= self.boost_cost # Remove some SA meter
+            self.boost_cooldown_timer += self.boost_cooldown_max
+            self.add_boost(self.boost_duration)
 
     def apply_status_effect(self):
         pass

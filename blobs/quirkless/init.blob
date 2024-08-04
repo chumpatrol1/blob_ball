@@ -7,7 +7,7 @@
     "gravity": 3,
     "kick_cooldown_rate": 3,
     "block_cooldown_rate": 3,
-    "boost_cost": 3,
+    "boost_cost": 600,
     "boost_cooldown_max": 3,
     "boost_duration": 3,
     "special_ability": "boost",
