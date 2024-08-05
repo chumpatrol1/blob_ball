@@ -276,10 +276,10 @@ class Blob:
                 }
             }
             return init_file
-        print(init_file)
+        #print(init_file)
         return loads(init_file)
     
-    def apply_status_effects(self, effect = "reflecting", duration = 60, limit = 600, method = "add"):
+    def apply_status_effect(self, effect = "reflecting", duration = 60, limit = 600, method = "add"):
         '''
         Applies a status effect to a Blob
         Inputs:
@@ -420,6 +420,10 @@ class Blob:
                 self.boost_cooldown_timer = 0
                 self.toggle_recharge_indicator('boost')
         
+        if(self.special_ability_timer > 0):
+            self.special_ability_timer -= 1
+
+
         self.cooldown_status_effects()
 
         if(self.impact_land_frames):
@@ -533,7 +537,7 @@ class Blob:
             self.boost_cooldown_timer += self.boost_cooldown_max
             self.add_boost(self.boost_duration)
 
-    def apply_status_effect(self):
+    def apply_boost_kick_effect(self):
         pass
 
     def check_blob_collision_default(self, blob):
@@ -552,6 +556,7 @@ class Blob:
                 hit_dict["x_speed_mod"] = 0
                 if(self.boost_timer > 0):  # Take additional damage if the enemy is boosting
                     hit_dict["accumulated_damage"] += 1
+                    self.apply_boost_kick_effect(blob)
                 if(((blob.player == 2 and blob.x_pos >= blob.danger_zone) or (blob.player == 1 and blob.x_pos <= blob.danger_zone)) and blob.danger_zone_enabled):
                     #Take additional damage from kicks if you are hiding by your goal
                     hit_dict["accumulated_damage"] += 1
@@ -706,8 +711,6 @@ class Blob:
             self.facing = 'left'
         self.move([])
         self.y_pos = Blob.ground
-        if(self.species == "quirkless" and self.boost_timer):
-            self.special_ability_cooldown -= self.boost_timer
         self.boost_timer = 0
         self.focus_lock = 0
         self.kick_visualization = 0
@@ -1207,7 +1210,7 @@ class Blob:
         print(path_dict)
         for sprite_path in path_dict[self.costume]:
             temp_dict[sprite_path] = pg.image.load(path_dict[self.costume][sprite_path]).convert_alpha()
-            print(sprite_path)
+            #print(sprite_path)
         blob_height = round(temp_dict['alive'].get_height() * 0.6)
         self.blob_images['blob_left'] = pg.transform.scale(temp_dict['alive'].convert_alpha(), (120, blob_height))
         self.blob_images['blob_right'] = pg.transform.flip(self.blob_images['blob_left'], True, False)
@@ -1275,3 +1278,6 @@ class Blob:
 
         #if(self.status_effects['menu']['open']):
         #    draw_menu(game_display, self)
+
+    def create_blob_sfx(sfx):
+        createSFXEvent(sfx)

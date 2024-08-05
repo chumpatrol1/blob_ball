@@ -5,5 +5,18 @@ class Quirkless(Blob):
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
     special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = [], match_state = None):
         super().__init__(x_pos, y_pos, facing, player, special_ability_charge_base, costume, 
-        danger_zone_enabled, is_cpu, stat_overrides, match_state)
+        danger_zone_enabled, is_cpu, stat_overrides, match_state, __file__)
         self.species = "quirkless"
+        print("QUIRKLESS")
+
+    def boost(self):
+        super().boost()
+        self.special_ability_cooldown = self.special_ability_cooldown_max
+
+    def ability(self):
+        self.boost()
+        self.special_ability_cooldown = self.special_ability_cooldown_max
+
+    def reset(self):
+        super().reset()
+        self.special_ability_cooldown = self.boost_cooldown_timer

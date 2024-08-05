@@ -5284,3 +5284,2016 @@ P2_Blob: quirkless, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+11648-ERROR-Game Crash at Sun Aug  4 03:54:35 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 216, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p1_blob.move(pressed), 1)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1078, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1053, in handle_special_inputs
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 13, in boost
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\quirkless\quirkless.py", line 16, in ability
+    self.boost()
+RecursionError: maximum recursion depth exceeded
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: quirkless, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
