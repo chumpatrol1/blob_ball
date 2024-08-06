@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 5,
+    "top_speed": 1,
+    "traction": 5,
+    "friction": 1,
+    "gravity": 5,
+    "kick_cooldown_rate": 1,
+    "block_cooldown_rate": 2,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 5,
+    "special_ability": "spire",
+    "special_ability_category": "delayed",
+    "special_ability_cost": 360,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 300,
+    "special_ability_delay": 30,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "rock",
+    "path": "rock"
+  },
+  "costumes": {
+    "0": {
+        "alive": "rock_blob.png", 
+        "dead": "rock_blob_-1.png",
+        "ability": "spire.png"
+    },
+    "1": {
+        "alive": "rock_blob_1.png",
+        "dead": "rock_blob_-1.png",
+        "ability": "spire.png"
+    }
+  }
+}

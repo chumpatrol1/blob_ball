@@ -28,6 +28,11 @@
         "alive": "quirkless_blob.png", 
         "dead": "quirkless_blob_-1.png",
         "ability": "boost_icon.png"
+    },
+    "1": {
+        "alive": "quirkless_blob_1.png",
+        "dead": "quirkless_blob_-1.png",
+        "ability": "boost_icon.png"
     }
   }
 }

@@ -4,6 +4,8 @@ import pygame as pg
 from json import loads
 from resources.sound_engine.sfx_event import createSFXEvent
 import math
+from resources.graphics_engine.display_particles import draw_teleportation_pfx
+from engine.environmental_modifiers import create_environmental_modifier
 
 default_stars = { #Gets many values for each blob
     'max_hp': 3,
@@ -291,12 +293,15 @@ class Blob:
         if(method == "set" or (method == "add" )):
             self.status_effects[effect] = duration
         elif(method == "add"):
+            old_duration = self.status_effects[effect]
             if(self.status_effects[effect] < 0):
                 self.status_effects[effect] = duration
             else:
                 self.status_effects[effect] += duration
-            if(self.status_effects[effect] > limit): 
+            if(self.status_effects[effect] > limit and old_duration < limit): 
                 self.status_effects[effect] = limit
+            elif(self.status_effects[effect] > limit and old_duration >= limit):
+                self.status_effects[effect] = old_duration
         elif(method == "true_add"):
             self.status_effects[effect] += duration
             if(self.status_effects[effect] > limit): 
@@ -422,7 +427,14 @@ class Blob:
         
         if(self.special_ability_timer > 0):
             self.special_ability_timer -= 1
+        
+        new_dict = {}
 
+        for ability in self.used_ability:
+            if(self.used_ability[ability] > 0):
+                new_dict[ability] = self.used_ability[ability] - 1
+            
+            self.used_ability = new_dict
 
         self.cooldown_status_effects()
 
@@ -577,7 +589,189 @@ class Blob:
 
     def check_environmental_collisions(self, environment):
         # Used by all blobs, but it could be refactored
-        pass
+        for hazard in environment['glue_puddle']:
+            #print(hazard.player, hazard.affects)
+            if(hazard.player != self.player and "enemy" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['glued'] = 2
+                    break
+            elif(hazard.player == self.player and "self" in hazard.affects):
+                if(hazard.x_pos - 160 < self.x_pos < hazard.x_pos + 90 and self.y_pos == Blob.ground):
+                    self.status_effects['buttered'] = 2
+                    break
+
+        for hazard in environment['spire_spike']:
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215 and self.y_pos > 800):
+                if(self.block_timer == 0):
+                    self.take_damage(y_speed_mod = -40 - (5 * (self.gravity_mod - 1.05)), status_effects=[["stunned", 20, 30, "add"]])
+                    # TODO: Reflection
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
+                else:
+                    self.take_damage(damage=0)
+                    self.block_cooldown += 30 * Blob.timer_multiplier
+        
+        for hazard in environment['thunder_bolt']:
+            if(hazard.player == self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'self' in hazard.affects and hazard.x_pos - 110 <= self.x_center <= hazard.x_pos + 240):
+                self.add_boost(120)
+            
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215):
+                self.take_damage()
+                if(self.status_effects['reflecting'] > 1):
+                    self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                    self.status_effects['reflect_break'] = 68
+                    self.special_ability_cooldown += 180 * Blob.timer_multiplier
+                '''if(self.status_effects['reflecting'] > 1):
+                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
+                    self.status_effects['reflect_break'] = 68
+                    self.special_ability_cooldown += 180'''
+
+        # TODO: Line up Starpunch so it targets the player
+        for hazard in environment['starpunch_wait']:
+            if(hazard.player == self.player):
+                hazard.x_pos = self.x_center - 20
+                hazard.y_pos = self.y_center - 20
+
+        for hazard in environment['starpunch']:
+            if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects):
+                punch_x = self.x_center - 20
+                punch_y = self.y_center - 20
+                # Rightwards Range
+                if(self.x_center > hazard.x_pos + 265):
+                    punch_x = hazard.x_pos + 265
+                # Leftwards Range
+                elif(hazard.x_pos - 285 > self.x_center):
+                    punch_x = hazard.x_pos - 285
+                # Downwards Range
+                if(hazard.y_pos + 180 < self.y_center):
+                    punch_y = hazard.y_pos + 180
+                # Upwards Range
+                elif(hazard.y_pos - 295 > self.y_center):
+                    punch_y = hazard.y_pos - 295
+
+                # TODO: Spawn Spring Particles
+
+                x_midpoint = (punch_x + hazard.x_pos)/2
+                y_midpoint = (punch_y + hazard.y_pos)/2
+
+                create_environmental_modifier(hazard.player, species = 'starpunch_spring', x_pos = hazard.x_pos, y_pos = hazard.y_pos, lifetime=30)
+                create_environmental_modifier(hazard.player, species = 'starpunch_spring', x_pos = (hazard.x_pos + x_midpoint)/2, y_pos = (hazard.y_pos + y_midpoint)/2, lifetime=30)
+                create_environmental_modifier(hazard.player, species = 'starpunch_spring', x_pos = x_midpoint, y_pos = y_midpoint,lifetime=30)
+                create_environmental_modifier(hazard.player, species = 'starpunch_spring', x_pos = (punch_x + x_midpoint)/2, y_pos = (punch_y + y_midpoint)/2, lifetime=30)
+
+                hazard.x_pos, hazard.y_pos = punch_x, punch_y
+
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    accumulated_damage = 3
+                    stun_amount = 30
+
+                    # TODO: Handle Danger Zone bonus
+                    
+                    if(self.all_blobs[hazard.player].boost_timer):
+                        accumulated_damage += 1
+                    
+                    if(((self.player == 2 and self.x_pos >= self.danger_zone) or (self.player == 1 and self.x_pos <= self.danger_zone)) and self.danger_zone_enabled):
+                        #Take additional damage from kicks if you are hiding by your goal
+                        accumulated_damage += 1
+                    
+                    if(self.block_timer):
+                        accumulated_damage -= 2
+                        stun_amount = 0
+                    self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
+                    self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
+                else:
+                    self.all_blobs[hazard.player].status_effects['overheat'] += 120
+
+        teleported = False
+        for hazard in environment['console']:
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 40 and self.down_holding_timer and hazard.lifetime <= hazard.max_lifetime - 300 and not teleported):
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
+                self.x_pos = hazard.x_pos
+                self.y_pos = hazard.y_pos  
+                hazard.lifetime = 0
+                self.focusing = False
+                if(self.y_pos > Blob.ground):
+                    self.y_pos = Blob.ground
+                teleported = True
+                createSFXEvent('teleport')
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
+                #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+
+        for hazard in environment['cartridge']:
+            if(hazard.player == self.player and hazard.lifetime == 1) or (hazard.player == self.player and not self.down_holding_timer % 15 and self.down_holding_timer and not teleported):
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
+                self.x_pos = hazard.x_pos
+                self.y_pos = hazard.y_pos 
+                hazard.lifetime = 0
+                self.focusing = False
+                if(self.y_pos > Blob.ground):
+                    self.y_pos = Blob.ground
+                teleported = True
+                self.kick(ignore_cooldown=True)
+                createSFXEvent('teleport')
+                draw_teleportation_pfx([self.x_pos, self.y_pos])
+                #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
+            elif(hazard.player != self.player):
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    if(self.status_effects['judged'] < 60):
+                        self.status_effects['judged'] = 60
+                    if(self.status_effects['hypothermia'] < 60):
+                        self.status_effects['hypothermia'] = 60#
+                    #self.take_damage(damage = 0, unblockable=True, unclankable=True, status_effects=[['judged', 60], ['hypothermia', 60]])
+        
+        for hazard in environment['royal_loan']:
+            if(hazard.player == self.player and hazard.lifetime == 1):
+                self.status_effects['overheat'] += (hazard.hp * 180) + 90
+                print("Punished for", self.status_effects['overheat'], "frames!")
+                print("Accumulated", hazard.hp, "worth of debt!")
+            elif(hazard.random_image == self.player and hazard.lifetime == 1):
+                self.status_effects['hyped'] += (hazard.hp * 60) + 30
+                print("Hyped for", self.status_effects['hyped'], "frames!")
+                
+            elif(hazard.player == self.player):
+                self.status_effects['loaned'] += 1
+                hazard.x_pos, hazard.y_pos = self.x_center - 20, self.y_center - 150
+                if(self.kick_timer == 2):
+                    hazard.hp += 1
+                if(self.block_timer == 15):
+                    hazard.hp += 1
+                if(self.boost_timer == self.boost_duration):
+                    hazard.hp += 1
+                if(self.special_ability_cooldown == self.special_ability_cooldown_max):
+                    hazard.hp += 1
+        
+        for hazard in environment['cactus_spike']:
+            if(hazard.player != self.player and 'enemy' in hazard.affects and self.player not in hazard.affects):
+                if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
+                    stun_amount = 30
+                    if(self.block_timer):
+                        stun_amount = 0
+                    self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
+                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
+                    hazard.affects.add(self.player)
+                    if(self.status_effects['reflecting'] > 1):
+                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
+                        self.status_effects['reflect_break'] = 68
+                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
+        
+        for hazard in environment['sharp_shadow']:
+            if(hazard.player == self.player):
+                hazard.x_pos = self.x_center - 20
+                hazard.y_pos = self.y_center - 20
+            
+            if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and\
+                self.y_center - 185 <= hazard.y_pos <= self.y_center + 175):
+                accumulated_damage = 3
+                stun_amount = 120
+                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
+                hazard.affects.add(self.player)
+                
     
     def check_block(self, show_parry):
         """
