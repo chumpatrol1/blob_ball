@@ -10,9 +10,6 @@ class lightning(Blob):
         self.species = "lightning"
         self.load_init_blob(__file__)
 
-    def boost(self):
-        pass
-
     def ability(self):
         if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
             #Spire activation
@@ -21,7 +18,3 @@ class lightning(Blob):
             self.special_ability_cooldown = self.special_ability_cooldown_max
             self.special_ability_meter -= self.special_ability_cost #Remove some SA meter
             create_environmental_modifier(player = self.player, affects = {'self', 'enemy', 'ball'}, species = 'thunder_glyph', lifetime = self.special_ability_delay, y_pos = 700, special_functions = [create_environmental_modifier])
-    
-    def reset(self):
-        super().reset()
-        self.special_ability_cooldown = self.boost_cooldown_timer

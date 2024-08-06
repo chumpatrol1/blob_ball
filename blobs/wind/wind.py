@@ -50,8 +50,8 @@ class Wind(Blob):
 
     def cooldown(self):
         super().cooldown()
-        if(self.special_ability_timer > 0 and self.ability_holding_timer % 18 == 17):
-            Blob.create_blob_sfx('Wind')
+        if(self.ability_holding_timer % 60 == 59 and "gale" in self.used_ability):
+                Blob.create_blob_sfx('gale')
 
     def ability(self):
         if('gale' in self.used_ability and self.special_ability_meter > self.special_ability_maintenance):

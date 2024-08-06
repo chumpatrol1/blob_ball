@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 1,
+    "top_speed": 1,
+    "traction": 5,
+    "friction": 3,
+    "gravity": 2,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 2,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 4,
+    "special_ability": "reflect",
+    "special_ability_category": "instant",
+    "special_ability_cost": 450,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 300,
+    "special_ability_delay": 30,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "mirror",
+    "path": "mirror"
+  },
+  "costumes": {
+    "0": {
+        "alive": "mirror_blob.png", 
+        "dead": "mirror_blob_-1.png",
+        "ability": "mirror.png"
+    },
+    "1": {
+        "alive": "mirror_blob_1.png",
+        "dead": "mirror_blob_-1.png",
+        "ability": "mirror.png"
+    }
+  }
+}

@@ -581,11 +581,17 @@ class Blob:
         # Used by all blobs
         hit_dict = self.check_blob_collision_default(blob)
         if(hit_dict["hit_registered"]):
-            blob.take_damage(hit_dict["accumulated_damage"],  status_effects = hit_dict["status_effects"], pierce = hit_dict["pierce"], x_speed_mod = hit_dict["x_speed_mod"])
+            blob.take_damage(hit_dict["accumulated_damage"], source = self, status_effects = hit_dict["status_effects"], pierce = hit_dict["pierce"], x_speed_mod = hit_dict["x_speed_mod"])
 
     def check_ability_collision(self, blob):
         # Used by all blobs
-        pass
+        if(("gale" in self.used_ability) or \
+            ("gale" in blob.used_ability)):
+            if blob.y_pos != blob.ground and not blob.block_timer: #Gale Affecting the opponent
+                if(self.player == 1 and "gale" in self.used_ability): #Airborne
+                    blob.x_pos += 7
+                elif(self.player == 2 and "gale" in self.used_ability):
+                    blob.x_pos -= 7
 
     def check_environmental_collisions(self, environment):
         # Used by all blobs, but it could be refactored
@@ -603,12 +609,8 @@ class Blob:
         for hazard in environment['spire_spike']:
             if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215 and self.y_pos > 800):
                 if(self.block_timer == 0):
-                    self.take_damage(y_speed_mod = -40 - (5 * (self.gravity_mod - 1.05)), status_effects=[["stunned", 20, 30, "add"]])
+                    self.take_damage(source = self.all_blobs[hazard.player], y_speed_mod = -40 - (5 * (self.gravity_mod - 1.05)), status_effects=[["stunned", 20, 30, "add"]])
                     # TODO: Reflection
-                    if(self.status_effects['reflecting'] > 1):
-                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
-                        self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
                 else:
                     self.take_damage(damage=0)
                     self.block_cooldown += 30 * Blob.timer_multiplier
@@ -618,15 +620,7 @@ class Blob:
                 self.add_boost(120)
             
             if(hazard.player != self.player and hazard.lifetime == hazard.max_lifetime - 1 and 'enemy' in hazard.affects and hazard.x_pos - 80 <= self.x_center <= hazard.x_pos + 215):
-                self.take_damage()
-                if(self.status_effects['reflecting'] > 1):
-                    self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
-                    self.status_effects['reflect_break'] = 68
-                    self.special_ability_cooldown += 180 * Blob.timer_multiplier
-                '''if(self.status_effects['reflecting'] > 1):
-                    self.take_damage(damage = 1, unblockable=True, unclankable=True)
-                    self.status_effects['reflect_break'] = 68
-                    self.special_ability_cooldown += 180'''
+                self.take_damage(source = self.all_blobs[hazard.player],)
 
         # TODO: Line up Starpunch so it targets the player
         for hazard in environment['starpunch_wait']:
@@ -680,11 +674,7 @@ class Blob:
                         accumulated_damage -= 2
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = accumulated_damage, unblockable=True, unclankable=True, stun_amount = stun_amount,)
-                    if(self.status_effects['reflecting'] > 1):
-                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
-                        self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
+                    self.take_damage(damage = accumulated_damage, source = self.all_blobs[hazard.player], unblockable=True, unclankable=True, stun_amount = stun_amount,)
                 else:
                     self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
@@ -753,12 +743,8 @@ class Blob:
                     if(self.block_timer):
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = 1, stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
+                    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
                     hazard.affects.add(self.player)
-                    if(self.status_effects['reflecting'] > 1):
-                        self.all_blobs[hazard.player].take_damage(damage = 1, unblockable=True, unclankable=True)
-                        self.status_effects['reflect_break'] = 68
-                        self.special_ability_cooldown += 180 * Blob.timer_multiplier
         
         for hazard in environment['sharp_shadow']:
             if(hazard.player == self.player):
@@ -769,7 +755,7 @@ class Blob:
                 self.y_center - 185 <= hazard.y_pos <= self.y_center + 175):
                 accumulated_damage = 3
                 stun_amount = 120
-                self.take_damage(damage=accumulated_damage, stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
+                self.take_damage(damage=accumulated_damage, source = self.all_blobs[hazard.player], stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
                 hazard.affects.add(self.player)
                 
     
@@ -807,10 +793,17 @@ class Blob:
     def calculate_damage(self, damage):
         return damage - bool(self.status_effects['reflecting'] > 0) # Damage is reduced by 1 if we are reflecting
 
-    def handle_post_damage(self):
-        pass
+    def handle_post_damage(self, source=None):
+        # Used for Mirror Blob's reflect, etc.
+        if(self.status_effects["reflecting"]):
+            if(source):
+                source.take_damage(damage=1, unblockable = True, unclankable = True)
+            print(source)
+            self.apply_status_effect("reflect_break", duration = 68, method = "set")
+            self.special_ability_cooldown += 180 * Blob.timer_multiplier
+        
 
-    def take_damage(self, damage = 1, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, x_speed_mod = 0,\
+    def take_damage(self, damage = 1, source = None, unblockable = False, unclankable = False, damage_flash_timer = 60, y_speed_mod = 0, x_speed_mod = 0,\
     show_parry = True, status_effects = [], pierce = 0):
         # Used by all blobs, but it could be refactored
         """
@@ -872,7 +865,7 @@ class Blob:
             for status_effect in status_effects:
                 self.apply_status_effect(status_effect[0], status_effect[1], status_effect[2], status_effect[3])
                 self.status_effects[status_effect[0]] += status_effect[1]
-            self.handle_post_damage()
+            self.handle_post_damage(source)
             return initial_hp - self.hp
         return 0
 
@@ -1141,7 +1134,7 @@ class Blob:
                     else:
                         self.x_speed -= frame_stats['blob_friction'] #Normal deceleration
 
-    def apply_wavedash_abilities(self):
+    def apply_wavedash_abilities(self, pressed, frame_stats):
         pass
 
     def handle_down_press(self, pressed, frame_stats):
@@ -1266,7 +1259,7 @@ class Blob:
         self.calculate_vertical_speed(pressed)
         self.apply_speed(frame_stats)
         self.handle_down_press(pressed, frame_stats)
-        self.apply_wavedash_abilities()
+        self.apply_wavedash_abilities(pressed, frame_stats)
 
         # Do this last
         self.check_boundary_collision()
