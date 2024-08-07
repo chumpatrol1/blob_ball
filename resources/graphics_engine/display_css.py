@@ -65,7 +65,7 @@ def force_load_blobs():
     global blob_image_cache
     global ghost_image_cache
     global cwd
-    unload_css()
+    #unload_css()
     directory = cwd + "/resources/images"
     blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
     unload_css()
