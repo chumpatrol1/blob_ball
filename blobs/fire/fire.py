@@ -13,7 +13,6 @@ class Fire(Blob):
 
     def apply_boost_kick_effect(self, blob):
         blob.apply_status_effect(effect = "overheat", duration = 300)
-        return super().apply_boost_kick_effect()
     
     def cooldown(self):
         super().cooldown()

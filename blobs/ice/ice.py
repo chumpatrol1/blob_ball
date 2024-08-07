@@ -13,8 +13,7 @@ class Ice(Blob):
 
     def apply_boost_kick_effect(self, blob):
         blob.apply_status_effect(effect = "hypothermia", duration = 180)
-        return super().apply_boost_kick_effect()
-    
+        
     def cooldown(self):
         super().cooldown()
         if(self.special_ability_timer > 0 and self.ability_holding_timer % 20 == 19):

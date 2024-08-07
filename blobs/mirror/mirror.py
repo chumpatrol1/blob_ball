@@ -13,9 +13,8 @@ class Mirror(Blob):
     def ability(self):
         if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
             self.used_ability["mirror"] = 2
-            self.apply_status_effect("reflecting", duration = 60)
-            self.special_ability_cooldown = self.special_ability_cooldown
-            self.special_ability_timer = self.special_ability_cooldown
+            self.apply_status_effect("reflecting", duration = self.special_ability_duration)
+            self.special_ability_cooldown = self.special_ability_cooldown_max
             self.special_ability_meter -= self.special_ability_cost
             self.kick_cooldown += 60 * Blob.timer_multiplier
             self.block_cooldown += 60 * Blob.timer_multiplier

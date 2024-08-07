@@ -13,7 +13,7 @@ class Water(Blob):
 
     def apply_boost_kick_effect(self, blob):
         #blob.apply_status_effect(effect = "hypothermia", duration = 180)
-        return super().apply_boost_kick_effect()
+        pass
     
     def cooldown(self):
         super().cooldown()

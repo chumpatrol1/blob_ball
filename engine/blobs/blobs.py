@@ -125,7 +125,6 @@ class Blob:
         self.boost_cooldown_rate = 2
         self.boost_cooldown_timer = 0 #Timer that measures between boosts
         self.boost_timer = 0 #How much time is left in the current boost
-        self.set_base_stats(self.stars)
 
         self.down_holding_timer = 0
         self.focus_lock = 0 #Timer that locks movement when a blob is focusing
@@ -142,6 +141,8 @@ class Blob:
         self.special_ability_cooldown_rate = 2
         self.used_ability = {}
         self.ability_holding_timer = 0 # Used for held abilities
+
+        self.set_base_stats(self.stars)
 
         self.collision_distance = 104 #Used for calculating ball collisions
         self.collision_timer = 0 #Prevents double hitting in certain circumstances
@@ -237,7 +238,7 @@ class Blob:
 
     def load_init_blob(self, blob_path=""):
         init_path = blob_path.rsplit("\\", 1)
-        print(init_path)
+        #print(init_path)
         try:
             with open(init_path[0]+"\\init.blob", "r") as f:
                 init_file = f.read()
@@ -441,6 +442,9 @@ class Blob:
         if(self.impact_land_frames):
             self.impact_land_frames -= 1
 
+        if(self.movement_lock > 0):
+            self.movement_lock -= 1
+
         if(self.focus_lock > 0):
             self.focus_lock -= 1
         
@@ -525,7 +529,7 @@ class Blob:
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
             self.block_timer = self.block_timer_max #Set active block timer
-            self.movement_lock = 30
+            self.movement_lock = 10
             self.x_speed = 0
             if(self.y_speed < 0): #If we are moving upwards, halt your momentum!
                 self.y_speed = 0
@@ -549,7 +553,7 @@ class Blob:
             self.boost_cooldown_timer += self.boost_cooldown_max
             self.add_boost(self.boost_duration)
 
-    def apply_boost_kick_effect(self):
+    def apply_boost_kick_effect(self, blob):
         pass
 
     def check_blob_collision_default(self, blob):
@@ -798,7 +802,7 @@ class Blob:
         if(self.status_effects["reflecting"]):
             if(source):
                 source.take_damage(damage=1, unblockable = True, unclankable = True)
-            print(source)
+            #print(source)
             self.apply_status_effect("reflect_break", duration = 68, method = "set")
             self.special_ability_cooldown += 180 * Blob.timer_multiplier
         
@@ -924,7 +928,7 @@ class Blob:
         self.status_effects['reflecting'] = 0
         self.status_effects['reflect_break'] = 0
         #self.status_effects['overheat'] = 0
-        self.set_base_stats(self.stars)
+        self.set_base_stats(self.stars, set_hp = False)
         #self.heal_hp(heal_amt=ruleset['hp_regen'])
 
     def cpu_logic(self):
@@ -1251,7 +1255,7 @@ class Blob:
     def move(self, pressed_buttons):
         # Used by all blobs, but it could be refactored for blobs with menus
         pressed = self.convert_inputs(pressed_buttons)
-        self.drop_inputs(pressed)
+        pressed = self.drop_inputs(pressed)
         frame_stats = self.set_maximum_speeds()
 
         # Are these interchangeable?
@@ -1352,7 +1356,7 @@ class Blob:
     def return_sprite_paths(self):
         blob_cwd = '/resources/images/blobs/'
         ability_cwd = "/resources/images/ability_icons/"
-        print(self.init_json)
+        #print(self.init_json)
         blob_cwd = f'blobs/{self.init_json["descriptors"]["path"]}/'
         #icon_cwd = "/resources/images/ui_icons/"
         path_dict = {}
@@ -1394,7 +1398,7 @@ class Blob:
         
         temp_dict = {}
         path_dict = self.return_sprite_paths()
-        print(path_dict)
+        #print(path_dict)
         for sprite_path in path_dict[self.costume]:
             temp_dict[sprite_path] = pg.image.load(path_dict[self.costume][sprite_path]).convert_alpha()
             #print(sprite_path)
