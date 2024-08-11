@@ -24,6 +24,7 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
+    print(p1_selected, p2_selected)
     p1_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p1_selected)
     p1_blob = p1_blob(player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
     

@@ -470,10 +470,10 @@ def draw_gameplay(game_display, info_getter, settings):
     for blob in blobs.values():
         pname = "p" + str(blob.player) + "_"
         if blob.recharge_indicators['ability_swap_b']:
-            try:
-                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
-            except:
-                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
+            #try:
+            #    image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
+            #except:
+            #    image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
             image_cache['ui_initialized'] = False
         blob.draw(gameplay_surface)
         #if not (blob.image == image_cache[pname+'blob_clone']):

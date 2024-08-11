@@ -310,6 +310,7 @@ class Blob:
 
     def cooldown_status_effects(self):
         # TODO: Figure this out
+        print(self.status_effects['overheat'])
         for effect in self.status_effects:
             if(self.status_effects[effect]):
                 try:
@@ -329,6 +330,11 @@ class Blob:
                         self.block_cooldown_rate = 1
                         self.special_ability_cooldown_rate = 1
                         self.boost_cooldown_rate = 1
+                        if(self.status_effects['overheat'] == 0):
+                            self.special_ability_cooldown_rate = Blob.timer_multiplier
+                            self.kick_cooldown_rate = Blob.timer_multiplier
+                            self.block_cooldown_rate = Blob.timer_multiplier
+                            self.boost_cooldown_rate = Blob.timer_multiplier
                     if(effect == 'loaned'):
                         self.kick_cooldown_rate += 4
                         self.block_cooldown_rate += 4
@@ -356,6 +362,7 @@ class Blob:
                     pass # Typically pass for strings, like current pill
     
     def cooldown_default(self):
+
         if(self.focusing):
             self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3)) * 5
             self.info['time_focused'] += 1
@@ -436,7 +443,6 @@ class Blob:
                 new_dict[ability] = self.used_ability[ability] - 1
             
             self.used_ability = new_dict
-
         self.cooldown_status_effects()
 
         if(self.impact_land_frames):
@@ -459,11 +465,6 @@ class Blob:
 
         if(self.clanked):
             self.clanked -= 1
-
-        self.special_ability_cooldown_rate = Blob.timer_multiplier
-        self.kick_cooldown_rate = Blob.timer_multiplier
-        self.block_cooldown_rate = Blob.timer_multiplier
-        self.boost_cooldown_rate = Blob.timer_multiplier
 
         self.ability_cooldown_visualization = Blob.create_visualization(self.special_ability_cooldown/Blob.timer_multiplier)
         self.ability_cooldown_percentage = self.special_ability_cooldown/self.special_ability_cooldown_max
@@ -502,7 +503,7 @@ class Blob:
 
     def update_ability_icon(self, icon):
         # Used by Doctor and possibly Joker Blobs
-        self.ability_icon = icon
+        self.ability_icons['default'] = self.ability_icons[icon]
         self.recharge_indicators['ability_swap'] = True
 
     def ability(self):
@@ -596,6 +597,22 @@ class Blob:
                     blob.x_pos += 7
                 elif(self.player == 2 and "gale" in self.used_ability):
                     blob.x_pos -= 7
+        if("c&d" in self.used_ability):
+            blob.apply_status_effect("judged", duration = self.special_ability_duration)
+            if(self.species != "judge"):
+                blob.apply_status_effect("judged", duration = 90)
+        if("stoplight" in self.used_ability):
+            blob.apply_status_effect("stoplit", duration = 30)
+        if("tax" in self.used_ability):
+            
+            self.status_effects['taxing'] = self.special_ability_duration
+            blob.status_effects['taxed'] = self.special_ability_duration
+            print(self.status_effects['taxing'])
+            if(self.species != "king"):
+                self.status_effects['taxing'] = 240
+                blob.status_effects['taxed'] = 240
+            self.set_base_stats(blob.return_stars())
+            blob.set_base_stats(self.return_stars())
 
     def check_environmental_collisions(self, environment):
         # Used by all blobs, but it could be refactored
@@ -678,7 +695,7 @@ class Blob:
                         accumulated_damage -= 2
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = accumulated_damage, source = self.all_blobs[hazard.player], unblockable=True, unclankable=True, stun_amount = stun_amount,)
+                    self.take_damage(damage = accumulated_damage, source = self.all_blobs[hazard.player], unblockable=True, unclankable=True, status_effects=[["stunned", 20, 30, "add"]])
                 else:
                     self.all_blobs[hazard.player].status_effects['overheat'] += 120
 
