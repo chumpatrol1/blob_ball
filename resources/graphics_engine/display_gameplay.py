@@ -378,50 +378,8 @@ def draw_menu(game_display, blob):
             pg.draw.rect(game_display, (124, 124, 124), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 240)*(382/768)), 80, 20))
             pg.draw.rect(game_display, (200, 200, 200), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 240)*(382/768)), 80*(blob.status_effects['monado_shield_cooldown']/900), 20))
     elif(blob.status_effects['menu']['type'] == 'shop'):
-        
-        # Up/Passive
-        if(blob.status_effects['shop']['passive_sale'] == "soul_catcher"):
-            cropRect = (180, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['passive_sale'] == "grub_song"):
-            cropRect = (180, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['passive_sale'] == "sprint_master"):
-            cropRect = (240, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-
-        # Left/Defense
-        if(blob.status_effects['shop']['defense_sale'] == "sharp_shadow"):
-            cropRect = (240, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['defense_sale'] == "thorns_of_agony"):
-            cropRect = (300, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['defense_sale'] == "izumi_tear"):
-            cropRect = (300, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        
-        # Right/Offense
-        if(blob.status_effects['shop']['offense_sale'] == "dream_wielder"):
-            cropRect = (0, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['offense_sale'] == "nailmasters_glory"):
-            cropRect = (60, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['offense_sale'] == "heavy_blow"):
-            cropRect = (60, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        
-        # Down/Focus
-        if(blob.status_effects['shop']['focus_sale'] == "baldur_shell"):
-            cropRect = (0, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+185)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['focus_sale'] == "explosive_focus"):
-            cropRect = (120, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+175)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['focus_sale'] == "soul_focus"):
-            cropRect = (120, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+175)*(382/768))), area = cropRect)
+        pass
+    
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]

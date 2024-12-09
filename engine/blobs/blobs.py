@@ -215,6 +215,7 @@ class Blob:
             "monado_speed_cooldown": 0,
             "monado_jump_cooldown": 0,
             "shop": {'offense_sale': 'dream_wielder', 'focus_sale': 'baldur_shell', 'passive_sale': 'soul_catcher', 'defense_sale': 'sharp_shadow', 'offense_equip': None, 'focus_equip': None, 'passive_equip': None, 'defense_equip': None, 'offense_durability': 0, 'focus_durability': 0, 'passive_durability': 0, 'defense_durability': 0, 'purchase_particle': None, 'discard_particle': None},
+            "shop": {'heart_lvl': 0, 'spring_lvl': 0, 'sprint_lvl': 0, 'shadow_lvl': 0, 'purchase_particle': None},
 
             "teleporter": [1],
             "taxing": 0,
@@ -310,7 +311,10 @@ class Blob:
 
     def cooldown_status_effects(self):
         # TODO: Figure this out
-        print(self.status_effects['overheat'])
+        special_ability_cooldown_rate = Blob.timer_multiplier
+        kick_cooldown_rate = Blob.timer_multiplier
+        block_cooldown_rate = Blob.timer_multiplier
+        boost_cooldown_rate = Blob.timer_multiplier
         for effect in self.status_effects:
             if(self.status_effects[effect]):
                 try:
@@ -326,25 +330,25 @@ class Blob:
                         
                     
                     if(effect == 'overheat'):
-                        self.kick_cooldown_rate = 1
-                        self.block_cooldown_rate = 1
-                        self.special_ability_cooldown_rate = 1
-                        self.boost_cooldown_rate = 1
+                        kick_cooldown_rate = 1
+                        block_cooldown_rate = 1
+                        special_ability_cooldown_rate = 1
+                        boost_cooldown_rate = 1
                         if(self.status_effects['overheat'] == 0):
-                            self.special_ability_cooldown_rate = Blob.timer_multiplier
-                            self.kick_cooldown_rate = Blob.timer_multiplier
-                            self.block_cooldown_rate = Blob.timer_multiplier
-                            self.boost_cooldown_rate = Blob.timer_multiplier
+                            special_ability_cooldown_rate = Blob.timer_multiplier
+                            kick_cooldown_rate = Blob.timer_multiplier
+                            block_cooldown_rate = Blob.timer_multiplier
+                            boost_cooldown_rate = Blob.timer_multiplier
                     if(effect == 'loaned'):
-                        self.kick_cooldown_rate += 4
-                        self.block_cooldown_rate += 4
-                        self.special_ability_cooldown_rate += 4
-                        self.boost_cooldown_rate += 4
+                        kick_cooldown_rate += 4
+                        block_cooldown_rate += 4
+                        special_ability_cooldown_rate += 4
+                        boost_cooldown_rate += 4
                     if(effect == 'hyped'):
-                        self.kick_cooldown_rate += 1
-                        self.block_cooldown_rate += 1
-                        self.special_ability_cooldown_rate += 1
-                        self.boost_cooldown_rate += 1
+                        kick_cooldown_rate += 1
+                        block_cooldown_rate += 1
+                        special_ability_cooldown_rate += 1
+                        boost_cooldown_rate += 1
                     if(effect == 'monado_timer' and self.status_effects[effect] == 1):
                         self.status_effects['monado_effect'] = None
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "JUMP"):
@@ -354,15 +358,19 @@ class Blob:
                         self.boost_cooldown_rate += 1'''
                     
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SHIELD"):
-                        self.block_cooldown_rate += 5
+                        block_cooldown_rate += 5
                     
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
-                        self.kick_cooldown_rate += 3
+                        kick_cooldown_rate += 3
+
+                    self.kick_cooldown_rate = kick_cooldown_rate
+                    self.block_cooldown_rate = block_cooldown_rate
+                    self.special_ability_cooldown_rate = special_ability_cooldown_rate
+                    self.boost_cooldown_rate = boost_cooldown_rate
                 except:
                     pass # Typically pass for strings, like current pill
     
     def cooldown_default(self):
-
         if(self.focusing):
             self.special_ability_charge = (self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3)) * 5
             self.info['time_focused'] += 1
@@ -371,7 +379,7 @@ class Blob:
                 self.focusing = False
                 self.focus_lock = 0
         else:
-            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3)
+            self.special_ability_charge = self.special_ability_charge_base - (bool(self.status_effects["nrg_fatigue"]) * 3) + self.status_effects["shop"]["heart_lvl"]
 
         if(self.special_ability_meter < self.special_ability_max):
             self.special_ability_meter += self.special_ability_charge
@@ -450,6 +458,9 @@ class Blob:
 
         if(self.movement_lock > 0):
             self.movement_lock -= 1
+
+        if(self.jump_lock > 0):
+            self.jump_lock -= 1
 
         if(self.focus_lock > 0):
             self.focus_lock -= 1
@@ -774,9 +785,8 @@ class Blob:
             
             if(hazard.player != self.player and self.player not in hazard.affects and self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and\
                 self.y_center - 185 <= hazard.y_pos <= self.y_center + 175):
-                accumulated_damage = 3
                 stun_amount = 120
-                self.take_damage(damage=accumulated_damage, source = self.all_blobs[hazard.player], stun_amount=stun_amount if self.all_blobs[hazard.player].species == "merchant" else 0)
+                self.take_damage(damage=hazard.hp, source = self.all_blobs[hazard.player])
                 hazard.affects.add(self.player)
                 
     
@@ -1031,7 +1041,11 @@ class Blob:
                 blob_friction += 1
             if(self.status_effects['monado_effect'] == "SHIELD"):
                 blob_speed -= 3
-        if(self.status_effects['shop']['passive_equip'] == "sprint_master"):
+        if(self.status_effects['shop']['sprint_lvl'] == 1):
+            blob_speed += 1
+            blob_traction += 3
+            blob_friction += 3
+        elif(self.status_effects['shop']['sprint_lvl'] == 2):
             blob_speed += 2
             blob_traction += 5
             blob_friction += 5
@@ -1039,7 +1053,7 @@ class Blob:
 
     def calculate_horizontal_speed(self, pressed, frame_stats):
         if(self.y_pos == Blob.ground): #Applies traction if grounded
-            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+            if('left' in pressed and not 'right' in pressed and not self.status_effects['menu']['open']): #If holding left but not right
                 if(not self.focusing):
                     self.facing = "left"
                     if(abs(self.x_speed) < frame_stats['blob_speed']):
@@ -1061,12 +1075,12 @@ class Blob:
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
                     #self.x_speed = -1 * (15 + (10 * frame_stats['blob_traction']))
-                    self.x_speed = -30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else -20
+                    self.x_speed = -30 if bool(self.status_effects['shop']['shadow_lvl']) else -20
                     self.focusing = False
                     self.focus_lock = 0
                     frame_stats['wavedashed'] = True
                     createSFXEvent('wavedash')
-            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+            elif(not 'left' in pressed and 'right' in pressed and not self.status_effects['menu']['open']): #If holding right but not left
                 if(not self.focusing):
                     self.facing = 'right'
                     if(abs(self.x_speed) < frame_stats['blob_speed']):
@@ -1088,7 +1102,7 @@ class Blob:
                     self.wavedash_lock = 15
                     #self.collision_timer = 30
                     #self.x_speed = 15 + (10 * frame_stats['blob_traction'])
-                    self.x_speed = 30 if bool(self.status_effects['shop']['defense_equip'] == 'sharp_shadow') else 20
+                    self.x_speed = 30 if bool(self.status_effects['shop']['shadow_lvl']) else 20
                     self.focusing = False
                     frame_stats['wavedashed'] = True
                     createSFXEvent('wavedash')
@@ -1105,7 +1119,7 @@ class Blob:
                     else:
                         self.x_speed -= frame_stats['blob_traction'] #Normal deceleration
         else: #Applies friction if airborne
-            if('left' in pressed and not 'right' in pressed): #If holding left but not right
+            if('left' in pressed and not 'right' in pressed and not self.status_effects['menu']['open']): #If holding left but not right
                 self.facing = "left"
                 if(self.x_pos <= 0): #Are we in danger of going off screen?
                     self.x_speed = 0
@@ -1124,7 +1138,7 @@ class Blob:
                         if(round(prev_speed) == frame_stats['blob_speed']):
                             self.info['wavebounces'] += 1
                             #createSFXEvent('wavebounce')
-            elif(not 'left' in pressed and 'right' in pressed): #If holding right but not left
+            elif(not 'left' in pressed and 'right' in pressed and not self.status_effects['menu']['open']): #If holding right but not left
                 self.facing = 'right'
                 if(self.x_pos >= 1700): #Are we in danger of going off screen?
                     self.x_speed = 0
@@ -1177,7 +1191,7 @@ class Blob:
             self.focusing = False
 
     def calculate_vertical_speed(self, pressed):
-        if('up' in pressed and self.y_pos == Blob.ground): #If you press jump while grounded, jump!
+        if('up' in pressed and self.y_pos == Blob.ground and not self.status_effects['menu']['open']): #If you press jump while grounded, jump!
             self.y_speed = (-1 * self.jump_force) + (bool(self.status_effects['glued']) * 0.25 * self.jump_force) - (0.75 * bool(self.status_effects['monado_effect'] == "JUMP") * 0.5 * self.jump_force)
             self.focus_lock = 0
             self.wavedash_lock = 0
@@ -1255,7 +1269,7 @@ class Blob:
         self.y_center = self.y_pos + 110
 
     def handle_special_inputs(self, pressed):
-                #ABILITY
+        #ABILITY
         if('ability' in pressed):
             self.ability()
 
@@ -1269,6 +1283,26 @@ class Blob:
         elif('block' in pressed):
             self.block()
 
+    def handle_menu(self, pressed):
+        # Special things go last
+        menu_direction = 'neutral'
+        menu_action = 'neutral'
+        if('up' in pressed):
+            menu_direction = 'up'
+        elif('down' in pressed):
+            menu_direction = 'down'
+        elif('left' in pressed):
+            menu_direction = 'left'
+        elif('right' in pressed):
+            menu_direction = 'right'
+        self.status_effects['menu']['direction'] = menu_direction
+
+        if('ability' in pressed or 'kick' in pressed or 'block' in pressed or 'boost' in pressed):
+            menu_action = 'ability'
+        
+        self.status_effects['menu']['time'] += 1
+        return {"menu_direction": menu_direction, "menu_action": menu_action}
+
     def move(self, pressed_buttons):
         # Used by all blobs, but it could be refactored for blobs with menus
         pressed = self.convert_inputs(pressed_buttons)
@@ -1279,14 +1313,17 @@ class Blob:
         self.calculate_horizontal_speed(pressed, frame_stats)
         self.calculate_vertical_speed(pressed)
         self.apply_speed(frame_stats)
-        self.handle_down_press(pressed, frame_stats)
-        self.apply_wavedash_abilities(pressed, frame_stats)
+        if not(self.status_effects['menu'] == "open"):
+            self.handle_down_press(pressed, frame_stats)
+            self.apply_wavedash_abilities(pressed, frame_stats)
 
         # Do this last
         self.check_boundary_collision()
 
         # Special things go last
-        self.handle_special_inputs(pressed)
+        if not(self.status_effects['menu'] == "open"):
+            #print(self.status_effects['menu'])
+            self.handle_special_inputs(pressed)
         
         return pressed
 
@@ -1430,6 +1467,7 @@ class Blob:
         self.blob_images['damage_right'].set_alpha(100)
         sprite_tuple = (self.species, self.costume)
         if(sprite_tuple in self.sprite_collisions):
+            print(self.sprite_collisions)
             match self.sprite_collisions[sprite_tuple]:
                 case 1:
                     self.blob_images['blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
@@ -1451,6 +1489,7 @@ class Blob:
             self.sprite_collisions[sprite_tuple] = 1
 
         self.ability_icons['default'] = pg.transform.scale(temp_dict['ability'].convert_alpha(), (70, 70))
+        return temp_dict
 
     def draw(self, game_display):
         # Separate Chunk        
@@ -1484,8 +1523,11 @@ class Blob:
         #draw_blob_special(blob, game_display)
         #draw_blob_particles(game_display, blobs.values()) # TODO: Fix this!
 
-        #if(self.status_effects['menu']['open']):
-        #    draw_menu(game_display, self)
+        if(self.status_effects['menu']['open']):
+            self.draw_menu(game_display)
+    
+    def draw_menu(self, game_display):
+        pass
 
     def create_blob_sfx(sfx):
         createSFXEvent(sfx)

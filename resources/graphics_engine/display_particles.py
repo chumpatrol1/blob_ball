@@ -253,9 +253,9 @@ def draw_blob_particles(game_display, blobs):
             draw_shop_selection((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['purchase_particle'])
             blob.status_effects['shop']['purchase_particle'] = None
         
-        if(blob.status_effects['shop']['discard_particle']):
-            draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
-            blob.status_effects['shop']['discard_particle'] = None
+        #if(blob.status_effects['shop']['discard_particle']):
+        #    draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
+        #    blob.status_effects['shop']['discard_particle'] = None
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
@@ -298,18 +298,18 @@ def draw_card_selection(position, icon):
     particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
 
 shop_crop_info = {
-        "soul_catcher": (180,0,60,60),
-        "grub_song": (180,60,60,60),
-        "sprint_master": (240,0,60,60),
-        "sharp_shadow": (240,60,60,60),
-        "thorns_of_agony": (300,0,60,60),
-        "izumi_tear": (300,60,60,60),
-        "dream_wielder": (0, 60, 60, 60),
-        "nailmasters_glory": (60, 60, 60, 60),
-        "heavy_blow": (60, 0, 60, 60),
-        "baldur_shell": (0, 0, 60, 60),
-        "explosive_focus": (120, 0, 60, 60),
-        "soul_focus": (120, 60, 60, 60),
+        "spring_kick_0": (0,0,60,60),
+        "spring_kick_1": (60,0,60,60),
+        "spring_kick_2": (120,0,60,60),
+        "sprint_master_0": (180,0,60,60),
+        "sprint_master_1": (240,0,60,60),
+        "sprint_master_2": (300,0,60,60),
+        "rainbow_heart_0": (0,60,60,60),
+        "rainbow_heart_1": (60,60,60,60),
+        "rainbow_heart_2": (120,60,60,60),
+        "sharp_shadow_0": (180,60,60,60),
+        "sharp_shadow_1": (240,60,60,60),
+        "sharp_shadow_2": (300,60,60,60),
     }
 
 def draw_shop_selection(position, icon):
