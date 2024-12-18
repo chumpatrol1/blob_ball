@@ -534,9 +534,9 @@ class Blob:
             self.kick_visualization = self.kick_visualization_max
             self.info['kick_count'] += 1
 
-    def block(self):
+    def block(self, ignore_cooldown = False):
         # Used by all blobs. Merchant and Joker blobs have notable variants
-        if(self.block_cooldown <= 0):
+        if(self.block_cooldown <= 0 or ignore_cooldown):
             createSFXEvent('block')
             self.kick_cooldown += 5 * (self.kick_cooldown_rate)
             self.block_cooldown = self.block_cooldown_max #Set block cooldown
@@ -558,9 +558,9 @@ class Blob:
         self.friction = self.boost_friction
         self.info['boost_count'] += 1
 
-    def boost(self):
+    def boost(self, ignore_cooldown = False):
         # Used by all blobs
-        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0):
+        if(self.special_ability_meter >= self.boost_cost and self.boost_cooldown_timer <= 0 or ignore_cooldown):
             self.special_ability_meter -= self.boost_cost # Remove some SA meter
             self.boost_cooldown_timer += self.boost_cooldown_max
             self.add_boost(self.boost_duration)
@@ -1313,7 +1313,7 @@ class Blob:
         self.calculate_horizontal_speed(pressed, frame_stats)
         self.calculate_vertical_speed(pressed)
         self.apply_speed(frame_stats)
-        if not(self.status_effects['menu'] == "open"):
+        if not(self.status_effects['menu']['open']):
             self.handle_down_press(pressed, frame_stats)
             self.apply_wavedash_abilities(pressed, frame_stats)
 
@@ -1321,7 +1321,7 @@ class Blob:
         self.check_boundary_collision()
 
         # Special things go last
-        if not(self.status_effects['menu'] == "open"):
+        if not(self.status_effects['menu']['open']):
             #print(self.status_effects['menu'])
             self.handle_special_inputs(pressed)
         

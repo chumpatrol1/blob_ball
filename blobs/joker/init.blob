@@ -1,0 +1,88 @@
+{
+  "stars": {
+    "max_hp": 4,
+    "top_speed": 2,
+    "traction": 2,
+    "friction": 2,
+    "gravity": 2,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 2,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 2,
+    "special_ability": "cardpack",
+    "special_ability_category": "instant",
+    "special_ability_cost": 360,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 60,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "joker",
+    "path": "joker"
+  },
+  "costumes": {
+    "0": {
+        "alive": "joker_blob.png",
+        "dead": "joker_blob_-1.png",
+        "ability": "card.png",
+        "menu": "visible_card.png",
+        "block": "block_icon.png",
+        "cnd": "cnd.png",
+        "mirror": "mirror.png",
+        "pill": "pill.png",
+        "spire": "spire.png",
+        "starpunch": "starpunch.png",
+        "tax": "tax.png",
+        "teleport": "teleport.png",
+        "thunderbolt": "thunderbolt.png"
+    },
+    "1": {
+        "alive": "joker_blob_1.png",
+        "dead": "joker_blob_-1.png",
+        "ability": "card.png",
+        "menu": "visible_card.png",
+        "block": "block_icon.png",
+        "cnd": "cnd.png",
+        "mirror": "mirror.png",
+        "pill": "pill.png",
+        "spire": "spire.png",
+        "starpunch": "starpunch.png",
+        "tax": "tax.png",
+        "teleport": "teleport.png",
+        "thunderbolt": "thunderbolt.png"
+    },
+    "2": {
+        "alive": "joker_blob_2.png",
+        "dead": "joker_blob_-1.png",
+        "ability": "card.png",
+        "menu": "visible_card.png",
+        "block": "block_icon.png",
+        "cnd": "cnd.png",
+        "mirror": "mirror.png",
+        "pill": "pill.png",
+        "spire": "spire.png",
+        "starpunch": "starpunch.png",
+        "tax": "tax.png",
+        "teleport": "teleport.png",
+        "thunderbolt": "thunderbolt.png"
+    },
+    "3": {
+        "alive": "joker_blob_3.png",
+        "dead": "joker_blob_-1.png",
+        "ability": "card.png",
+        "menu": "visible_card.png",
+        "block": "block_icon.png",
+        "cnd": "cnd.png",
+        "mirror": "mirror.png",
+        "pill": "pill.png",
+        "spire": "spire.png",
+        "starpunch": "starpunch.png",
+        "tax": "tax.png",
+        "teleport": "teleport.png",
+        "thunderbolt": "thunderbolt.png"
+    }
+  }
+}

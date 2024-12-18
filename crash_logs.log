@@ -7844,3 +7844,414 @@ P2_Blob: merchant, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+25092-ERROR-Game Crash at Sun Dec 15 23:52:47 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 97, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1274, in handle_special_inputs
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 16, in ability
+    self.special_ability_meter -= cost
+                                  ^^^^
+NameError: name 'cost' is not defined
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+22480-ERROR-Game Crash at Mon Dec 16 00:10:49 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 97, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1274, in handle_special_inputs
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 23, in ability
+    self.status_effects['cards']['pulled'] = random.sample(self.status_effects['cards']['pool'], 3)
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\.conda\envs\blob_ball\Lib\random.py", line 439, in sample
+    raise TypeError("Population must be a sequence.  "
+TypeError: Population must be a sequence.  For dicts or sets, use sorted(d).
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+20708-ERROR-Game Crash at Mon Dec 16 00:25:52 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 436, in draw_gameplay
+    blob.draw(gameplay_surface)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1527, in draw
+    self.draw_menu(game_display)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 120, in draw_menu
+    game_display.blit(self.ability_icons['joker_card'], ((self.x_pos - 105) * (1000/1366), ((self.y_pos - 5)*(382/768))))
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+KeyError: 'joker_card'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+32-ERROR-Game Crash at Mon Dec 16 00:31:21 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 436, in draw_gameplay
+    blob.draw(gameplay_surface)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1527, in draw
+    self.draw_menu(game_display)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 122, in draw_menu
+    game_display.blit(self.ability_icons['icons'][self.status_effects['cards']['pulled'][0]], ((self.x_pos - 100) * (1000/1366), (self.y_pos*(382/768))))
+                      ~~~~~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'icons'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4052-ERROR-Game Crash at Tue Dec 17 20:40:03 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 252, in move
+    self.handle_menu(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 202, in handle_menu
+    if(menu_action != 'neutral' and self.status_effects['menu']['time'] > 10 and menu_direction != 'neutral' and menu_direction != 'down'):
+       ^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'menu_action' where it is not associated with a value
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+2852-ERROR-Game Crash at Tue Dec 17 20:41:30 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 250, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 138, in block
+    super().block(ignore_cooldown)
+TypeError: Blob.block() takes 1 positional argument but 2 were given
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3376-ERROR-Game Crash at Tue Dec 17 20:44:40 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 250, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 149, in block
+    self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['block'])
+KeyError: None
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23980-ERROR-Game Crash at Tue Dec 17 21:26:09 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 193, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 28, in initialize_players
+    p1_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p1_selected)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blob_handler.py", line 16, in get_blob
+    return self.blob_dict[blob_id]
+           ~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'fisher'
+Game State: casual_match
+P1 Blob: fisher, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25560-ERROR-Game Crash at Tue Dec 17 21:28:31 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 255, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 142, in block
+    if(not self.status_effects['cards']['blck']):
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'blck'
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10636-ERROR-Game Crash at Tue Dec 17 21:33:19 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 258, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 145, in block
+    if(not self.status_effects['cards']['blck']):
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'blck'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3932-ERROR-Game Crash at Tue Dec 17 21:33:54 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 258, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 145, in block
+    if(not self.status_effects['cards']['blck']):
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'blck'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4880-ERROR-Game Crash at Tue Dec 17 21:34:05 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 258, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1278, in handle_special_inputs
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 165, in boost
+    elif((self.boost_cooldown <= 0 or ignore_cooldown) and self.status_effects['cards']['boost']):
+          ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Joker' object has no attribute 'boost_cooldown'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4512-ERROR-Game Crash at Tue Dec 17 21:36:15 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 258, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1284, in handle_special_inputs
+    self.block()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 145, in block
+    if(not self.status_effects['cards']['blck']):
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'blck'
+Game State: casual_match
+P1 Blob: ice, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10916-ERROR-Game Crash at Tue Dec 17 21:38:37 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 223, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p2_blob.move(pressed), 2)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 258, in move
+    pressed = super().move(pressed_buttons)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1278, in handle_special_inputs
+    self.boost()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\joker\joker.py", line 165, in boost
+    elif((self.boost_cooldown <= 0 or ignore_cooldown) and self.status_effects['cards']['boost']):
+          ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'Joker' object has no attribute 'boost_cooldown'
+Game State: casual_match
+P1 Blob: joker, is CPU: False
+P2_Blob: joker, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
