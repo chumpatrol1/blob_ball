@@ -1,0 +1,43 @@
+{
+  "stars": {
+    "max_hp": 1,
+    "top_speed": 3,
+    "traction": 4,
+    "friction": 1,
+    "gravity": 3,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 1,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 4,
+    "special_ability": "hook",
+    "special_ability_category": "held",
+    "special_ability_cost": 12,
+    "special_ability_maintenance": 12,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 2,
+    "special_ability_delay": 20,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "fisher",
+    "path": "fisher"
+  },
+  "costumes": {
+    "0": {
+        "alive": "fisher_blob.png", 
+        "dead": "fisher_blob_-1.png",
+        "ability": "hook.png"
+    },
+    "1": {
+        "alive": "fisher_blob_1.png",
+        "dead": "fisher_blob_-1.png",
+        "ability": "hook.png"
+    },
+    "2": {
+        "alive": "fisher_blob_2.png", 
+        "dead": "fisher_blob_-2.png",
+        "ability": "hook.png"
+    }
+  }
+}

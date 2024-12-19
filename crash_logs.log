@@ -8255,3 +8255,151 @@ P2_Blob: joker, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+21720-ERROR-Game Crash at Thu Dec 19 11:01:33 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 232, in handle_gameplay
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 778, in check_environmental_collisions
+    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
+TypeError: Blob.take_damage() got an unexpected keyword argument 'stun_amount'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+7704-ERROR-Game Crash at Thu Dec 19 11:03:43 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 232, in handle_gameplay
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 778, in check_environmental_collisions
+    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
+TypeError: Blob.take_damage() got an unexpected keyword argument 'stun_amount'
+Game State: casual_match
+P1 Blob: arcade, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23604-ERROR-Game Crash at Thu Dec 19 11:08:04 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 232, in handle_gameplay
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 778, in check_environmental_collisions
+    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], stun_amount = stun_amount, status_effects = [["stunned", 20, 30, "add"], ['nrg_fatigue', 300, 300,"add"]])
+TypeError: Blob.take_damage() got an unexpected keyword argument 'stun_amount'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: cactus, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10220-ERROR-Game Crash at Thu Dec 19 11:23:13 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 193, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 31, in initialize_players
+    p2_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p2_selected)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blob_handler.py", line 16, in get_blob
+    return self.blob_dict[blob_id]
+           ~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'fisher'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: fisher, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10900-ERROR-Game Crash at Thu Dec 19 11:24:58 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 193, in handle_gameplay
+    blobs = initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume=p1_costume, p2_costume=p2_costume)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 31, in initialize_players
+    p2_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p2_selected)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blob_handler.py", line 16, in get_blob
+    return self.blob_dict[blob_id]
+           ~~~~~~~~~~~~~~^^^^^^^^^
+KeyError: 'fisher'
+Game State: casual_match
+P1 Blob: bubble, is CPU: False
+P2_Blob: fisher, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+26504-ERROR-Game Crash at Thu Dec 19 11:26:52 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 216, in handle_gameplay
+    movement_string += convert_inputs_to_replay(p1_blob.move(pressed), 1)
+                                                ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1326, in move
+    self.handle_special_inputs(pressed)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 1274, in handle_special_inputs
+    self.ability()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\fisher\fisher.py", line 26, in ability
+    self.used_ability["hook"] += 1
+    ~~~~~~~~~~~~~~~~~^^^^^^^^
+KeyError: 'hook'
+Game State: casual_match
+P1 Blob: fisher, is CPU: False
+P2_Blob: bubble, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

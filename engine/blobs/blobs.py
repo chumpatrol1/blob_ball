@@ -775,7 +775,7 @@ class Blob:
                     if(self.block_timer):
                         stun_amount = 0
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], stun_amount = stun_amount, status_effects = [['nrg_fatigue', 300]])
+                    self.take_damage(damage = 1, source = self.all_blobs[hazard.player], status_effects = [["stunned", 20, 30, "add"], ['nrg_fatigue', 300, 300,"add"]])
                     hazard.affects.add(self.player)
         
         for hazard in environment['sharp_shadow']:
