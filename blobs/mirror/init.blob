@@ -33,6 +33,11 @@
         "alive": "mirror_blob_1.png",
         "dead": "mirror_blob_-1.png",
         "ability": "mirror.png"
+    },
+    "2": {
+        "alive": "mirror_blob_2.png",
+        "dead": "mirror_blob_-2.png",
+        "ability": "mirror.png"
     }
   }
 }

@@ -12,12 +12,12 @@ class Fisher(Blob):
         self.load_init_blob(__file__)
     
     def calculate_damage(self, damage):
-        return damage - bool(self.status_effects['reflecting'] > 0) + bool(self.used_ability["hook"]) # Damage is reduced by 1 if we are reflecting
+        return damage - bool(self.status_effects['reflecting'] > 0) + bool("hook" in self.used_ability and self.used_ability["hook"]) # Damage is reduced by 1 if we are reflecting
     
     def handle_post_damage(self, source=None):
         super().handle_post_damage(source)
         # Used for Mirror Blob's reflect, etc.
-        if(self.used_ability["hook"]):
+        if("hook" in self.used_ability and self.used_ability["hook"]):
             self.apply_status_effect("silenced", 360, 600, "add")
 
     def ability(self):

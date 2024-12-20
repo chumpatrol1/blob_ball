@@ -27,6 +27,7 @@ class Joker(Blob):
                 self.status_effects['cards']['pool'].add(card)
             self.status_effects['cards']['recharge'] = set()
         elif self.status_effects['cards']['ability'] and self.special_ability_cooldown <= 0:
+            self.special_ability_cooldown = self.special_ability_cooldown_max
             self.use_card(self.status_effects['cards']['ability'])
             self.status_effects['cards']['equipped'].remove(self.status_effects['cards']['ability'])
             self.status_effects['cards']['recharge'].add(self.status_effects['cards']['ability'])
