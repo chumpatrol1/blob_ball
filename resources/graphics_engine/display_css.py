@@ -1,12 +1,13 @@
-from engine.blobs.blobs.old_blobs import species_to_image
+from engine.blobs.blubs.old_blobs import species_to_image
 from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs, return_css_selector_blobs
 import pygame as pg
 from os import getcwd, getenv
 cwd = getcwd()
-appcwd = getenv('APPDATA')+"/BlobBall"
-
+appcwd = getenv('APPDATA')+"\\BlobBall"
+print(cwd)
+print(appcwd)
 blob_array = return_css_display_blobs()
 
 
@@ -65,7 +66,7 @@ def force_load_blobs():
     global blob_image_cache
     global ghost_image_cache
     global cwd
-    unload_css()
+    #unload_css()
     directory = cwd + "/resources/images"
     blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
     unload_css()
@@ -159,7 +160,7 @@ def css_blobs(game_display, info_getter):
 
         blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
 
-        update_css_blobs(cwd)
+        update_css_blobs(appcwd)
             
     for row in blob_image_cache: #Temporary, until we make more blobs
         y += 1

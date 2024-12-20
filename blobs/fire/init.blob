@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 4,
+    "traction": 4,
+    "friction": 3,
+    "gravity": 1,
+    "kick_cooldown_rate": 3,
+    "block_cooldown_rate": 4,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "fireball",
+    "special_ability_category": "held",
+    "special_ability_cost": 150,
+    "special_ability_maintenance": 12,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 2,
+    "special_ability_delay": 0,
+    "special_ability_duration": 60
+  },
+  "descriptors": {
+    "species": "fire",
+    "path": "fire"
+  },
+  "costumes": {
+    "0": {
+        "alive": "fire_blob.png", 
+        "dead": "fire_blob_-1.png",
+        "ability": "fireball.png"
+    },
+    "1": {
+        "alive": "fire_blob_1.png",
+        "dead": "fire_blob_-1.png",
+        "ability": "fireball.png"
+    }
+  }
+}

@@ -213,9 +213,9 @@ def draw_blob_particles(game_display, blobs):
             particle_memory.append(dpc.Particle(image = particle_cache['pill_boost'], x_pos = (blob.x_center + randint(-45, 5)) * (1000/1366), y_pos = blob.y_center *(382/768) - 30, alpha = 255, fade = 2, x_speed = randint(-5, 5)/10 + blob.x_speed * (500/1366), y_speed = -0.3, lifetime = 130))
 
         if("pill" in blob.used_ability):
-            ability_icon = pg.image.load(blob.ability_icon)
+            ability_icon = blob.ability_icons['default']
             particle_memory.append(dpc.Particle(image = ability_icon, x_pos = (blob.x_center) * (1000/1366) - 35, y_pos = blob.y_center *(382/768), alpha = 255, fade = 5, gravity = 0.2, y_speed = blob.y_speed * (191/768) - 5))
-
+        
         if(blob.status_effects['taxed'] % 5 == 0 and blob.status_effects['taxed'] > 0):
             particle_memory.append(dpc.Particle(image = particle_cache['taxation'], x_pos = (blob.x_center + randint(-65, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 255, fade = 2, x_speed = randint(-10, 10)/10 + blob.x_speed * (500/1366), y_speed = -3, gravity = 0.1, lifetime = 130))
 
@@ -246,16 +246,19 @@ def draw_blob_particles(game_display, blobs):
                 monado_image = particle_cache['cheese']
 
             particle_divider = 100 #if blob.status_effects['monado_effect'] == "JUMP" else 50
-            for i in range(blob.status_effects['monado_timer'] // particle_divider):
+            if(blob.status_effects['monado_timer'] >= 100):
+                for i in range(blob.status_effects['monado_timer'] // particle_divider):
+                    particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+            elif(blob.status_effects['monado_timer'] >= 1):
                 particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
-        
+                
         if(blob.status_effects['shop']['purchase_particle']):
             draw_shop_selection((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['purchase_particle'])
             blob.status_effects['shop']['purchase_particle'] = None
         
-        if(blob.status_effects['shop']['discard_particle']):
-            draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
-            blob.status_effects['shop']['discard_particle'] = None
+        #if(blob.status_effects['shop']['discard_particle']):
+        #    draw_shop_discard((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['discard_particle'])
+        #    blob.status_effects['shop']['discard_particle'] = None
         create_blob_particles(blob)
         #Manages and updates particles
     particle_memory = blit_and_update_particles(particle_memory, game_display)
@@ -298,18 +301,18 @@ def draw_card_selection(position, icon):
     particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
 
 shop_crop_info = {
-        "soul_catcher": (180,0,60,60),
-        "grub_song": (180,60,60,60),
-        "sprint_master": (240,0,60,60),
-        "sharp_shadow": (240,60,60,60),
-        "thorns_of_agony": (300,0,60,60),
-        "izumi_tear": (300,60,60,60),
-        "dream_wielder": (0, 60, 60, 60),
-        "nailmasters_glory": (60, 60, 60, 60),
-        "heavy_blow": (60, 0, 60, 60),
-        "baldur_shell": (0, 0, 60, 60),
-        "explosive_focus": (120, 0, 60, 60),
-        "soul_focus": (120, 60, 60, 60),
+        "spring_kick_0": (0,0,60,60),
+        "spring_kick_1": (60,0,60,60),
+        "spring_kick_2": (120,0,60,60),
+        "sprint_master_0": (180,0,60,60),
+        "sprint_master_1": (240,0,60,60),
+        "sprint_master_2": (300,0,60,60),
+        "rainbow_heart_0": (0,60,60,60),
+        "rainbow_heart_1": (60,60,60,60),
+        "rainbow_heart_2": (120,60,60,60),
+        "sharp_shadow_0": (180,60,60,60),
+        "sharp_shadow_1": (240,60,60,60),
+        "sharp_shadow_2": (300,60,60,60),
     }
 
 def draw_shop_selection(position, icon):

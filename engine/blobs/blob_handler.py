@@ -1,10 +1,8 @@
+# .blubs import *
+#from .blobs.blobs import Blob
+from blobs import *
+from engine.blobs.blobs import Blob
 
-try:
-    from .blobs import *
-    from .blobs.blobs import Blob
-except:
-    from blobs import *
-    from blobs.blobs import Blob
 class BlobContainer:
     def __init__(self):
         self.blob_dict = {}
@@ -23,9 +21,11 @@ class BlobContainer:
     def return_blob_keys(self):
         return self.blob_keys
 
-#blob_list = BlobContainer()
+blob_list = BlobContainer()
 #blob_list = BlobContainer().blob_dict
-#print(blob_list)
+
+print("~"*100)
+print(blob_list.return_blob_dict())
 
 
 def get_blob_list():

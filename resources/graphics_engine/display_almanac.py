@@ -1,4 +1,4 @@
-from engine.blobs.blobs.old_blobs import Blob
+from engine.blobs.blubs.old_blobs import Blob
 from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
