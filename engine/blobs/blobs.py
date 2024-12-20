@@ -1264,6 +1264,9 @@ class Blob:
             self.impact_land_frames = 10
             self.fastfalling = False
             self.shorthopping = False
+            if(self.status_effects['monado_effect'] == "JUMP"):
+                create_environmental_modifier(player = self.player, affects = {'enemy', 'ball'}, species = 'spire_glyph', lifetime = 30, y_pos = 700, special_functions = [create_environmental_modifier])
+                createSFXEvent('glyph')
 
         self.x_center = self.x_pos + 83
         self.y_center = self.y_pos + 110

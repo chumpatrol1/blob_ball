@@ -8489,3 +8489,26 @@ P2_Blob: cop, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+3548-ERROR-Game Crash at Thu Dec 19 23:45:32 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 442, in draw_gameplay
+    draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_particles.py", line 250, in draw_blob_particles
+    particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+                                                ^^^^^^^^^^^^
+UnboundLocalError: cannot access local variable 'monado_image' where it is not associated with a value
+Game State: casual_match
+P1 Blob: taco, is CPU: False
+P2_Blob: taco, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

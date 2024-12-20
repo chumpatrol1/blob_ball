@@ -246,9 +246,12 @@ def draw_blob_particles(game_display, blobs):
                 monado_image = particle_cache['cheese']
 
             particle_divider = 100 #if blob.status_effects['monado_effect'] == "JUMP" else 50
-            for i in range(blob.status_effects['monado_timer'] // particle_divider):
+            if(blob.status_effects['monado_timer'] >= 100):
+                for i in range(blob.status_effects['monado_timer'] // particle_divider):
+                    particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
+            elif(blob.status_effects['monado_timer'] >= 1):
                 particle_memory.append(dpc.Particle(image = monado_image, x_pos = (blob.x_center + randint(-75, 25)) * (1000/1366), y_pos = blob.y_center *(382/768), alpha = 60, fade = 1, x_speed = randint(-5, 5)/5 + blob.x_speed * (100/1366), y_speed = -0.1, gravity = -0.03125, lifetime = 130))
-        
+                
         if(blob.status_effects['shop']['purchase_particle']):
             draw_shop_selection((blob.x_pos + 25, blob.y_pos - 180), blob.status_effects['shop']['purchase_particle'])
             blob.status_effects['shop']['purchase_particle'] = None

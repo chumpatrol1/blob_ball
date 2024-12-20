@@ -11,6 +11,11 @@ class Fire(Blob):
         self.species = "fire"
         self.load_init_blob(__file__)
 
+    def calculate_damage(self, damage):
+        return damage - bool(self.status_effects['reflecting'] > 0) + bool(self.status_effects['monado_effect'] == "SPEED") # Damage is reduced by 1 if we are reflecting
+        # Damage is increased by 1 if we are using Hot Sauce
+    
+
     def apply_boost_kick_effect(self, blob):
         blob.apply_status_effect(effect = "overheat", duration = 300)
     
