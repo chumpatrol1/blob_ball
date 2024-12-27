@@ -81,7 +81,7 @@ class Blob:
     sprite_collisions = {}
 
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
-    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = [], match_state = None, init_blob_path = __file__):
+    special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = {}, match_state = None, init_blob_path = __file__):
         self.init_json = self.load_init_blob(init_blob_path)
         self.species = "base"
         self.player = player #Player 1 or 2
@@ -142,6 +142,7 @@ class Blob:
         self.used_ability = {}
         self.ability_holding_timer = 0 # Used for held abilities
 
+        self.apply_stat_overrides(stat_overrides)
         self.set_base_stats(self.stars)
 
         self.collision_distance = 104 #Used for calculating ball collisions
@@ -1333,6 +1334,21 @@ class Blob:
     def tutorial_move(self):
         # Can technically be used by all blobs
         pass
+
+    def apply_stat_overrides(self, stat_overrides):
+        for key in stat_overrides:
+            if stat_overrides[key] is not None:
+                if(key == "max_hp"):
+                    if(stat_overrides[key] == 1):
+                        self.stars[key] = -2.5
+                    elif(stat_overrides[key] == 3):
+                        self.stars[key] = -1.5
+                    else:
+                        self.stars[key] = (stat_overrides[key] - 6)//2
+                else:
+                    self.stars[key] = stat_overrides[key]
+                    print(self.stars)
+        return self.stars
 
     def set_base_stats(self, stars, set_hp = True, set_ability = True):
         # Used by all blobs when the Taxation effect is active

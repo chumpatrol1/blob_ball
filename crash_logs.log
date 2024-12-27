@@ -8512,3 +8512,207 @@ P2_Blob: taco, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+24124-ERROR-Game Crash at Fri Dec 20 00:29:24 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 270, in update_game_state
+    game_state, info_getter = engine.tutorial.handle_tutorial()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 315, in handle_tutorial
+    tutorial_page = check_if_requirements_met(tutorial_page)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 126, in check_if_requirements_met
+    return initialize_scenario(page)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 53, in initialize_scenario
+    blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
+                ^^^^
+NameError: name 'Blob' is not defined
+Game State: tutorial
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25952-ERROR-Game Crash at Thu Dec 26 22:23:16 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 416, in draw_gameplay
+    draw_ball(gameplay_surface, ball)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 50, in draw_ball
+    if not (ball.image == image_cache[bname + '_clone']):
+                          ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+KeyError: 'ball_0_clone'
+Game State: casual_match
+P1 Blob: quirkless, is CPU: False
+P2_Blob: boxer, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16780-ERROR-Game Crash at Thu Dec 26 22:31:04 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 85, in handle_graphics
+    draw_tutorial_completion(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_tutorial.py", line 86, in draw_tutorial_completion
+    menu_font.render('Stage 5: {}'.format(create_time_string(info_getter[1][5] - info_getter[1][4], smallest = ".")), False, text_color),
+                                                             ~~~~~~~~~~~~~~^^^
+KeyError: 5
+Game State: tutorial_complete
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25072-ERROR-Game Crash at Thu Dec 26 22:34:51 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 85, in handle_graphics
+    draw_tutorial_completion(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_tutorial.py", line 86, in draw_tutorial_completion
+    menu_font.render('Stage 5: {}'.format(create_time_string(info_getter[1][5] - info_getter[1][4], smallest = ".")), False, text_color),
+                                                             ~~~~~~~~~~~~~~^^^
+KeyError: 5
+Game State: tutorial_complete
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16484-ERROR-Game Crash at Thu Dec 26 22:37:38 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 85, in handle_graphics
+    draw_tutorial_completion(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_tutorial.py", line 86, in draw_tutorial_completion
+    menu_font.render('Stage 5: {}'.format(create_time_string(info_getter[1][5] - info_getter[1][4], smallest = ".")), False, text_color),
+                                                             ~~~~~~~~~~~~~~^^^
+KeyError: 5
+Game State: tutorial_complete
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23852-ERROR-Game Crash at Thu Dec 26 22:38:29 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 85, in handle_graphics
+    draw_tutorial_completion(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_tutorial.py", line 86, in draw_tutorial_completion
+    menu_font.render('Stage 5: {}'.format(create_time_string(info_getter[1][5] - info_getter[1][4], smallest = ".")), False, text_color),
+                                                             ~~~~~~~~~~~~~~^^^
+KeyError: 5
+Game State: tutorial_complete
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+3296-ERROR-Game Crash at Thu Dec 26 22:39:16 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 270, in update_game_state
+    game_state, info_getter = engine.tutorial.handle_tutorial()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 321, in handle_tutorial
+    stage_dict[tutorial_page]()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 287, in tutorial_12
+    tutorial_1()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 239, in tutorial_1
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 712, in check_environmental_collisions
+    self.all_blobs[hazard.player].status_effects['overheat'] += 120
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 1
+Game State: tutorial
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+13580-ERROR-Game Crash at Thu Dec 26 22:41:18 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 270, in update_game_state
+    game_state, info_getter = engine.tutorial.handle_tutorial()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 322, in handle_tutorial
+    stage_dict[tutorial_page]()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 288, in tutorial_12
+    tutorial_1()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 240, in tutorial_1
+    blob.check_environmental_collisions(env_mod)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 712, in check_environmental_collisions
+    self.all_blobs[hazard.player].status_effects['overheat'] += 120
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 1
+Game State: tutorial
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4068-ERROR-Game Crash at Thu Dec 26 22:42:42 2024 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 270, in update_game_state
+    game_state, info_getter = engine.tutorial.handle_tutorial()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\tutorial.py", line 323, in handle_tutorial
+    stage_dict[tutorial_page]()
+    ~~~~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 13
+Game State: tutorial
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

@@ -1,4 +1,4 @@
-from engine.blobs import blob_handler
+import engine.blobs.blob_handler
 from engine.ball import Ball, type_to_image
 from engine.handle_input import gameplay_input, menu_input, merge_inputs
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
@@ -50,35 +50,35 @@ def initialize_scenario(page):
     if(page == 0):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball()}
         balls[1].all_blobs = blobs
     elif(page == 1):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 1600, facing = 'left')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 1600, facing = 'left')}
         balls = {1: Ball()}
         balls[1].all_blobs = blobs
     elif(page == 2):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball(y_pos = 1240)}
         balls[1].all_blobs = blobs
     elif(page == 3):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right'), 2: Blob(species = 'quirkless', player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 2})}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right'), 2: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 2})}
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 4):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
         balls[1].all_blobs = blobs
     elif(page == 5):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={"block_cooldown_rate": 12}), 2: Blob(species = 'quirkless', player = 2, x_pos = 1450, facing = 'left', stat_overrides={"kick_cooldown_rate": 10})}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right', stat_overrides={"block_cooldown_rate": 18}), 2: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 2, x_pos = 1450, facing = 'left', stat_overrides={"kick_cooldown_rate": 10})}
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 6):
-        blobs = {1: Blob(species = 'king', player = 1, x_pos = 150, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='king')(player = 1, x_pos = 150, facing = 'right')}
         blobs[1].special_ability_meter = 3000
         balls = {1: Ball(x_pos = 1500, y_pos = 1240)}
         balls[1].all_blobs = blobs
@@ -86,32 +86,34 @@ def initialize_scenario(page):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 7):
-        blobs = {1: Blob(species = 'quirkless', player = 1, x_pos = 100, facing = 'right', stat_overrides={'kick_cooldown_rate': 9}), 2: Blob(species = 'quirkless', player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 3})}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 1, x_pos = 100, facing = 'right', stat_overrides={'kick_cooldown_rate': 20}), 2: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 2, x_pos = 800, facing = 'left', stat_overrides={'max_hp': 3})}
         blobs[1].special_ability_meter = 840
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 8):
         countdown2 = 600
-        blobs = {1: Blob(species = 'rock', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='rock')(player = 1, x_pos = 100, facing = 'right')}
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
     elif(page == 9):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
-        blobs = {1: Blob(species = 'cop', player = 1, x_pos = 1600, facing = 'left')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='cop')(player = 1, x_pos = 1600, facing = 'left')}
         blobs[1].special_ability_meter = 4500
         balls = {1: Ball(x_pos = 1200, y_pos = 1240, x_speed = -20, y_speed = -30)}
         balls[1].all_blobs = blobs
     elif(page == 10):
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
-        blobs = {1: Blob(species = 'wind', player = 1, x_pos = 100, facing = 'right')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='wind')(player = 1, x_pos = 100, facing = 'right')}
         balls = {1: Ball(x_pos = 902)}
         balls[1].all_blobs = blobs
     elif(page == 11):
-        blobs = {1: Blob(species = 'boxer', player = 1, x_pos = 100, facing = 'right'), 2: Blob(species = 'quirkless', player = 2, x_pos = 1600, facing = 'left')}
+        blobs = {1: engine.blobs.blob_handler.blob_list.get_blob(blob_id='boxer')(player = 1, x_pos = 100, facing = 'right'), 2: engine.blobs.blob_handler.blob_list.get_blob(blob_id='quirkless')(player = 2, x_pos = 1600, facing = 'left')}
+        blobs[1].all_blobs = blobs
+        blobs[2].all_blobs = blobs
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
