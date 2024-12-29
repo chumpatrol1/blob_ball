@@ -117,6 +117,9 @@ def initialize_scenario(page):
         balls = {}
         from resources.graphics_engine.display_gameplay import unload_image_cache
         unload_image_cache()
+    elif(page == 12):
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
     page += 1
 
     return page
@@ -324,6 +327,8 @@ def handle_tutorial():
         timer = 0
         time_limit = 0
         save_tutorial_stats(to_draw)
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
         return "tutorial_complete", [1, to_draw]
 
     to_draw = [blobs, balls, game_score, timer, time_limit]
@@ -347,6 +352,8 @@ def handle_tutorial_menu(timer):
     else:
         game_state = "main_menu"
         player_ready = False
+        from resources.graphics_engine.display_gameplay import unload_image_cache
+        unload_image_cache()
     
     flash_timer += 1
     if(flash_timer > 90):
