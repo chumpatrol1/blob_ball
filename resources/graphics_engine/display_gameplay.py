@@ -372,34 +372,8 @@ def draw_gameplay(game_display, info_getter, settings):
     for blob in blobs.values():
         pname = "p" + str(blob.player) + "_"
         if blob.recharge_indicators['ability_swap_b']:
-            #try:
-            #    image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
-            #except:
-            #    image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
             image_cache['ui_initialized'] = False
         blob.draw(gameplay_surface)
-        #if not (blob.image == image_cache[pname+'blob_clone']):
-        #    blob_height = round(pg.image.load(blob.image).get_height()*0.6)
-        #    image_cache[pname+'blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
-        #    image_cache[pname+'blob_clone'] = blob.image
-        #if not("invisible" in blob.image):
-        #    blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
-        #    if(blob.facing == "right"):
-        #        if(blob.hp > 0):
-        #            gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #        else:
-        #            gameplay_surface.blit(image_cache[pname+'dead_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #    else:
-        #        if(blob.hp > 0):
-        #            gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #        else:
-        #            gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #else:
-        #    blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
-        #    if(blob.facing == "right"):
-        #        gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        #    else:
-        #        gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
 
         draw_blob_special(blob, gameplay_surface)
         draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!

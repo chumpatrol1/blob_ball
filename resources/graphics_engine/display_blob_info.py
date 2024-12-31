@@ -1,6 +1,6 @@
 from engine.blobs.blubs.old_blobs import species_to_image
 from engine.unlocks import return_available_costumes, return_costume_unlocks
-from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
+from engine.unlocks import original_css_display_list_blobs
 from resources.graphics_engine.background_handler import draw_background
 from resources.graphics_engine.display_almanac import load_mu_chart
 from engine.popup_list import find_blob_unlock, find_costume_unlock
@@ -19,7 +19,7 @@ font_cache = {}
 static_text = {}
 
 # Loads in the blob array based on the almanac's blob array
-blob_array = load_almanac_blob_array()
+blob_array = original_css_display_list_blobs
 
 # assorted image placeholders
 ball = None
@@ -69,28 +69,28 @@ def load_individual_blob(selector_position):
         selected_blob = blob_array[selector_position[1]][selector_position[0]]
     selected_blob_image = pg.image.load(cwd + "/resources/images" + selected_blob[0])
     try:
-        selected_blob_matchups = load_mu_chart()[selected_blob[2]]
+        selected_blob_matchups = load_mu_chart()[selected_blob[3]]
     except:
         selected_blob_matchups = {'wins': 0, 'losses': 0, 'ties': 0}
-    selected_blob_description = find_blob_unlock(selected_blob[2])[2]
-    selected_blob_stars = species_to_stars(selected_blob[2], {})
-    selected_blob_tips = return_selected_blob_tips(selected_blob[2])
+    selected_blob_description = find_blob_unlock(selected_blob[3])[2]
+    selected_blob_stars = species_to_stars(selected_blob[3])
+    selected_blob_tips = return_selected_blob_tips(selected_blob[3])
     #print(selected_blob_stars)
     selected_blob_costumes = []
     selected_blob_costume_text = []
     #print(selected_blob)
-    available_costumes = return_available_costumes()[selected_blob[2]]
-    all_costumes = return_costume_unlocks()[selected_blob[2]]
+    available_costumes = return_available_costumes()[selected_blob[3]]
+    all_costumes = return_costume_unlocks()[selected_blob[3]]
     for i in all_costumes:
         text_color = (0, 0, 255)
         menu_font = font_cache['css_font']
         if all_costumes[i]:
-            loaded = species_to_image(selected_blob[2], int(i.split("_")[-1]))[0]
-            costume_name = find_costume_unlock(selected_blob[2]+"/"+ i)[1]
+            loaded = species_to_image(selected_blob[3], int(i.split("_")[-1]))[0]
+            costume_name = find_costume_unlock(selected_blob[3]+"/"+ i)[1]
         else:
             loaded = species_to_image("locked", 0)[0]
             costume_name = "Locked!"
-        costume_unlock = find_costume_unlock(selected_blob[2]+"/"+ i)[3]
+        costume_unlock = find_costume_unlock(selected_blob[3]+"/"+ i)[3]
         l_text = [menu_font.render(costume_name, False, text_color),
             menu_font.render(costume_unlock, False, text_color),
             ]
@@ -168,7 +168,7 @@ def draw_blob_selector(game_display, info_getter, settings):
         for icon in row:
             blob = blob_image_cache[y][x]
             blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
-            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
+            game_display.blit(blob, (1366*((x + 0.5)/10)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1
@@ -193,10 +193,10 @@ def draw_blob_selector(game_display, info_getter, settings):
                 text_x += 170
             text_y += 100
             text_x = 170
-    game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
+    game_display.blit(ball, ((selector_position[0] + 0.85) * 136, (selector_position[1] + 0.5) * 100))
     # Draw the ghost
     if(ghost_position is not None and ghost_position != selector_position[:2]):
-        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
+        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 136, (ghost_position[1] + 0.5) * 100))
     # Draw the blob itself
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575 - (blob_image_cache[selector_position[1]][selector_position[0]].get_height()-110)/2))
 

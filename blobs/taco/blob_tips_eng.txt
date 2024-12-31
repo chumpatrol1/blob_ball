@@ -1,0 +1,17 @@
+#1: Each filling (Meat, Hot Sauce, Cheese, and
+Vegan Crunch) has its own cooldown.
+
+#2: Cheese (Up) increases your jump height
+and air control, but you also take extra damage.
+When landing, you will summon spires!
+
+#3: Hot Sauce (Right) increases your
+horizontal speed greatly, but you are 
+vulnerable to damage.
+
+#4: Vegan Crunch (Down) decreases the damage you take
+and makes your blocks frequent. You also take less damage!
+
+#5: Meat (Left) increases your kick damage, pierce and
+reduces your kick cooldown. The meat is too greasy
+for your shell so you take more damage, though.

@@ -1,11 +1,9 @@
-from engine.blobs.blubs.old_blobs import Blob
-from resources.graphics_engine.almanac_blob_array import load_almanac_blob_array
+from engine.unlocks import original_css_display_list_blobs
 from resources.graphics_engine.background_handler import draw_background as draw_background
 import pygame as pg
 from os import getcwd, getenv
 
-blob_array = load_almanac_blob_array()
-
+blob_array = original_css_display_list_blobs
 bic_cached = False
 blob_image_cache = [
 ]
@@ -283,9 +281,9 @@ def read_mu_chart(blob):
                 else:
                     mu_percent_array[-1].append("-")
     else:
-        for i in range(5):
+        for i in range(3):
             mu_percent_array.append([])
-            for j in range(7):
+            for j in range(9):
                 mu_percent_array[-1].append("-")
     return mu_percent_array
 ghost = None
@@ -312,7 +310,7 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
         for icon in row:
             blob = blob_image_cache[y][x]
             blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
-            game_display.blit(blob, (1366*((x + 0.5)/8)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
+            game_display.blit(blob, (1366*((x + 0.5)/10)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1
@@ -325,7 +323,7 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
         ball = pg.transform.scale(pg.image.load(directory+"/balls/soccer_ball.png"), (50, 50))
     menu_font = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
     if(selector_position[2] == 1):
-        mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][2])
+        mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][3])
         
         text_x = 170
         text_y = 130
@@ -338,9 +336,9 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
                 text_x += 170
             text_y += 100
             text_x = 170
-    game_display.blit(ball, ((selector_position[0] + 0.85) * 170, (selector_position[1] + 0.5) * 100))
+    game_display.blit(ball, ((selector_position[0] + 0.85) * 136, (selector_position[1] + 0.5) * 100))
     if(ghost_position is not None and ghost_position != selector_position[:2]):
-        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 170, (ghost_position[1] + 0.5) * 100))
+        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 136, (ghost_position[1] + 0.5) * 100))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
     text_array = static_text['mu_chart']

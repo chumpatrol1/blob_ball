@@ -1,0 +1,14 @@
+#1: Spire can launch opponents into the air
+
+#2: Spire will increase block cooldown by half
+a second when blocked - watch out!
+
+#3: Spire will always target the ball when used
+
+#4: Pressing down in the air will make your
+descent a lot faster!
+
+#5: Need a burst of speed, but you're focusing?
+After your focus aura turns grey, you can
+hold left or right for a quick burst of speed
+called a wavedash!

@@ -172,9 +172,9 @@ def almanac_stats_navigation_2(timer):
 almanac_mu_chart_selector = [3, 2, 0]
 almanac_mu_chart_ghost = None
 almanac_mu_chart_buttons = []
-for i in range(7): # 7 columns
-    for j in range(5): # 5 rows
-        almanac_mu_chart_buttons.append(Button(25+100*j, 125+100*j, 75 + i*175, 250 + i*175)) # Left half of slot is for P1
+for i in range(9): # 9 columns
+    for j in range(3): # 3 rows
+        almanac_mu_chart_buttons.append(Button(25+100*j, 125+100*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
         
 
 def almanac_stats_navigation_3():
@@ -200,29 +200,29 @@ def almanac_stats_navigation_3():
 
     if('up' in pressed):
             if almanac_mu_chart_selector[1] == 0:
-                almanac_mu_chart_selector[1] = 4
+                almanac_mu_chart_selector[1] = 2
                 
             else:
                 almanac_mu_chart_selector[1] -= 1
     elif('down' in pressed):
-            if almanac_mu_chart_selector[1] == 4:
+            if almanac_mu_chart_selector[1] == 2:
                 almanac_mu_chart_selector[1] = 0
             else:
                 almanac_mu_chart_selector[1] += 1
     if('left' in pressed):
         if almanac_mu_chart_selector[0] == 0:
-            almanac_mu_chart_selector[0] = 6
+            almanac_mu_chart_selector[0] = 8
         else:
             almanac_mu_chart_selector[0] -= 1
     elif('right' in pressed):
-        if almanac_mu_chart_selector[0] == 6:
+        if almanac_mu_chart_selector[0] == 8:
             almanac_mu_chart_selector[0] = 0
         else:
             almanac_mu_chart_selector[0] += 1
     
     if(almanac_mu_chart_selector[2] == 0):
         if('ability' in pressed or 'return' in pressed):
-            if(almanac_mu_chart_selector == [3, 2, 0]):
+            if(almanac_mu_chart_selector == [4, 1, 0]):
                 createSFXEvent('select')
                 game_state = "almanac"
             else:
@@ -237,7 +237,7 @@ def almanac_stats_navigation_3():
         if(almanac_mu_chart_buttons[i].check_hover(mouse)):
             if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 
-                almanac_mu_chart_ghost = [i//5, i%5] # Change the selector position
+                almanac_mu_chart_ghost = [i//3, i%3] # Change the selector position
 
             if(mouse[1][0]):
                 # Functionality:
@@ -246,8 +246,8 @@ def almanac_stats_navigation_3():
                 # me unselect, other select: set to select
                 # both select: both confirm
                 createSFXEvent('select')
-                almanac_mu_chart_selector = [i//5, i%5, 1]
-                if(almanac_mu_chart_selector[:2] == [3, 2]):
+                almanac_mu_chart_selector = [i//3, i%3, 1]
+                if(almanac_mu_chart_selector[:2] == [4, 1]):
                     game_state = "almanac"
                     almanac_mu_chart_ghost = None
                     almanac_mu_chart_selector[2] = 0
