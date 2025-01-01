@@ -10,11 +10,15 @@ css_selector_list_blobs = [
 ]
 
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability", "quirkless"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball", "fire"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball", "ice"], ["/blobs/water_blob.png", "Water Blob", "Geyser", "water"], ["/blobs/rock_blob.png", "Rock Blob", "Spire", "rock"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt", "lightning"], ["/blobs/wind_blob.png", "Wind Blob", "Gale", "wind"], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun", "glue"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect", "mirror"],],
-[["/blobs/judge_blob.png", "Judge Blob", "C&D", "judge"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill", "doctor"], ["/blobs/king_blob.png", "King Blob", "Tax", "king"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack", "joker"], ["/blobs/random_blob.png", "Random Blob", "Random Ability"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight", "cop"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch", "boxer"], ["/blobs/quirkless_blob.png", "", "", "quirkless"], ["/blobs/merchant_blob.png", "Merchant Blob", "Shop", "merchant"], ],
-[["/blobs/fisher_blob.png", "Fisher Blob", "Hook", "fisher"], ["/blobs/bubble_blob.png", "Bubble Blob", "Bubble", "bubble"], ["/blobs/cactus_blob.png", "Cactus Blob", "Spike", "cactus"], ["/blobs/taco_blob.png", "Taco Blob", "Filling", "taco"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge", "arcade"], ["/blobs/quirkless_blob.png", "", "", ""], ["/blobs/quirkless_blob.png", "", "", "quirkless"], ["/blobs/quirkless_blob.png", "", "", "quirkless"], ["/blobs/quirkless_blob.png", "", "", "quirkless"], ],
-[["/blobs/bubble_blob.png", "Bubble Blob", "Bubble"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ],
+[["quirkless_blob.png", "Quirkless Blob", "No Ability", "quirkless"], ["fire_blob.png", "Fire Blob", "Fireball", "fire"], ["ice_blob.png", "Ice Blob", "Snowball", "ice"], ["water_blob.png", "Water Blob", "Geyser", "water"], ["rock_blob.png", "Rock Blob", "Spire", "rock"], ["lightning_blob.png", "Lightning Blob", "Thunderbolt", "lightning"], ["wind_blob.png", "Wind Blob", "Gale", "wind"], ["glue_blob.png", "Glue Blob", "Gluegun", "glue"], ["mirror_blob.png", "Mirror Blob", "Reflect", "mirror"],],
+[["judge_blob.png", "Judge Blob", "C&D", "judge"], ["doctor_blob.png", "Doctor Blob", "Pill", "doctor"], ["king_blob.png", "King Blob", "Tax", "king"], ["joker_blob.png", "Joker Blob", "Card Pack", "joker"], ["random_blob.png", "Random Blob", "Random Ability", "random"], ["cop_blob.png", "Cop Blob", "Stoplight", "cop"], ["boxer_blob.png", "Boxer Blob", "Starpunch", "boxer"], ["quirkless_blob.png", "", "", "quirkless"], ["merchant_blob.png", "Merchant Blob", "Shop", "merchant"], ],
+[["fisher_blob.png", "Fisher Blob", "Hook", "fisher"], ["bubble_blob.png", "Bubble Blob", "Bubble", "bubble"], ["cactus_blob.png", "Cactus Blob", "Spike", "cactus"], ["taco_blob.png", "Taco Blob", "Filling", "taco"], ["arcade_blob.png", "Arcade Blob", "Cheat Cartridge", "arcade"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ],
 ]
+
+# This is a pretty hacky fix, but I won't be bothered to write it properly when we're so close to the finish line. Premature optimization is the root of all evil, and all that.
+for i in original_css_display_list_blobs:
+    for j in i:
+        pass
 
 css_display_list_blobs = deepcopy(original_css_display_list_blobs) #Creates an array of arrays, which contains the image to use, it's name, and special ability
 
@@ -128,7 +132,7 @@ def update_css_blobs(cwd):
             game_stats = loads(statsdoc.readline())
 
     unlock_slot = 0
-    for y in range(0, 4):
+    for y in range(0, 3):
         for x in range(0, 9):
             location = (x, y)
             if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":

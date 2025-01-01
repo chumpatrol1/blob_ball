@@ -17,6 +17,7 @@ static_text = {}
 
 def load_almanac_static_text():
     font_cache['default_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 30)
+    font_cache['mu_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
     font_cache['tiny_font'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 20)
     font_cache['credits'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 23)
     menu_font = font_cache['default_font']
@@ -71,7 +72,10 @@ def load_blobs(blob_image_cache, directory):
     for row in blob_array: #Temporary, until we make more blobs
         blob_image_cache.append([])
         for icon in row:
-            blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+            try:
+                blob_image_cache[-1].append(pg.image.load(cwd + "/blobs/" + icon[3] + "/" + icon[0]))
+            except:
+                blob_image_cache[-1].append(pg.image.load(cwd + "/blobs/" + "random" + "/" + "shadow_blob.png"))
     return blob_image_cache
 
 cwd = getcwd()
@@ -268,12 +272,13 @@ def read_mu_chart(blob):
     global mu_chart
     global blob_array
     mu_percent_array = []
+    
     if(blob in mu_chart):
         for row in blob_array:
             mu_percent_array.append([])
             for blob_item in row:
-                if(blob_item[2] in mu_chart[blob]):
-                    record = mu_chart[blob][blob_item[2]]
+                if(blob_item[3] in mu_chart[blob]):
+                    record = mu_chart[blob][blob_item[3]]
                     win_rate = record[0]
                     win_rate = round(win_rate / (record[0] + record[1] + record[2]) * 100, 2)
                     win_rate = str(win_rate) + "%"
@@ -306,11 +311,11 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
 
     x = 0
     y = 0
-    for row in blob_image_cache[:-1]: #Temporary, until we make more blobs
+    for row in blob_image_cache: #Temporary, until we make more blobs
         for icon in row:
             blob = blob_image_cache[y][x]
             blob = pg.transform.scale(blob, (122, round(blob.get_height() * .6181)))
-            game_display.blit(blob, (1366*((x + 0.5)/10)+ 20, ((y + 0.5) * 100 - round((blob.get_height() - 68)/2))))
+            game_display.blit(blob, (1366*((x + 0.5)/10)+ 20, ((y + 0.5) * 120 - round((blob.get_height() - 68)/2))))
             x += 1
         x = 0
         y += 1
@@ -325,20 +330,20 @@ def draw_almanac_stats_3(game_display, settings, info_getter):
     if(selector_position[2] == 1):
         mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][3])
         
-        text_x = 170
-        text_y = 130
+        text_x = 150
+        text_y = 140
         for row in mu_chart_text:
             for mu in row:
-                text_box = menu_font.render(mu, False, (255, 255, 255))
+                text_box = font_cache['mu_font'].render(mu, False, (255, 255, 255))
                 text_rect = text_box.get_rect()
                 text_rect.center = (text_x, text_y)
                 game_display.blit(text_box, text_rect)
-                text_x += 170
-            text_y += 100
-            text_x = 170
-    game_display.blit(ball, ((selector_position[0] + 0.85) * 136, (selector_position[1] + 0.5) * 100))
+                text_x += 136
+            text_y += 120
+            text_x = 150
+    game_display.blit(ball, ((selector_position[0] + 0.85) * 136, (selector_position[1] + 0.5) * 120))
     if(ghost_position is not None and ghost_position != selector_position[:2]):
-        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 136, (ghost_position[1] + 0.5) * 100))
+        game_display.blit(ghost, ((ghost_position[0] + 0.85) * 136, (ghost_position[1] + 0.5) * 120))
     game_display.blit(blob_image_cache[selector_position[1]][selector_position[0]], (825, 575))
 
     text_array = static_text['mu_chart']

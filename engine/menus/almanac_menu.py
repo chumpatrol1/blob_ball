@@ -174,7 +174,7 @@ almanac_mu_chart_ghost = None
 almanac_mu_chart_buttons = []
 for i in range(9): # 9 columns
     for j in range(3): # 3 rows
-        almanac_mu_chart_buttons.append(Button(25+100*j, 125+100*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
+        almanac_mu_chart_buttons.append(Button(25+120*j, 125+120*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
         
 
 def almanac_stats_navigation_3():

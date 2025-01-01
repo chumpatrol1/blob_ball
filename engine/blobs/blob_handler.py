@@ -2,6 +2,7 @@
 #from .blobs.blobs import Blob
 from blobs import *
 from engine.blobs.blobs import Blob
+from json import loads
 
 class BlobContainer:
     def __init__(self):

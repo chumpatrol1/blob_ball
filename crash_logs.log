@@ -9384,3 +9384,586 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+20640-ERROR-Game Crash at Wed Jan  1 08:29:29 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 124, in handle_graphics
+    draw_almanac_stats_3(game_surface, settings, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 331, in draw_almanac_stats_3
+    mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][3])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 280, in read_mu_chart
+    if(blob_item[3] in mu_chart[blob]):
+       ~~~~~~~~~^^^
+IndexError: list index out of range
+Game State: almanac_stats_page_3
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25520-ERROR-Game Crash at Wed Jan  1 08:30:33 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 124, in handle_graphics
+    draw_almanac_stats_3(game_surface, settings, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 331, in draw_almanac_stats_3
+    mu_chart_text = read_mu_chart(blob_array[selector_position[1]][selector_position[0]][3])
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 280, in read_mu_chart
+    if(blob_item[3] in mu_chart[blob]):
+       ~~~~~~~~~^^^
+IndexError: list index out of range
+Game State: almanac_stats_page_3
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12184-ERROR-Game Crash at Wed Jan  1 08:56:21 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 71, in load_individual_blob
+    selected_blob_image = pg.image.load(cwd + "/blobs/" + selected_blob[0] + "/" + selected_blob[0])
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/blobs//blobs/quirkless_blob.png//blobs/quirkless_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+24280-ERROR-Game Crash at Wed Jan  1 08:57:35 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 116, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 444, in draw_blob_info
+    draw_blob_selector(game_display, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 121, in draw_blob_selector
+    blob_image_cache = load_blobs(blob_image_cache, directory)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 36, in load_blobs
+    blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/imagesquirkless_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+26512-ERROR-Game Crash at Wed Jan  1 08:57:40 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 267, in draw_css
+    css_blobs(game_display, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 161, in css_blobs
+    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 56, in load_blobs
+    loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/imagesquirkless_blob.png'.
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+25968-ERROR-Game Crash at Wed Jan  1 08:57:49 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 116, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 444, in draw_blob_info
+    draw_blob_selector(game_display, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 121, in draw_blob_selector
+    blob_image_cache = load_blobs(blob_image_cache, directory)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 36, in load_blobs
+    blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/imagesquirkless_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+16204-ERROR-Game Crash at Wed Jan  1 09:00:28 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 116, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 444, in draw_blob_info
+    draw_blob_selector(game_display, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 121, in draw_blob_selector
+    blob_image_cache = load_blobs(blob_image_cache)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 36, in load_blobs
+    blob_image_cache[-1].append(pg.image.load(cwd + "/blobs/" + icon[3] + "/" + icon[0]))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/blobs/random/random_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+26368-ERROR-Game Crash at Wed Jan  1 09:01:47 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 116, in handle_graphics
+    draw_blob_info(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 444, in draw_blob_info
+    draw_blob_selector(game_display, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 121, in draw_blob_selector
+    blob_image_cache = load_blobs(blob_image_cache)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 36, in load_blobs
+    blob_image_cache[-1].append(pg.image.load(cwd + "/blobs/" + icon[3] + "/" + icon[0]))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/blobs//quirkless_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+8772-ERROR-Game Crash at Wed Jan  1 09:03:58 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 70, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+26212-ERROR-Game Crash at Wed Jan  1 09:04:46 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 124, in handle_graphics
+    draw_almanac_stats_3(game_surface, settings, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 303, in draw_almanac_stats_3
+    blob_image_cache = load_blobs(blob_image_cache, directory)
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_almanac.py", line 75, in load_blobs
+    blob_image_cache[-1].append(pg.image.load(directory+icon[0]))
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/imagesquirkless_blob.png'.
+Game State: almanac_stats_page_3
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4440-ERROR-Game Crash at Wed Jan  1 09:04:48 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 78, in handle_graphics
+    draw_css(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 267, in draw_css
+    css_blobs(game_display, info_getter)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 161, in css_blobs
+    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_css.py", line 56, in load_blobs
+    loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/imagesquirkless_blob.png'.
+Game State: css
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15560-ERROR-Game Crash at Wed Jan  1 09:08:57 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 70, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+20048-ERROR-Game Crash at Wed Jan  1 09:11:28 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 70, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14304-ERROR-Game Crash at Wed Jan  1 09:12:01 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 70, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+6236-ERROR-Game Crash at Wed Jan  1 09:12:47 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 71, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15412-ERROR-Game Crash at Wed Jan  1 09:13:47 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 71, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1048-ERROR-Game Crash at Wed Jan  1 09:14:28 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 71, in load_individual_blob
+    selected_blob = blob_array[selector_position[1]][selector_position[0]]
+                    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+IndexError: list index out of range
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+23512-ERROR-Game Crash at Wed Jan  1 09:17:23 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 112, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 81, in load_individual_blob
+    selected_blob_description = find_blob_unlock(selected_blob[3])[2]
+                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+21936-ERROR-Game Crash at Wed Jan  1 15:43:15 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 97, in load_individual_blob
+    loaded = species_to_image("locked", 0)[0]
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+KeyError: 0
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+26884-ERROR-Game Crash at Wed Jan  1 15:44:02 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 103, in load_individual_blob
+    loaded = pg.image.load(loaded)
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: '/blobs/random/shadow_blob.png'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+14724-ERROR-Game Crash at Wed Jan  1 15:45:40 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 103, in load_individual_blob
+    loaded = pg.image.load(loaded)
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No file 'quirkless_blob_1.png' found in working directory 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+18896-ERROR-Game Crash at Wed Jan  1 15:46:43 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 103, in load_individual_blob
+    loaded = pg.image.load(loaded)
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No file 'quirkless_blob_1.png' found in working directory 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+22836-ERROR-Game Crash at Wed Jan  1 15:47:10 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 229, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 103, in load_individual_blob
+    loaded = pg.image.load(loaded)
+             ^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No file 'quirkless_blob_1.png' found in working directory 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball'.
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

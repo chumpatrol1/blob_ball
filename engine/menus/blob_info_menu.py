@@ -20,7 +20,7 @@ blob_tab = 0
 almanac_mu_chart_buttons = []
 for i in range(9): # 9 columns
     for j in range(3): # 3 rows
-        almanac_mu_chart_buttons.append(Button(25+100*j, 125+100*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
+        almanac_mu_chart_buttons.append(Button(25+120*j, 125+120*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
 selected_blob = "None"
 
 blob_info_buttons = []
@@ -103,8 +103,8 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
                 # me unselect, other select: set to select
                 # both select: both confirm
                 createSFXEvent('select')
-                selector_position = [i//7, i%7, 1]
-                if(selector_position[:2] == [3, 2]):
+                selector_position = [i//3, i%3, 1]
+                if(selector_position[:2] == [4, 1]):
                     game_state = "almanac"
                     selector_ghost = None
                     selector_position[2] = 0
