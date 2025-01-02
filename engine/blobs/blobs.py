@@ -168,8 +168,6 @@ class Blob:
         self.jump_lock = 0 #Caused by certain abilities and prevents jumps
         self.danger_zone_enabled = danger_zone_enabled
         self.info = {
-            'species': self.species,
-            'costume': self.costume,
             'damage_taken': 0,
             'points_from_goals': 0,
             'points_from_kos': 0,

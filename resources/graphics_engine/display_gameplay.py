@@ -341,7 +341,6 @@ def draw_gameplay(game_display, info_getter, settings):
     # TODO: Loop over balls
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
-        print(balls)
         for ball in balls.values():
             bname = "ball_" + str(ball.id)
             image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))

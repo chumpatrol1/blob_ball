@@ -190,6 +190,7 @@ def check_existing_directory(cwd):
         os.mkdir(cwd+'/screenshots')
     if not(os.path.isdir(cwd + '/replays')): # Replays folder
         os.mkdir(cwd+'/replays')
-
+    if not(os.path.isdir(cwd + '/replays/'+game_version)): # Replays subfolder
+        os.mkdir(cwd+'/replays/'+game_version)
 def return_game_version():
     return game_version

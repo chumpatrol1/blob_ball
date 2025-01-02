@@ -20,7 +20,7 @@ current_replay = None
 
 def check_replay_integrity(current_replay):
     # Compare the inputs we stored to the amount of time shown in the gameplay
-    #print(len(current_replay[6]), current_replay[7]['time'] + 1)
+    #print(len(current_replay[6]), current_replay[7]['time'] + 1, len(current_replay[6]) == current_replay[7]['time'] + 1)
     if(len(current_replay[6]) != current_replay[7]['time'] + 1):
         create_generic_pop_up(-1)
 
@@ -36,8 +36,7 @@ def decompress_replay_file(file_name): # DANGER: DO NOT USE! WE NEED TO HAVE FIL
     #print(type(decompressed_data))
     #print(decompressed_data)
     loaded_replay = loads(decompressed_data)
-    current_replay = [loaded_replay[0], loaded_replay[1], loaded_replay[2]['species'], loaded_replay[2]['costume'], loaded_replay[3]['species'], loaded_replay[3]['costume'], loaded_replay[4], loaded_replay[5]]
-    print(current_replay[7])
+    current_replay = [loaded_replay[0], loaded_replay[1], loaded_replay[2], loaded_replay[3], loaded_replay[4], loaded_replay[5], loaded_replay[6], loaded_replay[7]] # ???
     check_replay_integrity(current_replay)
     #print(decompressed_data[4].split('/'))
     #print(decompressed_data)
@@ -52,11 +51,11 @@ def save_replay(random_seed, ruleset, replay_inputs, p1_blob, p2_blob, game_info
     time_str = f"{current_time.tm_year}-{current_time.tm_mon}-{current_time.tm_mday} {current_time.tm_hour}.{current_time.tm_min}.{current_time.tm_sec}_"
     identifier = 1
     from os import getenv
-    file_str = getenv('APPDATA')+'/BlobBall' + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
+    file_str = getenv('APPDATA')+'/BlobBall' + '/replays/' + ruleset['version'] + '/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
     from os.path import exists
     
     while exists(file_str + ".bbr"):
         identifier += 1
         file_str = getenv('APPDATA')+'/BlobBall' + '/replays/' + p1_blob.species.capitalize() + " vs " + p2_blob.species.capitalize() + " " + time_str + str(identifier) + ".bbr"
-    json_to_save = dumps([str(random_seed), ruleset, p1_blob.info, p2_blob.info, replay_inputs, game_info])
+    json_to_save = dumps([str(random_seed), ruleset, p1_blob.species, p1_blob.costume, p2_blob.species, p2_blob.costume, replay_inputs, game_info])
     compress_replay_file(json_to_save, file_str)
