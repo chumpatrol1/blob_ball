@@ -5,7 +5,7 @@ class CSS_BLOBS:
         #self.blobs = return_css_selector_blobs()
         self.buttons = []
         #print(self.blobs)
-        for y in range(1, 5):
+        for y in range(1, 4):
             y_align = (100+ 768*(y * (100/768)) - (768*(130/768)))
             for x in range(1, 10):
                 x_align = 1366*(x/10)-(1366*(50/1366))

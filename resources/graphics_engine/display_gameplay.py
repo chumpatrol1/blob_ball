@@ -341,13 +341,14 @@ def draw_gameplay(game_display, info_getter, settings):
     # TODO: Loop over balls
     if not image_cache['initialized']: #Load in the images so we don't keep importing them
         image_cache['initialized'] = True
+        print(balls)
         for ball in balls.values():
             bname = "ball_" + str(ball.id)
             image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
             image_cache[bname + '_clone'] = ball.image
 
         
-        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/blobs/random/special_blob.png"), (180, 99)).convert_alpha()
         image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()
         image_cache['blob_special_boost'].fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         image_cache['blob_special_focus_lock'] = image_cache['blob_special'].convert_alpha()

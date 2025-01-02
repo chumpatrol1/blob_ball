@@ -38,7 +38,7 @@ def unload_css():
     font_cache = {}
     token_cache = {}
 
-def load_blobs(blob_image_cache, ghost_image_cache, directory):
+def load_blobs(blob_image_cache, ghost_image_cache):
     global name_cache
     global ability_cache
     load_blob_unlocks(appcwd)
@@ -70,8 +70,7 @@ def force_load_blobs():
     global ghost_image_cache
     global cwd
     #unload_css()
-    directory = cwd + "/resources/images"
-    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
     unload_css()
 
 def css_blobs(game_display, info_getter):
@@ -84,7 +83,6 @@ def css_blobs(game_display, info_getter):
     global ghost_image_cache
     x = 0
     y = 0
-    directory = cwd + "/resources/images"
     if not bic_cached:
 
         font_cache['blob_name'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
@@ -161,7 +159,7 @@ def css_blobs(game_display, info_getter):
         token_cache['pnone_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pnone_box.png").convert_alpha(), (217, 225))
         bic_cached = True
 
-        blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+        blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
 
         update_css_blobs(appcwd)
             
