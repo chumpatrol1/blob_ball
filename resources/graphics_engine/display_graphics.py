@@ -26,7 +26,7 @@ from engine.get_events import get_events
 from resources.graphics_engine.handle_screen_size import initialize_screen_size, return_real_screen_size, return_width_and_height, update_mouse_wh, update_width_and_height
 
 cwd = os.getcwd()
-pg.quit()
+#pg.quit() Why does this exist?
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 
 x = 100

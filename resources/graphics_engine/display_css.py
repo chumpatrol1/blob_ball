@@ -1,12 +1,13 @@
-from engine.blobs import species_to_image
+from engine.blobs.get_costumes import species_to_image
 from engine.unlocks import return_available_costumes
 from resources.graphics_engine.background_handler import draw_background as draw_background
 from engine.unlocks import load_blob_unlocks, return_css_display_blobs, update_css_blobs, return_css_selector_blobs
 import pygame as pg
 from os import getcwd, getenv
 cwd = getcwd()
-appcwd = getenv('APPDATA')+"/BlobBall"
-
+appcwd = getenv('APPDATA')+"\\BlobBall"
+print(cwd)
+print(appcwd)
 blob_array = return_css_display_blobs()
 
 
@@ -37,7 +38,7 @@ def unload_css():
     font_cache = {}
     token_cache = {}
 
-def load_blobs(blob_image_cache, ghost_image_cache, directory):
+def load_blobs(blob_image_cache, ghost_image_cache):
     global name_cache
     global ability_cache
     load_blob_unlocks(appcwd)
@@ -52,7 +53,10 @@ def load_blobs(blob_image_cache, ghost_image_cache, directory):
             for icon in row:
                 #blob_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (91, round(pg.image.load(directory+icon[0]).get_height()*.4636))))
                 #ghost_image_cache[-1].append(pg.transform.scale(pg.image.load(directory+icon[0]).convert_alpha(), (195, pg.image.load(directory+icon[0]).get_height())))
-                loaded_icon = pg.image.load(directory+icon[0]).convert_alpha()
+                try:
+                    loaded_icon = pg.image.load(cwd + "/blobs/" + icon[3] + "/" + icon[0]).convert_alpha()
+                except:
+                    loaded_icon = pg.image.load(cwd + "/blobs/" + "random" + "/" + "shadow_blob.png")
                 blob_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
                 ghost_image_cache[-1].append(pg.transform.scale(loaded_icon, (2 * loaded_icon.get_width()//3, 2 * loaded_icon.get_height()//3)))
                 ghost_image_cache[-1][-1].set_alpha(200)
@@ -65,9 +69,8 @@ def force_load_blobs():
     global blob_image_cache
     global ghost_image_cache
     global cwd
-    unload_css()
-    directory = cwd + "/resources/images"
-    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+    #unload_css()
+    blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
     unload_css()
 
 def css_blobs(game_display, info_getter):
@@ -80,7 +83,6 @@ def css_blobs(game_display, info_getter):
     global ghost_image_cache
     x = 0
     y = 0
-    directory = cwd + "/resources/images"
     if not bic_cached:
 
         font_cache['blob_name'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
@@ -157,9 +159,9 @@ def css_blobs(game_display, info_getter):
         token_cache['pnone_box'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/pnone_box.png").convert_alpha(), (217, 225))
         bic_cached = True
 
-        blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache, directory)
+        blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
 
-        update_css_blobs(cwd)
+        update_css_blobs(appcwd)
             
     for row in blob_image_cache: #Temporary, until we make more blobs
         y += 1
@@ -299,7 +301,7 @@ def draw_css(game_display, info_getter, settings):
                 game_display.blit(blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x], (player_obj.menu.x_pos + 73, player_obj.menu.y_pos + 100 - (blob_image_cache[player_obj.token.current_blob_y][player_obj.token.current_blob_x].get_height() - 51)/2))
             else:
                 #print(player_obj.token.current_costume)
-                temp_loaded = species_to_image(player_obj.token.current_blob, player_obj.token.current_costume)[0]
+                temp_loaded = f"blobs/{player_obj.token.current_blob}/" + species_to_image(player_obj.token.current_blob, player_obj.token.current_costume)["alive"]
                 #print(player_obj.token.current_costume)
                 #print(temp_loaded)
                 if(costume_cache[0][0] != temp_loaded):

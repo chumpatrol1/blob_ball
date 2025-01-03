@@ -1,0 +1,12 @@
+#1: Thunderbolt will alaways target the ball
+when used. The delay is short, so watch out!
+
+#2: Thunderbolt will grant Lightning Blob a few
+seconds of boost if you hit yourself with it
+
+#3: Thunderbolt will cause the ball to cling
+to the ground after the ball is hit, allowing
+you to combo with it!
+
+#4: Thunderbolt's hitbox against foes is
+smaller than the one that activates your boost

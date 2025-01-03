@@ -1,0 +1,42 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 2,
+    "traction": 5,
+    "friction": 5,
+    "gravity": 5,
+    "kick_cooldown_rate": 1,
+    "block_cooldown_rate": 1,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "shop",
+    "special_ability_category": "instant",
+    "special_ability_cost": 1500,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 2400,
+    "special_ability_cooldown": 120,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "merchant",
+    "path": "merchant"
+  },
+  "costumes": {
+    "0": {
+        "alive": "merchant_blob.png",
+        "shopping": "merchant_open.png",
+        "dead": "merchant_blob_-1.png",
+        "ability": "coin.png",
+        "menu": "shop_ui.png"
+    },
+    "1": {
+        "alive": "merchant_blob_1.png",
+        "shopping": "merchant_open_1.png",
+        "dead": "merchant_blob_-1.png",
+        "ability": "coin.png",
+        "menu": "shop_ui.png"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+#1: Pressing Down lets you close your menu
+instantly, but you won't get a refund!
+
+#2: After closing the menu or buying
+something, you won't be able to pick the card
+you ignored. Choose wisely!
+
+#3: Equipping a card means you won't be
+able to use that particular action 
+until you spend the card. When in doubt,
+equip to your Ability or Boost slot!

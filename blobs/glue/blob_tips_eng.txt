@@ -1,0 +1,18 @@
+#1: Glue Gun shoots its pellets
+based on your momentum and direction!
+
+#2: Once a glue puddle is formed, it
+dries up in about three seconds!
+
+#3: Glue Blob synergizes well with its 
+own glue. In fact, you will move slightly
+faster across the field!
+
+#4: In addition to the slowing effect of
+the glue, you should remember that your
+enemies will have a hard time jumping out
+of the glue, and the ball bounces less too!
+
+#5: For 300 energy, wavedashing will create
+several pellets of glue that can cover the
+whole field.

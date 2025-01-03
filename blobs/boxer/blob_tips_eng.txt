@@ -1,0 +1,16 @@
+#1: Blocking Starpunch will reduce
+damage taken by two and prevents the stun
+
+#2: Starpunch's damage is increased by
+boosting or by hitting the enemy in their
+Danger Zone
+
+#3: Starpunch cannot be clanked with a kick
+
+#4: Starpunch increases your kick cooldown
+upon activation, but if you hit your attack
+your kick cooldown decreases. Hitting a boost kick
+decreases your Starpunch cooldown
+
+#5: Missing Starpunch applies the Overheat
+effect, doubling your cooldowns for 2 seconds

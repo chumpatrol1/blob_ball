@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 4,
+    "top_speed": 2,
+    "traction": 2,
+    "friction": 2,
+    "gravity": 1,
+    "kick_cooldown_rate": 3,
+    "block_cooldown_rate": 3,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 2,
+    "special_ability": "teleport",
+    "special_ability_category": "instant",
+    "special_ability_cost": 180,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 180,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "arcade",
+    "path": "arcade"
+  },
+  "costumes": {
+    "0": {
+        "alive": "arcade_blob.png", 
+        "dead": "arcade_blob_-1.png",
+        "ability": "teleport.png"
+    },
+    "1": {
+        "alive": "arcade_blob_1.png",
+        "dead": "arcade_blob_-1.png",
+        "ability": "teleport.png"
+    }
+  }
+}

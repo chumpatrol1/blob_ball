@@ -1,0 +1,46 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 2,
+    "traction": 3,
+    "friction": 3,
+    "gravity": 3,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 2,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 2,
+    "special_ability": "monado",
+    "special_ability_category": "instant",
+    "special_ability_cost": 360,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 180,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "taco",
+    "path": "taco"
+  },
+  "costumes": {
+    "0": {
+        "alive": "taco_blob.png",
+        "dead": "taco_blob_-1.png",
+        "ability": "filling.png",
+        "cheese": "cheese.png",
+        "hot_sauce": "hot_sauce.png",
+        "meat": "meat.png",
+        "vegan_crunch": "vegan_crunch.png"
+    },
+    "1": {
+        "alive": "taco_blob_1.png",
+        "dead": "taco_blob_-1.png",
+        "ability": "filling.png",
+        "cheese": "cheese.png",
+        "hot_sauce": "hot_sauce.png",
+        "meat": "meat.png",
+        "vegan_crunch": "vegan_crunch.png"
+    }
+  }
+}

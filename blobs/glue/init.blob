@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 3,
+    "top_speed": 1,
+    "traction": 5,
+    "friction": 4,
+    "gravity": 2,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 2,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "gluegun",
+    "special_ability_category": "held",
+    "special_ability_cost": 150,
+    "special_ability_maintenance": 15,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 2,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "glue",
+    "path": "glue"
+  },
+  "costumes": {
+    "0": {
+        "alive": "glue_blob.png", 
+        "dead": "glue_blob_-1.png",
+        "ability": "glue.png"
+    },
+    "1": {
+        "alive": "glue_blob_1.png",
+        "dead": "glue_blob_-1.png",
+        "ability": "glue.png"
+    }
+  }
+}

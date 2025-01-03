@@ -65,10 +65,7 @@ def create_ui_icons(ui_font, blob):
     Returns the surface created with the parameters
     '''
     game_display = pg.Surface((390, 70), pg.SRCALPHA)
-    if(blob.player == 1):
-        ability_icon = image_cache['p1_ability_icon']
-    else:
-        ability_icon = image_cache['p2_ability_icon']
+    ability_icon = blob.ability_icons['default']
     if(blob.status_effects['cards']['ability']):
         ability_icon = image_cache['icons'][blob.status_effects['cards']['ability']]
     pg.draw.rect(game_display, (200, 200, 200), (0, 0, 70, 70))
@@ -321,110 +318,12 @@ def draw_blob_special(blob, game_display): # Blob special appears when kicking, 
 def draw_menu(game_display, blob):
     #print("1", blob.status_effects['cards']['pulled'][0])
     if(blob.status_effects['menu']['type'] == 'cardpack'):
-        if(blob.status_effects['menu']['direction'] == 'left'):
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos - 20) *(382/768))))
-        else:
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][0]], ((blob.x_pos - 100) * (1000/1366), (blob.y_pos*(382/768))))
-        #print("3", blob.status_effects['cards']['pulled'][2])
-        if(blob.status_effects['menu']['direction'] == 'up'):
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 225) *(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 220) *(382/768))))
-        else:
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 205) *(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][1]], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 200) *(382/768))))
-        #print("2", blob.status_effects['cards']['pulled'][1])
-        if(blob.status_effects['menu']['direction'] == 'right'):
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))))
-        else:
-            game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
-            game_display.blit(image_cache['icons'][blob.status_effects['cards']['pulled'][2]], ((blob.x_pos + 165) * (1000/1366), (blob.y_pos*(382/768))))
+        pass
     elif(blob.status_effects['menu']['type'] == 'monado'):
-        if(blob.status_effects['menu']['direction'] == 'left' and blob.status_effects['monado_smash_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
-            game_display.blit(image_cache['monado']["SMASH"], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos - 10) *(382/768))))
-        elif(blob.status_effects['monado_smash_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
-            game_display.blit(image_cache['monado']["SMASH"], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos+10)*(382/768))))
-        else:
-            pg.draw.rect(game_display, (124, 124, 124), ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos + 55)*(382/768)), 80, 20))
-            pg.draw.rect(game_display, (200, 200, 200), ((blob.x_pos - 105) * (1000/1366), ((blob.y_pos + 55)*(382/768)), 80*(blob.status_effects['monado_smash_cooldown']/900), 20))
-        #print("3", blob.status_effects['cards']['pulled'][2])
-        if(blob.status_effects['menu']['direction'] == 'up' and blob.status_effects['monado_jump_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 225) *(382/768))))
-            game_display.blit(image_cache['monado']["JUMP"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 180) *(382/768))))
-        elif(blob.status_effects['monado_jump_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 205) *(382/768))))
-            game_display.blit(image_cache['monado']["JUMP"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos - 160) *(382/768))))
-        else:
-            pg.draw.rect(game_display, (124, 124, 124), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 95)*(382/768)), 80, 20))
-            pg.draw.rect(game_display, (200, 200, 200), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos - 95)*(382/768)), 80*(blob.status_effects['monado_jump_cooldown']/900), 20))
-        #print("2", blob.status_effects['cards']['pulled'][1])
-        if(blob.status_effects['menu']['direction'] == 'right' and blob.status_effects['monado_speed_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 25)*(382/768))))
-            game_display.blit(image_cache['monado']["SPEED"], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))))
-        elif(blob.status_effects['monado_speed_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos - 5)*(382/768))))
-            game_display.blit(image_cache['monado']["SPEED"], ((blob.x_pos + 165) * (1000/1366), (blob.y_pos*(382/768))))
-        else:
-            pg.draw.rect(game_display, (124, 124, 124), ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos + 55)*(382/768)), 80, 20))
-            pg.draw.rect(game_display, (200, 200, 200), ((blob.x_pos + 160) * (1000/1366), ((blob.y_pos + 55)*(382/768)), 80*(blob.status_effects['monado_speed_cooldown']/1200), 20))
-        if(blob.status_effects['menu']['direction'] == 'down' and blob.status_effects['monado_shield_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 185) *(382/768))))
-            game_display.blit(image_cache['monado']["SHIELD"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+175)*(382/768))))
-        elif(blob.status_effects['monado_shield_cooldown'] <= 0):
-            #game_display.blit(image_cache['joker_card'], ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 205) *(382/768))))
-            game_display.blit(image_cache['monado']["SHIELD"], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+195)*(382/768))))
-        else:
-            pg.draw.rect(game_display, (124, 124, 124), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 240)*(382/768)), 80, 20))
-            pg.draw.rect(game_display, (200, 200, 200), ((blob.x_pos + 20) * (1000/1366), ((blob.y_pos + 240)*(382/768)), 80*(blob.status_effects['monado_shield_cooldown']/900), 20))
+        pass
     elif(blob.status_effects['menu']['type'] == 'shop'):
-        
-        # Up/Passive
-        if(blob.status_effects['shop']['passive_sale'] == "soul_catcher"):
-            cropRect = (180, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['passive_sale'] == "grub_song"):
-            cropRect = (180, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['passive_sale'] == "sprint_master"):
-            cropRect = (240, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos-180)*(382/768))), area = cropRect)
-
-        # Left/Defense
-        if(blob.status_effects['shop']['defense_sale'] == "sharp_shadow"):
-            cropRect = (240, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['defense_sale'] == "thorns_of_agony"):
-            cropRect = (300, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['defense_sale'] == "izumi_tear"):
-            cropRect = (300, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos - 100) * (1000/1366), ((blob.y_pos-10)*(382/768))), area = cropRect)
-        
-        # Right/Offense
-        if(blob.status_effects['shop']['offense_sale'] == "dream_wielder"):
-            cropRect = (0, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['offense_sale'] == "nailmasters_glory"):
-            cropRect = (60, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['offense_sale'] == "heavy_blow"):
-            cropRect = (60, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 165) * (1000/1366), ((blob.y_pos-20)*(382/768))), area = cropRect)
-        
-        # Down/Focus
-        if(blob.status_effects['shop']['focus_sale'] == "baldur_shell"):
-            cropRect = (0, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+185)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['focus_sale'] == "explosive_focus"):
-            cropRect = (120, 0, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+175)*(382/768))), area = cropRect)
-        elif(blob.status_effects['shop']['focus_sale'] == "soul_focus"):
-            cropRect = (120, 60, 60, 60)
-            game_display.blit(image_cache['merchant_shop'], ((blob.x_pos + 25) * (1000/1366), ((blob.y_pos+175)*(382/768))), area = cropRect)
+        pass
+    
 def draw_gameplay(game_display, info_getter, settings): 
     gameplay_surface = pg.Surface((1366, 768))
     blobs = info_getter[0]
@@ -446,44 +345,9 @@ def draw_gameplay(game_display, info_getter, settings):
             bname = "ball_" + str(ball.id)
             image_cache[bname] = pg.transform.scale(pg.image.load(ball.image), (40, 40))
             image_cache[bname + '_clone'] = ball.image
-        used_pnames = []
-        used_bfx = {'darkened': False, 'brightened': False, 'blackened': False}
-        for blob in blobs.values():
-            pname = "p" + str(blob.player) + "_"
-            used_pnames.append(blob.player)
 
-            blob_height = round(pg.image.load(blob.image).get_height() * 0.6)
-
-            image_cache[pname+'blob_left'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
-            image_cache[pname+'blob_right'] = pg.transform.flip(image_cache[pname+'blob_left'], True, False)
-            image_cache[pname+'dead_left'] = pg.transform.scale(pg.image.load(blob.image_death).convert_alpha(), (120, blob_height))
-            image_cache[pname+'dead_right'] = pg.transform.flip(image_cache[pname+'dead_left'], True, False)
-            image_cache[pname+'blob_clone'] = blob.image
-            try:
-                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
-            except:
-                image_cache[pname+'ability_icon'] = pg.transform.scale(pg.image.load(cwd+"/resources/images/ability_icons/404.png").convert_alpha(), (70, 70))
-
-
-            # TODO: Duplicate check to darken the blobs
-            for used_blob in used_pnames:
-                if(blob.species == blobs[used_blob].species and blob.costume == blobs[used_blob].costume and blob.player != blobs[used_blob].player):
-                    if not used_bfx['darkened']:
-                        image_cache[pname+'blob_right'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
-                    elif not used_bfx['brightened']:
-                        image_cache[pname+'blob_right'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((225, 225, 225, 255), special_flags=pg.BLEND_RGBA_MULT)
-                    elif not used_bfx['blackened']:
-                        image_cache[pname+'blob_right'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
-                        image_cache[pname+'blob_left'].fill((100, 100, 100, 255), special_flags=pg.BLEND_RGBA_MULT)
-
-            image_cache[pname+'damage_left'] = image_cache[pname+'blob_left'].copy()
-            image_cache[pname+'damage_left'].set_alpha(100)
-            image_cache[pname+'damage_right'] = image_cache[pname+'blob_right'].copy()
-            image_cache[pname+'damage_right'].set_alpha(100)
         
-        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/special_blob.png"), (180, 99)).convert_alpha()
+        image_cache['blob_special'] = pg.transform.scale(pg.image.load(cwd + "/blobs/random/special_blob.png"), (180, 99)).convert_alpha()
         image_cache['blob_special_boost'] = image_cache['blob_special'].convert_alpha()
         image_cache['blob_special_boost'].fill((255, 255, 0, 124), special_flags=pg.BLEND_RGBA_MULT)
         image_cache['blob_special_focus_lock'] = image_cache['blob_special'].convert_alpha()
@@ -508,34 +372,8 @@ def draw_gameplay(game_display, info_getter, settings):
     for blob in blobs.values():
         pname = "p" + str(blob.player) + "_"
         if blob.recharge_indicators['ability_swap_b']:
-            try:
-                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load(blob.ability_icon).convert_alpha(), (70, 70))
-            except:
-                image_cache[pname + 'ability_icon'] = pg.transform.scale(pg.image.load("/resources/images/ui_icons/404.png").convert_alpha(), (70, 70))
             image_cache['ui_initialized'] = False
-
-        if not (blob.image == image_cache[pname+'blob_clone']):
-            blob_height = round(pg.image.load(blob.image).get_height()*0.6)
-            image_cache[pname+'blob'] = pg.transform.scale(pg.image.load(blob.image).convert_alpha(), (120, blob_height))
-            image_cache[pname+'blob_clone'] = blob.image
-        if not("invisible" in blob.image):
-            blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
-            if(blob.facing == "right"):
-                if(blob.hp > 0):
-                    gameplay_surface.blit(image_cache[pname+'blob_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-                else:
-                    gameplay_surface.blit(image_cache[pname+'dead_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-            else:
-                if(blob.hp > 0):
-                    gameplay_surface.blit(image_cache[pname+'blob_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-                else:
-                    gameplay_surface.blit(image_cache[pname+'dead_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-        else:
-            blob_y_pos = blob.y_pos - (image_cache[pname+'blob_right'].get_height() - 66)
-            if(blob.facing == "right"):
-                gameplay_surface.blit(image_cache[pname+'damage_right'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
-            else:
-                gameplay_surface.blit(image_cache[pname+'damage_left'], (blob.x_pos*(1000/1366), (blob_y_pos*(400/768))))
+        blob.draw(gameplay_surface)
 
         draw_blob_special(blob, gameplay_surface)
         draw_blob_particles(gameplay_surface, blobs.values()) # TODO: Fix this!

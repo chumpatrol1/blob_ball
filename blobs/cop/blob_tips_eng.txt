@@ -1,0 +1,8 @@
+#1: Stoplight's ball intangibility allows
+you to run the ball through an opponent
+
+#2: Stoplight can be countered if the enemy
+uses their block on the ball
+
+#3: Stoplight will increase your block 
+cooldown significantly upon use

@@ -1,0 +1,17 @@
+#1: Fireball's speed boost is
+multiplicative, not additive
+
+#2: Holding down Fireball rather than tapping
+it will save on energy. If you do it long enough,
+you'll get a speed boost, but you'll also be
+vulnerable to damage.
+
+#3: Need more energy? Holding ''down'' 
+while on the ground will cause your blob
+to Focus, quintupling your energy 
+production! It comes at the cost
+of mobility, however
+
+#4: Fire Blob's boost kick will apply the
+Overheat effect on your enemy for 5 seconds,
+doubling all cooldowns for that time!

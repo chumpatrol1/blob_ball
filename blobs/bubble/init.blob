@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 3,
+    "traction": 4,
+    "friction": 2,
+    "gravity": 3,
+    "kick_cooldown_rate": 3,
+    "block_cooldown_rate": 3,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "bubble",
+    "special_ability_category": "instant",
+    "special_ability_cost": 300,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 180,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "bubble",
+    "path": "bubble"
+  },
+  "costumes": {
+    "0": {
+        "alive": "bubble_blob.png", 
+        "dead": "bubble_blob_-1.png",
+        "ability": "bubble.png"
+    },
+    "1": {
+        "alive": "bubble_blob_1.png",
+        "dead": "bubble_blob_-1.png",
+        "ability": "bubble.png"
+    }
+  }
+}
