@@ -10562,3 +10562,94 @@ P2_Blob: [], is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+19156-ERROR-Game Crash at Fri Jan  3 14:06:22 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 376, in draw_gameplay
+    blob.draw(gameplay_surface)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\monk\monk.py", line 116, in draw
+    self.build_sprite_dict()
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\monk\monk.py", line 96, in build_sprite_dict
+    self.sprite_dict[("right", 2, costume_id)] = self.blob_images[f'lv{costume_id}_dead_right']
+                                                ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'lv1_dead_right'
+Game State: casual_match
+P1 Blob: monk, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+12012-ERROR-Game Crash at Fri Jan  3 14:10:04 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 376, in draw_gameplay
+    blob.draw(gameplay_surface)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\monk\monk.py", line 119, in draw
+    blob_image = self.sprite_dict[(self.facing, blob_status, self.upgrade_level)]
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: ('left', 0, 8)
+Game State: casual_match
+P1 Blob: monk, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+15128-ERROR-Game Crash at Fri Jan  3 14:14:21 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 80, in handle_graphics
+    draw_gameplay(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_gameplay.py", line 376, in draw_gameplay
+    blob.draw(gameplay_surface)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\blobs\monk\monk.py", line 123, in draw
+    blob_image = self.sprite_dict[(self.facing, blob_status, self.upgrade_level)]
+                 ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: ('left', 0, 8)
+Game State: casual_match
+P1 Blob: monk, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+9228-ERROR-Game Crash at Sat Jan  4 21:09:34 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 141, in update_game_state
+    game_state, info_getter = engine.gameplay.handle_gameplay(p1_blob, p2_blob, ruleset, settings, p1_is_cpu, p2_is_cpu, p1_costume, p2_costume, timer)
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\gameplay.py", line 242, in handle_gameplay
+    blob.check_blob_collision(other_blob)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 598, in check_blob_collision
+    if(hit_dict["hit_registered"]):
+       ~~~~~~~~^^^^^^^^^^^^^^^^^^
+TypeError: 'NoneType' object is not subscriptable
+Game State: casual_match
+P1 Blob: rock, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+

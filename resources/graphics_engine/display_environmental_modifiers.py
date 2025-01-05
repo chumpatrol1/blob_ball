@@ -26,6 +26,7 @@ modifier_images = {
     'cactus_spike': 'spike_ball',
     'sharp_shadow': 'sharp_shadow',
     'bubble': 'bubble',
+    'hadoukatamari': 'spike_ball',
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))

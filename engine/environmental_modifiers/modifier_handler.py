@@ -11,6 +11,7 @@ em_def = {
     'console': em_console,
     'glue_puddle': em_glue_puddle,
     'glue_shot': em_glue_shot,
+    'hadoukatamari': em_hadoukatamari,
     'royal_loan': em_royal_loan,
     'sharp_shadow': em_sharp_shadow,
     'spire_glyph': em_spire_glyph,
@@ -39,6 +40,7 @@ environmental_modifiers = {
     'cactus_spike': [],
     'sharp_shadow': [],
     'bubble': [],
+    'hadoukatamari': []
 }
 
 def create_environmental_modifier(player = 0, affects = set(), species = "", random_image = 0, x_pos = 0, y_pos = 0, x_speed = 0, y_speed = 0, gravity = 0, ground_clip = False, lifetime = 60, hp = 1, special_functions = []):
@@ -87,4 +89,5 @@ def clear_environmental_modifiers(true_reset = False):
     'cactus_spike': [],
     'sharp_shadow': [],
     'bubble': [],
+    'hadoukatamari': [],
 }
