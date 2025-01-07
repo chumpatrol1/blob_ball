@@ -1,6 +1,6 @@
 {
   "stars": {
-    "max_hp": 3,
+    "max_hp": 2,
     "top_speed": 0,
     "traction": 0,
     "friction": 0,
@@ -33,7 +33,19 @@
         "lv5": "monk_brown.png",
         "lv6": "monk_black.png",
         "lv7": "monk_red.png",
-        "dead": "monk_white.png",
+        "dead": "monk_dead_-1.png",
+        "ability": "tax.png"
+    },
+    "1": {
+        "alive": "monk_white_1.png",
+        "lv1": "monk_yellow_1.png",
+        "lv2": "monk_orange_1.png",
+        "lv3": "monk_green_1.png",
+        "lv4": "monk_blue_1.png",
+        "lv5": "monk_brown_1.png",
+        "lv6": "monk_black_1.png",
+        "lv7": "monk_red_1.png",
+        "dead": "monk_dead_-1.png",
         "ability": "tax.png"
     }
   }

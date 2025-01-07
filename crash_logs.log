@@ -10646,9 +10646,75 @@ Traceback (most recent call last):
   File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\blobs\blobs.py", line 598, in check_blob_collision
     if(hit_dict["hit_registered"]):
        ~~~~~~~~^^^^^^^^^^^^^^^^^^
-TypeError: 'NoneType' object is not subscriptable
+TypeError: 'NoneType' object is not subscriptable 
 Game State: casual_match
 P1 Blob: rock, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+4916-ERROR-Game Crash at Sun Jan  5 20:08:10 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 95, in handle_graphics
+    draw_unlock_splash(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_pop_up.py", line 26, in draw_unlock_splash
+    pop_up_image = pg.image.load(blob_cwd+info_getter[0]).convert_alpha()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/images/blobs/merchant_blob_1.png'.
+Game State: unlock_splash
+P1 Blob: merchant, is CPU: False
+P2_Blob: monk, is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+10960-ERROR-Game Crash at Mon Jan  6 10:12:48 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 117, in run
+    new_game_state, info_getter, bgm_song, settings, ruleset = ugs(game_state, cwd)
+                                                               ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\game_handler.py", line 230, in update_game_state
+    game_state, info_getter = engine.menus.blob_info_menu.general_navigation()
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 202, in general_navigation
+    game_state = blob_selector_navigation(pressed, mouse)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\engine\menus\blob_info_menu.py", line 80, in blob_selector_navigation
+    load_individual_blob(selector_position)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_blob_info.py", line 99, in load_individual_blob
+    costume_unlock = find_costume_unlock(selected_blob[3]+"/"+ i)[3]
+                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^
+TypeError: 'NoneType' object is not subscriptable
+Game State: blob_info
+P1 Blob: [], is CPU: False
+P2_Blob: [], is CPU: False
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+21264-ERROR-Game Crash at Mon Jan  6 10:32:45 2025 (Version 0.18.0b)
+Traceback (most recent call last):
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 146, in <module>
+    game_state = run(game_state)
+                 ^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\main.py", line 118, in run
+    dg.handle_graphics(game_state, cwd, info_getter, settings) # Graphics always lag behind by a single frame
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_graphics.py", line 95, in handle_graphics
+    draw_unlock_splash(game_surface, info_getter, settings)
+  File "C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball\resources\graphics_engine\display_pop_up.py", line 26, in draw_unlock_splash
+    pop_up_image = pg.image.load(blob_cwd+info_getter[0]).convert_alpha()
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: No such file or directory: 'C:\Users\Elijah McLaughlin\Documents\GitHub\blob_ball/resources/images/blobs/monk_white_1.png'.
+Game State: unlock_splash
+P1 Blob: fisher, is CPU: False
 P2_Blob: monk, is CPU: False
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -359,7 +359,7 @@ costume_unlock_dict = {
     "cactus": {"grayscale_1": False},
     "merchant": {"grayscale_1": False},
     "bubble": {"grayscale_1": False},
-    "monk": {}
+    "monk": {"grayscale_1": False}
 }
 
 def load_costume_unlocks(cwd):

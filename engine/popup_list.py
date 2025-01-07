@@ -67,6 +67,7 @@ costume_unlock_splashes = { # Key is
     'cactus/grayscale_1': ["cactus_blob_1.png", "Grayscale Cactus", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'merchant/grayscale_1': ["merchant_blob_1.png", "Grayscale Merchant", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'bubble/grayscale_1': ["merchant_blob_1.png", "Grayscale Bubble", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'monk/grayscale_1': ["monk_white_1.png", "Grayscale Monk", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
 }
 
 def find_costume_unlock(key):

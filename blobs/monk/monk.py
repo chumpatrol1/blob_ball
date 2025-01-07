@@ -2,6 +2,7 @@ from engine.blobs.blobs import Blob
 import random
 from engine.environmental_modifiers import create_environmental_modifier
 from copy import copy
+from resources.graphics_engine.display_particles import draw_monk_upgrade_pfx
 class Monk(Blob):
     default_stats = {"hp": 8}
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
@@ -41,7 +42,7 @@ class Monk(Blob):
                 self.upgrade_level = 7 # This ensures that we don't open the forbidden 8th gate
                 self.lv7_timer = 180
             true_stars = self.calculate_monk_stats()
-            self.set_base_stats(true_stars)
+            self.set_base_stats(true_stars, set_hp=False)
 
             # Shoot a hadoukatamari. The power of this projectile varies based on the upgrade level - it applies increasing levels of overheat, and at levels A, S and X it does 1 damage
             if(self.facing == 'left'):
@@ -49,8 +50,8 @@ class Monk(Blob):
             else:
                 x_mod = 1
             create_environmental_modifier(self.player, affects = {'enemy'}, species = 'hadoukatamari', hp = 0 if self.upgrade_level < 5 else 1, x_pos = self.x_center, y_pos = self.y_center - 10, x_speed = (3*self.x_speed/4) + (6*x_mod), gravity = self.upgrade_level * 30, lifetime = 600, special_functions = [create_environmental_modifier])
-
-            Blob.create_blob_sfx('chime_progress')
+            draw_monk_upgrade_pfx([self.x_pos, self.y_pos], self.upgrade_level)
+            Blob.create_blob_sfx('hadoukatamari')
         else:
             return
 

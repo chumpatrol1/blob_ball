@@ -1,17 +1,17 @@
-#1: Tax will make your enemy much slower
-and their movement much slipperier!
+#1: Blob Fu gathers the energy within and
+converts it into a permanent stat boost.
+While you start as the slowest blob, 
+you will upgrade to be the fastest!
 
-#2: Your kick, block and boost cooldowns
-will all be reduced by a full second!
+#2: When you upgrade, you shoot out a
+fireball that applies a overheat. If Monk Blob
+is at a high level this will also do damage!
 
-#3: You can stack the speed boost with
-the stat swap from Tax!
+#4: Monk Blob's boost kick will launch
+his opponents into the sky!
 
-#4: King Blob's boost kick is known as the
-Royal Loan. While the opponent has Royal Loan,
-their cooldowns are greatly reduced. After 8
-actions are used, that enemy gets the overheat
-effect while King improves his cooldowns!
+#5: If you get KO'd, your upgrades will be
+reset to the default level.
 
-#5: If an opponent has Royal Loan active,
-King Blob's boost kick will increase the counter instead.
+#6: There is a secret 7th upgrade level.
+It is active temporarily, not permanently.

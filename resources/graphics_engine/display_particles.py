@@ -149,6 +149,13 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['merchant_shop'] = pg.image.load(cwd+"/resources/images/ui_icons/merchant_icons.png")
         particle_cache['bubble'] = pg.image.load(cwd + "/resources/images/particles/bubble.png").convert_alpha()
         particle_cache['bubble_particle'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/particles/bubble_particle.png").convert_alpha(), (40, 40))
+        particle_cache['f_rank'] = pg.image.load(cwd + "/resources/images/particles/f_rank.png")
+        particle_cache['d_rank'] = pg.image.load(cwd + "/resources/images/particles/d_rank.png")
+        particle_cache['c_rank'] = pg.image.load(cwd + "/resources/images/particles/c_rank.png")
+        particle_cache['b_rank'] = pg.image.load(cwd + "/resources/images/particles/b_rank.png")
+        particle_cache['a_rank'] = pg.image.load(cwd + "/resources/images/particles/a_rank.png")
+        particle_cache['s_rank'] = pg.image.load(cwd + "/resources/images/particles/s_rank.png")
+        particle_cache['x_rank'] = pg.image.load(cwd + "/resources/images/particles/x_rank.png")
         for icon in ability_image_dict:
             try:
                 ability_key = species_to_stars(icon, {})['special_ability']
@@ -384,6 +391,24 @@ def draw_teleportation_pfx(tele_pos):
     for x in range(0, 7):
         spark_particles = [particle_cache['glitch_particle_1']]
         ball_particle_memory.append(dpc.Particle(image = random.choice(spark_particles), x_pos = (tele_pos[0] * 1000/1366) + random.randint(0, 50), x_speed = random.randint(-2, 2), y_pos = tele_pos[1] * (400/768), y_speed = random.randint(-2, 2), gravity = 0, alpha = 255, fade = 17, ground_clip=True, lifetime = 255))
+
+def draw_monk_upgrade_pfx(monk_pos, level):
+    match level:
+        case 1:
+            pfx_sprite = particle_cache['f_rank']
+        case 2:
+            pfx_sprite = particle_cache['d_rank']
+        case 3:
+            pfx_sprite = particle_cache['c_rank']
+        case 4:
+            pfx_sprite = particle_cache['b_rank']
+        case 5:
+            pfx_sprite = particle_cache['a_rank']
+        case 6:
+            pfx_sprite = particle_cache['s_rank']
+        case 7:
+            pfx_sprite = particle_cache['x_rank']
+    particle_memory.append(dpc.Particle(image = pfx_sprite, x_pos = (monk_pos[0] + 20)*(1000/1366), y_pos = (monk_pos[1] - 20)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
 
 ball_overlay_memory = []
 def draw_ball_overlay(game_display, ball, blobs):
