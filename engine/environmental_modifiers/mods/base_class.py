@@ -7,6 +7,7 @@ class em_base_class:
         'enemy': affects only the enemy
         'ball': affects only the ball
         '''
+        
         self.affects = affects # Empty set means it affects no one - adding things to it increases # of targets
         self.species = species # Different species means it has a different effect
         self.x_pos = x_pos

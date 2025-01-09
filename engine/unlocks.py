@@ -11,7 +11,7 @@ css_selector_list_blobs = [
 
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
 [["quirkless_blob.png", "Quirkless Blob", "No Ability", "quirkless"], ["fire_blob.png", "Fire Blob", "Fireball", "fire"], ["ice_blob.png", "Ice Blob", "Snowball", "ice"], ["water_blob.png", "Water Blob", "Geyser", "water"], ["rock_blob.png", "Rock Blob", "Spire", "rock"], ["lightning_blob.png", "Lightning Blob", "Thunderbolt", "lightning"], ["wind_blob.png", "Wind Blob", "Gale", "wind"], ["glue_blob.png", "Glue Blob", "Gluegun", "glue"], ["mirror_blob.png", "Mirror Blob", "Reflect", "mirror"],],
-[["judge_blob.png", "Judge Blob", "C&D", "judge"], ["doctor_blob.png", "Doctor Blob", "Pill", "doctor"], ["king_blob.png", "King Blob", "Tax", "king"], ["joker_blob.png", "Joker Blob", "Card Pack", "joker"], ["random_blob.png", "Random Blob", "Random Ability", "random"], ["cop_blob.png", "Cop Blob", "Stoplight", "cop"], ["boxer_blob.png", "Boxer Blob", "Starpunch", "boxer"], ["quirkless_blob.png", "", "", "quirkless"], ["merchant_blob.png", "Merchant Blob", "Shop", "merchant"], ],
+[["judge_blob.png", "Judge Blob", "C&D", "judge"], ["doctor_blob.png", "Doctor Blob", "Pill", "doctor"], ["king_blob.png", "King Blob", "Tax", "king"], ["joker_blob.png", "Joker Blob", "Card Pack", "joker"], ["random_blob.png", "Random Blob", "Random Ability", "random"], ["cop_blob.png", "Cop Blob", "Stoplight", "cop"], ["boxer_blob.png", "Boxer Blob", "Starpunch", "boxer"], ["monk_white.png", "Monk Blob", "Blob Fu", "monk"], ["merchant_blob.png", "Merchant Blob", "Shop", "merchant"], ],
 [["fisher_blob.png", "Fisher Blob", "Hook", "fisher"], ["bubble_blob.png", "Bubble Blob", "Bubble", "bubble"], ["cactus_blob.png", "Cactus Blob", "Spike", "cactus"], ["taco_blob.png", "Taco Blob", "Filling", "taco"], ["arcade_blob.png", "Arcade Blob", "Cheat Cartridge", "arcade"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ],
 ]
 
@@ -40,7 +40,7 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (4, 1): "random",
     (5, 1): "cop",
     (6, 1): "boxer",
-    (7, 1): "coming_soon",
+    (7, 1): "monk",
     (8, 1): "merchant",
     (0, 2): "fisher",
     (1, 2): "bubble",
@@ -94,6 +94,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "cactus": False,
     "merchant": False,
     "bubble": False,
+    "monk": False,
 }
 
 unlocked_blobs = []
@@ -120,8 +121,7 @@ def load_blob_unlocks(cwd):
 
 unlock_milestones = [0, 0, 0, 0, 3, 6, 9, 12, 15,\
     20, 25, 30, 35, 42, 50, 58, 66,\
-    75, 85, 95, 105, 115, 125, 135, 145, 155,\
-    170, 185, 200, 215, 230, 245, 260, 275, 0]
+    75, 85, 95, 105, 115, 125, 135, 145, 155,]
 
 def update_css_blobs(cwd):
     global blob_unlock_dict
@@ -358,7 +358,8 @@ costume_unlock_dict = {
     "taco": {"grayscale_1": False},
     "cactus": {"grayscale_1": False},
     "merchant": {"grayscale_1": False},
-    "bubble": {"grayscale_1": False}
+    "bubble": {"grayscale_1": False},
+    "monk": {"grayscale_1": False}
 }
 
 def load_costume_unlocks(cwd):

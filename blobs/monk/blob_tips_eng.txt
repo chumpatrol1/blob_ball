@@ -1,0 +1,17 @@
+#1: Blob Fu gathers the energy within and
+converts it into a permanent stat boost.
+While you start as the slowest blob, 
+you will upgrade to be the fastest!
+
+#2: When you upgrade, you shoot out a
+fireball that applies a overheat. If Monk Blob
+is at a high level this will also do damage!
+
+#4: Monk Blob's boost kick will launch
+his opponents into the sky!
+
+#5: If you get KO'd, your upgrades will be
+reset to the default level.
+
+#6: There is a secret 7th upgrade level.
+It is active temporarily, not permanently.

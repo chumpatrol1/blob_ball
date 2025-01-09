@@ -59,6 +59,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "cactus": {10: "cactus/grayscale_1"},
         "merchant": {10: "merchant/grayscale_1"},
         "bubble": {10: "bubble/grayscale_1"},
+        "monk": {10: "monk/grayscale_1"},
     }
     blobs_unlocked = 0
     try:

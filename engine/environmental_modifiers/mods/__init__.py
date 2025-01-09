@@ -14,3 +14,4 @@ from .starpunch_spring import em_starpunch_spring
 from .starpunch_wait   import em_starpunch_wait
 from .thunder_glyph    import em_thunder_glyph
 from .thunder_bolt     import em_thunder_bolt
+from .hadoukatamari    import em_hadoukatamari

@@ -20,6 +20,7 @@ blob_unlock_splashes = { # Key is Blob name, first value is image, second is blo
     'cactus': ['cactus_blob.png', "Cactus Blob", "Press your ability button to/shoot out a spiky ball!/It targets the ball, draining energy/ from enemies as it travels!"],
     'merchant': ['merchant_1.png', "Merchant Blob", "Open up shop with your ability button!/Simply pick a direction in order/to buy some fragile accessories!"],
     'bubble': ['bubble_1.png', "Bubble Blob", "Press your ability button to/blow a bubble! The bubble picks/up the ball and launches it!"],
+    'monk': ['monk_white.png', "Monk Blob", "Starts with abysmal stats./Your ability button upgrades/your stats and shoots a fireball!"]
 }
 
 def find_blob_unlock(key):
@@ -66,6 +67,7 @@ costume_unlock_splashes = { # Key is
     'cactus/grayscale_1': ["cactus_blob_1.png", "Grayscale Cactus", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'merchant/grayscale_1': ["merchant_blob_1.png", "Grayscale Merchant", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
     'bubble/grayscale_1': ["merchant_blob_1.png", "Grayscale Bubble", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
+    'monk/grayscale_1': ["monk_white_1.png", "Grayscale Monk", "Press block after selecting/this blob to toggle costumes!", "Play 10 Matches"],
 }
 
 def find_costume_unlock(key):
