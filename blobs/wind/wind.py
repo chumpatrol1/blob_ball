@@ -30,6 +30,7 @@ class Wind(Blob):
             "status_effects": [],
             "pierce": 0,
             "x_speed_mod": 0,
+            "y_speed_mod": 0,
             "hit_registered": False
         }
         if(self.x_center - (1.5 * self.collision_distance) <= blob.x_center <= self.x_center + (1.5 * self.collision_distance)):

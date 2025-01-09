@@ -156,6 +156,8 @@ def draw_blob_particles(game_display, blobs):
         particle_cache['a_rank'] = pg.image.load(cwd + "/resources/images/particles/a_rank.png")
         particle_cache['s_rank'] = pg.image.load(cwd + "/resources/images/particles/s_rank.png")
         particle_cache['x_rank'] = pg.image.load(cwd + "/resources/images/particles/x_rank.png")
+        particle_cache['shuriken'] = pg.image.load(cwd + "/resources/images/particles/shuriken.png").convert_alpha()
+        particle_cache['shuriken_dmg'] = pg.image.load(cwd + "/resources/images/particles/shuriken_dmg.png").convert_alpha()
         for icon in ability_image_dict:
             try:
                 ability_key = species_to_stars(icon, {})['special_ability']

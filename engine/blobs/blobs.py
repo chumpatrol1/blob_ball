@@ -791,7 +791,7 @@ class Blob:
             if(hazard.player != self.player and 'enemy' in hazard.affects and self.player not in hazard.affects):
                 if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                     self.all_blobs[hazard.player].kick_cooldown -= 180 * Blob.timer_multiplier
-                    self.take_damage(damage = hazard.hp, source = self.all_blobs[hazard.player], status_effects = [["overheat", hazard.gravity, 0, "trueadd"]])
+                    self.take_damage(damage = hazard.hp, source = self.all_blobs[hazard.player], status_effects = [["overheat", hazard.gravity + 90, 0, "trueadd"]])
                     hazard.affects.add(self.player)
                 
     

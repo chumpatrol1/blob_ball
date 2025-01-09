@@ -34,7 +34,7 @@
         "lv6": "monk_black.png",
         "lv7": "monk_red.png",
         "dead": "monk_dead_-1.png",
-        "ability": "tax.png"
+        "ability": "shuriken.png"
     },
     "1": {
         "alive": "monk_white_1.png",
@@ -46,7 +46,7 @@
         "lv6": "monk_black_1.png",
         "lv7": "monk_red_1.png",
         "dead": "monk_dead_-1.png",
-        "ability": "tax.png"
+        "ability": "shuriken.png"
     }
   }
 }

@@ -56,7 +56,7 @@ class Monk(Blob):
             return
 
     def apply_boost_kick_effect(self, blob):
-        return -20 - (5 * (blob.gravity_mod - 1.05))
+        return -30 - (5 * (blob.gravity_mod - 1.05))
             
     
     def check_blob_collision_default(self, blob):

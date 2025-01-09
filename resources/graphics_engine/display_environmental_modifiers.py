@@ -26,7 +26,8 @@ modifier_images = {
     'cactus_spike': 'spike_ball',
     'sharp_shadow': 'sharp_shadow',
     'bubble': 'bubble',
-    'hadoukatamari': 'spike_ball',
+    'hadoukatamari': 'shuriken',
+    'hadoukatamari_dmg': 'shuriken_dmg'
 }
 
 #alpha = 255 * ((p1_blob.special_ability_cooldown_max - p1_blob.special_ability_timer)/(p1_blob.special_ability_delay))
@@ -113,6 +114,15 @@ def draw_environmental_modifiers(game_display, ):
                 
                     #print(bubble_alpha)
                 game_display.blit(image, (individual.x_pos * (1000/1366), individual.y_pos * (382/768)))
+        elif(modifier == 'hadoukatamari'):
+            for individual in modifiers[modifier]:
+                if(individual.hp == 0):
+                    image = particle_cache["shuriken"].convert_alpha()
+                else:
+                    image = particle_cache["shuriken_dmg"].convert_alpha()
+                x_mod = 1 if individual.x_speed >= 0 else -1
+                image = pg.transform.rotate(image, individual.lifetime * 3 * x_mod)
+                game_display.blit(image, ((individual.x_pos + 40 - image.get_width()) * (1000/1366), (individual.y_pos + 40 - image.get_height()) * (382/768)))
                 
         else:
             for individual in modifiers[modifier]:
