@@ -79,11 +79,11 @@ class Blob:
     nrg_multiplier = 5
     all_blobs = {}
     sprite_collisions = {}
-
+    species = "base"
     def __init__(self, x_pos = 50, y_pos = 1200, facing = 'left', player = 1, 
     special_ability_charge_base = 1, costume = 0, danger_zone_enabled = True, is_cpu = False, stat_overrides = {}, match_state = None, init_blob_path = __file__):
         self.init_json = self.load_init_blob(init_blob_path)
-        self.species = "base"
+        
         self.player = player #Player 1 or 2
         if(player == 1):
             self.danger_zone = 225
@@ -319,9 +319,6 @@ class Blob:
                 try:
                     self.status_effects[effect] -= 1
 
-                    if(effect in {'taxed', 'stunned', 'hypothermia', 'overheat', 'silenced', 'nrg_fatigue'} and self.status_effects['shop']['defense_equip'] == 'izumi_tear' and self.status_effects['shop']['defense_durability'] > 0):
-                        self.status_effects[effect] = 1
-
                     if((effect == 'taxing' or effect == 'taxed') and self.status_effects[effect] == 1):
                         if(effect == 'taxing'):
                             createSFXEvent('chime_error')
@@ -362,12 +359,13 @@ class Blob:
                     if(effect == 'monado_timer' and self.status_effects[effect] > 1 and self.status_effects['monado_effect'] == "SMASH"):
                         kick_cooldown_rate += 3
 
-                    self.kick_cooldown_rate = kick_cooldown_rate
-                    self.block_cooldown_rate = block_cooldown_rate
-                    self.special_ability_cooldown_rate = special_ability_cooldown_rate
-                    self.boost_cooldown_rate = boost_cooldown_rate
+                    
                 except:
                     pass # Typically pass for strings, like current pill
+        self.kick_cooldown_rate = kick_cooldown_rate
+        self.block_cooldown_rate = block_cooldown_rate
+        self.special_ability_cooldown_rate = special_ability_cooldown_rate
+        self.boost_cooldown_rate = boost_cooldown_rate
     
     def cooldown_default(self):
         if(self.focusing):
@@ -802,7 +800,7 @@ class Blob:
         if(self.block_timer):  # Blocking?
             if(show_parry):
                 if(self.block_timer >= self.block_timer_max - 3):
-                    self.special_ability_meter += 300
+                    self.special_ability_meter += 300 * Blob.nrg_multiplier
                     if(self.special_ability_meter > self.special_ability_max):
                         self.special_ability_meter = self.special_ability_max
                     createSFXEvent('perfect_parry', volume_modifier=0.4)
@@ -1490,7 +1488,6 @@ class Blob:
         self.blob_images['damage_right'].set_alpha(100)
         sprite_tuple = (self.species, self.costume)
         if(sprite_tuple in self.sprite_collisions):
-            print(self.sprite_collisions)
             match self.sprite_collisions[sprite_tuple]:
                 case 1:
                     self.blob_images['blob_left'].fill((150, 150, 150, 255), special_flags=pg.BLEND_RGBA_MULT)
@@ -1510,9 +1507,12 @@ class Blob:
             self.sprite_collisions[sprite_tuple] += 1
         else:
             self.sprite_collisions[sprite_tuple] = 1
-
+        print(self.sprite_collisions)
         self.ability_icons['default'] = pg.transform.scale(temp_dict['ability'].convert_alpha(), (70, 70))
         return temp_dict
+
+    def clear_sprite_collisions(self=None):
+        Blob.sprite_collisions = {}
 
     def draw(self, game_display):
         # Separate Chunk        

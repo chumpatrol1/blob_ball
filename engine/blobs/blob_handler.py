@@ -11,6 +11,7 @@ class BlobContainer:
             temp = blob()
             self.blob_dict[temp.species] = blob
         self.blob_keys = [*self.blob_dict.keys()]
+        Blob.clear_sprite_collisions()
         print(self.blob_keys)
 
     def get_blob(self, blob_id):
