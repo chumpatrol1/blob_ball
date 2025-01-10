@@ -107,6 +107,8 @@ def load_blob_unlocks(cwd):
             for blob in blob_unlock_dict:
                 if blob not in new_unlock_dict and blob != "random":
                     new_unlock_dict[blob] = False
+                elif blob in new_unlock_dict:
+                    new_unlock_dict[blob] = new_unlock_dict[blob]
                 else:
                     new_unlock_dict[blob] = True
         
@@ -136,7 +138,7 @@ def update_css_blobs(cwd):
         for x in range(0, 9):
             location = (x, y)
             if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":
-                css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
+                css_display_list_blobs[y][x] = ["shadow_blob.png", "???", "Coming soon!", "random"]
             elif location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
                 blob_id = css_location_dict_blobs[location]
                 css_selector_list_blobs[y][x] = blob_id
@@ -144,7 +146,7 @@ def update_css_blobs(cwd):
                     unlocked_blobs.append(blob_id)
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
-                css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+                css_display_list_blobs[y][x] = ["locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete", "random"]
             if(location != (4, 2)):
                 unlock_slot += 1
             #if location in if_blob_shadow:
@@ -162,6 +164,7 @@ def unlock_blob(blob, cwd):
         raise ValueError("Blob already unlocked!")
 
 def unlock_all_blobs():
+    print("All blobs unlocked")
     for blob in blob_unlock_dict:
         blob_unlock_dict[blob] = True
     from os import getenv
