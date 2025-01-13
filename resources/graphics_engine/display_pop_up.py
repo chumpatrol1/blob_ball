@@ -24,7 +24,10 @@ def draw_unlock_splash(game_display, info_getter, settings):
     
     if(pop_up_timer == 1):
         print(info_getter)
-        pop_up_image = pg.image.load(blob_cwd+info_getter[3] + "/" + info_getter[0]).convert_alpha()
+        if(len(info_getter) == 6):
+            pop_up_image = pg.image.load(blob_cwd+info_getter[4] + "/" + info_getter[0]).convert_alpha()
+        else:
+            pop_up_image = pg.image.load(blob_cwd+info_getter[3] + "/" + info_getter[0]).convert_alpha()
 
     if(pop_up_image is not None):
         game_display.blit(pop_up_image, (683 - pop_up_image.get_width()//2, 250 - pop_up_image.get_height()//2))
