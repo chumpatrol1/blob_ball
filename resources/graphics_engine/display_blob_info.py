@@ -281,6 +281,7 @@ def blob_page_1(game_display):
 
     # Print Basic Blob Stats
     hp_star = {
+        0: "Feeble",
         1: "Frail",
         2: "Weak",
         3: "Average",
@@ -289,6 +290,7 @@ def blob_page_1(game_display):
     }
 
     speed_star = {
+        0: 'Lethargic',
         1: 'Sluggish',
         2: 'Slow',
         3: 'Average',
@@ -297,6 +299,7 @@ def blob_page_1(game_display):
     }
 
     gravity_star = {
+        0: 'Moonwalker',
         1: 'Feather',
         2: 'Light',
         3: 'Average',

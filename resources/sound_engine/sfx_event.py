@@ -39,6 +39,7 @@ name_to_file = {
     'teleport': ['teleport.wav'],
     'bubble': ['bubble.wav'],
     'pop': ['pop.wav'],
+    'hadoukatamari': ['hadoukatamari.wav']
 }
 
 suppression_list = { # First number is the supression timer, second is the increment amount, third is max (before we supress)

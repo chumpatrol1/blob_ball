@@ -4,7 +4,7 @@ from engine.handle_input import return_mapkey_names
 import pygame as pg
 from os import getcwd
 cwd = getcwd()
-blob_cwd = cwd + "/resources/images/blobs/"
+blob_cwd = cwd + "/blobs/"
 
 old_pop_up = None
 pop_up_image = None
@@ -23,7 +23,11 @@ def draw_unlock_splash(game_display, info_getter, settings):
         pop_up_timer = 2
     
     if(pop_up_timer == 1):
-        pop_up_image = pg.image.load(blob_cwd+info_getter[0]).convert_alpha()
+        print(info_getter)
+        if(len(info_getter) == 6):
+            pop_up_image = pg.image.load(blob_cwd+info_getter[4] + "/" + info_getter[0]).convert_alpha()
+        else:
+            pop_up_image = pg.image.load(blob_cwd+info_getter[3] + "/" + info_getter[0]).convert_alpha()
 
     if(pop_up_image is not None):
         game_display.blit(pop_up_image, (683 - pop_up_image.get_width()//2, 250 - pop_up_image.get_height()//2))

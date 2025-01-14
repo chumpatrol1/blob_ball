@@ -1,0 +1,52 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 0,
+    "traction": 0,
+    "friction": 0,
+    "gravity": 3,
+    "kick_cooldown_rate": 1,
+    "block_cooldown_rate": 4,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 2,
+    "special_ability": "blobfu",
+    "special_ability_category": "instant",
+    "special_ability_cost": 900,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 450,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "monk",
+    "path": "monk"
+  },
+  "costumes": {
+    "0": {
+        "alive": "monk_white.png",
+        "lv1": "monk_yellow.png",
+        "lv2": "monk_orange.png",
+        "lv3": "monk_green.png",
+        "lv4": "monk_blue.png",
+        "lv5": "monk_brown.png",
+        "lv6": "monk_black.png",
+        "lv7": "monk_red.png",
+        "dead": "monk_dead_-1.png",
+        "ability": "shuriken.png"
+    },
+    "1": {
+        "alive": "monk_white_1.png",
+        "lv1": "monk_yellow_1.png",
+        "lv2": "monk_orange_1.png",
+        "lv3": "monk_green_1.png",
+        "lv4": "monk_blue_1.png",
+        "lv5": "monk_brown_1.png",
+        "lv6": "monk_black_1.png",
+        "lv7": "monk_red_1.png",
+        "dead": "monk_dead_-1.png",
+        "ability": "shuriken.png"
+    }
+  }
+}

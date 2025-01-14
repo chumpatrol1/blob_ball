@@ -413,6 +413,7 @@ def clear_info_cache():
     time_limit = 3600
     game_info['time'] = 0
     initialized = False
+    p1_blob.clear_sprite_collisions()
     p1_blob = None
     p2_blob = None
     p1_ko = False
