@@ -1,0 +1,14 @@
+#1: Cheat Cartridge's initial speed is
+based on your momentum and direction!
+
+#2: Leave a cartridge by your goal so
+you can go on the offensive!
+
+#3: Boost kicking your opponent will leave
+a console on the ground. They will be
+forcibly teleported after a few seconds,
+or alternatively they can hold down to
+teleport once the console starts sparking.
+
+#4: Cartridges have a limited lifespan,
+and afterwards Arcade Blob will be teleported.

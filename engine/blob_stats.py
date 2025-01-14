@@ -1,3 +1,5 @@
+from json import loads
+
 def create_dict(max_hp = 3, top_speed = 3, traction = 3, friction = 3, gravity = 3, kick_cooldown = 3, \
     block_cooldown = 3, boost_cost = 600, boost_cooldown_max = 3, boost_duration = 3, special_ability = 'boost', \
         special_ability_cost = 840, special_ability_maintenance = 0, special_ability_max = 1800,\
@@ -24,7 +26,7 @@ def create_dict(max_hp = 3, top_speed = 3, traction = 3, friction = 3, gravity =
         }
     return blob_dict
 
-def species_to_stars(species, stat_overrides):
+def species_to_stars(species):
     '''
     max_hp: The most HP a blob has (the amount they start each round with)
     top_speed: The fastest that a blob can naturally accelerate to in the ground/air
@@ -44,43 +46,9 @@ def species_to_stars(species, stat_overrides):
     speical_ability_max: The most special ability that can be stored at once
     special_ability_cooldown: The time between special ability uses. 0 means that it can be held down.
     '''
-    full_dict = {
-        'quirkless': create_dict(3, 4, 4, 4, 4, 5, 5, 840, 5, 5, 'boost', 840, 0, 1800, 510, 0, 0),
-        'fire': create_dict(2, 4, 4, 3, 1, 3, 4, 600, 3, 3, 'fireball', 150, 12, 1800, 2, 0, 0),
-        'ice': create_dict(3, 4, 1, 3, 4, 3, 5, 600, 3, 3, 'snowball', 150, 12, 1800, 2, 0, 0),
-        'water': create_dict(2, 3, 4, 2, 3, 3, 3, 600, 3, 3, 'geyser', 210, 15, 1800, 2, 0, 0),
-        'rock': create_dict(5, 1, 5, 1, 5, 1, 2, 600, 3, 5, 'spire', 360, 0, 1800, 300, 30, 0),
-        'lightning': create_dict(1, 5, 3, 5, 5, 2, 1, 600, 3, 3, 'thunderbolt', 600, 0, 1800, 360, 10, 120),
-        'wind': create_dict(2, 5, 2, 5, 1, 5, 1, 600, 3, 3, 'gale', 120, 12, 1800, 2, 0, 0),
-        'judge': create_dict(3, 3, 2, 3, 3, 3, 3, 600, 3, 3, 'c&d', 510, 0, 1800, 300, 0, 120),
-        'doctor': create_dict(4, 3, 3, 3, 4, 1, 1, 600, 1, 1, 'pill', 300, 0, 1800, 240, 0, 0),
-        'king': create_dict(3, 1, 1, 1, 1, 4, 4, 600, 5, 5, 'tax', 600, 0, 1800, 540, 0, 240),
-        'cop': create_dict(4, 4, 3, 2, 3, 3, 1, 600, 2, 3, 'stoplight', 360, 0, 1800, 300, 0, 0),
-        'boxer': create_dict(3, 2, 5, 2, 2, 1, 3, 600, 4, 2, 'starpunch', 750, 0, 1800, 600, 25, 0),
-        'mirror': create_dict(1, 1, 5, 3, 2, 2, 2, 600, 2, 4, 'mirror', 450, 0, 1800, 300, 0, 60),
-        'fisher': create_dict(1, 3, 4, 1, 3, 2, 1, 600, 3, 4, 'hook', 12, 12, 1800, 2, 20, 0),
-        'glue': create_dict(3, 1, 5, 4, 2, 2, 2, 600, 3, 3, 'gluegun', 150, 15, 1800, 2, 0, 0),
-        'arcade': create_dict(4, 2, 2, 2, 1, 3, 3, 600, 2, 2, 'teleport', 180, 0, 1800, 180, 0, 0),
-        'joker': create_dict(4, 2, 2, 2, 2, 2, 2, 600, 2, 2, 'cardpack', 360, 0, 1800, 60, 0, 0),
-        'taco': create_dict(2, 2, 3, 3, 3, 2, 2, 600, 2, 2, 'monado', 360, 0, 1800, 180, 0, 0),
-        'cactus': create_dict(3, 3, 4, 2, 4, 2, 3, 600, 3, 3, 'spike', 600, 0, 1800, 240, 0, 0),
-        'merchant': create_dict(2, 2, 4, 4, 4, 1, 1, 600, 3, 3, 'shop', 750, 0, 2400, 120, 0, 0),
-        'bubble': create_dict(2, 3, 4, 2, 3, 3, 3, 600, 3, 3, 'bubble', 300, 0, 1800, 180, 0, 0),
-    }
-
-    blob_dict = full_dict[species]
-    for key in stat_overrides:
-        if stat_overrides[key] is not None:
-            if(key == "max_hp"):
-                if(stat_overrides[key] == 1):
-                    blob_dict[key] = -2.5
-                elif(stat_overrides[key] == 3):
-                    blob_dict[key] = -1.5
-                else:
-                    blob_dict[key] = (stat_overrides[key] - 6)//2
-            else:
-                blob_dict[key] = stat_overrides[key]
-
+    with open(f"blobs\\{species}\\init.blob", "r") as f:
+        init_file = f.read()
+    blob_dict = loads(init_file)["stars"]
     return blob_dict
 
 from os import getcwd

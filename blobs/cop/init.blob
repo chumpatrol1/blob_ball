@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 4,
+    "top_speed": 4,
+    "traction": 3,
+    "friction": 2,
+    "gravity": 3,
+    "kick_cooldown_rate": 3,
+    "block_cooldown_rate": 1,
+    "boost_cost": 600,
+    "boost_cooldown_max": 2,
+    "boost_duration": 3,
+    "special_ability": "stoplight",
+    "special_ability_category": "instant",
+    "special_ability_cost": 360,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 300,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "cop",
+    "path": "cop"
+  },
+  "costumes": {
+    "0": {
+        "alive": "cop_blob.png", 
+        "dead": "cop_blob_-1.png",
+        "ability": "block_icon.png"
+    },
+    "1": {
+        "alive": "cop_blob_1.png",
+        "dead": "cop_blob_-1.png",
+        "ability": "block_icon.png"
+    }
+  }
+}

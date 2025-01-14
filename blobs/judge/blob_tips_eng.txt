@@ -1,0 +1,12 @@
+#1: Cease and Desist does not stop delayed
+abilities after they have been started
+
+#2: C&D can be used as a pseudoblock,
+preventing you from taking damage
+for a bit
+
+#3: C&D does not increase cooldowns,
+but simply blocks use of any powers
+
+#4: Judge Blob's boost kick is a short stun.
+If the opponent is C&D'd, the stun lasts longer.

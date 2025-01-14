@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 2,
+    "top_speed": 5,
+    "traction": 2,
+    "friction": 5,
+    "gravity": 1,
+    "kick_cooldown_rate": 5,
+    "block_cooldown_rate": 1,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "gale",
+    "special_ability_category": "held",
+    "special_ability_cost": 120,
+    "special_ability_maintenance": 12,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 2,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "wind",
+    "path": "wind"
+  },
+  "costumes": {
+    "0": {
+        "alive": "wind_blob.png", 
+        "dead": "wind_blob_-1.png",
+        "ability": "gale.png"
+    },
+    "1": {
+        "alive": "wind_blob_1.png",
+        "dead": "wind_blob_-1.png",
+        "ability": "gale.png"
+    }
+  }
+}

@@ -18,13 +18,13 @@ selector_ghost = None
 ghost_tab = 0
 blob_tab = 0
 almanac_mu_chart_buttons = []
-for i in range(7): # 7 columns
-    for j in range(5): # 5 rows
-        almanac_mu_chart_buttons.append(Button(25+100*j, 125+100*j, 75 + i*175, 250 + i*175)) # Left half of slot is for P1
+for i in range(9): # 9 columns
+    for j in range(3): # 3 rows
+        almanac_mu_chart_buttons.append(Button(25+120*j, 125+120*j, 75 + i*137, 220 + i*137)) # Left half of slot is for P1
 selected_blob = "None"
 
 blob_info_buttons = []
-for i in range(6):
+for i in range(9):
     blob_info_buttons.append(Button(76+66*i, 142+66*i,1050,1360))
 
 def blob_selector_navigation(pressed, mouse): # Handles the CSS
@@ -50,29 +50,29 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
     game_state = 'blob_info'
     if('up' in pressed):
             if selector_position[1] == 0:
-                selector_position[1] = 4
+                selector_position[1] = 2
                 
             else:
                 selector_position[1] -= 1
     elif('down' in pressed):
-            if selector_position[1] == 4:
+            if selector_position[1] == 2:
                 selector_position[1] = 0
             else:
                 selector_position[1] += 1
     if('left' in pressed):
         if selector_position[0] == 0:
-            selector_position[0] = 6
+            selector_position[0] = 8
         else:
             selector_position[0] -= 1
     elif('right' in pressed):
-        if selector_position[0] == 6:
+        if selector_position[0] == 8:
             selector_position[0] = 0
         else:
             selector_position[0] += 1
 
     if(selector_position[2] == 0):
         if('ability' in pressed or 'return' in pressed):
-            if(selector_position == [3, 2, 0]):
+            if(selector_position == [4, 1, 0]):
                 createSFXEvent('select')
                 game_state = "almanac"
             else:
@@ -94,7 +94,7 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
         if(almanac_mu_chart_buttons[i].check_hover(mouse)):
             if(mouse[2] or mouse[1][0] or mouse[1][2]): # Did we move the mouse?
                 
-                selector_ghost = [i//5, i%5] # Change the selector position
+                selector_ghost = [i//3, i%3] # Change the selector position
 
             if(mouse[1][0]):
                 # Functionality:
@@ -103,8 +103,8 @@ def blob_selector_navigation(pressed, mouse): # Handles the CSS
                 # me unselect, other select: set to select
                 # both select: both confirm
                 createSFXEvent('select')
-                selector_position = [i//5, i%5, 1]
-                if(selector_position[:2] == [3, 2]):
+                selector_position = [i//3, i%3, 1]
+                if(selector_position[:2] == [4, 1]):
                     game_state = "almanac"
                     selector_ghost = None
                     selector_position[2] = 0

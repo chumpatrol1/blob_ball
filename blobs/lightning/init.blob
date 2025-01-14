@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 1,
+    "top_speed": 5,
+    "traction": 3,
+    "friction": 5,
+    "gravity": 5,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 1,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "thunderbolt",
+    "special_ability_category": "delayed",
+    "special_ability_cost": 600,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 360,
+    "special_ability_delay": 10,
+    "special_ability_duration": 120
+  },
+  "descriptors": {
+    "species": "lightning",
+    "path": "lightning"
+  },
+  "costumes": {
+    "0": {
+        "alive": "lightning_blob.png", 
+        "dead": "lightning_blob_-1.png",
+        "ability": "thunderbolt.png"
+    },
+    "1": {
+        "alive": "lightning_blob_1.png",
+        "dead": "lightning_blob_-1.png",
+        "ability": "thunderbolt.png"
+    }
+  }
+}

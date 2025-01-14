@@ -1,0 +1,17 @@
+#1: Merchant Blob can equip charms to buff
+himself, but they break over time.
+
+#2: Passive charms (up) provide effects like
+increasing energy build rate, converting taken
+damage to energy, and increasing speed.
+
+#3: Offensive charms (right) provide effects
+like gaining energy when dealing damage,
+faster kicks, and stronger kicks.
+
+#4: Focus charms (down) provide effects like
+damage reduction, free kicks, and healing.
+
+#5: Defensive charms (left) provide effects like
+damaging wavedashes, gaining the reflect status,
+and getting passive damage reduction and faster blocks.

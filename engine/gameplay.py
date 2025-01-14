@@ -2,7 +2,7 @@ import pygame as pg
 import sys
 from engine.environmental_modifiers import clear_environmental_modifiers, return_environmental_modifiers, update_environmental_modifiers
 import engine.handle_input
-import engine.blobs
+import engine.blobs.blob_handler
 import engine.ball
 import time
 from json import dumps, loads
@@ -24,8 +24,12 @@ def initialize_players(p1_selected, p2_selected, ruleset, settings, p1_is_cpu, p
     global goal_limit
     global time_limit
     global time_bonus
-    p1_blob = engine.blobs.Blob(species = p1_selected, player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
-    p2_blob = engine.blobs.Blob(species = p2_selected, player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
+    print(p1_selected, p2_selected)
+    p1_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p1_selected)
+    p1_blob = p1_blob(player = 1, x_pos = 100, facing = 'right', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p1_is_cpu, stat_overrides = ruleset['p1_modifiers'], costume = p1_costume)
+    
+    p2_blob = engine.blobs.blob_handler.blob_list.get_blob(blob_id=p2_selected)
+    p2_blob = p2_blob(player = 2, x_pos = 1600, facing = 'left', special_ability_charge_base = ruleset['special_ability_charge_base'], danger_zone_enabled = ruleset['danger_zone_enabled'], is_cpu = p2_is_cpu, stat_overrides = ruleset['p2_modifiers'], costume = p2_costume)
     ball = engine.ball.Ball()
     goal_limit = ruleset['goal_limit']
     if(ruleset['time_limit'] == 0):
@@ -65,8 +69,8 @@ def reset_round(ruleset):
     global ball
     global p1_ko
     global p2_ko
-    p1_blob.reset(ruleset)
-    p2_blob.reset(ruleset)
+    p1_blob.reset()
+    p2_blob.reset() # sometimes, you pass the ruleset here
     ball.reset()
     p1_ko = False
     p2_ko = False
@@ -409,6 +413,7 @@ def clear_info_cache():
     time_limit = 3600
     game_info['time'] = 0
     initialized = False
+    p1_blob.clear_sprite_collisions()
     p1_blob = None
     p2_blob = None
     p1_ko = False

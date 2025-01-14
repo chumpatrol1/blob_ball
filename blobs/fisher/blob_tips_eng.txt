@@ -1,0 +1,16 @@
+#1: Fisher Blob hooks onto the ball
+faster if the ball is closeby!
+
+#2: Fisher Blob is extra vulnerable when
+using Hook - he takes +1 damage
+from all sources!
+
+#3: You can block Hook from working by
+using your block on the ball!
+
+#4: A spicy trick you can do is called
+Threading the Loop. Jump, hook the ball
+and have it spin around you before letting go.
+
+#5: Kicking Fisher Blob or the ball while
+hook is active will force Hook into cooldown.
