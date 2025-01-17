@@ -68,7 +68,7 @@ class CSS_CURSOR:
         else:
             self.clicking = False
         
-        if('kick' in pressed and not self.was_clicking and not self.held_token):
+        if('kick' in pressed and not self.was_clicking and not self.held_token and self.player_obj.player_type):
             self.snap_clicking = True
 
         if(self.x_pos > 1325 and self.x_stick < 30):
@@ -138,7 +138,7 @@ class CSS_TOKEN:
         self.current_costume = 0
         self.player_state = 'human' # 'human', 'cpu', none'
         self.ps_cycle = {'human': 'cpu', 'cpu': 'none', 'none': 'human'}
-        self.image_cache = {"human": None, "cpu": None, "none":None}
+        self.image_cache = {"human": None, "human_select": None, "cpu": None, "cpu_select": None, "none":None}
         self.toggle_select_cooldown = 0
         self.attached_to = None # Is this attached to a cursor?
         self.blob_selector = blob_selector

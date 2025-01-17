@@ -2,7 +2,7 @@
 import os
 from json import loads, dumps
 import resources.graphics_engine.display_graphics
-game_version = '0.18.0b'
+game_version = '0.19.0a'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):

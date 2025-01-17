@@ -31,12 +31,20 @@ blob_selection_obj = CSS_BLOBS()
 players_ready = 0
 ui_button_timer = 0
 
-player_menus = {
+'''player_menus = {
     1: CSS_PLAYER(1, 85, 525, blob_selection_obj),
     2: CSS_PLAYER(2, 412, 525, blob_selection_obj),
     3: CSS_PLAYER(3, 739, 525, blob_selection_obj),
     4: CSS_PLAYER(4, 1067, 525, blob_selection_obj),
+}'''
+
+player_menus = {
+    #3: CSS_PLAYER(3, 85, 1525, blob_selection_obj),
+    1: CSS_PLAYER(1, 299, 525, blob_selection_obj),
+    2: CSS_PLAYER(2, 833, 525, blob_selection_obj),
+    #4: CSS_PLAYER(4, 1067, 1525, blob_selection_obj),
 }
+
 
 token_list = []
 for player_menu in player_menus:
@@ -82,7 +90,7 @@ def css_handler():
         if(player_menus[player_menu].cursor.clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token):
         # Click with empty cursor
             for token_obj in token_list:
-                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj.player_state == "cpu")):
+                if(player_menus[player_menu].cursor.dist_to_element(token_obj) < 50 and not token_obj.attached_to and (token_obj.player == player_menus[player_menu].cursor.player or token_obj.player_state == "cpu") and player_menus[player_menu].token.player_state != 'none'):
                     token_obj.attach_to_cursor(player_menus[player_menu].cursor)
                     player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
                     player_menus[player_menu].cursor.called_detach_from_cursor = True
@@ -98,7 +106,7 @@ def css_handler():
                             player_menus[pm].token.update_player_status()
                             break
             continue
-        elif(player_menus[player_menu].cursor.snap_clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token and not token_list[player_menu-1].attached_to):
+        elif(player_menus[player_menu].cursor.snap_clicking and not player_menus[player_menu].cursor.was_clicking and not player_menus[player_menu].cursor.held_token and not token_list[player_menu-1].attached_to and player_menus[player_menu].token.player_state != 'none'):
             token_list[player_menu-1].attach_to_cursor(player_menus[player_menu].cursor)
             player_menus[player_menu].cursor.current_image = player_menus[player_menu].cursor.grab_image
             player_menus[player_menu].cursor.called_detach_from_cursor = True
@@ -146,7 +154,7 @@ def css_handler():
     players_ready = 0
 
     for token_obj in token_list:
-        players_ready += bool(token_obj.current_blob and not token_obj.attached_to)
+        players_ready += bool(token_obj.current_blob and not token_obj.attached_to and token_obj.player_state != 'none')
     
     for player_menu in player_menus:
         player_menus[player_menu].token.check_costume_toggle(pressed)
@@ -176,6 +184,11 @@ def css_handler():
                     temp_disable_cursors()
                 #print(ui_button_key, ui_button.check_hover(cursor_pos, button_override), ui_button.state)
             ui_button.state = 'hover' if hover_lock else 'idle'
+    
+    if('return' in pressed and ui_buttons['casual_match'].state != "disabled"):
+        print(ui_buttons['casual_match'].state != "disabled")
+        print(pressed)
+        game_state = 'casual_match'
 
     return game_state, [player_menus, players_ready, ui_buttons]
 
