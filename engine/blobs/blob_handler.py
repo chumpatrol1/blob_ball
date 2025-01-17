@@ -26,8 +26,8 @@ class BlobContainer:
 blob_list = BlobContainer()
 #blob_list = BlobContainer().blob_dict
 
-print("~"*100)
-print(blob_list.return_blob_dict())
+#print("~"*100)
+#print(blob_list.return_blob_dict())
 
 
 def get_blob_list():

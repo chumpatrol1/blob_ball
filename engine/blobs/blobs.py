@@ -617,7 +617,7 @@ class Blob:
             
             self.status_effects['taxing'] = self.special_ability_duration
             blob.status_effects['taxed'] = self.special_ability_duration
-            print(self.status_effects['taxing'])
+            #print(self.status_effects['taxing'])
             if(self.species != "king"):
                 self.status_effects['taxing'] = 240
                 blob.status_effects['taxed'] = 240
@@ -735,15 +735,16 @@ class Blob:
                     self.y_pos = Blob.ground
                 teleported = True
                 self.kick(ignore_cooldown=True)
-                createSFXEvent('teleport')
+                create_environmental_modifier(player = self.player, species='sharp_shadow', affects={'enemy'}, lifetime=5, x_pos=self.x_center-20, y_pos=self.y_center-20, hp = 1, special_functions = [create_environmental_modifier])
                 draw_teleportation_pfx([self.x_pos, self.y_pos])
                 #print("teleported to", hazard.x_pos, hazard.y_pos, hazard.species)
-            elif(hazard.player != self.player):
+            elif(hazard.player != self.player and self.player not in hazard.affects):
                 if(self.x_center - 130 <= hazard.x_pos <= self.x_center + 75 and self.y_center - 125 <= hazard.y_pos <= self.y_center + 50):
                     if(self.status_effects['judged'] < 60):
                         self.status_effects['judged'] = 60
                     if(self.status_effects['hypothermia'] < 60):
                         self.status_effects['hypothermia'] = 60#
+                    hazard.affects.add(self.player)
                     #self.take_damage(damage = 0, unblockable=True, unclankable=True, status_effects=[['judged', 60], ['hypothermia', 60]])
         
         for hazard in environment['royal_loan']:
@@ -1349,7 +1350,6 @@ class Blob:
                         self.stars[key] = (stat_overrides[key] - 6)//2
                 else:
                     self.stars[key] = stat_overrides[key]
-                    print(self.stars)
         return self.stars
 
     def set_base_stats(self, stars, set_hp = True, set_ability = True):
@@ -1507,7 +1507,7 @@ class Blob:
             self.sprite_collisions[sprite_tuple] += 1
         else:
             self.sprite_collisions[sprite_tuple] = 1
-        print(self.sprite_collisions)
+        #print(self.sprite_collisions)
         self.ability_icons['default'] = pg.transform.scale(temp_dict['ability'].convert_alpha(), (70, 70))
         return temp_dict
 

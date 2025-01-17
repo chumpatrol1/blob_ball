@@ -10,12 +10,17 @@ class Quirkless(Blob):
 
     def boost(self):
         super().boost()
-        self.special_ability_cooldown = self.special_ability_cooldown_max
+        if(self.boost_timer == self.boost_duration):
+            self.special_ability_cooldown = self.special_ability_cooldown_max
 
     def ability(self):
         if(self.special_ability_meter >= self.special_ability_cost and self.special_ability_cooldown <= 0):
             self.boost()
-            self.special_ability_cooldown = self.special_ability_cooldown_max
+            if(self.boost_timer == self.boost_duration):
+                self.special_ability_cooldown = self.special_ability_cooldown_max
+
+    def apply_boost_kick_effect(self, blob):
+        blob.apply_status_effect("silenced", 180, 600, "add")
 
     def reset(self):
         super().reset()

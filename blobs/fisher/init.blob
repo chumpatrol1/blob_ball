@@ -16,7 +16,7 @@
     "special_ability_maintenance": 12,
     "special_ability_max": 1800,
     "special_ability_cooldown": 2,
-    "special_ability_delay": 20,
+    "special_ability_delay": 10,
     "special_ability_duration": 0
   },
   "descriptors": {

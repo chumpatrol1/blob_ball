@@ -710,6 +710,8 @@ class Ball:
                 self.status_effects[effect] -= 1
                 if(self.status_effects["bubbled"] == 0):
                     self.bubble = None
+                    self.x_speed *= 2
+                    self.y_speed *= 2
         
     def update_bubble_status(self, bubble = None, blob = None):
         current_bubble = self.bubble
