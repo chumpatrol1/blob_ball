@@ -73,21 +73,17 @@ def force_load_blobs():
     blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
     unload_css()
 
-def css_blobs(game_display, info_getter):
-    '''
-    Draws the blobs on screen, and handles "mousing over" blobs.
-    '''
+def load_images_and_fonts(game_display, info_getter):
     global cwd
     global bic_cached
     global blob_image_cache
     global ghost_image_cache
-    x = 0
-    y = 0
+    directory = cwd + "/resources/images"     
     if not bic_cached:
 
         font_cache['blob_name'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         font_cache['blob_description'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 15)
-        font_cache['ready_confirmation'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 55)
+        font_cache['ready_confirmation'] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 40)
         
         token_cache['p1_ball'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p1_token.png").convert_alpha(), (51, 51))
         token_cache['p1_selected'] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_tokens/p1_check.png").convert_alpha(), (51, 51))
@@ -161,8 +157,18 @@ def css_blobs(game_display, info_getter):
 
         blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
 
-        update_css_blobs(appcwd)
-            
+        update_css_blobs(cwd)
+
+def draw_css_buttons_blobs(game_display, info_getter):   
+    '''
+    Draws the blobs on screen, and handles "mousing over" blobs.
+    '''
+    global cwd
+    global bic_cached
+    global blob_image_cache
+    global ghost_image_cache
+    x = 0
+    y = 0
     for row in blob_image_cache: #Temporary, until we make more blobs
         y += 1
         for icon in row:
@@ -183,89 +189,30 @@ def css_blobs(game_display, info_getter):
         button = info_getter[2][button_key]
         if(button.surfaces[button.state]):
             game_display.blit(button.surfaces[button.state], (button.left, button.top))
-    '''
-    game_display.blit(token_cache['p1_box'], (85, 525))
-    game_display.blit(token_cache['cpu_icon'], (300, 680))
-    game_display.blit(token_cache['p2_box'], (412, 525))
-    game_display.blit(token_cache['cpu_icon'], (627, 680))
-    game_display.blit(token_cache['p3_box'], (739, 525))
-    #game_display.blit(token_cache['pcpu_box'], (739, 525))
-    game_display.blit(token_cache['cpu_icon'], (954, 680))
-    game_display.blit(token_cache['p4_box'], (1067, 525))
-    #game_display.blit(token_cache['pnone_box'], (1067, 525))
-    game_display.blit(token_cache['cpu_icon'], (1282, 680))
-'''
-    '''if(not p1_selector_position[4]):
-        p1_selected_blob = ghost_image_cache[p1_selector_position[1]][p1_selector_position[0]]
-    else:
-        # TODO: Check costume thing
-        temp_loaded = species_to_image(p1_blob, return_available_costumes()[p1_blob][p1_selector_position[4]])[0]
-        if(costume_cache[0][0] != temp_loaded):
-            costume_cache[0][0] = temp_loaded
-            costume_cache[0][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, pg.image.load(temp_loaded).get_height()))
-        p1_selected_blob = costume_cache[0][1]
-    p1_selected_blob = p1_selected_blob.convert_alpha()
-    if(p1_selector_position[2] == 0):
-        p1_selected_blob.set_alpha(200)
-    else:
-        p1_selected_blob.set_alpha(255)
 
-    p1_selected_blob = pg.transform.flip(p1_selected_blob, True, False)
-    if(p1_selector_position[0] == 0):
-        game_display.blit(p1_selected_blob, (191, 576))
-    else:
-        game_display.blit(p1_selected_blob, (136, 576 - (p1_selected_blob.get_height()-110)/2))
+def draw_rules(game_display, ruleset):
+    time_limit_seconds = str((ruleset['time_limit']%3600)//60)
+    if(len(time_limit_seconds) == 1):
+        time_limit_seconds = "0" + time_limit_seconds
 
-    if(p1_selector_position[3] == 1):
-        game_display.blit(token_cache['cpu_icon'], (75, 575))
+    time_limit_text = " in " + f"{ruleset['time_limit']//3600}:{time_limit_seconds}"
+    if(ruleset['time_limit'] == 0):
+        time_limit_text = ""
 
-    if(not p2_selector_position[4]):
-        p2_selected_blob = ghost_image_cache[p2_selector_position[1]][p2_selector_position[0]]
-    else:
-        # TODO: Check costume thing
-        temp_loaded = species_to_image(p2_blob, return_available_costumes()[p2_blob][p2_selector_position[4]])[0]
-        if(costume_cache[1][0] != temp_loaded):
-            costume_cache[1][0] = temp_loaded
-            costume_cache[1][1] = pg.transform.scale(pg.image.load(temp_loaded).convert_alpha(), (195, pg.image.load(temp_loaded).get_height()))
-        p2_selected_blob = costume_cache[1][1]
-    p2_selected_blob = p2_selected_blob.convert_alpha()
-    if(p2_selector_position[2] == 0):
-        p2_selected_blob.set_alpha(200)
-    else:
-        p2_selected_blob.set_alpha(255)
+    rules_text = f'Score {ruleset["goal_limit"]} Point{"s" if ruleset["goal_limit"] > 1 else ""}{time_limit_text}!'
 
-    if(p2_selector_position[0] == 0):
-        game_display.blit(p2_selected_blob, (1079, 576))
-    else:
-        game_display.blit(p2_selected_blob, (1024, 576 - (p2_selected_blob.get_height()-110)/2))
-
-    if(p2_selector_position[3] == 1):
-        game_display.blit(token_cache['cpu_icon'], (1225, 575))'''
-
-
-    '''menu_text = font_cache['blob_name'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][1]), False, (50, 50, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (5*1366//6, 11*768//12)
-    game_display.blit(menu_text, text_rect)
-    menu_text = font_cache['blob_name'].render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][1]), False, (50, 50, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (1366//6, 11*768//12)
-    game_display.blit(menu_text, text_rect)
-
-    menu_text = font_cache['blob_description'].render(str(blob_array[p2_selector_position[1]][p2_selector_position[0]][2]), False, (50, 50, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (5*1366//6, 24*768//25)
-    game_display.blit(menu_text, text_rect)
-    menu_text = font_cache['blob_description'].render(str(blob_array[p1_selector_position[1]][p1_selector_position[0]][2]), False, (50, 50, 255))
-    text_rect = menu_text.get_rect()
-    text_rect.center = (1366//6, 24*768//25)
-    game_display.blit(menu_text, text_rect)'''
+    text_box = font_cache['ready_confirmation'].render(rules_text, False, (0, 0, 150))
+    text_rect = text_box.get_rect()
+    text_rect.topleft = (290, 15)
+    game_display.blit(text_box, text_rect)
 
 def draw_css(game_display, info_getter, settings):
     global cwd
-
+    load_images_and_fonts(game_display, info_getter)
     draw_background(game_display, "css", settings)
-    css_blobs(game_display, info_getter)
+    draw_rules(game_display, info_getter[3])
+    draw_css_buttons_blobs(game_display, info_getter)
+    
 
     if not cursor_cached:
         assign_cursor_images(info_getter[0])
@@ -324,7 +271,10 @@ def draw_css(game_display, info_getter, settings):
         player_menu = info_getter[0][player_menu]
         token = player_menu.token
         if(token.image_cache[token.player_state]):
-            game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
+            if(token.current_blob and not token.attached_to):
+                game_display.blit(token.image_cache[token.player_state + "_select"], (token.x_pos - 25, token.y_pos - 25))
+            else:
+                game_display.blit(token.image_cache[token.player_state], (token.x_pos - 25, token.y_pos - 25))
     
     #Draw the cursor on top of everything!
     for index in info_getter[0]:
@@ -340,14 +290,14 @@ def assign_cursor_images(cursor_dict):
     global cursor_cached
     cursor_dict[1].cursor.set_image(token_cache['p1_hand'], token_cache['p1_grab'])
     cursor_dict[2].cursor.set_image(token_cache['p2_hand'], token_cache['p2_grab'])
-    cursor_dict[3].cursor.set_image(token_cache['p3_hand'], token_cache['p3_grab'])
-    cursor_dict[4].cursor.set_image(token_cache['p4_hand'], token_cache['p4_grab'])
+    #cursor_dict[3].cursor.set_image(token_cache['p3_hand'], token_cache['p3_grab'])
+    #cursor_dict[4].cursor.set_image(token_cache['p4_hand'], token_cache['p4_grab'])
     cursor_dict[1].menu.set_image({'human': token_cache['p1_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
     cursor_dict[2].menu.set_image({'human': token_cache['p2_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
-    cursor_dict[3].menu.set_image({'human': token_cache['p3_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
-    cursor_dict[4].menu.set_image({'human': token_cache['p4_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
-    cursor_dict[1].token.set_image({'human': token_cache['p1_ball'], 'cpu': token_cache['cpu1_ball'], 'none': None})
-    cursor_dict[2].token.set_image({'human': token_cache['p2_ball'], 'cpu': token_cache['cpu2_ball'], 'none': None})
-    cursor_dict[3].token.set_image({'human': token_cache['p3_ball'], 'cpu': token_cache['cpu3_ball'], 'none': None})
-    cursor_dict[4].token.set_image({'human': token_cache['p4_ball'], 'cpu': token_cache['cpu4_ball'], 'none': None})
+    #cursor_dict[3].menu.set_image({'human': token_cache['p3_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    #cursor_dict[4].menu.set_image({'human': token_cache['p4_box'], 'cpu': token_cache['pcpu_box'], 'none': token_cache['pnone_box']})
+    cursor_dict[1].token.set_image({'human': token_cache['p1_ball'], 'human_select': token_cache['p1_selected'], 'cpu': token_cache['cpu1_ball'], 'cpu_select': token_cache['cpu1_selected'], 'none': None})
+    cursor_dict[2].token.set_image({'human': token_cache['p2_ball'], 'human_select': token_cache['p2_selected'], 'cpu': token_cache['cpu2_ball'], 'cpu_select': token_cache['cpu2_selected'], 'none': None})
+    #cursor_dict[3].token.set_image({'human': token_cache['p3_ball'], 'human_select': token_cache['p3_selected'], 'cpu': token_cache['cpu3_ball'], 'cpu_select': token_cache['cpu3_selected'], 'none': None})
+    #cursor_dict[4].token.set_image({'human': token_cache['p4_ball'], 'human_select': token_cache['p4_selected'], 'cpu': token_cache['cpu4_ball'], 'cpu_select': token_cache['cpu4_selected'], 'none': None})
     cursor_cached = True

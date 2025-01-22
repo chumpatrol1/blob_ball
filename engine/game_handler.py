@@ -114,6 +114,7 @@ def update_game_state(game_state, cwd):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
         game_state, info_getter = engine.menus.css_menu.css_handler()
+        info_getter.append(ruleset)
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
 
