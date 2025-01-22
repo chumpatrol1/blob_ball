@@ -307,7 +307,7 @@ def draw_shatter(align, shatter_timer):
 
 def draw_card_selection(position, icon):
     particle_memory.append(dpc.Particle(image = particle_cache['joker_card'], x_pos = position[0]*(1000/1366), y_pos = position[1]*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
-    particle_memory.append(dpc.Particle(image = particle_cache['icons'][icon], x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
+    particle_memory.append(dpc.Particle(image = icon, x_pos = (position[0]+5)*(1000/1366), y_pos = (position[1]+5)*(382/768), alpha = 255, fade = 1, y_speed = -0.25, lifetime = 300))
 
 shop_crop_info = {
         "spring_kick_0": (0,0,60,60),

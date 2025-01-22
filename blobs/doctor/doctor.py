@@ -44,7 +44,7 @@ class Doctor(Blob):
                     skc = bool(self.kick_cooldown > 0)
                     slc = bool(self.block_cooldown > 0)
                     sbc = bool(self.boost_cooldown_timer > 0)
-                    #self.special_ability_cooldown -= 90 * Blob.timer_multiplier
+                    self.special_ability_cooldown -= 90 * Blob.timer_multiplier
                     self.kick_cooldown -= 90 * Blob.timer_multiplier
                     self.block_cooldown -= 90 * Blob.timer_multiplier
                     if(self.boost_cooldown_timer > 0):

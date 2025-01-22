@@ -67,7 +67,7 @@ def create_ui_icons(ui_font, blob):
     game_display = pg.Surface((390, 70), pg.SRCALPHA)
     ability_icon = blob.ability_icons['default']
     if(blob.status_effects['cards']['ability']):
-        ability_icon = image_cache['icons'][blob.status_effects['cards']['ability']]
+        ability_icon = blob.ability_icons[blob.status_effects['cards']['ability']]
     pg.draw.rect(game_display, (200, 200, 200), (0, 0, 70, 70))
     game_display.blit(image_cache["heart_icon"], (0, 0))
     
@@ -78,21 +78,21 @@ def create_ui_icons(ui_font, blob):
     if(not blob.status_effects['cards']['kick']):
         kick_icon = image_cache["kick_icon"]
     else:
-        kick_icon = image_cache['icons'][blob.status_effects['cards']['kick']]
+        kick_icon = blob.ability_icons[blob.status_effects['cards']['kick']]
     pg.draw.rect(game_display, (200, 200, 200), (160, 0, 70, 70))
     game_display.blit(kick_icon, (160, 0))
     
     if(not blob.status_effects['cards']['block']):
         block_icon = image_cache["block_icon"]
     else:
-        block_icon = image_cache['icons'][blob.status_effects['cards']['block']]
+        block_icon = blob.ability_icons[blob.status_effects['cards']['block']]
     pg.draw.rect(game_display, (200, 200, 200), (240, 0, 70, 70))
     game_display.blit(block_icon, (240, 0))
 
     if(not blob.status_effects['cards']['boost']):
         boost_icon = image_cache["boost_icon"]
     else:
-        boost_icon = image_cache['icons'][blob.status_effects['cards']['boost']]
+        boost_icon = blob.ability_icons[blob.status_effects['cards']['boost']]
     pg.draw.rect(game_display, (200, 200, 200), (320, 0, 70, 70))
     game_display.blit(boost_icon, (320, 0))
 

@@ -221,7 +221,7 @@ class Joker(Blob):
                 card_pos = (self.x_pos + 20, self.y_pos - 225)
             elif(menu_direction == "right"):
                 card_pos = (self.x_pos + 160, self.y_pos - 25)
-            self.status_effects['cards']['joker_particle'] = (card_pos, selected_card)
+            self.status_effects['cards']['joker_particle'] = (card_pos, self.ability_icons[selected_card])
             self.status_effects['menu']['open'] = False
             self.status_effects['cards']['recharge'].add(other_card_1)
             self.status_effects['cards']['recharge'].add(other_card_2)
