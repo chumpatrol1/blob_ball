@@ -1,7 +1,7 @@
 from os.path import dirname, basename, isfile, join
 import glob
 modules = glob.glob(join(dirname(__file__), "*.py"))
-print(modules)
+#print(modules)
 from . import *
 __all__ = []
 #__all__ = [ basename(f)[:-3] for f in modules if isfile(f) and not f.endswith('__init__.py') and not f.endswith('old_blobs.py') and not f.endswith('blobs.py')]
@@ -12,7 +12,7 @@ __all__ = []
 #print(glob.glob(join(dirname(__file__), "*.py")))
 #print(__all__)
 
-print("START LOOP")
+#print("START LOOP")
 folders = glob.glob(join(dirname(__file__) + "\\", "*\\"))
 #for blob_folder in folders:
 #    print(blob_folder)
@@ -32,5 +32,5 @@ for loader, module_name, is_pkg in pkgutil.walk_packages(__path__):
     _module = loader.find_module(module_name).load_module(module_name)
     globals()[module_name] = _module
 
-print("FINAL PRODUCT")
-print(__all__)
+#print("FINAL PRODUCT")
+#print(__all__)

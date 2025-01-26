@@ -66,13 +66,13 @@ def load_individual_blob(selector_position):
     global selected_blob_costumes
     global selected_blob_costume_text
     global selected_blob_tips
-    print(selector_position)
-    print(blob_array)
+    #print(selector_position)
+    #print(blob_array)
     selected_blob = blob_array[selector_position[1]][selector_position[0]]
     if(selected_blob[1] == ''):
         selector_position = [0, 0, 1]
         selected_blob = blob_array[selector_position[1]][selector_position[0]]
-    print(selected_blob)
+    #print(selected_blob)
     selected_blob_image = pg.image.load(cwd + "/blobs/" + selected_blob[3] + "/" + selected_blob[0])
     try:
         selected_blob_matchups = load_mu_chart()[selected_blob[3]]

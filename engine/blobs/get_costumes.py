@@ -7,7 +7,7 @@ def species_to_image(species, costume):
         - costume (int): Costume number. 0 is default
     '''
     try:
-        print(f"blobs\\{species}\\init.blob")
+        #print(f"blobs\\{species}\\init.blob")
         with open(f"blobs\\{species}\\init.blob", "r") as f:
             init_file = f.read()
     except:

@@ -148,3 +148,4 @@ class Monk(Blob):
     def blob_ko(self):
         super().blob_ko()
         self.upgrade_level = 0
+        self.lv7_timer = 0

@@ -186,8 +186,8 @@ def css_handler():
             ui_button.state = 'hover' if hover_lock else 'idle'
     
     if('return' in pressed and ui_buttons['casual_match'].state != "disabled"):
-        print(ui_buttons['casual_match'].state != "disabled")
-        print(pressed)
+        #print(ui_buttons['casual_match'].state != "disabled")
+        #print(pressed)
         game_state = 'casual_match'
 
     return game_state, [player_menus, players_ready, ui_buttons]

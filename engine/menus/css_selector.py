@@ -119,7 +119,7 @@ class CSS_CURSOR:
         self.idle_image = idle
         self.grab_image = grab
         self.current_image = self.idle_image
-        print(self.current_image, self.player)
+        #print(self.current_image, self.player)
 
 
 class CSS_TOKEN:

@@ -157,7 +157,7 @@ def load_images_and_fonts(game_display, info_getter):
 
         blob_image_cache, ghost_image_cache = load_blobs(blob_image_cache, ghost_image_cache)
 
-        update_css_blobs(cwd)
+        update_css_blobs(appcwd)
 
 def draw_css_buttons_blobs(game_display, info_getter):   
     '''
