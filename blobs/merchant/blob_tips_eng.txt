@@ -1,17 +1,18 @@
 #1: Merchant Blob can equip charms to buff
-himself, but they break over time.
+himself, but they break upon being KO'd.
 
-#2: Passive charms (up) provide effects like
-increasing energy build rate, converting taken
-damage to energy, and increasing speed.
+#2: Rainbow Heart (Up) increases energy
+build rate, and allows focus to recover HP.
+The bonus purchase heals 1 HP.
 
-#3: Offensive charms (right) provide effects
-like gaining energy when dealing damage,
-faster kicks, and stronger kicks.
+#3: Spring Kick (Right) improves kicks.
+Upgrades add knockback to kicks
+The bonus purchase applies pierce.
 
-#4: Focus charms (down) provide effects like
-damage reduction, free kicks, and healing.
+#4: Sprint Master (Down) increases speed, traction and
+friction. The bonus purchase buys some Hot Sauce!
 
-#5: Defensive charms (left) provide effects like
-damaging wavedashes, gaining the reflect status,
-and getting passive damage reduction and faster blocks.
+#5: Sharp Shadow (Left) improves Merchant's wavedashes.
+The upgrades lengthens the wavedash, then adds a
+hitbox to the wavedash. and the bonus purchase
+adds a hitbox instantly

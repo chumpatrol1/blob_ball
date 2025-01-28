@@ -50,7 +50,7 @@ def draw_tutorial(gameplay_display, info_getter, settings):
         image_cache["initialized"] = True
         image_cache["tutorial_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 25)
         image_cache["big_font"] = pg.font.Font(cwd + "/resources/fonts/neuropol-x-free.regular.ttf", 50)
-        image_cache["locked_blob"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/blobs/locked_blob.png").convert_alpha(), (100, 55))
+        image_cache["locked_blob"] = pg.transform.scale(pg.image.load(cwd + "/blobs/random/locked_blob.png").convert_alpha(), (100, 55))
         image_cache["cpu_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/cpu_icon.png").convert_alpha(), (100, 100))
         image_cache["almanac_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/almanac_icon.png").convert_alpha(), (100, 100))
         image_cache["rules_icon"] = pg.transform.scale(pg.image.load(cwd + "/resources/images/css_icons/rules_icon.png").convert_alpha(), (100, 100))

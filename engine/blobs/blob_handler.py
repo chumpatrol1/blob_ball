@@ -7,12 +7,13 @@ from json import loads
 class BlobContainer:
     def __init__(self):
         self.blob_dict = {}
+        #print(Blob.__subclasses__())
         for blob in Blob.__subclasses__():
             temp = blob()
             self.blob_dict[temp.species] = blob
         self.blob_keys = [*self.blob_dict.keys()]
         Blob.clear_sprite_collisions()
-        print(self.blob_keys)
+        #print(self.blob_keys)
 
     def get_blob(self, blob_id):
         return self.blob_dict[blob_id]

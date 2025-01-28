@@ -368,11 +368,11 @@ def almanac_art_blobs_navigation(timer):
     global selector_position
     if('p1_left' in pressed or 'p2_left' in pressed):
         if selector_position == 0:
-            selector_position = 39
+            selector_position = 26
         else:
             selector_position -= 1
     elif('p1_right' in pressed or 'p2_right' in pressed or mouse[1][0]):
-        if selector_position == 39:
+        if selector_position == 26:
             selector_position = 0
         else:
             selector_position += 1
