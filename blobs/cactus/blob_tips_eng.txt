@@ -1,0 +1,13 @@
+#1: The spike follows the ball, but beware
+its travel time! The angle it hits the ball
+influences the knockback direction.
+
+#2: Hitting an opponent with the spike
+deals a little damage and stun. It also applies
+an effect that reduces energy build rate.
+
+#3: Cactus Blob's boost kick steals 360
+energy (about 20%) from the enemy on hit.
+
+#4: For 200 energy, Cactus Blob's wavedash will
+deal 3 damage to enemies on contact.

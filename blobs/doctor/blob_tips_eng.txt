@@ -1,0 +1,13 @@
+#1: Doctor Blob is more likely to pull
+Gelatin Pills at low HP
+
+#2: Doctor Blob's next chosen pill is random,
+but pills that have been eaten recently
+are less likely to show up
+
+#3: The Steroid Pill is longer lasting than
+his standard Boost, and also causes his
+kicks to partially pierce blocks!
+
+#4: Caffeine Pills reduce multiple cooldowns
+at once, making them effective for cycling

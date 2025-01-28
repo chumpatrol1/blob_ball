@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 3,
+    "top_speed": 1,
+    "traction": 1,
+    "friction": 1,
+    "gravity": 1,
+    "kick_cooldown_rate": 4,
+    "block_cooldown_rate": 4,
+    "boost_cost": 600,
+    "boost_cooldown_max": 5,
+    "boost_duration": 5,
+    "special_ability": "tax",
+    "special_ability_category": "instant",
+    "special_ability_cost": 600,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 600,
+    "special_ability_delay": 0,
+    "special_ability_duration": 240
+  },
+  "descriptors": {
+    "species": "king",
+    "path": "king"
+  },
+  "costumes": {
+    "0": {
+        "alive": "king_blob.png", 
+        "dead": "king_blob_-1.png",
+        "ability": "tax.png"
+    },
+    "1": {
+        "alive": "king_blob_1.png",
+        "dead": "king_blob_-1.png",
+        "ability": "tax.png"
+    }
+  }
+}

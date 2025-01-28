@@ -1,0 +1,38 @@
+{
+  "stars": {
+    "max_hp": 3,
+    "top_speed": 3,
+    "traction": 4,
+    "friction": 2,
+    "gravity": 4,
+    "kick_cooldown_rate": 2,
+    "block_cooldown_rate": 3,
+    "boost_cost": 600,
+    "boost_cooldown_max": 3,
+    "boost_duration": 3,
+    "special_ability": "spike",
+    "special_ability_category": "instant",
+    "special_ability_cost": 600,
+    "special_ability_maintenance": 0,
+    "special_ability_max": 1800,
+    "special_ability_cooldown": 240,
+    "special_ability_delay": 0,
+    "special_ability_duration": 0
+  },
+  "descriptors": {
+    "species": "cactus",
+    "path": "cactus"
+  },
+  "costumes": {
+    "0": {
+        "alive": "cactus_blob.png", 
+        "dead": "cactus_blob_-1.png",
+        "ability": "cactus_spike.png"
+    },
+    "1": {
+        "alive": "cactus_blob_1.png",
+        "dead": "cactus_blob_-1.png",
+        "ability": "cactus_spike.png"
+    }
+  }
+}

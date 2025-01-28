@@ -1,0 +1,18 @@
+#1: Merchant Blob can equip charms to buff
+himself, but they break upon being KO'd.
+
+#2: Rainbow Heart (Up) increases energy
+build rate, and allows focus to recover HP.
+The bonus purchase heals 1 HP.
+
+#3: Spring Kick (Right) improves kicks.
+Upgrades add knockback to kicks
+The bonus purchase applies pierce.
+
+#4: Sprint Master (Down) increases speed, traction and
+friction. The bonus purchase buys some Hot Sauce!
+
+#5: Sharp Shadow (Left) improves Merchant's wavedashes.
+The upgrades lengthens the wavedash, then adds a
+hitbox to the wavedash. and the bonus purchase
+adds a hitbox instantly

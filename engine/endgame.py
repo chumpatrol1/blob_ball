@@ -5,26 +5,27 @@ cwd = getenv('APPDATA')+'/BlobBall'
 
 def attempt_blob_unlocks(game_stats):
     blob_unlock_requirements = {
-        2: "fire",
-        4: "ice",
-        6: "water",
-        8: "rock",
-        10: "lightning",
-        12: "wind",
-        15: "judge",
-        20: "doctor",
-        25: "king",
-        30: "cop",
-        35: "boxer",
-        40: "mirror",
-        45: "fisher",
-        52: "glue",
-        59: "arcade",
-        66: "joker",
-        74: "taco",
-        82: "cactus",
-        90: "merchant",
-        100: "bubble",
+        0: "fire", # Just in case
+        1: "ice", # Just in case
+        2: "water", # Just in case
+        3: "rock",
+        6: "lightning",
+        9: "wind",
+        12: "glue",
+        15: "mirror",
+        20: "judge",
+        25: "doctor",
+        30: "king",
+        35: "joker",
+        42: "cop",
+        50: "boxer",
+        58: "water", # Placeholder for monk
+        66: "merchant",
+        75: "fisher",
+        85: "bubble",
+        95: "cactus",
+        105: "taco",
+        115: "arcade",
     }
     
     blobs_unlocked = 0
@@ -58,6 +59,7 @@ def attempt_costume_unlocks(mu_chart, p1_blob, p2_blob):
         "cactus": {10: "cactus/grayscale_1"},
         "merchant": {10: "merchant/grayscale_1"},
         "bubble": {10: "bubble/grayscale_1"},
+        "monk": {10: "monk/grayscale_1"},
     }
     blobs_unlocked = 0
     try:

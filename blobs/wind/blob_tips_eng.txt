@@ -1,0 +1,17 @@
+#1: Wind Blob can get across the field
+very quickly by chaining short hops!
+
+#2: Gale will always push the enemy
+and the ball away from your goal
+for a bit
+
+#3: Wind Blob can harass the opponent
+with frequent kicks. Run and gun!
+
+#4: The yellow area surrounding your goal
+is a danger zone! If you get kicked, you will
+take +1 damage! Use Gale to reset the
+situation and to preserve your pool of HP!
+
+#5: Wind Blob's boost kick knocks back
+opponents! Holding in reduces the effect.

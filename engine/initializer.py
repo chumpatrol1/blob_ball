@@ -1,8 +1,8 @@
 # INITIALIZER
 import os
 from json import loads, dumps
-
-game_version = '0.18.0b'
+import resources.graphics_engine.display_graphics
+game_version = '0.19.0b'
 
 def check_folders(cwd):
     if(not os.path.isdir(cwd+"/config")):
@@ -190,6 +190,7 @@ def check_existing_directory(cwd):
         os.mkdir(cwd+'/screenshots')
     if not(os.path.isdir(cwd + '/replays')): # Replays folder
         os.mkdir(cwd+'/replays')
-
+    if not(os.path.isdir(cwd + '/replays/'+game_version)): # Replays subfolder
+        os.mkdir(cwd+'/replays/'+game_version)
 def return_game_version():
     return game_version

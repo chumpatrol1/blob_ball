@@ -1,0 +1,12 @@
+#1: Bubbles will float around in circles. The
+direction is dependent on the player's team!
+
+#2: While the ball is caught in a bubble, 
+it gains a damaging effect! Touching the ball
+will hurt you a little bit.
+
+#3: While the ball is caught in a bubble,
+many abilities will affect the bubble!
+
+#4: Popping the bubble at any point will launch
+the ball, regardless of when or how!

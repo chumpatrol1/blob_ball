@@ -49,9 +49,9 @@ def get_script_path():
     '''
     return os.path.dirname(os.path.realpath(__file__))
 
-os.chdir(get_script_path())
+#os.chdir(get_script_path())
 
-print("MAIN",cwd)
+#print("MAIN",cwd)
 
 import pygame as pg
 from engine.game_handler import update_game_state as ugs

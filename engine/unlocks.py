@@ -3,53 +3,64 @@ from copy import deepcopy
 
 # The original selector
 css_selector_list_blobs = [
-    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["rules", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["settings", "quirkless", "quirkless", "quirkless", "random", "quirkless", "quirkless", "quirkless",],
-    ["almanac", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
-    ["back", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["quirkless", "quirkless", "quirkless", "quirkless", "random", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless",],
+    ["quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless", "quirkless"],
 ]
 
 original_css_display_list_blobs = [ #Creates an array of arrays, which contains the image to use, it's name, and special ability
-[["/css_icons/back_arrow.png", "Back", ""], ["/blobs/quirkless_blob.png", "Quirkless Blob", "No Ability"], ["/blobs/fire_blob.png", "Fire Blob", "Fireball"], ["/blobs/ice_blob.png", "Ice Blob", "Snowball"], ["/blobs/water_blob.png", "Water Blob", "Geyser"], ["/blobs/rock_blob.png", "Rock Blob", "Spire"], ["/blobs/lightning_blob.png", "Lightning Blob", "Thunderbolt"], ["/blobs/wind_blob.png", "Wind Blob", "Gale"],],
-[["/css_icons/rules_icon.png", "Rules", ""], ["/blobs/judge_blob.png", "Judge Blob", "C&D"], ["/blobs/doctor_blob.png", "Doctor Blob", "Pill"], ["/blobs/king_blob.png", "King Blob", "Tax"], ["/blobs/cop_blob.png", "Cop Blob", "Stoplight"], ["/blobs/boxer_blob.png", "Boxer Blob", "Starpunch"], ["/blobs/mirror_blob.png", "Mirror Blob", "Reflect"], ["/blobs/fisher_blob.png", "Fisher Blob", "Hook"],],
-[["/css_icons/gear_icon.png", "Settings", ""], ["/blobs/glue_blob.png", "Glue Blob", "Gluegun"], ["/blobs/arcade_blob.png", "Arcade Blob", "Cheat Cartridge"], ["/blobs/joker_blob.png", "Joker Blob", "Card Pack"], ["/blobs/random_blob.png", "Random Blob", "Random Ability"], ["/blobs/taco_blob.png", "Taco Blob", "Filling"], ["/blobs/cactus_blob.png", "Cactus Blob", "Spike"], ["/blobs/merchant_blob.png", "Merchant Blob", "Shop"],],
-[["/css_icons/almanac_icon.png", "Almanac", ""], ["/blobs/bubble_blob.png", "Bubble Blob", "Bubble"], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
-[["/css_icons/cpu_icon.png", "Toggle CPU", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""], ["/blobs/quirkless_blob.png", "", ""],],
+[["quirkless_blob.png", "Quirkless Blob", "No Ability", "quirkless"], ["fire_blob.png", "Fire Blob", "Fireball", "fire"], ["ice_blob.png", "Ice Blob", "Snowball", "ice"], ["water_blob.png", "Water Blob", "Geyser", "water"], ["rock_blob.png", "Rock Blob", "Spire", "rock"], ["lightning_blob.png", "Lightning Blob", "Thunderbolt", "lightning"], ["wind_blob.png", "Wind Blob", "Gale", "wind"], ["glue_blob.png", "Glue Blob", "Gluegun", "glue"], ["mirror_blob.png", "Mirror Blob", "Reflect", "mirror"],],
+[["judge_blob.png", "Judge Blob", "C&D", "judge"], ["doctor_blob.png", "Doctor Blob", "Pill", "doctor"], ["king_blob.png", "King Blob", "Tax", "king"], ["joker_blob.png", "Joker Blob", "Card Pack", "joker"], ["random_blob.png", "Random Blob", "Random Ability", "random"], ["cop_blob.png", "Cop Blob", "Stoplight", "cop"], ["boxer_blob.png", "Boxer Blob", "Starpunch", "boxer"], ["monk_white.png", "Monk Blob", "Blob Fu", "monk"], ["merchant_blob.png", "Merchant Blob", "Shop", "merchant"], ],
+[["fisher_blob.png", "Fisher Blob", "Hook", "fisher"], ["bubble_blob.png", "Bubble Blob", "Bubble", "bubble"], ["cactus_blob.png", "Cactus Blob", "Spike", "cactus"], ["taco_blob.png", "Taco Blob", "Filling", "taco"], ["arcade_blob.png", "Arcade Blob", "Cheat Cartridge", "arcade"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ["quirkless_blob.png", "", "", "quirkless"], ],
 ]
+
+# This is a pretty hacky fix, but I won't be bothered to write it properly when we're so close to the finish line. Premature optimization is the root of all evil, and all that.
+for i in original_css_display_list_blobs:
+    for j in i:
+        pass
 
 css_display_list_blobs = deepcopy(original_css_display_list_blobs) #Creates an array of arrays, which contains the image to use, it's name, and special ability
 
 
 css_location_dict_blobs = { # Stores every location to loop through. The key is a location, the value is cross checked with blob_unlock_dict
-    (1, 0): "quirkless",
-    (2, 0): "fire",
-    (3, 0): "ice",
-    (4, 0): "water",
-    (5, 0): "rock",
-    (6, 0): "lightning",
-    (7, 0): "wind",
-    (1, 1): "judge",
-    (2, 1): "doctor",
-    (3, 1): "king",
-    (4, 1): "cop",
-    (5, 1): "boxer",
-    (6, 1): "mirror",
-    (7, 1): "fisher",
-    (1, 2): "glue",
-    (2, 2): "arcade",
-    (3, 2): "joker",
-    (4, 2): "random",
-    (5, 2): "taco",
-    (6, 2): "cactus",
-    (7, 2): "merchant",
-    (1, 3): "bubble",
+    (0, 0): "quirkless",
+    (1, 0): "fire",
+    (2, 0): "ice",
+    (3, 0): "water",
+    (4, 0): "rock",
+    (5, 0): "lightning",
+    (6, 0): "wind",
+    (7, 0): "glue",
+    (8, 0): "mirror",
+    (0, 1): "judge",
+    (1, 1): "doctor",
+    (2, 1): "king",
+    (3, 1): "joker",
+    (4, 1): "random",
+    (5, 1): "cop",
+    (6, 1): "boxer",
+    (7, 1): "monk",
+    (8, 1): "merchant",
+    (0, 2): "fisher",
+    (1, 2): "bubble",
+    (2, 2): "cactus",
+    (3, 2): "taco",
+    (4, 2): "arcade",
+    (5, 2): "coming_soon",
+    (6, 2): "coming_soon",
+    (7, 2): "coming_soon",
+    (8, 2): "coming_soon",
+    (0, 3): "coming_soon",
+    (1, 3): "coming_soon",
     (2, 3): "coming_soon",
     (3, 3): "coming_soon",
     (4, 3): "coming_soon",
     (5, 3): "coming_soon",
     (6, 3): "coming_soon",
     (7, 3): "coming_soon",
+    (8, 3): "coming_soon",
+    (0, 4): "coming_soon",
     (1, 4): "coming_soon",
     (2, 4): "coming_soon",
     (3, 4): "coming_soon",
@@ -57,13 +68,14 @@ css_location_dict_blobs = { # Stores every location to loop through. The key is 
     (5, 4): "coming_soon",
     (6, 4): "coming_soon",
     (7, 4): "coming_soon",
+    (8, 4): "coming_soon",
 }
 
 blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "quirkless": True,
-    "fire": False,
-    "ice": False,
-    "water": False,
+    "fire": True,
+    "ice": True,
+    "water": True,
     "rock": False,
     "lightning": False,
     "wind": False,
@@ -82,6 +94,7 @@ blob_unlock_dict = { # Whether a given blob has been unlocked or not
     "cactus": False,
     "merchant": False,
     "bubble": False,
+    "monk": False,
 }
 
 unlocked_blobs = []
@@ -94,6 +107,8 @@ def load_blob_unlocks(cwd):
             for blob in blob_unlock_dict:
                 if blob not in new_unlock_dict and blob != "random":
                     new_unlock_dict[blob] = False
+                elif blob in new_unlock_dict:
+                    new_unlock_dict[blob] = new_unlock_dict[blob]
                 else:
                     new_unlock_dict[blob] = True
         
@@ -106,26 +121,24 @@ def load_blob_unlocks(cwd):
         with open(cwd + "/saves/blob_unlocks.txt", "w") as blobunlockdoc:
             blobunlockdoc.write(dumps(blob_unlock_dict))
 
-unlock_milestones = [0, 2, 4, 6, 8, 10, 12,\
-    15, 20, 25, 30, 35, 40, 45,\
-        52, 59, 66, 74, 82, 90,\
-    100, 110, 120, 130, 140, 150, 160,\
-    165, 180, 195, 210, 225, 240, 255]
+unlock_milestones = [0, 0, 0, 0, 3, 6, 9, 12, 15,\
+    20, 25, 30, 35, 42, 50, 58, 66,\
+    75, 85, 95, 105, 115, 125, 135, 145, 155,]
 
 def update_css_blobs(cwd):
     global blob_unlock_dict
     global css_selector_list_blobs
     global css_display_list_blobs
-
+    #print(cwd)
     with open(cwd+'/saves/game_stats.txt', 'r') as statsdoc:
             game_stats = loads(statsdoc.readline())
 
     unlock_slot = 0
-    for y in range(0, 5):
-        for x in range(1, 8):
+    for y in range(0, 3):
+        for x in range(0, 9):
             location = (x, y)
             if location in css_location_dict_blobs and css_location_dict_blobs[location] == "coming_soon":
-                css_display_list_blobs[y][x] = ["/blobs/shadow_blob.png", "???", "Coming soon!"]
+                css_display_list_blobs[y][x] = ["shadow_blob.png", "???", "Coming soon!", "random"]
             elif location in css_location_dict_blobs and blob_unlock_dict[css_location_dict_blobs[location]]:
                 blob_id = css_location_dict_blobs[location]
                 css_selector_list_blobs[y][x] = blob_id
@@ -133,7 +146,7 @@ def update_css_blobs(cwd):
                     unlocked_blobs.append(blob_id)
                 css_display_list_blobs[y][x] = original_css_display_list_blobs[y][x]
             else:
-                css_display_list_blobs[y][x] = ["/blobs/locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete"]
+                css_display_list_blobs[y][x] = ["locked_blob.png", "Unlock Me!", str(game_stats['matches_played']) + "/" + str(unlock_milestones[unlock_slot]) + " Matches Complete", "random"]
             if(location != (4, 2)):
                 unlock_slot += 1
             #if location in if_blob_shadow:
@@ -151,6 +164,7 @@ def unlock_blob(blob, cwd):
         raise ValueError("Blob already unlocked!")
 
 def unlock_all_blobs():
+    print("All blobs unlocked")
     for blob in blob_unlock_dict:
         blob_unlock_dict[blob] = True
     from os import getenv
@@ -347,7 +361,8 @@ costume_unlock_dict = {
     "taco": {"grayscale_1": False},
     "cactus": {"grayscale_1": False},
     "merchant": {"grayscale_1": False},
-    "bubble": {"grayscale_1": False}
+    "bubble": {"grayscale_1": False},
+    "monk": {"grayscale_1": False}
 }
 
 def load_costume_unlocks(cwd):

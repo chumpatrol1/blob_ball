@@ -114,31 +114,21 @@ def update_game_state(game_state, cwd):
             previous_screen = "main_menu" 
     elif(game_state == "css"):
         game_state, info_getter = engine.menus.css_menu.css_handler()
-        p1_selector_position = info_getter[0]
-        p2_selector_position = info_getter[1]
+        info_getter.append(ruleset)
         if(game_state == "casual_match"):
             resources.graphics_engine.display_css.unload_css()
-            if(p1_selector_position[3]):
-                p1_is_cpu = True
-            else:
-                p1_is_cpu = False
-            if(p2_selector_position[3]):
-                p2_is_cpu = True
-            else:
-                p2_is_cpu = False
-            p1_selector_position[2] = 0
-            p2_selector_position[2] = 0
 
-
-            p1_blob = info_getter[2]
+            # Looks like Miscellaneous CPU, Costume and Random Blob code
+            p1_blob = info_getter[0][1].token.current_blob
+            p2_blob = info_getter[0][2].token.current_blob
+            p1_costume = info_getter[0][1].token.current_costume
+            p2_costume = info_getter[0][2].token.current_costume
+            p1_is_cpu = info_getter[0][1].token.player_state == 'cpu'
+            p2_is_cpu = info_getter[0][2].token.player_state == 'cpu'
             if(p1_blob == 'random'):
                 p1_blob = get_random_blob()
-            p2_blob = info_getter[3]
             if(p2_blob == 'random'):
                 p2_blob = get_random_blob()
-            p1_costume = return_available_costumes()[p1_blob][info_getter[0][4]]
-            p2_costume = return_available_costumes()[p2_blob][info_getter[1][4]]
-
             timer = 60
         elif(game_state == "rules" or game_state == "settings"):
             timer = 3
@@ -184,13 +174,14 @@ def update_game_state(game_state, cwd):
                 clear_info_cache()
             elif(game_state == "replay_pause"):
                 timer = 10
-        except KeyError:
+        except KeyError as ex:
+            print("KeyError Exception:", ex)
             print("Short Replay Error")
             clear_info_cache()
             engine.win_screen_handler.reset_ready()
             resources.graphics_engine.display_gameplay.unload_image_cache()
             resources.graphics_engine.display_win_screen.unload_win_screen()
-            game_state, info_getter = 1, "almanac"
+            game_state, info_getter = "almanac", 1
     elif(game_state == "replay_win"):
         game_state, info_getter = engine.win_screen_handler.handle_win_screen(game_stats, is_replay = True)
         song_playing = "bb_win_theme"

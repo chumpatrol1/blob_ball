@@ -1,0 +1,15 @@
+#1: Snowball doesn't stop the ball instantly,
+but it will change the ball's trajectory
+significantly and cause it to hover!
+
+#2: Ice Blob is slippery on the ground, but has
+average air friction for better acceleration
+
+#3: Slowing down the ball slightly can cause
+opponents to mistime their abilities and jumps
+
+#4: You can use your block as an emergency
+brake since it halts all momentum
+
+#5: Boost Kicking applies a hypothermia effect
+which applies a slowing effect to your enemy!
